@@ -1,7 +1,7 @@
 ---
 title: ""
-pagetitle: "Aurele Toussaint"
-fontsize: 14pt
+pagetitle: "Aurèle Toussaint"
+fontsize: 15pt
 output:
   html_document: 
     toc: true
@@ -35,6 +35,7 @@ Institute of Ecology and Earth Sciences<br> Department of Botany<br>
 University of Tartu<br> J. Liivi 2<br> Tartu 50409<br> ESTONIA<br>
 
 Email: [aurele.toussaint\@ut.ee](mailto:aurele.toussaint@ut.ee){.email}
+
 
 <h2 align="left">
 
@@ -108,6 +109,8 @@ and
 [ResearchGate](https://www.researchgate.net/profile/Aurele_Toussaint).
 
 ## 2023
+
+**Toussaint A.**,Pärtel M.,Carmona C.P., Non-native bird species will not compensate for the loss of phylogenetic and functional diversity after the extinction of threatened species, *Authorea* [pdf](data/2023_Toussaint_Authorea_2.pdf)
 
 Coulon, N., Lindegren, M., Goberville, E., **Toussaint, A.**, Receveur, A., & Auber, A., Threatened fish species in the Northeast Atlantic are functionally rare. *Global Ecology and Biogeography*, 00, 1–19. [pdf](data/2023_Coulon_GEB.pdf)
 
