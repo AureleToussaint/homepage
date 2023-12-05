@@ -1,0 +1,81 @@
+---
+title: ""
+pagetitle: "Projects"
+fontsize: 14pt
+---
+<title>Projects</title>
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+
+<br>
+<left><b><font size="+4">Method comparison</font></b></left>
+<br>
+<br>
+<img src="data/world.png" style="width:50%; border:1px; margin-right: 1px" align="left">  
+<br>
+<right> <font size="+2">The objective is to compare different approaches to the functional facet of biodiversity and compare how they jointly provide new ways to refine assessments of FD patterns and the effect of human activity. </font></right>  
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<right><b><font size="+4">Global Functional Diversity</font></b></right>
+<br>
+<br>
+<img src="data/glob.jpg" style="width:55%; border:1px; margin-right: 1px" align="right">  
+<br>
+
+<left><font size="+2"> This project aims to gather different databases of functional traits of plants and vertebrates and exploring the macro ecology of functional diversity among taxonomic groups in a context of global change.</font> </left>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<left><b><font size="+4">Cross-taxonomic diversity</font></b></left>
+<img src="data/crossTaxa.png" style="width:50%; border:1px; margin-right: 1px" align="left">  
+<br>
+<right> <font size="+2">The objective of this project is to study the taxonomic and functional diversities patterns of taxonomic groups representing contrasting ecosystems type and determine their congruence at global and biogeographical realm scales. </font></right> 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<left><b><font size="+4">GIS application for conservation</font></b></left>
+<img src="data/GIS.png" style="width:50%; border:1px; margin-right: 1px" align="right">  
+<br>
+<left> <font size="+2">The objectives is to evaluate the status of the grassland in Estonia. This project was realized under the supervision of [Dr. Aveliina Helm](https://landscape.ut.ee/people/aveliina-helm/?lang=en). My main task was developing GIS and R algorithms for conservation prioritization maps. I also developed algorithms for [Zonation software](https://www.syke.fi/en-US/Research__Development/Nature/Specialist_work/Zonation_in_Finland/Zonation_software).</font> </left>    
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>

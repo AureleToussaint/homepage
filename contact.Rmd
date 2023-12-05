@@ -1,0 +1,15 @@
+---
+title: ""
+pagetitle: "Contact"
+fontsize: 14pt
+---
+<title>Contact</title>
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+Institute of Ecology and Earth Sciences, Department of Botany<br>
+University of Tartu, Lai 40<br>
+Tartu 51005, Estonia<br>
+aurele.toussaint@ut.ee<br>
+
+  Or connect with me on Twitter, Linkedin or ResearchGate (links in top right).

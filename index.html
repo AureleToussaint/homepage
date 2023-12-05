@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Aurele Toussaint</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel="shortcut icon" href="data/ATc.jpg" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    
+  </a>
+</li>
+<li>
+  <a href="Projects.html">Projects</a>
+</li>
+<li>
+  <a href="RData.html">Data &amp; Scripts</a>
+</li>
+<li>
+  <a href="PicTheFish.html">Pic' Fish</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="contact.html">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/AureleToussaint">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://twitter.com/ToussaintAurele">
+    <span class="fa fa-twitter fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/atoussaint/">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<title>
+<p>Home</p>
+</title>
+<p><link rel="shortcut icon" href="data/imageTitle.png" type="image/png"></p>
+<p><link rel="stylesheet" href="styles.css" type="text/css"></p>
+<p><img src="data/EstLand.png" style="width:100%; border:1px; margin-right: 1px" align="center"/></p>
+<h2 align="left">
+<p><b>Professional address</b></p>
+</h2>
+<p>Institute of Ecology and Earth Sciences<br> Department of Botany<br>
+University of Tartu<br> J. Liivi 2<br> Tartu 50409<br> ESTONIA<br></p>
+<p>Email: <a href="mailto:aurele.toussaint@ut.ee"
+class="email">aurele.toussaint@ut.ee</a></p>
+<h2 align="left">
+<p><b>Research</b></p>
+</h2>
+<p>I work on ecological and evolutionary processes involved in the
+distribution of functional traits mainly on plants and vertebrates.</p>
+<h2 align="left">
+<img src="data/wordcloud.png" style="width:45%; border:1px; margin-right: 1px" align="center"/>
+</h2>
+<h2 align="left">
+<b>Pic’Fish project</b>
+</h2>
+<p>Join us and participate to our citizen campaign
+<strong>Pic’Fish</strong>. More information [here]</p>
+<h2 align="center">
+<img src="data/PicFishLogo.png" style="width:30%; border:1px; margin-right: 1px" align="center"/>
+</h2>
+<p><br></p>
+<h1 align="center">
+<p><b>Curriculum Vitae</b></p>
+</h1>
+<p><strong>ORCID</strong> <a
+href="https://orcid.org/0000-0002-5738-4637">0000-0002-5738-4637</a></p>
+<h3 align="left">
+<p><b>Current position</b></p>
+</h3>
+<p><strong>Research Fellow</strong> supported by <em>the Estonian
+Research Concil (PSG-505)</em> <a
+href="https://app.dimensions.ai/details/grant/grant.8855456">here</a></p>
+<p>Full CV available <a href="data/CV_Toussaint.pdf">here</a><br>
+ResearchGate <a
+href="https://www.researchgate.net/profile/Aurele_Toussaint">here</a><br>
+Google scholar <a
+href="https://scholar.google.fr/citations?user=oTxWHKgAAAAJ&amp;hl=fr">here</a><br></p>
+<h3 align="left">
+<p><b>Previous grants</b></p>
+</h3>
+<p><strong>Post-doctoral Fellow</strong> supported by <em>the Estonian
+Research Concil (MOBJD-276)</em> <a
+href="https://app.dimensions.ai/details/grant/grant.7070239">here</a></p>
+<p><strong>Erasmus MUNDUS</strong> with the <a
+href="https://www.khu.ac.kr/eng/main/index.do">Kyung Hee University</a>,
+Seoul (Korea)</p>
+<h1 align="center">
+<p><b>Publications</b></p>
+</h1>
+<p>The below publications represent my work to date. A full list of
+publications is available in <a
+href="https://scholar.google.fr/citations?user=oTxWHKgAAAAJ&amp;hl=fr">Google
+scholar</a> and <a
+href="https://www.researchgate.net/profile/Aurele_Toussaint">ResearchGate</a>.</p>
+<div id="section" class="section level2">
+<h2>2023</h2>
+<p>Coulon, N., Lindegren, M., Goberville, E., <strong>Toussaint,
+A.</strong>, Receveur, A., &amp; Auber, A., Threatened fish species in
+the Northeast Atlantic are functionally rare. <em>Global Ecology and
+Biogeography</em>, 00, 1–19. <a
+href="data/2023_Coulon_GEB.pdf">pdf</a></p>
+<p>Bueno, C.G., <strong>Toussaint, A.</strong>, Träger, S. et al. Reply
+to: The importance of trait selection in ecology. <em>Nature</em> 618,
+E31–E34. <a href="data/2023_Bueno_nature.pdf">pdf</a></p>
+<p><strong>Toussaint A.</strong>,Pärtel M.,Carmona C.P., Non-native bird
+species will not compensate for the loss of phylogenetic and functional
+diversity after the extinction of threatened species, <em>Authorea</em>
+<a href="data/2023_Toussaint_Authorea.pdf">pdf</a></p>
+<p>de Tombeur, F., Raven, J. A., <strong>Toussaint A.</strong>, Lambers,
+H., Cooke, J., Hartley, S. E., Johnson, S. N., Coq, S., Katz, O.,
+Schaller, J. and Violle, C., Why do plants silicify? <em>Trends in
+Ecology and Evolution</em>, 38(3), 275-288 <a
+href="data/2023_deTombeur.pdf">pdf</a></p>
+</div>
+<div id="section-1" class="section level2">
+<h2>2022</h2>
+<p>Auber A., Waldock C., Maire A., Goberville E., Albouy C., Algar A.C.,
+McLean M., Brind’Amour A., Green A.L., Tupper M., Vigliola L., Kaschner
+K., Kesner-Reyes K., Beger M., Tjiputra J, <strong>Toussaint
+A.</strong>, Violle C., Mouquet N., Thuiller W., Mouillot D., A
+functional vulnerability framework for biodiversity conservation,
+<em>Nature Communications</em>, 13, 4774 <a
+href="data/2022_Auber_NatComms.pdf">pdf</a></p>
+<p>Paganeli B., <strong>Toussaint A.</strong>, Bueno C. G., Fujinuma J.,
+Reier Ü., Pärtel M., Dark diversity at home describes the success of
+cross-continent tree invasions. <em>Diversity and Distributions</em>, 28
+(6), 1202-1213 <a href="data/2022_Paganeli_DDI.pdf">pdf</a>
+cross-continent tree invasions. <em>Diversity and Distributions</em>,
+00, 1-12 <a href="data/2022_Paganeli_DDI.pdf">pdf</a></p>
+<p>Su G.,Tedesco P.A., <strong>Toussaint A.</strong>, Villeger S.,
+Brosse S., Contemporary environment and historical legacy explain
+functional diversity of freshwater fishes in the world rivers,
+<em>Global Ecology and Biogeography</em>, 31, 700-713 <a
+href="data/2022_Su_GEB.pdf">pdf</a></p>
+</div>
+<div id="section-2" class="section level2">
+<h2>2021</h2>
+<p>Brosse S., Charpin N., Su G., <strong>Toussaint A.</strong>,
+Herrera-R. G.A., Tedesco P.A., Villeger S., FISHMORPH: A global database
+on morphological traits of freshwater fishes, <em>Global Ecology and
+Biogeography</em>, 30 (12), 2330-2336 <a
+href="data/2021_Brosse_GEB.pdf">pdf</a></p>
+<p>Carmona C.P., Bueno C.G., <strong>Toussaint A.</strong>, Träger S.,
+Diaz S., Moora M., Munson D.A., Pärtel M., Zobel M., Tamme R., Fine-root
+traits in the global spectrum of plant form and function,
+<em>Nature</em>, 597 (7878), 683-687 <a
+href="data/2021_Carmona_Nature.pdf">pdf</a></p>
+<p><strong>Toussaint A.</strong>, Brosse S., Bueno C.G., Pärtel M.,
+Tamme S., Carmona C.P., Extinction of threatened vertebrates will lead
+to idiosyncratic changes in functional diversity across the world,
+<em>Nature Communication</em>, 12 (1), 1-12 <a
+href="data/2021_Toussaint_NatCom.pdf">pdf</a></p>
+<p>Tordoni E., <strong>Toussaint A.</strong>, Pärtel M., Nogues-Bravo
+D., Carmona C.P., Combining taxonomic, phylogenetic and functional
+diversity reveals new global priority areas for tetrapod conservation,
+<em>bioRxiv</em>, doi: <a
+href="https://doi.org/10.1101/2021.07.01.450689"
+class="uri">https://doi.org/10.1101/2021.07.01.450689</a></p>
+<p>Carmona C.P., Tamme R., Pärtel M., de Bello F., Brosse S., Capdevila
+P., Gonzalez-M R., Gonzalez-Suarez M., Salguero-Gomez R.,
+Vasquez-Valderrama M., <strong>Toussaint A.</strong>, Erosion of global
+functional diversity across the tree of life, <em>Science Advances</em>,
+7(13), eabf2675 <a href="data/2021_Carmona_SciAdv.pdf">pdf</a>, <a
+href="https://inee.cnrs.fr/fr/cnrsinfo/lextinction-des-especes-en-danger-entrainera-une-reorganisation-globale-du-role-des-autres">press
+release CNRS</a>, <a
+href="https://www.eurekalert.org/news-releases/546861">EurekAlert!</a></p>
+</div>
+<div id="section-3" class="section level2">
+<h2>2020</h2>
+<p>Carmona C.P., Tamme R., Partel M., de Bello F., Brosse S., Capdevila
+P., Gonzalez-M R., Gonzalez-Suarez M., Salguero-Gomez R.,
+Vasquez-Valderrama M., <strong>Toussaint A.</strong>, Mapping extinction
+risk in the global functional spectra across the tree of life,
+<em>bioRxiv</em>, doi: <a
+href="https://doi.org/10.1101/2020.06.29.179143"
+class="uri">https://doi.org/10.1101/2020.06.29.179143</a> <a
+href="https://www.biorxiv.org/content/10.1101/2020.06.29.179143v1.abstract">pdf</a></p>
+<p>Derezal, O., Mondy P.C., Dembski S., Kreutzenberger K., Reyjol Y.,
+Chanderis A., Valette L., Brosse S., <strong>Toussaint A.</strong>,
+Beillard J., Merg M.L., Usseglio-Polatera P., A diagnostic-based
+approach to assess specific risks of river degradation in a multiple
+pressure context: Insights from fish communities. <em>Science of The
+Total Environment</em>, 734, 139467 <a
+href="data/2020_Derezal_et_al_STOTEN.pdf">pdf</a></p>
+<p><strong>Toussaint A.</strong>, Bueno C.G., Davison J., Moora M.,
+Tedersoo L., Zobel M., Opik M. &amp; Partel M., Asymmetric patterns of
+global diversity among plants and mycorrhizal fungi <em>Journal of
+Vegetation Science</em>, 31(2), 355-366 <a
+href="data/2019_Toussaint_JVS.pdf">pdf</a></p>
+</div>
+<div id="section-4" class="section level2">
+<h2>2018</h2>
+<p><strong>Toussaint A.</strong>, Charpin N., Beauchard O., Grenouillet
+G., Oberdorff T., Tedesco P.A., Villéger S. &amp; Brosse S. Non-native
+species led to marked shifts in functional diversity of the world
+freshwater fish faunas. <em>Ecology Letters</em>, 21(11), 1649-1659. <a
+href="data/2018_Toussaint_Ecolet.pdf">pdf</a>, <a
+href="http://www.cnrs.fr/inee/communication/breves/b405.html">press
+release CNRS</a>, <a
+href="http://www.ird.fr/toute-l-actualite/actualites-scientifiques/la-biodiversite-des-poissons-d-eau-douce-bouleversee">press
+release IRD</a> in french and <a
+href="https://ecolchange.wordpress.com/2018/10/11/new-publication-non-native-species-led-to-marked-shifts-in-functional-diversity-of-the-world-freshwater-fish-faunas/">blog</a>
+in English. <a
+href="data/ele13141-sup-0001-suppinfo.docx">Supplementary</a></p>
+<p>Kuczynski L., Côte J., <strong>Toussaint A.</strong>, Brosse S.,
+Buisson L., Grenouillet G. Spatial mismatch in morphological, ecological
+and phylogenetic diversity, in historical and contemporary European
+freshwater fish faunas. <em>Ecography</em>, 41, 1665-1674. <a
+href="data/2018_Kuczinski_et_al_Ecography.pdf">pdf</a></p>
+<p>Tedersoo L., Laanisto L., Rahimlou S., <strong>Toussaint A.</strong>,
+Hallikma T., Pärtel M. Global database of plants with root‐symbiotic
+nitrogen fixation: Nod DB. <em>Journal of Vegetation Science</em>,
+29(3), 560-568 <a href="data/2018_Tedersoo_JVS.pdf">pdf</a></p>
+</div>
+<div id="section-5" class="section level2">
+<h2>2016</h2>
+<p><strong>Toussaint A.</strong>, Charpin N., Brosse S. &amp; Villéger
+S. Global functional diversity of freshwater fish is concentrated in the
+Neotropics. <em>Scientific Report</em>, 6, 22125. <a
+href="data/2016_Toussaint_SciRep.pdf">pdf</a>, <a
+href="http://www.cnrs.fr/inee/communication/breves/b178.html">press
+release</a> in french and <a
+href="https://www.franceinter.fr/emissions/la-tete-au-carre/la-tete-au-carre-11-avril-2016">radio
+show</a> (<em>La tête au carré</em>, France Inter, 11/04/2016) <a
+href="data/srep22125-s1.docx">Supplementary</a></p>
+<p><strong>Toussaint A.</strong>, Beauchard O., Oberdorff T., Brosse S.
+&amp; Villeger S. Worldwide freshwater fish homogenization is driven by
+a few widespread non-native species. <em>Biological Invasions</em>, 18,
+1295–1304. <a
+href="data/2016_Toussaint_BiologicalInvasions.pdf">pdf</a></p>
+</div>
+<div id="section-6" class="section level2">
+<h2>2015</h2>
+<p>Allard L., <strong>Toussaint A.</strong>, Vigouroux R. &amp; Brosse
+S. Length-weight relationship of 58 fish species in streams of French
+Guiana. <em>Journal of Applied Ichthyology</em>, 31, 567-570. <a
+href="data/2016_Toussaint_BiologicalInvasions.pdf">pdf</a></p>
+</div>
+<div id="section-7" class="section level2">
+<h2>2014</h2>
+<p><strong>Toussaint A.</strong>, Beauchard O., Oberdorff T., Brosse S.,
+Villéger S. Historical assemblage distinctiveness and the introduction
+of widespread non-native species explain worldwide changes in freshwater
+fish taxonomic dissimilarity. <em>Global Ecology and Biogeography</em>,
+23, 574–584. <a href="data/2014_Toussaint%20et%20al._GEB.pdf">pdf</a>
+and <a
+href="https://www.cnrs.fr/occitanie-ouest/CNRS-Hebdo/Actualites/18686/Suite.aspx">press
+release</a> <a href="data/geb12141-sup-0001-si.doc">Supplementary1</a>;
+<a href="data/geb12141-sup-0002-si.doc">Supplementary2</a></p>
+<h1 align="center">
+<p><b>Communication</b></p>
+</h1>
+<p>2020 Annual meeting for macroecology of the ecological society of
+Germany Austria and Switzerland, Konstanz, Germany: <em>Mapping
+extinction risk in the global functional spectra across the tree of
+life</em></p>
+<p>2018 Annual meeting for macroecology of the ecological society of
+Germany Austria and Switzerland, Birmendorf, Switzerland: <em>Global
+mismatch between the species richness of vascular plants and symbiosis
+fungi</em></p>
+<p>2017 60th IAVS Annual Symposium, Palermo, Italy: <em>Global mismatch
+between the species richness of vascular plants and symbiosis fungi
+across biogeographic realms</em></p>
+<p>2016 7th EAFES International Congress, Daegu, South-Korea:
+<em>Functional diversity and vulnerability of freshwater fish at the
+global scale</em></p>
+<p>2015 9th Symposium for European freshwater sciences, Geneva,
+Switzerland: <em>Introductions of non-natives freshwater fish affected
+differently the taxonomic and functional biodiversity facets</em></p>
+<p>2015 7th Biennal conference of the International Biogeography
+Society, Bayreuth, Germany : <em>Functional diversity of the freshwater
+fish fauna</em> (poster)</p>
+<p>2013 8th Symposium for European freshwater sciences, Munster,
+Germany: <em>Historical assemblage distinctiveness and the introduction
+of widespread non-native species explain worldwide changes in freshwater
+fish taxonomic dissimilarity</em></p>
+<h1 align="center">
+<p><b>PhD Thesis</b></p>
+</h1>
+<p>During my PhD, I investigated functional diversity of freshwater
+fishes at the world scale under the advisement of <a
+href="http://brosse.sebastien.free.fr/">Pr. Sébastien Brosse</a> and <a
+href="https://scholar.google.fr/citations?hl=fr&amp;user=vLK2CbwAAAAJ&amp;view_op=list_works&amp;sortby=pubdate">Dr. Sébastien
+Villéger</a></p>
+<p><strong>Toussaint A.</strong> 2016. Diversité fonctionnelle des
+poissons d’eau douce à l’échelle mondiale: patrons, déterminants et
+impacts des activité humaines. Université de Toulouse. 223p. <a
+href="data/Toussaint_2016_These.pdf">pdf</a> (in french only)</p>
+</div>
+<div id="detailed-thesis-abstract-in-english" class="section level2">
+<h2>Detailed thesis abstract in English</h2>
+<p>Biodiversity is often characterized only through its taxonomic facet,
+i.e. the number and list of species present in assemblages. However,
+recent studies show that biodiversity can not be summarized only by this
+facet because it does not reflect the ecological characteristics of the
+species. Several facets can describe biodiversity as functional
+diversity that allows considering the ecological traits of species and
+thus their role in ecosystem functioning. However, few studies have
+described this facet of biodiversity at large scale, its links with the
+taxonomic diversity and its responses to global change. The objectives
+of this thesis is to 1) describe and understand the distribution of the
+functional diversity of freshwater fish assemblages at the global scale
+and 2) quantify the consequences of human activities on both taxonomic
+and functional biodiversity facets. Towards these aims we have built a
+morphological traits database for more than 9,000 species of freshwater
+fish occurring in more than 1,000 river basins across the world. We have
+demonstrated that functional diversity is unequally distributed across
+the world and weakly related to the taxonomic diversity at global scale.
+For example, species-rich Neotropical rivers host more than 75% of the
+global functional diversity whereas the African or Asian rivers, also
+rich in species, host less than a quarter of the world functional
+diversity. Such a situation is explained by the functional uniqueness
+supported by some species of Neotropical fish orders that contribute to
+increase the functional diversity of this region. The functional
+diversity of the different biogeographic realms is also unequally
+vulnerable to extinction of endangered species, as Europe or North
+America could lose between 35% and 45% of their functional diversity,
+while the Neotropical realm appears less sensitive with only 10% of its
+functional diversity supported by vulnerable species. We also showed
+that the introduction of non-native species in many river basins across
+the world have contributed to profoundly changing the historical
+patterns of biodiversity. Indeed, species introductions have promoted a
+taxonomic homogenization of fish faunas across the world accompanied by
+a decrease in the number of unique species in the poorest assemblages.
+This change is largely due to the overriding effects of few non-native
+species largely introduced worldwide. In addition, non-native species
+have contributed to significantly increase the functional diversity of
+assemblages by 150% on average, up to 7 times greater than that reported
+for taxonomic diversity (20% on average). This demonstrates the high
+sensitivity of the functional diversity of fish assemblages face to
+changes in species composition and the need to consider the functional
+diversity for understanding the impact of current and future human
+activities. These results contribute to the knowledge on the
+biodiversity of the richest vertebrate clade and therefore have
+implications in terms of biodiversity conservation and management of
+freshwater ecosystems.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+---
+title: ""
+pagetitle: "RData"
+fontsize: 14pt
+---
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<img src="data/R.jpeg" style="width:8%; border:1px; margin-right: 1px" align="center"> 
+
+- [FDnull](data/FunctionR_FDnull.R): R function to compare the functional volume of a community based on functional traits to a random a random pool assemblage
+- [FDnullChge](data/FunctionR_FDnullChge.R): R function to compare the functional volume of a community based on functional traits to a random a random pool assemblage
+- [Funiq](data/FunctionR_Funiq.R): R function to compute and illustrate the proportion of the area (in 2dimensions) or volume of a taxonomic group not filled by any others species of the community
+- [Fvulne](data/FunctionR_Fvulne.R): R function to compute and illustrate the proportion of the area (in 2dimensions) or volume loss if all vulnerable species disapeared
+
+<br>
+<br>
+<img src="data/data.png" style="width:8%; border:1px; margin-right: 1px" align="center">
+
+- *FigShare repository* for the paper: Carmona et al. 2021, Fine-root traits in the global spectrum of plant form and function. [here](https://figshare.com/articles/dataset/Data_from_Fine-root_traits_in_the_global_spectrum_of_plant_form_and_function_Carmona_et_al_2021_Nature_/13140146)
+
+- *FigShare repository* for the paper: Toussaint et al. 2021, Extinction of threatened vertebrates will lead to idiosyncratic changes in functional diversity across the world [here](https://figshare.com/s/f076a046963c6f782f8d)
+
+- *FigShare repository* for the paper: Carmona et al. 2021, Erosion of global functional diversity across the tree of life. [here](https://figshare.com/s/134db1124b4890d9e67b)
+
+- Zipped file containing csv tables with information on the global distribution of freshwater fish species functional traits, basin occurrences, and taxonomic and functional indices. available on FigShare repository: [here](https://figshare.com/articles/Functional_diversity_of_the_world_freshwater_fish_faunas/6984206)
+
+
+- R data for courses [here](https://rpubs.com/aurele/howToR)
+<br>
+<br>
+<img src="data/github.png" style="width:8%; border:1px; margin-right: 1px" align="center">
+This website has been made by [Rmarkdown](https://rmarkdown.rstudio.com/) available on [my Github page](https://github.com/AureleToussaint/aurele).
