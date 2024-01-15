@@ -78,8 +78,7 @@ information [here]
 
 </h3>
 
-**Research Fellow** supported by *the Estonian Research Concil
-(PSG-505)* [here](https://app.dimensions.ai/details/grant/grant.8855456)
+**CNRS researcher**
 
 Full CV available [here](data/CV_Toussaint.pdf)<br> ResearchGate
 [here](https://www.researchgate.net/profile/Aurele_Toussaint)<br> Google
@@ -91,6 +90,9 @@ scholar
 <b>Previous grants</b>
 
 </h3>
+
+**Research Fellow** supported by *the Estonian Research Concil
+(PSG-505)* [here](https://app.dimensions.ai/details/grant/grant.8855456)
 
 **Post-doctoral Fellow** supported by *the Estonian Research Concil
 (MOBJD-276)*
