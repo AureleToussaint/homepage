@@ -29,7 +29,7 @@ editor_options:
 
 :::::::::::::: {.columns}
 
-::: {.column width="55%"}
+::: {.column width="56%"}
 <font size="6">**CNRS Researcher**</font>
 
 Professional email:
@@ -43,7 +43,7 @@ scholar
 ORCID [0000-0002-5738-4637](https://orcid.org/0000-0002-5738-4637)<br>
 :::
 
-::: {.column width="45%"}
+::: {.column width="44%"}
 <h3 align="left">
 
 <b>Professional address</b>
