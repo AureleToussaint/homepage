@@ -13,11 +13,7 @@ editor_options:
     wrap: 72
 ---
 
-<title>
-
-Home
-
-</title>
+<title>Home</title>
 
 <link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
 
@@ -36,7 +32,6 @@ University of Tartu<br> J. Liivi 2<br> Tartu 50409<br> ESTONIA<br>
 
 Email: [aurele.toussaint\@ut.ee](mailto:aurele.toussaint@ut.ee){.email}
 
-
 <h2 align="left">
 
 <b>Research</b>
@@ -47,18 +42,26 @@ I work on ecological and evolutionary processes involved in the
 distribution of functional traits mainly on plants and vertebrates.
 
 <h2 align="left">
+
 <img src="data/wordcloud.png" style="width:45%; border:1px; margin-right: 1px" align="center"/>
+
 </h2>
 
 <h2 align="left">
+
 <b>Pic'Fish project</b>
+
 </h2>
 
-Join us and participate to our citizen campaign **Pic'Fish**. More information [here]
+Join us and participate to our citizen campaign **Pic'Fish**. More
+information [here]
 
 <h2 align="center">
+
 <img src="data/PicFishLogo.png" style="width:30%; border:1px; margin-right: 1px" align="center"/>
+
 </h2>
+
 <br>
 
 <h1 align="center">
@@ -110,13 +113,24 @@ and
 
 ## 2023
 
-**Toussaint A.**,Pärtel M.,Carmona C.P., Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in birds’ assemblages, *Authorea* [pdf](data/2023_Toussaint_Authorea_2.pdf)
+**Toussaint A.**,Pärtel M.,Carmona C.P., Contrasting impacts of
+non-native and threatened species on morphological, life-history, and
+phylogenetic diversity in birds’ assemblages, *Authorea*
+[pdf](data/2023_Toussaint_Authorea_2.pdf)
 
-Coulon, N., Lindegren, M., Goberville, E., **Toussaint, A.**, Receveur, A., & Auber, A., Threatened fish species in the Northeast Atlantic are functionally rare. *Global Ecology and Biogeography*, 00, 1–19. [pdf](data/2023_Coulon_GEB.pdf)
+Coulon, N., Lindegren, M., Goberville, E., **Toussaint, A.**, Receveur,
+A., & Auber, A., Threatened fish species in the Northeast Atlantic are
+functionally rare. *Global Ecology and Biogeography*, 00, 1–19.
+[pdf](data/2023_Coulon_GEB.pdf)
 
-Bueno, C.G., **Toussaint, A.**, Träger, S. et al. Reply to: The importance of trait selection in ecology. *Nature* 618, E31–E34. [pdf](data/2023_Bueno_nature.pdf)
+Bueno, C.G., **Toussaint, A.**, Träger, S. et al. Reply to: The
+importance of trait selection in ecology. *Nature* 618, E31–E34.
+[pdf](data/2023_Bueno_nature.pdf)
 
-**Toussaint A.**,Pärtel M.,Carmona C.P., Non-native bird species will not compensate for the loss of phylogenetic and functional diversity after the extinction of threatened species, *Authorea* [pdf](data/2023_Toussaint_Authorea.pdf)
+**Toussaint A.**,Pärtel M.,Carmona C.P., Non-native bird species will
+not compensate for the loss of phylogenetic and functional diversity
+after the extinction of threatened species, *Authorea*
+[pdf](data/2023_Toussaint_Authorea.pdf)
 
 de Tombeur, F., Raven, J. A., **Toussaint A.**, Lambers, H., Cooke, J.,
 Hartley, S. E., Johnson, S. N., Coq, S., Katz, O., Schaller, J. and
@@ -132,7 +146,12 @@ Mouquet N., Thuiller W., Mouillot D., A functional vulnerability
 framework for biodiversity conservation, *Nature Communications*, 13,
 4774 [pdf](data/2022_Auber_NatComms.pdf)
 
-Paganeli B., **Toussaint A.**, Bueno C. G., Fujinuma J., Reier Ü., Pärtel M., Dark diversity at home describes the success of cross-continent tree invasions. *Diversity and Distributions*, 28 (6), 1202-1213 [pdf](data/2022_Paganeli_DDI.pdf) cross-continent tree invasions. *Diversity and Distributions*, 00, 1-12 [pdf](data/2022_Paganeli_DDI.pdf)
+Paganeli B., **Toussaint A.**, Bueno C. G., Fujinuma J., Reier Ü.,
+Pärtel M., Dark diversity at home describes the success of
+cross-continent tree invasions. *Diversity and Distributions*, 28 (6),
+1202-1213 [pdf](data/2022_Paganeli_DDI.pdf) cross-continent tree
+invasions. *Diversity and Distributions*, 00, 1-12
+[pdf](data/2022_Paganeli_DDI.pdf)
 
 Su G.,Tedesco P.A., **Toussaint A.**, Villeger S., Brosse S.,
 Contemporary environment and historical legacy explain functional
