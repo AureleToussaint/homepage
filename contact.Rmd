@@ -7,9 +7,9 @@ fontsize: 14pt
 <link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
 <link rel="stylesheet" href="styles.css" type="text/css">
 
-Institute of Ecology and Earth Sciences, Department of Botany<br>
-University of Tartu, Lai 40<br>
-Tartu 51005, Estonia<br>
+Laboratoire Evolution et Diversité Biologique <br> UMR5174 - Université
+Paul Sabatier, CNRS, IRD. <br>118 Route de Narbonne<br> 31062,
+Toulouse<br> France<br>
 aurele.toussaint@ut.ee<br>
 
   Or connect with me on Twitter, Linkedin or ResearchGate (links in top right).

@@ -18,6 +18,10 @@ fontsize: 14pt
 <br>
 <img src="data/data.png" style="width:8%; border:1px; margin-right: 1px" align="center">
 
+- *FigShare repository* for the paper: Toussaint et al. 2023, Contrasting impacts of
+non-native and threatened species on morphological, life-history, and
+phylogenetic diversity in birds’ assemblages. [here](https://figshare.com/articles/preprint/Contrasting_impacts_of_non-native_and_threatened_species_on_morphological_life-history_and_phylogenetic_diversity_in_birds_assemblages_/24488080)
+
 - *FigShare repository* for the paper: Carmona et al. 2021, Fine-root traits in the global spectrum of plant form and function. [here](https://figshare.com/articles/dataset/Data_from_Fine-root_traits_in_the_global_spectrum_of_plant_form_and_function_Carmona_et_al_2021_Nature_/13140146)
 
 - *FigShare repository* for the paper: Toussaint et al. 2021, Extinction of threatened vertebrates will lead to idiosyncratic changes in functional diversity across the world [here](https://figshare.com/s/f076a046963c6f782f8d)
