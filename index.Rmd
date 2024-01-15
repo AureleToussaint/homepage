@@ -27,14 +27,14 @@ editor_options:
 
 <img src="data/EstLand.png" style="width:100%; border:1px; margin-right: 1px" align="center"/>
 
-:::::::::::::: {.columns}
-
+::: columns
 ::: {.column width="56%"}
 <font size="6">**CNRS Researcher**</font>
 
 Professional email:
 [aurele.toussaint\@ut.ee](mailto:aurele.toussaint@ut.ee){.email} <br>
-Personal email: [toussaint.aurele\@gmail.com](mailto:toussaint.aurele@gmail.com){.email}
+Personal email:
+[toussaint.aurele\@gmail.com](mailto:toussaint.aurele@gmail.com){.email}
 
 Full CV available [here](data/CV_Toussaint.pdf)<br> ResearchGate
 [here](https://www.researchgate.net/profile/Aurele_Toussaint)<br> Google
@@ -53,10 +53,8 @@ ORCID [0000-0002-5738-4637](https://orcid.org/0000-0002-5738-4637)<br>
 Laboratoire Evolution et Diversité Biologique <br> UMR5174 - Université
 Paul Sabatier, CNRS, IRD. <br>118 Route de Narbonne<br> 31062,
 Toulouse<br> France<br>
-
 :::
-
-::::::::::::::
+:::
 
 <h2 align="left">
 
