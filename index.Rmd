@@ -27,9 +27,14 @@ editor_options:
 
 </h2>
 
-Laboratoire Evolution et Diversité Biologique<br>UMR5174 - Université Paul Sabatier, CNRS, IRD. <br>118 Route de Narbonne<br> 31062, Toulouse<br> France<br>
+Laboratoire Evolution et Diversité Biologique <br> UMR5174 - Université
+Paul Sabatier, CNRS, IRD. <br>118 Route de Narbonne<br> 31062,
+Toulouse<br> France<br>
 
-Email: [aurele.toussaint\@ut.ee](mailto:aurele.toussaint@ut.ee){.email}
+Professional email:
+[aurele.toussaint\@ut.ee](mailto:aurele.toussaint@ut.ee){.email}
+
+Personal email: [toussaint.aurele\@gmail.com](mailto:toussaint.aurele@gmail.com){.email}
 
 <h2 align="left">
 
