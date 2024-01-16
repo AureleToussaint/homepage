@@ -94,14 +94,14 @@ information [here]
 
 </h1>
 
-**Research Fellow** supported by *the Estonian Research Concil
+_2020-2023_ : **Research Fellow** supported by *the Estonian Research Council
 (PSG-505)* [here](https://app.dimensions.ai/details/grant/grant.8855456)
 
-**Post-doctoral Fellow** supported by *the Estonian Research Concil
+_2017-2019_ : **Post-doctoral Fellow** supported by *the Estonian Research Council
 (MOBJD-276)*
 [here](https://app.dimensions.ai/details/grant/grant.7070239)
 
-**Erasmus MUNDUS** with the [Kyung Hee
+_2016_ : **Erasmus MUNDUS** with the [Kyung Hee
 University](https://www.khu.ac.kr/eng/main/index.do), Seoul (Korea)
 
 <h1 align="center">
@@ -118,9 +118,15 @@ and
 
 Data repository is available [here](RData.html)
 
+## 2024
+
+**Toussaint A.**, Pärtel M., Carmona C.P., Contrasting impacts of
+non-native and threatened species on morphological, life-history, and
+phylogenetic diversity in bird assemblages, *Ecology Letters*, Accepted
+
 ## 2023
 
-**Toussaint A.**,Pärtel M.,Carmona C.P., Contrasting impacts of
+**Toussaint A.**, Pärtel M., Carmona C.P., Contrasting impacts of
 non-native and threatened species on morphological, life-history, and
 phylogenetic diversity in birds’ assemblages, *Authorea*
 [pdf](data/2023_Toussaint_Authorea_2.pdf)
