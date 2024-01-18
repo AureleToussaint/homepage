@@ -7,6 +7,8 @@ navbar:
       href: index.html
     - text: "Projects"
       href: Projects.html
+    - text: "Blogs"
+      href: my-blog/_site/index.html
     - text: "Data & Scripts"
       href: RData.html
     - text: "Pic' Fish"

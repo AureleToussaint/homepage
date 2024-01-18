@@ -39,8 +39,11 @@ Pic' Fish
 <b><font size="+5">Upload your(s) picture(s)</font></b> <br>
 
 ```{r, echo=FALSE}
-setwd("~/Library/CloudStorage/Dropbox/github/website")
+setwd("~/Dropbox/github/homepage")
 library(shiny)
+library(magick)
+library(ggplot2)
+library(shinyjs)
 
 ui <- fluidPage(
         fluidRow(

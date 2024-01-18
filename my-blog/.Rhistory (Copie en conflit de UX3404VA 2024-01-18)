@@ -1,0 +1,56 @@
+usethis::use_git_config(user.name = 'aureletoussaint', user.email='toussaint.aurele@gmail.com')
+usethis::create_github_token()
+gitcreds::gitcreds_set()
+gitcreds::gitcreds_set()
+gitcreds::gitcreds_set()
+library("usethis")
+git_sitrep() #
+gitcreds::gitcreds_set()
+gitcreds::gitcreds_set()
+library(shiny)
+library(magick)
+library(ggplot2)
+library(shinyjs)
+ui <- fluidPage(
+fluidRow(
+fileInput("myFile", "Choose a file", accept = c('image/png', 'image/jpeg')),
+actionButton('Submit', 'Submit Imput')
+),
+fluidRow(
+div(id = "image-container", style = "display:flexbox")
+)
+)
+server <- function(input, output) {
+loaded_image <- reactive({
+magick::image_resize(image = magick::image_read(req(input$myFile$datapath)),'800x400!')
+})
+output$current_image_plot <- renderPlot({
+magick::image_ggplot(loaded_image())
+})
+insertUI(
+selector = "#image-container",
+where = "afterBegin",
+imageOutput(outputId = "current_image_plot")
+)
+data_save <- observeEvent(
+input$Submit,
+{file.copy(input$myFile$datapath, file.path("pictures/", input$myFile$name) )})
+}
+shinyApp(ui, server)
+library(distill)
+create_blog(dir = "my-blog", title = "My Blog")
+create_post("The Sharpe Ratio")
+usethis::use_git_config(user.name = 'aureletoussaint', user.email='toussaint.aurele@gmail.com')
+usethis::create_github_token()
+gitcreds::gitcreds_set()
+library(distill)
+create_post("New position in CNRS", draft = TRUE)
+distill::create_post("New position in CNRS", draft = TRUE)
+setwd("~/Dropbox/github/homepage/my-blog")
+distill::create_post("New position in CNRS", draft = TRUE)
+distill::create_post("New position in CNRS", draft = FALSE)
+rename_post_dir("_posts/welcome")
+library(distill
+)
+rename_post_dir("_posts/welcome")
+reticulate::repl_python()

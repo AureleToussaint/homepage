@@ -162,9 +162,7 @@ framework for biodiversity conservation, *Nature Communications*, 13,
 Paganeli B., **Toussaint A.**, Bueno C. G., Fujinuma J., Reier Ü.,
 Pärtel M., Dark diversity at home describes the success of
 cross-continent tree invasions. *Diversity and Distributions*, 28 (6),
-1202-1213 [pdf](data/2022_Paganeli_DDI.pdf) cross-continent tree
-invasions. *Diversity and Distributions*, 00, 1-12
-[pdf](data/2022_Paganeli_DDI.pdf)
+1202-1213 [pdf](data/2022_Paganeli_DDI.pdf)
 
 Su G.,Tedesco P.A., **Toussaint A.**, Villeger S., Brosse S.,
 Contemporary environment and historical legacy explain functional
