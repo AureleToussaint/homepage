@@ -95,14 +95,14 @@ information [here]
 </h1>
 
 _2020-2023_ : **Research Fellow** supported by *the Estonian Research Council
-(PSG-505)* [here](https://app.dimensions.ai/details/grant/grant.8855456)
+(PSG-505)* [here](https://app.dimensions.ai/details/grant/grant.8855456){:target="_blank"}
 
 _2017-2019_ : **Post-doctoral Fellow** supported by *the Estonian Research Council
 (MOBJD-276)*
-[here](https://app.dimensions.ai/details/grant/grant.7070239)
+[here](https://app.dimensions.ai/details/grant/grant.7070239){:target="_blank"}
 
 _2016_ : **Erasmus MUNDUS** with the [Kyung Hee
-University](https://www.khu.ac.kr/eng/main/index.do), Seoul (Korea)
+University](https://www.khu.ac.kr/eng/main/index.do){:target="_blank"}, Seoul (Korea)
 
 <h1 align="center">
 
@@ -112,9 +112,9 @@ University](https://www.khu.ac.kr/eng/main/index.do), Seoul (Korea)
 
 The below publications represent my work to date. A full list of
 publications is available in [Google
-scholar](https://scholar.google.fr/citations?user=oTxWHKgAAAAJ&hl=fr)
+scholar](https://scholar.google.fr/citations?user=oTxWHKgAAAAJ&hl=fr){:target="_blank"}
 and
-[ResearchGate](https://www.researchgate.net/profile/Aurele_Toussaint).
+[ResearchGate](https://www.researchgate.net/profile/Aurele_Toussaint){:target="_blank"}.
 
 Data repository is available [here](RData.html)
 
@@ -129,26 +129,26 @@ phylogenetic diversity in bird assemblages, *Ecology Letters*, Accepted
 **Toussaint A.**, Pärtel M., Carmona C.P., Contrasting impacts of
 non-native and threatened species on morphological, life-history, and
 phylogenetic diversity in birds’ assemblages, *Authorea*
-[pdf](data/2023_Toussaint_Authorea_2.pdf)
+[pdf](data/2023_Toussaint_Authorea_2.pdf){:target="_blank"}
 
 Coulon, N., Lindegren, M., Goberville, E., **Toussaint, A.**, Receveur,
 A., & Auber, A., Threatened fish species in the Northeast Atlantic are
 functionally rare. *Global Ecology and Biogeography*, 00, 1–19.
-[pdf](data/2023_Coulon_GEB.pdf)
+[pdf](data/2023_Coulon_GEB.pdf){:target="_blank"}
 
 Bueno, C.G., **Toussaint, A.**, Träger, S. et al. Reply to: The
 importance of trait selection in ecology. *Nature* 618, E31–E34.
-[pdf](data/2023_Bueno_nature.pdf)
+[pdf](data/2023_Bueno_nature.pdf){:target="_blank"}
 
 **Toussaint A.**,Pärtel M.,Carmona C.P., Non-native bird species will
 not compensate for the loss of phylogenetic and functional diversity
 after the extinction of threatened species, *Authorea*
-[pdf](data/2023_Toussaint_Authorea.pdf)
+[pdf](data/2023_Toussaint_Authorea.pdf){:target="_blank"}
 
 de Tombeur, F., Raven, J. A., **Toussaint A.**, Lambers, H., Cooke, J.,
 Hartley, S. E., Johnson, S. N., Coq, S., Katz, O., Schaller, J. and
 Violle, C., Why do plants silicify? *Trends in Ecology and Evolution*,
-38(3), 275-288 [pdf](data/2023_deTombeur.pdf)
+38(3), 275-288 [pdf](data/2023_deTombeur.pdf){:target="_blank"}
 
 ## 2022
 
@@ -157,34 +157,34 @@ McLean M., Brind'Amour A., Green A.L., Tupper M., Vigliola L., Kaschner
 K., Kesner-Reyes K., Beger M., Tjiputra J, **Toussaint A.**, Violle C.,
 Mouquet N., Thuiller W., Mouillot D., A functional vulnerability
 framework for biodiversity conservation, *Nature Communications*, 13,
-4774 [pdf](data/2022_Auber_NatComms.pdf)
+4774 [pdf](data/2022_Auber_NatComms.pdf){:target="_blank"}
 
 Paganeli B., **Toussaint A.**, Bueno C. G., Fujinuma J., Reier Ü.,
 Pärtel M., Dark diversity at home describes the success of
 cross-continent tree invasions. *Diversity and Distributions*, 28 (6),
-1202-1213 [pdf](data/2022_Paganeli_DDI.pdf)
+1202-1213 [pdf](data/2022_Paganeli_DDI.pdf){:target="_blank"}
 
 Su G.,Tedesco P.A., **Toussaint A.**, Villeger S., Brosse S.,
 Contemporary environment and historical legacy explain functional
 diversity of freshwater fishes in the world rivers, *Global Ecology and
-Biogeography*, 31, 700-713 [pdf](data/2022_Su_GEB.pdf)
+Biogeography*, 31, 700-713 [pdf](data/2022_Su_GEB.pdf){:target="_blank"}
 
 ## 2021
 
 Brosse S., Charpin N., Su G., **Toussaint A.**, Herrera-R. G.A., Tedesco
 P.A., Villeger S., FISHMORPH: A global database on morphological traits
 of freshwater fishes, *Global Ecology and Biogeography*, 30 (12),
-2330-2336 [pdf](data/2021_Brosse_GEB.pdf)
+2330-2336 [pdf](data/2021_Brosse_GEB.pdf){:target="_blank"}
 
 Carmona C.P., Bueno C.G., **Toussaint A.**, Träger S., Diaz S., Moora
 M., Munson D.A., Pärtel M., Zobel M., Tamme R., Fine-root traits in the
 global spectrum of plant form and function, *Nature*, 597 (7878),
-683-687 [pdf](data/2021_Carmona_Nature.pdf)
+683-687 [pdf](data/2021_Carmona_Nature.pdf){:target="_blank"}
 
 **Toussaint A.**, Brosse S., Bueno C.G., Pärtel M., Tamme S., Carmona
 C.P., Extinction of threatened vertebrates will lead to idiosyncratic
 changes in functional diversity across the world, *Nature
-Communication*, 12 (1), 1-12 [pdf](data/2021_Toussaint_NatCom.pdf)
+Communication*, 12 (1), 1-12 [pdf](data/2021_Toussaint_NatCom.pdf){:target="_blank"}
 
 Tordoni E., **Toussaint A.**, Pärtel M., Nogues-Bravo D., Carmona C.P.,
 Combining taxonomic, phylogenetic and functional diversity reveals new
@@ -195,9 +195,9 @@ Carmona C.P., Tamme R., Pärtel M., de Bello F., Brosse S., Capdevila P.,
 Gonzalez-M R., Gonzalez-Suarez M., Salguero-Gomez R., Vasquez-Valderrama
 M., **Toussaint A.**, Erosion of global functional diversity across the
 tree of life, *Science Advances*, 7(13), eabf2675
-[pdf](data/2021_Carmona_SciAdv.pdf), [press release
-CNRS](https://inee.cnrs.fr/fr/cnrsinfo/lextinction-des-especes-en-danger-entrainera-une-reorganisation-globale-du-role-des-autres),
-[EurekAlert!](https://www.eurekalert.org/news-releases/546861)
+[pdf](data/2021_Carmona_SciAdv.pdf){:target="_blank"}, [press release
+CNRS](https://inee.cnrs.fr/fr/cnrsinfo/lextinction-des-especes-en-danger-entrainera-une-reorganisation-globale-du-role-des-autres){:target="_blank"},
+[EurekAlert!](https://www.eurekalert.org/news-releases/546861){:target="_blank"}
 
 ## 2020
 
@@ -206,19 +206,19 @@ Gonzalez-M R., Gonzalez-Suarez M., Salguero-Gomez R., Vasquez-Valderrama
 M., **Toussaint A.**, Mapping extinction risk in the global functional
 spectra across the tree of life, *bioRxiv*, doi:
 <https://doi.org/10.1101/2020.06.29.179143>
-[pdf](https://www.biorxiv.org/content/10.1101/2020.06.29.179143v1.abstract)
+[pdf](https://www.biorxiv.org/content/10.1101/2020.06.29.179143v1.abstract){:target="_blank"}
 
 Derezal, O., Mondy P.C., Dembski S., Kreutzenberger K., Reyjol Y.,
 Chanderis A., Valette L., Brosse S., **Toussaint A.**, Beillard J., Merg
 M.L., Usseglio-Polatera P., A diagnostic-based approach to assess
 specific risks of river degradation in a multiple pressure context:
 Insights from fish communities. *Science of The Total Environment*, 734,
-139467 [pdf](data/2020_Derezal_et_al_STOTEN.pdf)
+139467 [pdf](data/2020_Derezal_et_al_STOTEN.pdf){:target="_blank"}
 
 **Toussaint A.**, Bueno C.G., Davison J., Moora M., Tedersoo L., Zobel
 M., Opik M. & Partel M., Asymmetric patterns of global diversity among
 plants and mycorrhizal fungi *Journal of Vegetation Science*, 31(2),
-355-366 [pdf](data/2019_Toussaint_JVS.pdf)
+355-366 [pdf](data/2019_Toussaint_JVS.pdf){:target="_blank"}
 
 ## 2018
 
