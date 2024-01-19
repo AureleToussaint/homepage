@@ -1,5 +1,7 @@
 name: "Aurèle Toussaint"
 output_dir: "."
+markdown_extensions:
+  - attr_list
 navbar:
   left:
     - text: ""
