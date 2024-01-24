@@ -9,7 +9,7 @@ fontsize: 14pt
 
 <img src="shiny-solo.png" style="width:8%; border:1px; margin-right: 1px" align="center"> 
 
-- <a href="https://globaltrait.shinyapps.io/GlobalTraits/"  target="_blank">Shiny app</a> for the paper: Carmona et al. 2021, Fine-root traits in the global spectrum of plant form and function.
+- <a href="https://globaltrait.shinyapps.io/GlobalTraits/"  target="_blank">Shiny app</a> designed to illustrate the paper: Carmona et al. 2021, Fine-root traits in the global spectrum of plant form and function.
 
 <br>
 <br>
