@@ -31,8 +31,10 @@ editor_options:
 ::: {.column width="56%"}
 <font size="6">**CNRS Researcher**</font>
 
-<u>Professional email:</u>
-[aurele.toussaint\@ut.ee](mailto:aurele.toussaint@ut.ee){.email} <br>
+<u>Professional email:</u> <br>
+!! NEW ADDRESS !!<br>
+[aurele.toussaint\@univ-tlse3.fr](mailto:aurele.toussaint@univ-tlse3.fr){.email} <br>
+!! NEW ADDRESS !!<br><br>
 <u>Personal email:</u>
 [toussaint.aurele\@gmail.com](mailto:toussaint.aurele@gmail.com){.email}
 
