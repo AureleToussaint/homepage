@@ -340,8 +340,8 @@ fish taxonomic dissimilarity*
 </h1>
 
 During my PhD, I investigated functional diversity of freshwater fishes
-at the world scale under the advisement of \<a
-href="<http://brosse.sebastien.free.fr/> target="\_blank"\>Pr. Sébastien
+at the world scale under the advisement of <a
+href="http://brosse.sebastien.free.fr" target="_blank">Pr. Sébastien
 Brosse</a> and
 <a href="https://scholar.google.fr/citations?hl=fr&user=vLK2CbwAAAAJ&view_op=list_works&sortby=pubdate" target="_blank">Dr.
 Sébastien Villéger</a>
