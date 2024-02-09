@@ -15,7 +15,7 @@ rss:
     - articles
 theme: Tidymodel.css
 navbar:
-  logo: data/ATc.jpg
+  logo: ATc.jpg
   right:
     - text: "Home"
       href: index.html
