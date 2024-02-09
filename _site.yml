@@ -8,7 +8,7 @@ navbar:
       icon: fa-home
       href: index.html
     - text: "My blog"
-      href: my-blog/site/index.html
+      href: my-blog/site
     - text: "Projects"
       href: Projects.html
     - text: "Data & Scripts"
