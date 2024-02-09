@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:distill="https://distill.pub/journal/" version="2.0">
+  <channel>
+    <title>Macroecology and functional ecology</title>
+    <link>https://beta.rstudioconnect.com/content/3776/</link>
+    <atom:link href="https://beta.rstudioconnect.com/content/3776/index.xml" rel="self" type="application/rss+xml"/>
+    <description>My Blog
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Sun, 14 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>New position in CNRS</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-position-in-cnrs</link>
+      <description>
+
+
+&lt;p&gt;I am thrilled to announce that I got a position as a CNRS researcher
+in ‘Laboratoire Écologie &amp;amp; Diversité Biologique’ (UMR5174),
+Toulouse, France. I will start on February, 1st 2024.&lt;/p&gt;
+&lt;p&gt;I have been hired as researcher on macroecology and functional
+biogeography topics.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://beta.rstudioconnect.com/content/3776//posts/2024-01-17-new-position-in-cnrs/logoCNRSEDB.png" width="100%" /&gt;&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5 xmlns:distill="https://distill.pub/journal/">a2a3deeea897b80381fa088ddbac1422</distill:md5>
+      <category>position</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-position-in-cnrs</guid>
+      <pubDate>Sun, 31 Dec 2023 00:00:00 +0000</pubDate>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-position-in-cnrs/logoCNRSEDB.png" medium="image" type="image/png" width="1058" height="595"/>
+    </item>
+  </channel>
+</rss>
