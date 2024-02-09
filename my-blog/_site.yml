@@ -6,7 +6,6 @@ output_dir: "_site"
 base_url: https://beta.rstudioconnect.com/content/3776/
 collections:
   posts:
-    disqus: reproducible-finance-with-r
     share: [twitter, linkedin]
     custom: _custom.html
 rss:
@@ -16,7 +15,7 @@ rss:
     - articles
 theme: Tidymodel.css
 navbar:
-  logo: images/ATc.jpg
+  logo: data/ATc.jpg
   right:
     - text: "Home"
       href: index.html
