@@ -7,7 +7,7 @@
     <description>My Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Thu, 08 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 09 Feb 2024 00:00:00 +0000</lastBuildDate>
     <item>
       <title>Estonian Research Award</title>
       <link>https://beta.rstudioconnect.com/content/3776/posts/2024-02-09-estonianaward</link>
@@ -48,8 +48,122 @@ class="uri"&gt;https://novaator.err.ee/1609246851/teaduse-elutoopreemiad-palvisi
       <distill:md5>f44faf1fea6ca29310a7315f97164e7d</distill:md5>
       <category>news</category>
       <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-02-09-estonianaward</guid>
-      <pubDate>Thu, 08 Feb 2024 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 09 Feb 2024 00:00:00 +0000</pubDate>
       <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2024-02-09-estonianaward/smartcrop.jpeg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>New paper accepted in Ecology Letters</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters</link>
+      <description>
+
+
+&lt;h2 id="references"&gt;References&lt;/h2&gt;
+&lt;p&gt;Read the full paper &lt;a href="" target="_blank"&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Citation:&lt;/em&gt; &lt;strong&gt;Toussaint A.&lt;/strong&gt;, Pärtel M., Carmona
+C.P., 2024 Contrasting impacts of non-native and threatened species on
+morphological, life-history, and phylogenetic diversity in bird
+assemblages, &lt;em&gt;Ecology Letters&lt;/em&gt;, Accepted&lt;/p&gt;
+&lt;h2 id="context"&gt;Context&lt;/h2&gt;
+&lt;p&gt;The composition of assemblages worldwide has been strongly modified
+by human activities throughout the introduction of non-native and the
+extirpation of threatened species. Those changes not only affected the
+number of species but also the functional and phylogenetic structure of
+the communities, which might affect the ecosystem functioning. However,
+it is still unclear whether non-native species could compensate for the
+potential loss of threatened species and hence maintain ecosystem
+functioning.&lt;/p&gt;
+&lt;h2 id="aims"&gt;Aims&lt;/h2&gt;
+&lt;p&gt;Here we tested whether bird non-natives species are functionally
+and/or phylogenetically similar (i.e., compensation hypothesis) or
+distinct (i.e., shift hypothesis) from threatened species on bird
+assemblages in 281 regions worldwide.&lt;/p&gt;
+&lt;h2 id="main-findings"&gt;Main findings&lt;/h2&gt;
+&lt;p&gt;Our findings indicate that shifts in species composition could
+trigger a global decline in avian biodiversity due to the high number of
+threatened species. Furthermore, these losses are not random; they
+disproportionally involve species that are functionally and
+phylogenetically unique at the regional scale. Our results show that
+non-native species are not able to offset these changes because they are
+morphologically and phylogenetically close to native fauna.
+Consequently, our results emphasize the need for both controlling
+non-native species and preserving phylogenetically unique native
+species, which are the primary drivers of changes in the functional and
+phylogenetic structure of bird communities. These findings contribute to
+our understanding of the complex dynamics shaping global biodiversity
+and inform conservation strategies.&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://beta.rstudioconnect.com/content/3776//posts/2024-01-17-new-paper-accepted-in-ecology-letters/Figure_1_R2.png" alt="Changes in taxonomic, morphological, life-history, and phylogenetic richness in 281 regions across the world." width="100%" /&gt;
+&lt;p class="caption"&gt;
+(#fig:unnamed-chunk-1)Changes in taxonomic, morphological, life-history,
+and phylogenetic richness in 281 regions across the world.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 id="methodological-novelty"&gt;Methodological novelty&lt;/h2&gt;
+&lt;p&gt;To provide a more nuanced understanding of functional diversity, we
+distinguished morphological from life-history traits.&lt;/p&gt;
+&lt;p&gt;Functional diversity is a multi-faceted concept that encompasses a
+range of traits affecting species’ roles in ecosystems. Traditionally,
+studies have aggregated traits into a single measure of functional
+diversity. We adopted a different approach by dissecting functional
+diversity into two morphological diversity and life-history
+diversity.&lt;/p&gt;
+&lt;p&gt;We collected 11 morphological traits from the AVONET database for
+9,981 species
+(&lt;a href="https://onlinelibrary.wiley.com/doi/10.1111/ele.13898" target="_blank"&gt;Tobias
+et al. 2022&lt;/a&gt;) relative to beak length (Culmen and Nares), width, and
+depth, tarsus length, wing length, Kipps distance, hand-wing index, tail
+length, secondary, and body mass (Table S1). These traits influence
+various ecological functions like seed dispersal, predation, and
+resource utilization
+(&lt;a href="https://www.sciencedirect.com/science/article/abs/pii/S0169534706000334" target="_blank"&gt;McGill
+et al. 2006&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Eight life-history traits were retrieved from the AMNIOTE database
+for 8,940 species
+(&lt;a href="https://esajournals.onlinelibrary.wiley.com/doi/abs/10.1890/15-0846R.1" target="_blank"&gt;Myhrvold
+et al. 2015&lt;/a&gt;): clutch size, number of clutches per year, incubation
+time, longevity, fledging age, egg mass and distance from the tip of the
+beak to the opening of the cloaca and body mass (Table S1).&lt;/p&gt;
+&lt;p&gt;The changes in species composition led to deeper variations in
+morphological dissimilarity and phylogenetic dissimilarity (r = 0.45, P
+&amp;lt; 0.001, Fig. 2A) than in life-history dissimilarity, which showed
+only a weak correlation with other diversity facets (r &amp;lt; 0.20, P &amp;lt;
+0.01, Fig. 2B, C). For instance, in Asia, the decrease in morphological
+dissimilarity was lower-than-expected in 37% of regions while the
+life-history dissimilarity was not significant. In contrast, in Western
+Europe, 36% of the regions experienced a decrease lower-than-expected in
+morphological dissimilarity but not in life-history dissimilarity.&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://beta.rstudioconnect.com/content/3776//posts/2024-01-17-new-paper-accepted-in-ecology-letters/Figure_4_R1.png" alt="Correlation between standardized effect sizes between morphological, life-history, and phylogenetic dissimilarity." width="100%" /&gt;
+&lt;p class="caption"&gt;
+(#fig:unnamed-chunk-2)Correlation between standardized effect sizes
+between morphological, life-history, and phylogenetic dissimilarity.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;The observed discrepancies between morphological and life-history
+traits can be attributed to the distribution of species within the
+morphological and life-history spaces (Fig. 3). Indeed, non-native
+species were more distant from native fauna in terms of life-history
+traits than morphological traits, with these differences being
+especially pronounced along the PC2 axis. This accounted for the
+higher-than-expected losses observed in life-history richness but also
+for the higher-than-expected decrease in dissimilarity for morphological
+traits. Conversely, for threatened species, we did not observe
+significant differences between the two sets of traits in the functional
+spaces and PC2 and even slightly higher for PC1 in morphological traits,
+explaining higher congruence in patterns for threatened species.&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://beta.rstudioconnect.com/content/3776//posts/2024-01-17-new-paper-accepted-in-ecology-letters/Figure_5_R1.png" alt="Functional uniqueness of non-native and threatened species between morphological and life-history traits." width="100%" /&gt;
+&lt;p class="caption"&gt;
+(#fig:unnamed-chunk-3)Functional uniqueness of non-native and threatened
+species between morphological and life-history traits.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>2a3bdfe0f2c3e940733da5c0acd28870</distill:md5>
+      <category>articles</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters</guid>
+      <pubDate>Sat, 13 Jan 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters/Figure_1_R2.png" medium="image" type="image/png" width="3000" height="3000"/>
     </item>
     <item>
       <title>New position in CNRS</title>

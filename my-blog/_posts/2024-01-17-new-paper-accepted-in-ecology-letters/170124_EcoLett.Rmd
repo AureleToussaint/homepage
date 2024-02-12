@@ -5,7 +5,6 @@ description: |
   In this paper, we aim to understand the consequences of species composition changes on the functional and phylogenetic diversity of birds across the world
 base_url: https://beta.rstudioconnect.com/content/11424/
 date: 2024-01-14
-draft:  true
 categories:
   - articles
 collections:
