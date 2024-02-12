@@ -27,7 +27,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 Read the full paper <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/ele.14373" target="_blank">here</a>
 
-*Citation:* **Toussaint A.**, Pärtel M., Carmona C.P., 2024 Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in bird assemblages, *Ecology Letters*, Accepted
+*Citation:* **Toussaint A.**, Pärtel M., Carmona C.P., 2024 Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in bird assemblages, *Ecology Letters*, 27, e14373
 
 ## Context
 
