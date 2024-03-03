@@ -53,7 +53,7 @@ ORCID
 
 </h3>
 
-Centre de Recherche pour la Biodiversité et l'Environnement <br> UMR5300 - UPS-CNRS-IRD-INP <br>Université Paul-Sabatier - Toulouse 3<br>Bat. 4R1 <br>118 Route de Narbonne<br>
+Centre de Recherche pour la Biodiversité et l'Environnement (CRBE) <br> UMR5300 - UPS-CNRS-IRD-INP <br>Université Paul-Sabatier - Toulouse 3<br>Bat. 4R1 <br>118 Route de Narbonne<br>
 31062, Toulouse<br> France<br>
 :::
 :::
@@ -79,8 +79,7 @@ distribution of functional traits mainly on plants and vertebrates.
 
 </h2>
 
-Join us and participate to our citizen campaign **Pic'Fish**. More
-information [here]
+Join us and participate to our citizen campaign **Pic'Fish**. More information [here]
 
 <h2 align="center">
 
