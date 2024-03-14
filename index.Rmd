@@ -73,20 +73,6 @@ distribution of functional traits mainly on plants and vertebrates.
 
 </h2>
 
-<h2 align="left">
-
-<b>Pic'Fish project</b>
-
-</h2>
-
-Join us and participate to our citizen campaign **Pic'Fish**. More information [here]
-
-<h2 align="center">
-
-<img src="data/PicFishLogo.png" style="width:30%; border:1px; margin-right: 1px" align="center"/>
-
-</h2>
-
 <br>
 
 <h1 align="center">
@@ -123,6 +109,8 @@ Gate</a>.
 Data repository is available [here](RData.html)
 
 ## 2024
+
+**25/** Tordoni, E., Carmona, C. P., **Toussaint, A.**, Tamme, R., & Pärtel, M. Global patterns and determinants of multiple facets of plant diversity. *Global Ecology and Biogeography*, 00, e13823. <a href="data/2024_Tordoni_GEB.pdf">PDF</a>
 
 **24/** **Toussaint A.**, Pärtel M., Carmona C.P., Contrasting impacts
 of non-native and threatened species on morphological, life-history, and
