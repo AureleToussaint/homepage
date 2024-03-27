@@ -29,15 +29,16 @@ editor_options:
 <font size="6">**Chargé de recherche (CR) / Researcher**</font>
 
 ::: columns
-::: {.column width="59%"}
-<img src="data/CNRSCRBE.png" style="width:90%; border:0px; margin-right: 0px" align="left"/><br><br>
+::: {.column width="60%"}
+<img src="data/CNRSCRBE.png" style="width:100%; border:5px; margin-right: 20px" align="center"/>
+
 **Centre de Recherche sur la Biodiversité et l'Environnement** <br>
 UMR5300 - UPS-CNRS-IRD-INP <br>Université Paul-Sabatier - Toulouse
 3<br>Bat. 4R1 <br>118 Route de Narbonne<br> 31062, Toulouse<br>
 France<br>
 :::
 
-::: {.column width="41%"}
+::: {.column width="40%"}
 <h3 align="left">
 <b>Contact</b>
 </h3>
