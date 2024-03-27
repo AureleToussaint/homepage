@@ -26,16 +26,27 @@ editor_options:
 </h1>
 
 <img src="data/EstLand.png" style="width:100%; border:1px; margin-right: 1px" align="center"/>
+<font size="6">**Chargé de recherche (CR) / Researcher**</font>
 
 ::: columns
-::: {.column width="56%"}
-<font size="6">**CNRS Researcher**</font>
+::: {.column width="59%"}
+<img src="data/CNRSCRBE.png" style="width:90%; border:0px; margin-right: 0px" align="left"/><br><br>
+**Centre de Recherche sur la Biodiversité et l'Environnement** <br>
+UMR5300 - UPS-CNRS-IRD-INP <br>Université Paul-Sabatier - Toulouse
+3<br>Bat. 4R1 <br>118 Route de Narbonne<br> 31062, Toulouse<br>
+France<br>
+:::
 
+::: {.column width="41%"}
+<h3 align="left">
+<b>Contact</b>
+</h3>
 <u>Professional email:</u> <br>
-!! NEW ADDRESS !!<br>
-[aurele.toussaint\@univ-tlse3.fr](mailto:aurele.toussaint@univ-tlse3.fr){.email} <br>
-!! NEW ADDRESS !!<br><br>
-<u>Personal email:</u>
+[aurele.toussaint\@cnrs.fr](mailto:aurele.toussaint@cnrs.fr){.email}
+<br>
+[aurele.toussaint\@univ-tlse3.fr](mailto:aurele.toussaint@univ-tlse3.fr){.email}<br>
+
+<u>Personal email:</u><br>
 [toussaint.aurele\@gmail.com](mailto:toussaint.aurele@gmail.com){.email}
 
 Full CV available [here](data/CV_Toussaint.pdf)<br> ResearchGate
@@ -44,17 +55,6 @@ scholar
 <a href="https://scholar.google.fr/citations?user=oTxWHKgAAAAJ&hl=fr" target="_blank">here</a><br>
 ORCID
 <a href="https://orcid.org/0000-0002-5738-4637" target="_blank">0000-0002-5738-4637</a><br>
-:::
-
-::: {.column width="44%"}
-<h3 align="left">
-
-<b>Professional address</b>
-
-</h3>
-
-Centre de Recherche pour la Biodiversité et l'Environnement (CRBE) <br> UMR5300 - UPS-CNRS-IRD-INP <br>Université Paul-Sabatier - Toulouse 3<br>Bat. 4R1 <br>118 Route de Narbonne<br>
-31062, Toulouse<br> France<br>
 :::
 :::
 
@@ -110,11 +110,16 @@ Data repository is available [here](RData.html)
 
 ## 2024
 
-**25/** Tordoni, E., Carmona, C. P., **Toussaint, A.**, Tamme, R., & Pärtel, M. Global patterns and determinants of multiple facets of plant diversity. *Global Ecology and Biogeography*, 00, e13823. <a href="data/2024_Tordoni_GEB.pdf">PDF</a>
+**25/** Tordoni, E., Carmona, C. P., **Toussaint, A.**, Tamme, R., &
+Pärtel, M. Global patterns and determinants of multiple facets of plant
+diversity. *Global Ecology and Biogeography*, 00, e13823.
+<a href="data/2024_Tordoni_GEB.pdf">PDF</a>
 
 **24/** **Toussaint A.**, Pärtel M., Carmona C.P., Contrasting impacts
 of non-native and threatened species on morphological, life-history, and
-phylogenetic diversity in bird assemblages, *Ecology Letters*, 27, e14373 <a href="data/2024_Toussaint_EcolLett.pdf" target="_blank">PDF</a>
+phylogenetic diversity in bird assemblages, *Ecology Letters*, 27,
+e14373
+<a href="data/2024_Toussaint_EcolLett.pdf" target="_blank">PDF</a>
 
 ## 2023
 
