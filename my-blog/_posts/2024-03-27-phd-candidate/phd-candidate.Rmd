@@ -3,7 +3,8 @@ title: "We are looking for a PhD candidate !!"
 description: |
 date: 2024-03-27
 categories:
-  - news
+  - PhD 
+  - position
 collections:
   posts:
     share: [twitter, linkedin]

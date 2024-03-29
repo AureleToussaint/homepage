@@ -76,29 +76,12 @@ strategies, which must take account not only of the role of species in
 ecosystems but also of their societal importance, in order to promote
 sustainable coexistence between biodiversity and human societies.&lt;/p&gt;
 &lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
-      <distill:md5>7a66739fcbcef93dddfd9cb8e10700b6</distill:md5>
-      <category>news</category>
+      <distill:md5 xmlns:distill="https://distill.pub/journal/">7a66739fcbcef93dddfd9cb8e10700b6</distill:md5>
+      <category>PhD</category>
+      <category>position</category>
       <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-03-27-phd-candidate</guid>
       <pubDate>Tue, 26 Mar 2024 00:00:00 +0000</pubDate>
-      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2024-03-27-phd-candidate/PhD.jpeg" medium="image" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>New paper accepted in Ecology Letters</title>
-      <link>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters</link>
-      <description>In this paper, we aim to understand the consequences of species composition changes on the functional and phylogenetic diversity of birds across the world</description>
-      <category>articles</category>
-      <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters</guid>
-      <pubDate>Mon, 12 Feb 2024 00:00:00 +0000</pubDate>
-      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters/Figure_1_R2.png" medium="image" type="image/png" width="3000" height="3000"/>
-    </item>
-    <item>
-      <title>Estonian Research Award</title>
-      <link>https://beta.rstudioconnect.com/content/3776/posts/2024-02-09-estonianaward</link>
-      <description>Estonian Research Award</description>
-      <category>news</category>
-      <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-02-09-estonianaward</guid>
-      <pubDate>Fri, 09 Feb 2024 00:00:00 +0000</pubDate>
-      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2024-02-09-estonianaward/smartcrop.jpeg" medium="image" type="image/jpeg"/>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://beta.rstudioconnect.com/content/3776/posts/2024-03-27-phd-candidate/PhD.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
       <title>New position in CNRS</title>
@@ -107,7 +90,7 @@ sustainable coexistence between biodiversity and human societies.&lt;/p&gt;
       <category>position</category>
       <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-position-in-cnrs</guid>
       <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
-      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-position-in-cnrs/logoCNRSEDB.png" medium="image" type="image/png" width="1058" height="595"/>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-position-in-cnrs/logoCNRSEDB.png" medium="image" type="image/png" width="1058" height="595"/>
     </item>
   </channel>
 </rss>
