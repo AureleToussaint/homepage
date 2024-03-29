@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:distill="https://distill.pub/journal/" version="2.0">
+  <channel>
+    <title>Aurèle Toussaint</title>
+    <link>https://beta.rstudioconnect.com/content/3776/</link>
+    <atom:link href="https://beta.rstudioconnect.com/content/3776/index.xml" rel="self" type="application/rss+xml"/>
+    <description>My Blog
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Tue, 26 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>We are looking for a PhD candidate !!</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2024-03-27-phd-candidate</link>
+      <description>
+
+
+&lt;p&gt;&lt;img src="https://beta.rstudioconnect.com/content/3776//posts/2024-03-27-phd-candidate/PhD.jpeg" width="30%" style="display: block; margin: auto;" /&gt;&lt;/p&gt;
+&lt;p&gt;We are looking for a motivated PhD candidate to work on the project
+&lt;strong&gt;FUNCTIONAL DIVERSITY OF VERTEBRATES AND HUMAN USES: LINKS
+BETWEEN FUNCTIONAL TRAITS, HUMAN USES AND BIODIVERSITY
+CRISIS&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;If you are interested, contact us
+&lt;a href="mailto:aurele.toussaint@cnrs.fr"&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id="where"&gt;Where ?&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Centre for Research in Biodiversity and Environment
+(CRBE)&lt;/strong&gt;, University of Toulouse, France.&lt;/p&gt;
+&lt;h3 id="with-who"&gt;With who ?&lt;/h3&gt;
+&lt;p&gt;She/he will be supervised by myself and Pr.
+&lt;a href="http://brosse.sebastien.free.fr/" target="_blank"&gt;&lt;strong&gt;Sébastien
+Brosse&lt;/strong&gt;&lt;/a&gt; from University of Toulouse 3 - Paul Sabatier.&lt;/p&gt;
+&lt;h2 id="financial-support"&gt;Financial support&lt;/h2&gt;
+&lt;p&gt;The PhD candidate will apply for a PhD fellowship from the doctoral
+school
+&lt;a href="https://ed-sevab.univ-toulouse.fr/as/ed/edsevab/entree.pl" target="_blank"&gt;SEVAB&lt;/a&gt;.
+If succeed, the PhD candidate will be funded for a period of 3
+years.&lt;/p&gt;
+&lt;h2 id="profile-of-the-candidate"&gt;Profile of the candidate&lt;/h2&gt;
+&lt;p&gt;We are looking for a candidate with a Master’s degree in ecology,
+evolutionary biology, or related fields. The candidate should have a
+strong background in functional ecology, community ecology, and/or
+macroecology. The candidate should have experience in statistical
+analyses and programming (R, Python). The candidate should have good
+communication skills and be fluent in Franch (optional) and English.&lt;/p&gt;
+&lt;h2 id="project-description"&gt;Project description&lt;/h2&gt;
+&lt;p&gt;Understanding the ecological role of species within their ecosystems
+is a central pillar of functional ecology. In particular, this
+discipline relies on the analysis of functional traits - morphological,
+physiological or phenological attributes that can be measured at the
+individual level - to assess the responses of organisms to their
+environment and their contributions to ecosystem processes (Violle et
+al. 2007). Analysis of global trait databases has shown that certain
+ecological strategies are shared by many species, reflecting
+evolutionary and ecological constraints, while few species possess
+unique combinations of traits (Carmona et al. 2021; Toussaint et al.
+2021). These analyses have also revealed that species with particular
+values of traits, such as large body size, late reproduction and/or low
+fecundity rate, are at higher risk of extinction. Around 15,000
+vertebrate species are exploited by humans across the world for a
+variety of purposes, including food, domestication and activities such
+as hunting and sport fishing (Darimont et al. 2023). These human
+interactions not only highlight the importance of the ecosystem services
+provided by these species, but also exacerbate the anthropogenic
+pressures to which they are subject, with almost 40% of them threatened
+with extinction (Darimont et al. 2023; IUCN 2020). Conversely, human
+uses can also favour the species concerned, which can then become
+invasive (Li et al. 2023). Determining the functional role of these
+species of interest to humans and their potential impact on native
+communities (e.g. Toussaint et al. 2024) is crucial to tackle the
+current decline in biodiversity. Despite the recognition of these
+issues, there is still a lack of studies exploring the diversity of
+functional traits of vertebrate species used by humans; a gap that
+limits our understanding of human preferences for particular ecological
+strategies. In the current context of global change, understanding the
+functional role of these species is essential to guide conservation
+strategies, which must take account not only of the role of species in
+ecosystems but also of their societal importance, in order to promote
+sustainable coexistence between biodiversity and human societies.&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>7a66739fcbcef93dddfd9cb8e10700b6</distill:md5>
+      <category>news</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-03-27-phd-candidate</guid>
+      <pubDate>Tue, 26 Mar 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2024-03-27-phd-candidate/PhD.jpeg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>New paper accepted in Ecology Letters</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters</link>
+      <description>In this paper, we aim to understand the consequences of species composition changes on the functional and phylogenetic diversity of birds across the world</description>
+      <category>articles</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters</guid>
+      <pubDate>Mon, 12 Feb 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters/Figure_1_R2.png" medium="image" type="image/png" width="3000" height="3000"/>
+    </item>
+    <item>
+      <title>Estonian Research Award</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2024-02-09-estonianaward</link>
+      <description>Estonian Research Award</description>
+      <category>news</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-02-09-estonianaward</guid>
+      <pubDate>Fri, 09 Feb 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2024-02-09-estonianaward/smartcrop.jpeg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>New position in CNRS</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-position-in-cnrs</link>
+      <description>Researcher position in Toulouse</description>
+      <category>position</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-position-in-cnrs</guid>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-position-in-cnrs/logoCNRSEDB.png" medium="image" type="image/png" width="1058" height="595"/>
+    </item>
+  </channel>
+</rss>

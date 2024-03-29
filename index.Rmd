@@ -297,6 +297,15 @@ press release</a>, [Supplementary1](data/geb12141-sup-0001-si.doc);
 
 <h1 align="center">
 
+<b>Awards</b>
+
+</h1>
+
+## 2024
+**Estonian Research award** for research on the functional diversity of plants and vertebrates at global scale. This project was develop around several scientific papers published in top-level journals. Among the high diversity of papers published, I recommend to read the papers published in <a href="https://www.science.org/doi/full/10.1126/sciadv.abf2675" target="_blank">Sciences Advances</a> and <a href="https://www.nature.com/articles/s41467-021-25293-0" target="_blank">Nature Communications</a>. In those papers we investigated the diversity of functional traits for each group of vertebrates and plants at global and regional scales. 
+
+<h1 align="center">
+
 <b>Communication</b>
 
 </h1>
