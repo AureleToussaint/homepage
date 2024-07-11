@@ -124,6 +124,9 @@ Data repository is available [here](RData.html)
 
 ## 2024
 
+**26/** Coulon N., Pilet S., Lizé A., Lacoue-Labarthe T., Sturbois A., **Toussaint, A.**,  Feunteun E., Carpentier A. Shark critical life stage vulnerability to monthly temperature variations under climate change. *Marine Environmental Research*, 198, 106531.
+<a href="data/2024_Coulon_MER.pdf">PDF</a>
+
 **25/** Tordoni, E., Carmona, C. P., **Toussaint, A.**, Tamme, R., &
 Pärtel, M. Global patterns and determinants of multiple facets of plant
 diversity. *Global Ecology and Biogeography*, 00, e13823.
