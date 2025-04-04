@@ -33,8 +33,7 @@ editor_options:
 <img src="data/CNRSCRBE.png" style="width:100%; border:5px; margin-right: 20px" align="center"/>
 
 **Centre de Recherche sur la Biodiversité et l'Environnement** <br>
-UMR5300 - UPS-CNRS-IRD-INP <br>Université Paul-Sabatier - Toulouse
-3<br>Bat. 4R1 <br>118 Route de Narbonne<br> 31062, Toulouse<br>
+UMR5300 - UPS-CNRS-IRD-INP <br>Université de Toulouse<br>Bat. 4R1 <br>118 Route de Narbonne<br> 31062, Toulouse<br>
 France<br>
 <a href="https://crbe.cnrs.fr/" target="_blank">**Website**</a>
 :::
@@ -67,14 +66,6 @@ ORCID
 
 <h2 align="left">
 
-<b>We are looking for a PhD student !</b>
-
-</h2>
-
-More info <a href="https://aureletoussaint.github.io/homepage/my-blog/site/posts/2024-03-27-phd-candidate/" target="_blank">here</a>
-
-<h2 align="left">
-
 <b>Research</b>
 
 </h2>
@@ -89,6 +80,14 @@ distribution of functional traits mainly on plants and vertebrates.
 </h2>
 
 <br>
+
+<h1 align="center">
+
+<b>Current grants</b>
+
+</h1>
+
+*2025* : **INTRAIT - Influence of Intraspecific trait variability on the functional fish diversity of fish communities in French Guiana**. Supported by *CEBA* <a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">here</a>
 
 <h1 align="center">
 
@@ -122,6 +121,10 @@ Scholar</a> and
 Gate</a>.
 
 Data repository is available [here](RData.html)
+
+## 2025
+
+**27/** Partel M., Tamme R., ..., **Toussaint, A.**, ..., Zobel, M. Global impoverishment of natural vegetation revealed by dark diversity. *Nature*, <a href="data/2025_Partel_Nature.pdf">PDF</a>
 
 ## 2024
 
