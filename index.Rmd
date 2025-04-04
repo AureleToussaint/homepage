@@ -124,7 +124,10 @@ Data repository is available [here](RData.html)
 
 ## 2025
 
-**27/** Partel M., Tamme R., ..., **Toussaint, A.**, ..., Zobel, M. Global impoverishment of natural vegetation revealed by dark diversity. *Nature*, <a href="data/2025_Partel_Nature.pdf">PDF</a>, <a href="https://www.inee.cnrs.fr/fr/cnrsinfo/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur" target="_blank">Press release CNRS</a>, <a href="https://crbe.cnrs.fr/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur-la-biodiversite" target="_blank">Actualite CRBE</a>
+**27/** Partel M., Tamme R., ..., **Toussaint, A.**, ..., Zobel, M. Global impoverishment of natural vegetation revealed by dark diversity. *Nature*, <a href="data/2025_Partel_Nature.pdf">PDF</a>, <a href="https://www.inee.cnrs.fr/fr/cnrsinfo/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur" target="_blank">Press release CNRS</a>, <a href="https://crbe.cnrs.fr/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur-la-biodiversite" target="_blank">Actualite CRBE</a>, <a href="https://www.eurekalert.org/news-releases/1078990" target="_blank">EurekAlert</a>
+
+
+
 
 ## 2024
 
