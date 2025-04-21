@@ -313,6 +313,13 @@ press release</a>, [Supplementary1](data/geb12141-sup-0001-si.doc);
 [Supplementary2](data/geb12141-sup-0002-si.doc)
 
 <h1 align="center">
+<b>Communication</b>
+</h1>
+
+## 2025
+**France3 Occitanie**. Article sur la 'diversité fantome' <a href="https://france3-regions.francetvinfo.fr/occitanie/haute-garonne/toulouse/nous-avons-ete-surpris-par-l-ampleur-du-resultat-une-nouvelle-etude-pointe-l-impact-majeur-de-l-homme-sur-la-baisse-de-la-biodiversite-3139076.html" targets="_blank">[Link]</a>
+
+<h1 align="center">
 
 <b>Awards</b>
 
@@ -323,9 +330,17 @@ press release</a>, [Supplementary1](data/geb12141-sup-0001-si.doc);
 
 <h1 align="center">
 
-<b>Communication</b>
+<b>Conferences</b>
 
 </h1>
+
+2024 Annual meeting for macroecology of the ecological society of
+Germany Austria and Switzerland, Marburg, Germany: *Contrasting impacts
+of non-native and threatened species on morphological, life-history, and
+phylogenetic diversity in bird assemblages*
+
+2023 19th International Symposium on River and Lake Environment (ISRLE 19), China: *Mapping extinction
+risk in the global functional spectra across the tree of life*
 
 2020 Annual meeting for macroecology of the ecological society of
 Germany Austria and Switzerland, Konstanz, Germany: *Mapping extinction
@@ -355,6 +370,7 @@ Bayreuth, Germany : *Functional diversity of the freshwater fish fauna*
 *Historical assemblage distinctiveness and the introduction of
 widespread non-native species explain worldwide changes in freshwater
 fish taxonomic dissimilarity*
+
 
 <h1 align="center">
 
