@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:distill="https://distill.pub/journal/" version="2.0">
+  <channel>
+    <title>Aurèle Toussaint</title>
+    <link>https://beta.rstudioconnect.com/content/3776/</link>
+    <atom:link href="https://beta.rstudioconnect.com/content/3776/index.xml" rel="self" type="application/rss+xml"/>
+    <description>My Blog
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Tue, 01 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>New paper accepted in Nature on global patterns of 'dark diversity' in plants</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2025-04-21-darkdivnet</link>
+      <description>
+
+
+&lt;h2 id="references"&gt;References&lt;/h2&gt;
+&lt;p&gt;🔗 You can read the full open-access article here: &lt;a
+href="https://www.nature.com/articles/s41586-025-08814-5"&gt;https://www.nature.com/articles/s41586-025-08814-5&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Citation:&lt;/em&gt; Partel M., Tamme R., …, &lt;strong&gt;Toussaint,
+A.&lt;/strong&gt;, …, Zobel, M. Global impoverishment of natural vegetation
+revealed by dark diversity. &lt;em&gt;Nature&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id="context"&gt;Context&lt;/h2&gt;
+&lt;p&gt;🔍 This work brings a new perspective on how we evaluate biodiversity
+loss by focusing not only on the species present in a community, but
+also on those that are ecologically suitable yet missing. It shows that
+even ecosystems that appear “natural” often host only a fraction of the
+species they could theoretically support.&lt;/p&gt;
+&lt;p&gt;Together with an amazing group of collaborators, led by M. Partel
+from my former University of Tartu in Estonie, we combined global
+occurrence data and ecological niche modelling to estimate the potential
+and observed diversity of vascular plants worldwide. We then quantified
+the proportion of ‘missing’ species for more than 5,000 plant
+communities over the world.&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://beta.rstudioconnect.com/content/3776//posts/2025-04-21-darkdivnetFig_1.png" alt="How to estimate dark diverstity (From Partel et al. 2025)" width="100%" /&gt;
+&lt;p class="caption"&gt;
+(#fig:unnamed-chunk-1)How to estimate dark diverstity (From Partel et
+al. 2025)
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 id="key-findings"&gt;Key findings:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Most ecosystems are far from their potential diversity: in many
+human-impacted regions, only 20–25% of the suitable species are actually
+present.&lt;/li&gt;
+&lt;li&gt;Dark diversity is particularly high in temperate regions and
+biodiversity hotspots affected by agriculture and urbanization.&lt;/li&gt;
+&lt;li&gt;Human activities not only reduce biodiversity directly, but also
+prevent recolonization and natural recovery of ecosystems.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://beta.rstudioconnect.com/content/3776//posts/2025-04-21-darkdivnetFig_2.png" alt="How to estimate dark diverstity (From Partel et al. 2025)" width="100%" /&gt;
+&lt;p class="caption"&gt;
+(#fig:unnamed-chunk-2)How to estimate dark diverstity (From Partel et
+al. 2025)
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;🌱 These results challenge current approaches to conservation. We
+argue that protecting biodiversity requires not only preserving what
+remains, but also restoring what is missing. This means integrating
+ecological potential and landscape connectivity into conservation
+planning.&lt;/p&gt;
+&lt;p&gt;📢 A French press release is also available on the CNRS website: &lt;a
+href="https://crbe.cnrs.fr/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur-la-biodiversite/"&gt;La
+diversité fantôme ou “dark diversity” révèle l’impact mondial des
+activités humaines sur la biodiversité&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;A big thank you to all my co-authors and collaborators for making
+this study possible. I’m particularly proud to have contributed to the
+interpretation of biodiversity patterns and conservation implications.
+More to come soon on how we can apply this framework to orther type of
+communities!&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5 xmlns:distill="https://distill.pub/journal/">02c1434a993aee1e2f36dbfbd54e43e5</distill:md5>
+      <category>articles</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2025-04-21-darkdivnet</guid>
+      <pubDate>Tue, 01 Apr 2025 00:00:00 +0000</pubDate>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://beta.rstudioconnect.com/content/3776/posts/2025-04-21-darkdivnet/Fig_1.png" medium="image" type="image/png" width="1242" height="1078"/>
+    </item>
+    <item>
+      <title>New paper accepted in Ecology Letters</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters</link>
+      <description>In this paper, we aim to understand the consequences of species composition changes on the functional and phylogenetic diversity of birds across the world</description>
+      <category>articles</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters</guid>
+      <pubDate>Mon, 12 Feb 2024 00:00:00 +0000</pubDate>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters/Figure_1_R2.png" medium="image" type="image/png" width="3000" height="3000"/>
+    </item>
+  </channel>
+</rss>

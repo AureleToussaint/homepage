@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:distill="https://distill.pub/journal/" version="2.0">
+  <channel>
+    <title>Aurèle Toussaint</title>
+    <link>https://beta.rstudioconnect.com/content/3776/</link>
+    <atom:link href="https://beta.rstudioconnect.com/content/3776/index.xml" rel="self" type="application/rss+xml"/>
+    <description>My Blog
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Mon, 12 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>New paper accepted in Ecology Letters</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters</link>
+      <description>In this paper, we aim to understand the consequences of species composition changes on the functional and phylogenetic diversity of birds across the world</description>
+      <category>articles</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters</guid>
+      <pubDate>Mon, 12 Feb 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters/Figure_1_R2.png" medium="image" type="image/png" width="3000" height="3000"/>
+    </item>
+    <item>
+      <title>Estonian Research Award</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2024-02-09-estonianaward</link>
+      <description>Estonian Research Award</description>
+      <category>news</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-02-09-estonianaward</guid>
+      <pubDate>Fri, 09 Feb 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2024-02-09-estonianaward/smartcrop.jpeg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>New position in CNRS</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-position-in-cnrs</link>
+      <description>Researcher position in Toulouse</description>
+      <category>position</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-position-in-cnrs</guid>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-position-in-cnrs/logoCNRSEDB.png" medium="image" type="image/png" width="1058" height="595"/>
+    </item>
+  </channel>
+</rss>
