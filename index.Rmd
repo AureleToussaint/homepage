@@ -28,23 +28,26 @@ editor_options:
 <img src="data/EstLand.png" style="width:100%; border:1px; margin-right: 1px" align="center"/>
 <font size="6">**Chargé de recherche (CR) / Researcher**</font>
 
-::: columns
+:::::: columns
 ::: {.column width="60%"}
 <img src="data/CNRSCRBE.png" style="width:100%; border:5px; margin-right: 20px" align="center"/>
 
 **Centre de Recherche sur la Biodiversité et l'Environnement** <br>
-UMR5300 - UPS-CNRS-IRD-INP <br>Université de Toulouse<br>Bat. 4R1 <br>118 Route de Narbonne<br> 31062, Toulouse<br>
-France<br>
+UMR5300 - UPS-CNRS-IRD-INP <br>Université de Toulouse<br>Bat. 4R1
+<br>118 Route de Narbonne<br> 31062, Toulouse<br> France<br>
 <a href="https://crbe.cnrs.fr/" target="_blank">**Website**</a>
 :::
-::: {.column width="10%"}
 
+::: {.column width="10%"}
 :::
 
 ::: {.column width="30%"}
 <h3 align="left">
+
 <b>Metrics</b>
+
 </h3>
+
 Full CV available [here](data/CV_Toussaint.pdf)<br> ResearchGate
 <a href="https://www.researchgate.net/profile/Aurele_Toussaint" target="_blank">here</a><br>Google
 scholar
@@ -55,14 +58,16 @@ ORCID
 <br>
 
 <h3 align="left">
-<b>Contact</b>
-</h3>
-[aurele.toussaint\@cnrs.fr](mailto:aurele.toussaint@cnrs.fr){.email}
-<br>
-[aurele.toussaint\@univ-tlse3.fr](mailto:aurele.toussaint@univ-tlse3.fr){.email}<br>
 
+<b>Contact</b>
+
+</h3>
+
+[aurele.toussaint\@cnrs.fr](mailto:aurele.toussaint@cnrs.fr){.email}
+<br> NEW EMAIL ADDRESS:
+[aurele.toussaint\@utoulouse.fr](mailto:aurele.toussaint@utoulouse.fr){.email}<br>
 :::
-:::
+::::::
 
 <h2 align="left">
 
@@ -87,7 +92,11 @@ distribution of functional traits mainly on plants and vertebrates.
 
 </h1>
 
-*2025* : **INTRAIT - Influence of Intraspecific trait variability on the functional fish diversity of fish communities in French Guiana**. Supported by *CEBA* <a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">here</a>
+*2025* : **INTRAIT - Influence of Intraspecific trait variability on the
+functional fish diversity of fish communities in French Guiana**.
+Supported by *CEBA*
+(<a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">here</a>)
+and *TREMPLIN* from University of Toulouse.
 
 <h1 align="center">
 
@@ -109,6 +118,24 @@ Hee University</a>, Seoul (Korea)
 
 <h1 align="center">
 
+<b>Student supervision</b>
+
+</h1>
+
+**Pierre Bouchet**. *PhD student*. October 2024 - …. Functional
+diversity of vertebrates and human uses: links between functional
+traits, human uses and biodiversity crisis.
+
+**Nell Pause**. *Master*. Mai-June 2025. Which traits matter?
+Disentangling morphological, life-history, and dietary predictors of
+extinction risk and population trends on birds.
+
+**Adrien Solacroup**. *Master*. January to April 2014. Characterization
+of the morphological intra specific variability on the French Guyana and
+European freshwater fish community.
+
+<h1 align="center">
+
 <b>Publications</b>
 
 </h1>
@@ -124,14 +151,21 @@ Data repository is available [here](RData.html)
 
 ## 2025
 
-**27/** Partel M., Tamme R., ..., **Toussaint, A.**, ..., Zobel, M. Global impoverishment of natural vegetation revealed by dark diversity. *Nature*, <a href="data/2025_Partel_Nature.pdf">PDF</a>, <a href="https://www.inee.cnrs.fr/fr/cnrsinfo/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur" target="_blank">Press release CNRS</a>, <a href="https://crbe.cnrs.fr/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur-la-biodiversite" target="_blank">Actualite CRBE</a>, <a href="https://www.eurekalert.org/news-releases/1078990" target="_blank">EurekAlert</a>
-
-
-
+**27/** Partel M., Tamme R., ..., **Toussaint, A.**, ..., Zobel, M.
+Global impoverishment of natural vegetation revealed by dark diversity.
+*Nature*, <a href="data/2025_Partel_Nature.pdf">PDF</a>,
+<a href="https://www.inee.cnrs.fr/fr/cnrsinfo/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur" target="_blank">Press
+release CNRS</a>,
+<a href="https://crbe.cnrs.fr/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur-la-biodiversite" target="_blank">Actualite
+CRBE</a>,
+<a href="https://www.eurekalert.org/news-releases/1078990" target="_blank">EurekAlert</a>
 
 ## 2024
 
-**26/** Coulon N., Pilet S., Lizé A., Lacoue-Labarthe T., Sturbois A., **Toussaint, A.**,  Feunteun E., Carpentier A. Shark critical life stage vulnerability to monthly temperature variations under climate change. *Marine Environmental Research*, 198, 106531.
+**26/** Coulon N., Pilet S., Lizé A., Lacoue-Labarthe T., Sturbois A.,
+**Toussaint, A.**, Feunteun E., Carpentier A. Shark critical life stage
+vulnerability to monthly temperature variations under climate change.
+*Marine Environmental Research*, 198, 106531.
 <a href="data/2024_Coulon_MER.pdf">PDF</a>
 
 **25/** Tordoni, E., Carmona, C. P., **Toussaint, A.**, Tamme, R., &
@@ -284,7 +318,8 @@ Neotropics. *Scientific Report*, 6, 22125.
 <a href="data/2016_Toussaint_SciRep.pdf" target="_blank">PDF</a>, <a
 href="<http://www.cnrs.fr/inee/communication/breves/b178.html>"
 target="_blank">press release</a> in french and
-<a href="https://www.franceinter.fr/emissions/la-tete-au-carre/la-tete-au-carre-11-avril-2016" target="_blank">Radio show</a> (*La tête au carré*, France Inter, 11/04/2016)
+<a href="https://www.franceinter.fr/emissions/la-tete-au-carre/la-tete-au-carre-11-avril-2016" target="_blank">Radio
+show</a> (*La tête au carré*, France Inter, 11/04/2016)
 [Supplementary](data/srep22125-s1.docx)
 
 **3/** **Toussaint A.**, Beauchard O., Oberdorff T., Brosse S. &
@@ -313,11 +348,15 @@ press release</a>, [Supplementary1](data/geb12141-sup-0001-si.doc);
 [Supplementary2](data/geb12141-sup-0002-si.doc)
 
 <h1 align="center">
+
 <b>Communication</b>
+
 </h1>
 
 ## 2025
-**France3 Occitanie**. Article sur la 'diversité fantome' <a href="https://france3-regions.francetvinfo.fr/occitanie/haute-garonne/toulouse/nous-avons-ete-surpris-par-l-ampleur-du-resultat-une-nouvelle-etude-pointe-l-impact-majeur-de-l-homme-sur-la-baisse-de-la-biodiversite-3139076.html" targets="_blank">[Link]</a>
+
+**France3 Occitanie**. Article sur la 'diversité fantome'
+<a href="https://france3-regions.francetvinfo.fr/occitanie/haute-garonne/toulouse/nous-avons-ete-surpris-par-l-ampleur-du-resultat-une-nouvelle-etude-pointe-l-impact-majeur-de-l-homme-sur-la-baisse-de-la-biodiversite-3139076.html" targets="_blank">[Link]</a>
 
 <h1 align="center">
 
@@ -326,7 +365,18 @@ press release</a>, [Supplementary1](data/geb12141-sup-0001-si.doc);
 </h1>
 
 ## 2024
-**Estonian Research award** for research on the functional diversity of plants and vertebrates at global scale. This project was develop around several scientific papers published in top-level journals. Among the high diversity of papers published, I recommend to read the papers published in <a href="https://www.science.org/doi/full/10.1126/sciadv.abf2675" target="_blank">Sciences Advances</a> and <a href="https://www.nature.com/articles/s41467-021-25293-0" target="_blank">Nature Communications</a>. In those papers we investigated the diversity of functional traits for each group of vertebrates and plants at global and regional scales. 
+
+**Estonian Research award** for research on the functional diversity of
+plants and vertebrates at global scale. This project was develop around
+several scientific papers published in top-level journals. Among the
+high diversity of papers published, I recommend to read the papers
+published in
+<a href="https://www.science.org/doi/full/10.1126/sciadv.abf2675" target="_blank">Sciences
+Advances</a> and
+<a href="https://www.nature.com/articles/s41467-021-25293-0" target="_blank">Nature
+Communications</a>. In those papers we investigated the diversity of
+functional traits for each group of vertebrates and plants at global and
+regional scales.
 
 <h1 align="center">
 
@@ -339,8 +389,9 @@ Germany Austria and Switzerland, Marburg, Germany: *Contrasting impacts
 of non-native and threatened species on morphological, life-history, and
 phylogenetic diversity in bird assemblages*
 
-2023 19th International Symposium on River and Lake Environment (ISRLE 19), China: *Mapping extinction
-risk in the global functional spectra across the tree of life*
+2023 19th International Symposium on River and Lake Environment (ISRLE
+19), China: *Mapping extinction risk in the global functional spectra
+across the tree of life*
 
 2020 Annual meeting for macroecology of the ecological society of
 Germany Austria and Switzerland, Konstanz, Germany: *Mapping extinction
@@ -370,7 +421,6 @@ Bayreuth, Germany : *Functional diversity of the freshwater fish fauna*
 *Historical assemblage distinctiveness and the introduction of
 widespread non-native species explain worldwide changes in freshwater
 fish taxonomic dissimilarity*
-
 
 <h1 align="center">
 
