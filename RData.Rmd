@@ -37,7 +37,7 @@ phylogenetic diversity in birds’ assemblages. [here](https://figshare.com/arti
 - Zipped file containing csv tables with information on the global distribution of freshwater fish species functional traits, basin occurrences, and taxonomic and functional indices. available on FigShare repository: [here](https://figshare.com/articles/Functional_diversity_of_the_world_freshwater_fish_faunas/6984206)
 
 
-- R data for courses [here](https://rpubs.com/aurele/howToR)
+- R data for courses [here](https://rpubs.com/aurele/1342664)
 <br>
 <br>
 <img src="data/github.png" style="width:8%; border:1px; margin-right: 1px" align="center">
