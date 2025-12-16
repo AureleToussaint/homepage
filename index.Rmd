@@ -33,13 +33,8 @@ editor_options:
 <img src="data/CNRSCRBE.png" style="width:100%; border:5px; margin-right: 20px" align="center"/>
 
 **Centre de Recherche sur la Biodiversité et l'Environnement** <br>
-<<<<<<< HEAD
 UMR5300 - UPS-CNRS-IRD-INP <br>Université de Toulouse<br>Bat. 4R1,
 bureau 29 <br>118 Route de Narbonne<br> 31062, Toulouse<br> France<br>
-=======
-UMR5300 - UPS-CNRS-IRD-INP <br>Université de Toulouse<br>Bat. 4R1
-<br>118 Route de Narbonne<br> 31062, Toulouse<br> France<br>
->>>>>>> 1869292210b7b697f7edd7d201ea3865b5ce008d
 <a href="https://crbe.cnrs.fr/" target="_blank">**Website**</a>
 :::
 
@@ -69,13 +64,9 @@ ORCID
 </h3>
 
 [aurele.toussaint\@cnrs.fr](mailto:aurele.toussaint@cnrs.fr){.email}
-<<<<<<< HEAD
-<br>
+<br> !! NEW E-MAIL ADDRESS :
 [aurele.toussaint\@utoulouse.fr](mailto:aurele.toussaint@utoulouse.fr){.email}
-=======
-<br> NEW EMAIL ADDRESS:
-[aurele.toussaint\@utoulouse.fr](mailto:aurele.toussaint@utoulouse.fr){.email}<br>
->>>>>>> 1869292210b7b697f7edd7d201ea3865b5ce008d
+!!
 :::
 ::::::
 
@@ -102,20 +93,12 @@ distribution of functional traits mainly on plants and vertebrates.
 
 </h1>
 
-<<<<<<< HEAD
 *2025 - 2026* : **INTRAIT - Influence of Intraspecific trait variability
 on the functional fish diversity of fish communities in French Guiana**.
 Supported by *CEBA*
 <a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">here</a>
 and *TREMPLIN*
 <a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">here</a>
-=======
-*2025* : **INTRAIT - Influence of Intraspecific trait variability on the
-functional fish diversity of fish communities in French Guiana**.
-Supported by *CEBA*
-(<a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">here</a>)
-and *TREMPLIN* from University of Toulouse.
->>>>>>> 1869292210b7b697f7edd7d201ea3865b5ce008d
 
 <h1 align="center">
 
@@ -141,7 +124,6 @@ Hee University</a>, Seoul (Korea)
 
 </h1>
 
-<<<<<<< HEAD
 **Pierre Bertrand.** *Master.* 2026. Quantification de la diversité
 intraspécifique des poissons d’eau douce de Guyane française et impact
 sur les mesures de diversité fonctionnelle.
@@ -153,15 +135,6 @@ trends on birds.
 **Pierre Bouchet**. *PhD Student*. 2024 - 2027. Diversité fonctionnelle
 des vertébrés et utilisation par l'homme: liens entre traits
 fonctionnels, utilisation anthropique et crise de biodiversité.
-=======
-**Pierre Bouchet**. *PhD student*. October 2024 - …. Functional
-diversity of vertebrates and human uses: links between functional
-traits, human uses and biodiversity crisis.
-
-**Nell Pause**. *Master*. Mai-June 2025. Which traits matter?
-Disentangling morphological, life-history, and dietary predictors of
-extinction risk and population trends on birds.
->>>>>>> 1869292210b7b697f7edd7d201ea3865b5ce008d
 
 **Adrien Solacroup**. *Master*. January to April 2014. Characterization
 of the morphological intra specific variability on the French Guyana and
@@ -184,7 +157,6 @@ Data repository is available [here](RData.html)
 
 ## 2025
 
-<<<<<<< HEAD
 **29/** Chen Z., Xu C., Brosse S., **Toussaint, A**, Xu J., Su G. Global
 Patterns and Determinants of Multiple Facets of Freshwater Fishes Beta
 Diversity. *Global Ecology and Biogeography*,
@@ -193,11 +165,6 @@ Diversity. *Global Ecology and Biogeography*,
 **28/** Partel M., Tamme R., ..., **Toussaint, A.**, ..., Zobel, M.
 Global impoverishment of natural vegetation revealed by dark diversity.
 *Nature*, 641, 917–924. <a href="data/2025_Partel_Nature.pdf">PDF</a>,
-=======
-**27/** Partel M., Tamme R., ..., **Toussaint, A.**, ..., Zobel, M.
-Global impoverishment of natural vegetation revealed by dark diversity.
-*Nature*, <a href="data/2025_Partel_Nature.pdf">PDF</a>,
->>>>>>> 1869292210b7b697f7edd7d201ea3865b5ce008d
 <a href="https://www.inee.cnrs.fr/fr/cnrsinfo/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur" target="_blank">Press
 release CNRS</a>,
 <a href="https://crbe.cnrs.fr/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur-la-biodiversite" target="_blank">Actualite
@@ -206,11 +173,7 @@ CRBE</a>,
 
 ## 2024
 
-<<<<<<< HEAD
 **27/** Coulon N., Pilet S., Lizé A., Lacoue-Labarthe T., Sturbois A.,
-=======
-**26/** Coulon N., Pilet S., Lizé A., Lacoue-Labarthe T., Sturbois A.,
->>>>>>> 1869292210b7b697f7edd7d201ea3865b5ce008d
 **Toussaint, A.**, Feunteun E., Carpentier A. Shark critical life stage
 vulnerability to monthly temperature variations under climate change.
 *Marine Environmental Research*, 198, 106531.
