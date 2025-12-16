@@ -64,9 +64,8 @@ ORCID
 </h3>
 
 [aurele.toussaint\@cnrs.fr](mailto:aurele.toussaint@cnrs.fr){.email}
-<br> !! NEW E-MAIL ADDRESS :
+<br>
 [aurele.toussaint\@utoulouse.fr](mailto:aurele.toussaint@utoulouse.fr){.email}
-!!
 :::
 ::::::
 
