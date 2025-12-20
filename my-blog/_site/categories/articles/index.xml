@@ -7,74 +7,132 @@
     <description>My Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 01 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 19 Dec 2025 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>New paper accepted in Nature on global patterns of 'dark diversity' in plants</title>
-      <link>https://beta.rstudioconnect.com/content/3776/posts/2025-04-21-darkdivnet</link>
+      <title>What Shapes the Differences Between Freshwater Fish Communities Worldwide?</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2025-12-20-global-patterns-of-freshwater-fish-beta-diversity</link>
       <description>
 
 
-&lt;h2 id="references"&gt;References&lt;/h2&gt;
-&lt;p&gt;🔗 You can read the full open-access article here: &lt;a
-href="https://www.nature.com/articles/s41586-025-08814-5"&gt;https://www.nature.com/articles/s41586-025-08814-5&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Citation:&lt;/em&gt; Partel M., Tamme R., …, &lt;strong&gt;Toussaint,
-A.&lt;/strong&gt;, …, Zobel, M. Global impoverishment of natural vegetation
-revealed by dark diversity. &lt;em&gt;Nature&lt;/em&gt;&lt;/p&gt;
-&lt;h2 id="context"&gt;Context&lt;/h2&gt;
-&lt;p&gt;🔍 This work brings a new perspective on how we evaluate biodiversity
-loss by focusing not only on the species present in a community, but
-also on those that are ecologically suitable yet missing. It shows that
-even ecosystems that appear “natural” often host only a fraction of the
-species they could theoretically support.&lt;/p&gt;
-&lt;p&gt;Together with an amazing group of collaborators, led by M. Partel
-from my former University of Tartu in Estonie, we combined global
-occurrence data and ecological niche modelling to estimate the potential
-and observed diversity of vascular plants worldwide. We then quantified
-the proportion of ‘missing’ species for more than 5,000 plant
-communities over the world.&lt;/p&gt;
-&lt;div class="figure"&gt;
-&lt;img src="https://beta.rstudioconnect.com/content/3776//posts/2025-04-21-darkdivnetFig_1.png" alt="How to estimate dark diverstity (From Partel et al. 2025)" width="100%" /&gt;
-&lt;p class="caption"&gt;
-(#fig:unnamed-chunk-1)How to estimate dark diverstity (From Partel et
-al. 2025)
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;h2 id="key-findings"&gt;Key findings:&lt;/h2&gt;
+&lt;h2 id="reference"&gt;Reference&lt;/h2&gt;
+&lt;p&gt;Read the full paper
+&lt;a href="https://onlinelibrary.wiley.com/doi/10.1111/geb.70181"&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Citation:&lt;/em&gt; Chen Z., Xu C., Brosse S., &lt;strong&gt;Toussaint,
+A&lt;/strong&gt;, Xu J., Su G. Global Patterns and Determinants of Multiple
+Facets of Freshwater Fishes Beta Diversity. &lt;em&gt;Global Ecology and
+Biogeography&lt;/em&gt;&lt;/p&gt;
+&lt;h2
+id="looking-beyond-species-lists-three-facets-of-beta-diversity"&gt;Looking
+Beyond Species Lists: Three Facets of Beta Diversity&lt;/h2&gt;
+&lt;p&gt;Beta diversity captures how different biological communities are from
+one another. Traditionally, this has been measured using taxonomic beta
+diversity, which focuses on species identities alone. However, species
+differ not only in their names, but also in their ecological roles
+(functional traits) and evolutionary histories (phylogeny).&lt;/p&gt;
+&lt;p&gt;In this study, we simultaneously quantified:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Most ecosystems are far from their potential diversity: in many
-human-impacted regions, only 20–25% of the suitable species are actually
-present.&lt;/li&gt;
-&lt;li&gt;Dark diversity is particularly high in temperate regions and
-biodiversity hotspots affected by agriculture and urbanization.&lt;/li&gt;
-&lt;li&gt;Human activities not only reduce biodiversity directly, but also
-prevent recolonization and natural recovery of ecosystems.&lt;/li&gt;
+&lt;li&gt;Taxonomic beta diversity (TBD) – differences in species
+composition,&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="figure"&gt;
-&lt;img src="https://beta.rstudioconnect.com/content/3776//posts/2025-04-21-darkdivnetFig_2.png" alt="How to estimate dark diverstity (From Partel et al. 2025)" width="100%" /&gt;
-&lt;p class="caption"&gt;
-(#fig:unnamed-chunk-2)How to estimate dark diverstity (From Partel et
-al. 2025)
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;🌱 These results challenge current approaches to conservation. We
-argue that protecting biodiversity requires not only preserving what
-remains, but also restoring what is missing. This means integrating
-ecological potential and landscape connectivity into conservation
-planning.&lt;/p&gt;
-&lt;p&gt;📢 A French press release is also available on the CNRS website: &lt;a
-href="https://crbe.cnrs.fr/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur-la-biodiversite/"&gt;La
-diversité fantôme ou “dark diversity” révèle l’impact mondial des
-activités humaines sur la biodiversité&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;A big thank you to all my co-authors and collaborators for making
-this study possible. I’m particularly proud to have contributed to the
-interpretation of biodiversity patterns and conservation implications.
-More to come soon on how we can apply this framework to orther type of
-communities!&lt;/p&gt;
+&lt;!-- --&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Functional beta diversity (FBD) – differences in trait
+composition linked to feeding and locomotion,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Phylogenetic beta diversity (PBD) – differences in evolutionary
+lineages.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Crucially, we further decomposed each facet into two fundamental
+components:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Turnover, reflecting species (or traits or lineages) replacement
+between basins,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Nestedness, reflecting differences driven by richness gradients,
+where species-poor assemblages are subsets of richer ones.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This decomposition allows us to move beyond patterns and start
+inferring processes.&lt;/p&gt;
+&lt;h2 id="a-consistent-global-pattern-with-important-nuances"&gt;A Consistent
+Global Pattern, With Important Nuances&lt;/h2&gt;
+&lt;p&gt;At the global scale, the three facets of beta diversity exhibit
+remarkably consistent spatial patterns. All decline from low to high
+latitudes, with the highest beta diversity concentrated in tropical
+regions, confirming earlier findings for taxonomic diversity and
+extending them to functional and phylogenetic dimensions.&lt;/p&gt;
+&lt;p&gt;However, beneath this apparent consistency lie important differences.
+Taxonomic beta diversity is predominantly driven by turnover. This
+reflects the strong isolation of river basins and the limited dispersal
+abilities of freshwater fishes, leading to sharp species replacement
+across space. In contrast, functional and phylogenetic beta diversity
+are largely dominated by nestedness. In many regions, neighbouring
+basins share similar ecological strategies and evolutionary lineages,
+but differ in how many of them are present. In other words, species may
+change from one basin to another, yet their functional roles remain
+surprisingly similar. This result highlights a key message: species
+turnover does not necessarily imply functional or evolutionary
+turnover.&lt;/p&gt;
+&lt;h2
+id="when-facets-decouple-functional-diversity-tells-a-different-story"&gt;When
+Facets Decouple: Functional Diversity Tells a Different Story&lt;/h2&gt;
+&lt;p&gt;Although the three facets of beta diversity are positively
+correlated, they are far from redundant. Taxonomic and phylogenetic beta
+diversity are almost perfectly aligned, reflecting their shared
+evolutionary basis. Functional beta diversity, however, shows markedly
+weaker correlations with both.&lt;/p&gt;
+&lt;p&gt;This decoupling likely arises from functional convergence: distantly
+related species can evolve similar morphologies and ecological roles
+when exposed to comparable environmental constraints. As a result,
+communities may differ taxonomically while remaining functionally
+similar.&lt;/p&gt;
+&lt;p&gt;From a conservation perspective, this finding is critical. Protecting
+species diversity alone may not guarantee the preservation of ecological
+functions—especially in freshwater systems where redundancy and
+convergence are common.&lt;/p&gt;
+&lt;h2 id="what-drives-global-beta-diversity-in-freshwater-fish"&gt;What
+Drives Global Beta Diversity in Freshwater Fish?&lt;/h2&gt;
+&lt;p&gt;To identify the mechanisms shaping these patterns, we combined global
+biodiversity data with climatic, geographic, and historical variables
+using boosted regression trees. No single driver dominates. Instead,
+beta diversity emerges from the interplay of:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;River basin area, the strongest predictor across all
+facets,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Contemporary climate, particularly precipitation
+regimes,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Historical climate stability, especially Late Quaternary
+climate-change velocity,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Geographical structure, including basin isolation and
+slope.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Larger basins tend to harbour more diverse and functionally richer
+assemblages, leading to strong nestedness patterns in neighbouring,
+smaller basins. Regions that experienced stable climates over
+evolutionary timescales often retain unique lineages and trait
+combinations, reinforcing beta diversity at large spatial scales&lt;/p&gt;
+&lt;h2 id="why-this-matters"&gt;Why This Matters&lt;/h2&gt;
+&lt;p&gt;Freshwater fishes are declining faster than most other vertebrates,
+yet conservation planning still relies heavily on species counts. Our
+results demonstrate that different facets of biodiversity respond to
+different processes, and that ignoring turnover and nestedness can
+obscure the mechanisms driving biodiversity change.&lt;/p&gt;
+&lt;p&gt;By integrating taxonomic, functional, and phylogenetic
+perspectives—and explicitly separating their components—this study
+provides a more mechanistic understanding of how freshwater biodiversity
+is structured worldwide. Such insights are essential if we aim to
+conserve not only species, but also the ecological functions and
+evolutionary history they represent.&lt;/p&gt;
 &lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
-      <distill:md5 xmlns:distill="https://distill.pub/journal/">02c1434a993aee1e2f36dbfbd54e43e5</distill:md5>
+      <distill:md5 xmlns:distill="https://distill.pub/journal/">d757096193290fa247b9c0aedecdb1e7</distill:md5>
+      <category>articles</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2025-12-20-global-patterns-of-freshwater-fish-beta-diversity</guid>
+      <pubDate>Fri, 19 Dec 2025 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>New paper accepted in Nature on global patterns of 'dark diversity' in plants</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2025-04-21-darkdivnet</link>
+      <description>The first article of our DarkDivNet consortium, led by Meelis Pärtel, has been published in Nature. Our dataset from 5500 sites in 119 world regions, collected specially for this purpose, shows that plant diversity is negatively affected not only by direct human impact such as local disturbance.</description>
       <category>articles</category>
       <guid>https://beta.rstudioconnect.com/content/3776/posts/2025-04-21-darkdivnet</guid>
-      <pubDate>Tue, 01 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 02 Apr 2025 00:00:00 +0000</pubDate>
       <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://beta.rstudioconnect.com/content/3776/posts/2025-04-21-darkdivnet/Fig_1.png" medium="image" type="image/png" width="1242" height="1078"/>
     </item>
     <item>
