@@ -13,7 +13,7 @@
 
 <title>Pic’ The Fish</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,11 +29,15 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel="shortcut icon" href="data/ATc.jpg" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -181,8 +185,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -190,16 +194,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -229,6 +226,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -236,6 +296,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -260,13 +330,16 @@ $(document).ready(function () {
   </a>
 </li>
 <li>
+  <a href="my-blog/site">My blog</a>
+</li>
+<li>
   <a href="Projects.html">Projects</a>
 </li>
 <li>
   <a href="RData.html">Data &amp; Scripts</a>
 </li>
 <li>
-  <a href="PicTheFish.html">PicTheFish</a>
+  <a href="PicTheFish.html">INTRAIT</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -308,54 +381,48 @@ $(document).ready(function () {
 
 
 <title>
-<p>Pic’ Fish</p>
+INTRAIT: intraspecific morphology of freshwater fish across the world
 </title>
-<p><link rel="shortcut icon" href="data/imageTitle.png" type="image/png"></p>
 <p><link rel="stylesheet" href="styles.css" type="text/css"></p>
-<p><b><font size="+6">The Pic’ Fish project</font></b> <br>
-<b><font size="+2">A citizen science project for research and
-conservation of freshwater fish</font></b> <br>
-<img src="data/PicFishLogo.png" style="width:40%; border:1px; margin-right: 1px" align="right"/><br />
+<p><b><font size="+6">The INTRAIT project</font></b> <br>
+<b><font size="+2">A project for research and conservation of freshwater
+fish</font></b> <br><br />
 <br></p>
 <p><left><font size="+1"> Leading by scientists of the
-<strong>University of Tartu</strong>, the <strong>Pic’ Fish</strong>
+<strong>University of Toulouse</strong>, the <strong>INTRAIT</strong>
 project aims to better understand the <em>ecological role</em> of
 freshwater fishes and the consequences of <em>human
 disturbances</em>.<br><br> With your help, we aim to better understand
-the morphological features of fish species.</font> </left>
+the morphological features of fish species. </font> </left>
 <br><br><br><br><br><br><br><br><br></p>
-<p><b><font size="+2">How to contribute?</font></b> <br><br>
-<left><font size="+1"> We ask you to take a lateral picture of your
-specimen, as illustrated bellow, and upload it</font> </left>
-<img src="data/LateralView.png" style="width:100%; border:1px; margin-right: 1px" align="center"/><br />
+<p><b><font size="+5">How to contribute?</font></b></p>
+<p>here: <a href="https://globaltrait.shinyapps.io/FishTRAIT/"
+class="uri">https://globaltrait.shinyapps.io/FishTRAIT/</a></p>
+<p><left><font size="+1"> We ask you to take a lateral picture of your
+specimen, as illustrated bellow, and upload it</font> </left></p>
+<p><br></p>
+<p><img src="data/LateralView.png" style="width:100%; border:1px; margin-right: 1px" align="center"/><br />
 <br> <br><br><br><br></p>
-<p><div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div></p>
-<p><b><font size="+2">How to measure the ecological role of fish
+<p><br><b><font size="+4">How your data will be used ?</font></b>
+<br><br></p>
+<p><br><b><font size="+3">How to measure the ecological role of fish
 ?</font></b> <br><br>
 <img src="data/mesureFish.png" style="width:60%; border:1px; margin-right: 1px" align="left"/><br />
 <br> <right><font size="+1"> Leading by scientists of the
-<strong>University of Tartu</strong>, the <strong>Pic’ Fish</strong>
-project aims to better understand the <em>ecological role</em> of
-freshwater fishes and the consequences of <em>human
-disturbances</em>.<br><br> With your help, we aim to better understand
-the morphological features of fish species.</font> </right>
-<br><br><br><br><br><br><br><br><br></p>
+<strong>University of Toulouse</strong>, the project aims to better
+understand the <em>ecological role</em> of freshwater fishes and the
+consequences of <em>human disturbances</em>.<br><br> With your help, we
+aim to better understand the morphological features of fish
+species.</font> </right> <br><br><br><br><br><br><br><br><br></p>
 <p><b><font size="+2">Measuring the functional diversity of freshwater
 fish</font></b> <br><br>
 <img src="data/Fspace.png" style="width:60%; border:1px; margin-right: 1px" align="right"/><br />
-<br> <left><font size="+1"> Leading by scientists of the
-<strong>University of Tartu</strong>, the <strong>Pic’ Fish</strong>
-project aims to better understand the <em>ecological role</em> of
-freshwater fishes and the consequences of <em>human
-disturbances</em>.<br><br> With your help, we aim to better understand
-the morphological features of fish species.</font> </left>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br></p>
-
-<p>Copyright &copy; 2020 This material is presented to ensure timely dissemination of academic work. Copyright and all rights therein are retained by authors or by other copyright holders.</p>
+</p>
 
 
+
+</div>
+</div>
 
 </div>
 
@@ -388,6 +455,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

@@ -13,7 +13,7 @@ navbar:
       href: Projects.html
     - text: "Data & Scripts"
       href: RData.html
-    - text: "Pic' Fish"
+    - text: "INTRAIT"
       href: PicTheFish.html
   right:
     - icon: fa-envelope fa-lg
