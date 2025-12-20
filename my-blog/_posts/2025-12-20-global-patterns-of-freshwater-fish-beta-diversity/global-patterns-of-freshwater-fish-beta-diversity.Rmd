@@ -29,7 +29,7 @@ knitr::opts_chunk$set(echo = FALSE)
 *Citation:* Chen Z., Xu C., Brosse S., **Toussaint, A**, Xu J., Su G. Global Patterns and Determinants of Multiple Facets of Freshwater Fishes Beta Diversity. *Global Ecology and Biogeography*
 
 ```{r echo=FALSE, out.width='100%', fig.cap=""}
-knitr::include_graphics('Fig_1.png')
+knitr::include_graphics('Fig1.png')
 ```
 
 ## Looking Beyond Species Lists: Three Facets of Beta Diversity
@@ -38,7 +38,7 @@ Beta diversity captures how different biological communities are from one anothe
 
 In this study, we simultaneously quantified:
 
--    Taxonomic beta diversity (TBD) – differences in species composition,
+-   Taxonomic beta diversity (TBD) – differences in species composition,
 
 <!-- -->
 
