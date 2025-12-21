@@ -1,0 +1,35 @@
+/* --- General typography --- */
+body {
+  line-height: 1.5;
+}
+
+/* --- Code blocks: wrapper + copy button --- */
+.code-wrapper {
+  position: relative;
+  margin: 0.6rem 0 1.2rem 0;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.85rem;
+  border: 1px solid #cfcfcf;
+  background: #ffffff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background: #f5f5f5;
+}
+
+pre {
+  padding-top: 2.2rem; /* space for button */
+}
+
+/* --- Optional: slightly more compact TOC --- */
+#TOC {
+  font-size: 0.95rem;
+}

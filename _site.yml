@@ -11,8 +11,10 @@ navbar:
       href: my-blog/site
     - text: "Projects"
       href: Projects.html
-    - text: "Data & Scripts"
+    - text: "Data"
       href: RData.html
+    - text: "R scripts"
+      href: Rscripts.html      
     - text: "INTRAIT"
       href: PicTheFish.html
   right:
@@ -31,4 +33,4 @@ output:
     include:
       after_body: footer.html
     css: styles.css
-    runtime: shiny
+    runtime: static

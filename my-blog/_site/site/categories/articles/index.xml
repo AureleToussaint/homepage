@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:distill="https://distill.pub/journal/" version="2.0">
+  <channel>
+    <title>Aurèle Toussaint</title>
+    <link>https://beta.rstudioconnect.com/content/3776/</link>
+    <atom:link href="https://beta.rstudioconnect.com/content/3776/index.xml" rel="self" type="application/rss+xml"/>
+    <description>My Blog
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Fri, 19 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>What Shapes the Differences Between Freshwater Fish Communities Worldwide?</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2025-12-20-global-patterns-of-freshwater-fish-beta-diversity</link>
+      <description>
+
+
+&lt;h2 id="reference"&gt;Reference&lt;/h2&gt;
+&lt;p&gt;🔗Read the full paper
+&lt;a href="https://onlinelibrary.wiley.com/doi/10.1111/geb.70181"&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Citation:&lt;/em&gt; Chen Z., Xu C., Brosse S., &lt;strong&gt;Toussaint,
+A&lt;/strong&gt;, Xu J., Su G. Global Patterns and Determinants of Multiple
+Facets of Freshwater Fishes Beta Diversity. &lt;em&gt;Global Ecology and
+Biogeography&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://beta.rstudioconnect.com/content/3776//posts/2025-12-20-global-patterns-of-freshwater-fish-beta-diversityFig1.png" width="100%" /&gt;&lt;/p&gt;
+&lt;h2
+id="looking-beyond-species-lists-three-facets-of-beta-diversity"&gt;Looking
+Beyond Species Lists: Three Facets of Beta Diversity&lt;/h2&gt;
+&lt;p&gt;Beta diversity captures how different biological communities are from
+one another. Traditionally, this has been measured using taxonomic beta
+diversity, which focuses on species identities alone. However, species
+differ not only in their names, but also in their ecological roles
+(functional traits) and evolutionary histories (phylogeny).&lt;/p&gt;
+&lt;p&gt;In this study, we simultaneously quantified:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Taxonomic beta diversity (TBD) – differences in species
+composition,&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- --&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Functional beta diversity (FBD) – differences in trait
+composition linked to feeding and locomotion,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Phylogenetic beta diversity (PBD) – differences in evolutionary
+lineages.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Crucially, we further decomposed each facet into two fundamental
+components:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Turnover, reflecting species (or traits or lineages) replacement
+between basins,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Nestedness, reflecting differences driven by richness gradients,
+where species-poor assemblages are subsets of richer ones.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This decomposition allows us to move beyond patterns and start
+inferring processes.&lt;/p&gt;
+&lt;h2 id="a-consistent-global-pattern-with-important-nuances"&gt;A Consistent
+Global Pattern, With Important Nuances&lt;/h2&gt;
+&lt;p&gt;At the global scale, the three facets of beta diversity exhibit
+remarkably consistent spatial patterns. All decline from low to high
+latitudes, with the highest beta diversity concentrated in tropical
+regions, confirming earlier findings for taxonomic diversity and
+extending them to functional and phylogenetic dimensions.&lt;/p&gt;
+&lt;p&gt;However, beneath this apparent consistency lie important differences.
+Taxonomic beta diversity is predominantly driven by turnover. This
+reflects the strong isolation of river basins and the limited dispersal
+abilities of freshwater fishes, leading to sharp species replacement
+across space. In contrast, functional and phylogenetic beta diversity
+are largely dominated by nestedness. In many regions, neighbouring
+basins share similar ecological strategies and evolutionary lineages,
+but differ in how many of them are present. In other words, species may
+change from one basin to another, yet their functional roles remain
+surprisingly similar. This result highlights a key message: species
+turnover does not necessarily imply functional or evolutionary
+turnover.&lt;/p&gt;
+&lt;h2
+id="when-facets-decouple-functional-diversity-tells-a-different-story"&gt;When
+Facets Decouple: Functional Diversity Tells a Different Story&lt;/h2&gt;
+&lt;p&gt;Although the three facets of beta diversity are positively
+correlated, they are far from redundant. Taxonomic and phylogenetic beta
+diversity are almost perfectly aligned, reflecting their shared
+evolutionary basis. Functional beta diversity, however, shows markedly
+weaker correlations with both.&lt;/p&gt;
+&lt;p&gt;This decoupling likely arises from functional convergence: distantly
+related species can evolve similar morphologies and ecological roles
+when exposed to comparable environmental constraints. As a result,
+communities may differ taxonomically while remaining functionally
+similar.&lt;/p&gt;
+&lt;p&gt;From a conservation perspective, this finding is critical. Protecting
+species diversity alone may not guarantee the preservation of ecological
+functions—especially in freshwater systems where redundancy and
+convergence are common.&lt;/p&gt;
+&lt;h2 id="what-drives-global-beta-diversity-in-freshwater-fish"&gt;What
+Drives Global Beta Diversity in Freshwater Fish?&lt;/h2&gt;
+&lt;p&gt;To identify the mechanisms shaping these patterns, we combined global
+biodiversity data with climatic, geographic, and historical variables
+using boosted regression trees. No single driver dominates. Instead,
+beta diversity emerges from the interplay of:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;River basin area, the strongest predictor across all
+facets,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Contemporary climate, particularly precipitation
+regimes,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Historical climate stability, especially Late Quaternary
+climate-change velocity,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Geographical structure, including basin isolation and
+slope.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Larger basins tend to harbour more diverse and functionally richer
+assemblages, leading to strong nestedness patterns in neighbouring,
+smaller basins. Regions that experienced stable climates over
+evolutionary timescales often retain unique lineages and trait
+combinations, reinforcing beta diversity at large spatial scales&lt;/p&gt;
+&lt;h2 id="why-this-matters"&gt;Why This Matters&lt;/h2&gt;
+&lt;p&gt;Freshwater fishes are declining faster than most other vertebrates,
+yet conservation planning still relies heavily on species counts. Our
+results demonstrate that different facets of biodiversity respond to
+different processes, and that ignoring turnover and nestedness can
+obscure the mechanisms driving biodiversity change.&lt;/p&gt;
+&lt;p&gt;By integrating taxonomic, functional, and phylogenetic
+perspectives—and explicitly separating their components—this study
+provides a more mechanistic understanding of how freshwater biodiversity
+is structured worldwide. Such insights are essential if we aim to
+conserve not only species, but also the ecological functions and
+evolutionary history they represent.&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5 xmlns:distill="https://distill.pub/journal/">d757096193290fa247b9c0aedecdb1e7</distill:md5>
+      <category>articles</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2025-12-20-global-patterns-of-freshwater-fish-beta-diversity</guid>
+      <pubDate>Fri, 19 Dec 2025 00:00:00 +0000</pubDate>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://beta.rstudioconnect.com/content/3776/posts/2025-12-20-global-patterns-of-freshwater-fish-beta-diversity/Fig1.png" medium="image" type="image/png" width="1377" height="1487"/>
+    </item>
+    <item>
+      <title>New paper accepted in Nature on global patterns of 'dark diversity' in plants</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2025-04-21-darkdivnet</link>
+      <description>The first article of our DarkDivNet consortium, led by Meelis Pärtel, has been published in Nature. Our dataset from 5500 sites in 119 world regions, collected specially for this purpose, shows that plant diversity is negatively affected not only by direct human impact such as local disturbance.</description>
+      <category>articles</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2025-04-21-darkdivnet</guid>
+      <pubDate>Wed, 02 Apr 2025 00:00:00 +0000</pubDate>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://beta.rstudioconnect.com/content/3776/posts/2025-04-21-darkdivnet/Fig_1.png" medium="image" type="image/png" width="1242" height="1078"/>
+    </item>
+    <item>
+      <title>New paper accepted in Ecology Letters</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters</link>
+      <description>In this paper, we aim to understand the consequences of species composition changes on the functional and phylogenetic diversity of birds across the world</description>
+      <category>articles</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters</guid>
+      <pubDate>Mon, 12 Feb 2024 00:00:00 +0000</pubDate>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://beta.rstudioconnect.com/content/3776/posts/2024-01-17-new-paper-accepted-in-ecology-letters/Figure_1_R2.png" medium="image" type="image/png" width="3000" height="3000"/>
+    </item>
+  </channel>
+</rss>

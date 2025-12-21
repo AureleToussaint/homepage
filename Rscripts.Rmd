@@ -1,0 +1,691 @@
+---
+title: "R scripts"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: show
+    highlight: tango
+    df_print: paged
+    css: assets/custom.css
+    includes:
+      after_body: assets/after_body.html
+---
+
+
+This page collects reusable R utilities (installation helpers, summary/stat functions, trait workflows, PCA, TPD utilities, and assorted snippets).  
+All chunks are shown for copy/paste but **not evaluated** (`eval = FALSE`).
+
+## Contents {.tabset .tabset-fade .tabset-pills}
+
+### Library
+
+```{r library, eval=FALSE}
+packages <- c(
+  "ade4","ape","berryFunctions","betapart","biscale","cowplot","PCA_TRAITS.table",
+  "dplyr","funrar","geiger","ggplot2","ggpubr","lsmeans","missForest","motmot",
+  "multcomp","mvMORPH","paleotree","pals","paran","phylobase","phytools","picante",
+  "plotly","plotrix","psych","quanteda","ratematrix","RColorBrewer","readr","rgbif",
+  "rnaturalearth","rredlist","sf","shape","stats","tidyr","TPD","vegan",
+  "VennDiagram","viridis","wesanderson"
+)
+
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+# Packages loading
+lapply(packages, library, character.only = TRUE)
+```
+
+### Statistics
+
+```{r statistics, eval=FALSE}
+distrib <- function(x, k = 6) {
+  # NA removing
+  x <- x[is.na(x) == FALSE]
+
+  Nx <- length(x)
+  sum <- round(summary(x), k)
+  res <- c(Nx, sum)
+  names(res) <- c("N", names(sum))
+  return(res)
+} # end of function distrib
+
+hms_span <- function(start, end) {
+  dsec <- as.numeric(difftime(end, start, unit = "secs"))
+  hours <- floor(dsec / 3600)
+  minutes <- floor((dsec - 3600 * hours) / 60)
+  seconds <- dsec - 3600 * hours - 60 * minutes
+  paste0(
+    sapply(c(hours, minutes, seconds), function(x) {
+      formatC(x, width = 2, format = "d", flag = "0")
+    }),
+    collapse = ":"
+  )
+}
+
+sesandpvalues_bis <- function(obs, rand, nreps, probs = c(0.025, 0.975), rnd = 2) {
+  SES <- (obs - mean(rand)) / sd(rand)
+  pValsSES <- rank(c(obs, rand))[1] / (length(rand) + 1)
+  results <- round(c(obs, SES, mean(rand), quantile(rand, prob = probs), pValsSES, nreps), rnd)
+  names(results) <- c("Observed", "SES", "MeanRd", "CI025Rd", "CI975Rd", "Pval", "Nreps")
+  return(results)
+}
+
+extract_t_test <- function(x, y, ...) {
+  z <- t.test(x, y)
+  stat <- z$statistic
+  pval <- z$p.value
+  pvalStars <- ifelse(pval > 0.05, ".",
+                      ifelse(pval > 0.01, "*",
+                             ifelse(pval > 0.001, "**", "***")))
+  est <- z$estimate
+  sdv <- c(sd(x), sd(y))
+
+  res <- data.frame(est[1], sdv[1], est[2], sdv[2], stat, pval, pvalStars)
+  res[1:4] <- round(as.numeric(res[1:4]), 2)
+  names(res) <- c("Mean x", "sd x", "Mean y", "sd y", "t", "Pvalues", "P")
+  return(res)
+}
+
+extract_indices_list <- function(ind) {
+  indSES <- matrix(
+    NA, nr = ncol(ind), nc = 7,
+    dimnames = list(
+      colnames(ind),
+      c("Observed", "SES", "MeanRd", "CI025Rd", "CI975Rd", "Pval", "Nreps")
+    )
+  )
+  for (i in 1:nrow(indSES)) {
+    indSES[i, ] <- sesandpvalues_bis(
+      obs = ind[1, i],
+      rand = ind[-1, i],
+      nreps = length(ind[, 1]) - 1,
+      probs = c(0.025, 0.975),
+      rnd = 2
+    )
+  }
+  rownames(indSES) <- gsub("\\.", " ", rownames(indSES))
+  return(indSES)
+}
+
+extract_indices_change <- function(ind) {
+  indSES <- matrix(
+    NA, nr = ncol(ind), nc = 7,
+    dimnames = list(
+      colnames(ind),
+      c("Observed", "SES", "MeanRd", "CI025Rd", "CI975Rd", "Pval", "Nreps")
+    )
+  )
+  for (i in 1:nrow(indSES)) {
+    indSES[i, ] <- sesandpvalues_bis(
+      obs = ((ind[2, i] - ind[1, i]) / ind[1, i]) * 100,
+      rand = ((ind[-c(1:2), i] - ind[1, i]) / ind[1, i]) * 100,
+      nreps = length(ind[, 1]) - 2,
+      probs = c(0.025, 0.975),
+      rnd = 2
+    )
+  }
+  rownames(indSES) <- gsub("\\.", " ", rownames(indSES))
+  return(indSES)
+}
+
+extract_indices_change_log <- function(ind) {
+  indSES <- matrix(
+    NA, nr = ncol(ind), nc = 7,
+    dimnames = list(
+      colnames(ind),
+      c("Observed", "SES", "MeanRd", "CI025Rd", "CI975Rd", "Pval", "Nreps")
+    )
+  )
+  for (i in 1:nrow(indSES)) {
+    indSES[i, ] <- sesandpvalues_bis(
+      obs = log(ind[2, i] / ind[1, i]),
+      rand = log(ind[-c(1:2), i] / ind[1, i]),
+      nreps = length(ind[, 1]) - 2,
+      probs = c(0.025, 0.975),
+      rnd = 2
+    )
+  }
+  rownames(indSES) <- gsub("\\.", " ", rownames(indSES))
+  return(indSES)
+}
+```
+
+### Sorting data
+
+```{r sorting_data, eval=FALSE}
+standard_names <- function(Traits, nrowTraits, source = 163, dim = NA) {
+  require(taxize)
+  standNamesTraits <- as.data.frame(
+    matrix(
+      NA,
+      nrow = nrowTraits,
+      ncol = 1,
+      dimnames = list(rownames(Traits), "IUCNName")
+    )
+  )
+  batchSize <- 1000
+
+  for (i in 1:(ceiling(nrowTraits / batchSize))) {
+    cat(paste0("\nBatch ", i, " out of ", (ceiling(nrowTraits / batchSize)), "\n"))
+    rowsSelect <- ((i - 1) * batchSize + 1):min((i * batchSize), nrowTraits)
+    taxoAux <- as.data.frame(
+      taxize::gnr_resolve(
+        names = rownames(standNamesTraits)[rowsSelect],
+        preferred_data_sources = source, # 163 is IUCN
+        best_match_only = TRUE,
+        canonical = TRUE
+      )
+    )
+    standNamesTraits[taxoAux$user_supplied_name, "IUCNName"] <- taxoAux$matched_name2
+  }
+
+  standNamesTraits[, "IUCNName"] <- gsub(
+    x = standNamesTraits[, "IUCNName"],
+    pattern = " ",
+    replacement = "_"
+  )
+  naIUCN <- which(is.na(standNamesTraits[, "IUCNName"]))
+  standNamesTraits[naIUCN, "IUCNName"] <- rownames(standNamesTraits)[naIUCN]
+
+  # Some species could not be resolved into IUCN naming. Remove them:
+  yesName <- which(!is.na(standNamesTraits[, "IUCNName"]))
+  if (dim == 1) {
+    return(Traits[yesName])
+  } else {
+    return(Traits[yesName, ])
+  }
+}
+
+addToPhylo <- function(phylogenyTraits, GROUPTraits) {
+  phylogenyTraits <- force.ultrametric(tree = phylogenyTraits, method = c("extend"))
+  tipsToAdd <- which(!rownames(GROUPTraits) %in% phylogenyTraits$tip.label)
+  namesToAdd <- rownames(GROUPTraits)[tipsToAdd]
+  genusToAdd <- unlist(strsplit(namesToAdd, "_"))[
+    which(1:length(strsplit(namesToAdd, "_")) %% 2 == 1)
+  ]
+  phylogenyTraitsAdd <- phylogenyTraits
+
+  for (add in 1:length(namesToAdd)) {
+    cat(paste("\rADDING SP TO GENUS IN PHYLOGENY", add, "/", length(namesToAdd), "\r"))
+    phylogenyTraitsAdd <- add.species.to.genus(
+      tree = phylogenyTraitsAdd,
+      species = namesToAdd[add],
+      genus = genusToAdd[add],
+      where = "root"
+    )
+  }
+  return(phylogenyTraitsAdd)
+}
+
+RedToTraits <- function(IUCNGROUPtoTraits) {
+  RedToTraits <- matrix(
+    rep(NA, nrow(IUCNGROUPtoTraits)),
+    ncol = 1,
+    dimnames = list(IUCNGROUPtoTraits$Species, "IUCN")
+  )
+
+  for (i in 1:nrow(IUCNGROUPtoTraits)) {
+    selRows <- which(IUCNGROUPtoTraits$Species == IUCNGROUPtoTraits$Species[i])
+    if (length(selRows) > 1) {
+      dataAux <- IUCNGROUPtoTraits[selRows, ]
+      if (any(is.na(dataAux$infra_name))) {
+        coger <- which(is.na(dataAux$infra_name))
+        if (length(coger) == 1) {
+          RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <- as.character(dataAux$categorySimp[coger])
+        } else {
+          if (length(unique(dataAux$categorySimp[coger])) == 1) {
+            RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <-
+              as.character(unique(dataAux$categorySimp[coger]))
+          } else {
+            RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <-
+              as.character(sort(unique(dataAux$categorySimp))[1])
+          }
+        }
+      } else {
+        RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <-
+          as.character(sort(unique(dataAux$categorySimp))[1])
+      }
+    } else {
+      RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <-
+        as.character(IUCNGROUPtoTraits[selRows, "categorySimp"])
+    }
+  }
+  return(RedToTraits)
+}
+
+imputation_trait <- function(GROUPData, selectedTraits, shortnames = c("am", "bs", "ls", "os")) {
+  require(missForest)
+  columnsTraits <- 1:(which(colnames(GROUPData) == "Eigen.1") - 1)
+  GROUPData[, columnsTraits] <- log10(GROUPData[, columnsTraits])
+
+  # NOTE: All traits are kept for imputation
+  columsImputation <- 1:(which(colnames(GROUPData) == "IUCN") - 1)
+  GROUPTraitslogImputed <- as.matrix(missForest(xmis = GROUPData[, columsImputation])$ximp)
+
+  GROUPTraitsImputed <- GROUPTraitsMissing <- GROUPData
+  GROUPTraitsImputed[, columnsTraits] <- GROUPTraitslogImputed[, columnsTraits]
+
+  GROUPTraitsMissing <- GROUPTraitsMissing[, selectedTraits]
+  GROUPTraitsImputed <- GROUPTraitsImputed[, selectedTraits]
+  colnames(GROUPTraitsMissing) <- colnames(GROUPTraitsImputed) <- shortnames
+
+  GROUPOtherInfo <- GROUPData[, (max(columnsTraits) + 1):ncol(GROUPData)]
+  GROUPTraitsImputed <- data.frame(GROUPTraitsImputed, IUCN = GROUPData$IUCN)
+  GROUPTraitsMissing <- data.frame(GROUPTraitsMissing, IUCN = GROUPData$IUCN)
+
+  return(list(GROUPTraitsImputed, GROUPTraitsMissing))
+}
+```
+
+### PCA
+
+```{r pca, eval=FALSE}
+# Perform PCA
+# TRAITS: table of traits sp x tr : MUST BE SCALED AND log10
+make.PCA <- function(TRAITS, dimensionsAux, savePCA) {
+  paranAux <- paran(TRAITS)
+  PCA_TRAITS <- list()
+  PCA_TRAITS$traits <- TRAITS
+  PCA_TRAITS$PCA <- princomp(PCA_TRAITS$traits)
+  PCA_TRAITS$dimensions <- dimensionsAux
+  PCA_TRAITS$variance <- (summary(PCA_TRAITS$PCA)[1][[1]]^2)[1:dimensionsAux] /
+    sum(summary(PCA_TRAITS$PCA)[1][[1]]^2)
+  PCA_TRAITS$loadings <- PCA_TRAITS$PCA$loadings
+  PCA_TRAITS$traitsUse <- data.frame(PCA_TRAITS$PCA$scores[, 1:PCA_TRAITS$dimensions])
+  if (!is.na(savePCA)) {
+    saveRDS(PCA_TRAITS, savePCA)
+  }
+  return(PCA_TRAITS)
+}
+
+# Possible to turn it as function for all groups (Nat Comm 2021)
+make.PCA.groups <- function(traitsImputed, traitsMissing,
+                            group = c("Plants","Birds","Mammals","Reptiles","Amphibians","Fishes")) {
+  require(paran)
+  paranAux <- paran(traitsImputed[, 1:(ncol(traitsImputed) - 1)])
+  if (paranAux$Retained < 2) paranAux$Retained <- 2
+  dimensionsAux <- paranAux$Retained
+
+  PCAImpute <- list()
+  PCAImpute$traits <- traitsImputed[, 1:(ncol(traitsImputed) - 1)]
+  PCAImpute$traitsMissing <- traitsMissing[, 1:(ncol(traitsImputed) - 1)]
+  PCAImpute$nImputed <- rowSums(is.na(PCAImpute$traitsMissing))
+  PCAImpute$PCA <- princomp(traitsImputed[, 1:(ncol(traitsImputed) - 1)])
+  PCAImpute$dimensions <- dimensionsAux
+  PCAImpute$variance <- (summary(PCAImpute$PCA)[1][[1]]^2)[1:dimensionsAux] /
+    sum(summary(PCAImpute$PCA)[1][[1]]^2)
+
+  if (group %in% c("Birds","Mammals")) { # Mammals & Birds
+    multPC1 <- ifelse(PCAImpute$PCA$loadings["bm", "Comp.1"] > 0, 1, -1)
+    PCAImpute$PCA$scores[, 1] <- multPC1 * PCAImpute$PCA$scores[, 1]
+    PCAImpute$PCA$loadings[, "Comp.1"] <- multPC1 * PCAImpute$PCA$loadings[, "Comp.1"]
+  }
+
+  if (group == "Reptiles") { # Reptiles
+    multPC2 <- ifelse(PCAImpute$PCA$loadings["inc", "Comp.2"] > 0, -1, 1)
+    PCAImpute$PCA$scores[, 2] <- multPC2 * PCAImpute$PCA$scores[, 2]
+    PCAImpute$PCA$loadings[, "Comp.2"] <- multPC2 * PCAImpute$PCA$loadings[, "Comp.2"]
+  }
+
+  if (group == "Fishes") { # Fishes
+    multPC1 <- ifelse(PCAImpute$PCA$loadings["svl", "Comp.1"] > 0, 1, -1)
+    multPC2 <- ifelse(PCAImpute$PCA$loadings["svl", "Comp.2"] < 0, 1, -1)
+    PCAImpute$PCA$scores[, 1] <- multPC1 * PCAImpute$PCA$scores[, 1]
+    PCAImpute$PCA$loadings[, "Comp.1"] <- multPC1 * PCAImpute$PCA$loadings[, "Comp.1"]
+    PCAImpute$PCA$scores[, 2] <- multPC2 * PCAImpute$PCA$scores[, 2]
+    PCAImpute$PCA$loadings[, "Comp.2"] <- multPC2 * PCAImpute$PCA$loadings[, "Comp.2"]
+  }
+
+  PCAImpute$loadings <- PCAImpute$PCA$loadings
+  PCAImpute$traitsUse <- data.frame(PCAImpute$PCA$scores[, 1:PCAImpute$dimensions])
+
+  treathCat <- c("EX", "EW", "CR", "EN", "VU")
+  noThreatCat <- c("LC", "NT")
+  PCAImpute$Threat <- with(traitsImputed,
+                           ifelse(IUCN %in% treathCat, 1,
+                                  ifelse(IUCN %in% noThreatCat, 0, NA)))
+  return(PCAImpute)
+}
+```
+
+### Functional diversity
+
+#### TPDsMean without ITV
+
+```{r tpd_mean_without_itv, eval=FALSE}
+# PCA_TRAITS: object from PCA previously done
+dimensions <- PCA_TRAITS$dimensions
+traitsUSE <- PCA_TRAITS$traitsUse
+colnames(traitsUSE) <- paste0("Comp.", 1:dimensions)
+gridSize <- ifelse(dimensions == 4, 30, 100)
+sdTraits <- sqrt(diag(Hpi.diag(traitsUSE)))
+
+TPDsAux <- TPDsMean(
+  species = rownames(traitsUSE),
+  means = traitsUSE,
+  sds = matrix(rep(sdTraits, nrow(traitsUSE)), byrow = TRUE, ncol = dimensions),
+  alpha = 0.95,
+  n_divisions = gridSize
+)
+
+make.TPD.2D.high.def <- function(targetGroupName, PCAImpute, alphaUse = 0.95,
+                                 saveFile = paste0(getwd(), "/TPDs2DHighDef.rds")) {
+  require(TPD)
+  cat(paste("\n ESTIMATING TPDs for: ", targetGroupName, "\n"))
+  dimensions <- 2
+  traitsUSE <- PCAImpute$traitsUse[, 1:dimensions]
+  colnames(traitsUSE) <- paste0("Comp.", 1:2)
+  gridSize <- 200
+  sdTraits <- sqrt(diag(Hpi.diag(traitsUSE)))
+
+  TPDsAux <- TPDsMean(
+    species = rownames(traitsUSE),
+    means = traitsUSE,
+    sds = matrix(rep(sdTraits, nrow(traitsUSE)), byrow = TRUE, ncol = dimensions),
+    alpha = alphaUse,
+    n_divisions = gridSize
+  )
+  saveRDS(TPDsAux, saveFile)
+  TPDsAux <- NULL
+  gc()
+}
+
+make.TPD.2D.low.def <- function(targetGroupName, PCAImpute, alphaUse = 0.95,
+                                saveFile = paste0(getwd(), "/TPDs2DLowDef.rds")) {
+  require(TPD)
+  cat(paste("\n ESTIMATING TPDs for: ", targetGroupName, "\n"))
+  dimensions <- 2
+  traitsUSE <- PCAImpute$traitsUse[, 1:dimensions]
+  colnames(traitsUSE) <- paste0("Comp.", 1:2)
+  gridSize <- 100
+  sdTraits <- sqrt(diag(Hpi.diag(traitsUSE)))
+
+  TPDsAux <- TPDsMean(
+    species = rownames(traitsUSE),
+    means = traitsUSE,
+    sds = matrix(rep(sdTraits, nrow(traitsUSE)), byrow = TRUE, ncol = dimensions),
+    alpha = alphaUse,
+    n_divisions = gridSize
+  )
+  saveRDS(TPDsAux, saveFile)
+  TPDsAux <- NULL
+  gc()
+}
+
+make.TPDLarge <- function(targetGroupName, PCAImpute, alphaUse = 0.95, TPDsMean_large,
+                          saveFile = paste0(getwd(), "/TPDsLarge.rds")) {
+  cat(paste("\n ESTIMATING TPDs for: ", targetGroupName, "\n"))
+  dimensions <- PCAImpute$dimensions
+  traitsUSE <- PCAImpute$traitsUse
+  colnames(traitsUSE) <- paste0("Comp.", 1:dimensions)
+  gridSize <- ifelse(dimensions == 4, 30, 100)
+  sdTraits <- sqrt(diag(Hpi.diag(traitsUSE)))
+
+  TPDsAux <- TPDsMean_large(
+    species = rownames(traitsUSE),
+    means = traitsUSE,
+    sds = matrix(rep(sdTraits, nrow(traitsUSE)), byrow = TRUE, ncol = dimensions),
+    alpha = alphaUse,
+    n_divisions = gridSize
+  )
+  saveRDS(TPDsAux, saveFile)
+  TPDsAux <- NULL
+  gc()
+}
+```
+
+#### Function TPD package updated
+
+```{r tpd_updated_functions, eval=FALSE}
+TPDRichness <- function(TPDc = NULL, TPDs = NULL) {
+  if (is.null(TPDc) & is.null(TPDs)) {
+    stop("At least one of 'TPDc' or 'TPDs' must be supplied")
+  }
+  if (!is.null(TPDc) & class(TPDc) != "TPDcomm") {
+    stop("Class mismatch: please specify if your object is a TPDc or a TPDs (TPDcomm expected).")
+  }
+  if (!is.null(TPDs) & class(TPDs) != "TPDsp") {
+    stop("Class mismatch: please specify if your object is a TPDc or a TPDs (TPDsp expected).")
+  }
+
+  results <- list()
+
+  Calc_FRich <- function(x) {
+    results_FR <- numeric()
+    if (class(x) == "TPDcomm") {
+      TPD <- x$TPDc$TPDc
+      names_aux <- names(x$TPDc$TPDc)
+      cell_volume <- x$data$cell_volume
+    }
+    if (class(x) == "TPDsp") {
+      TPD <- x$TPDs
+      names_aux <- names(x$TPDs)
+      cell_volume <- x$data$cell_volume
+    }
+    for (i in 1:length(TPD)) {
+      TPD_aux <- TPD[[i]]
+      TPD_aux[TPD_aux > 0] <- cell_volume
+      results_FR[i] <- sum(TPD_aux)
+    }
+    names(results_FR) <- names_aux
+    return(results_FR)
+  }
+
+  if (!is.null(TPDc)) {
+    results$communities <- list()
+    results$communities$FRichness <- Calc_FRich(TPDc)
+  }
+  if (!is.null(TPDs)) {
+    if (TPDs$data$type == "One population_One species" |
+        TPDs$data$type == "One population_Multiple species") {
+      results$species <- list()
+      results$species$FRichness <- Calc_FRich(TPDs)
+    } else {
+      results$populations <- list()
+      results$populations$FRichness <- Calc_FRich(TPDs)
+    }
+    if (TPDs$data$method == "mean") {
+      message("WARNING: When TPDs are calculated using the TPDsMean function, Evenness and Divergence are meaningless!!")
+    }
+  }
+  return(results)
+}
+
+imageTPD <- function(x, thresholdPlot = 0.99) {
+  TPDList <- x$TPDc$TPDc
+  imageTPD <- list()
+  for (comm in 1:length(TPDList)) {
+    percentile <- rep(NA, length(TPDList[[comm]]))
+    TPDList[[comm]] <- cbind(index = 1:length(TPDList[[comm]]),
+                             prob = TPDList[[comm]], percentile)
+    orderTPD <- order(TPDList[[comm]][, "prob"], decreasing = TRUE)
+    TPDList[[comm]] <- TPDList[[comm]][orderTPD, ]
+    TPDList[[comm]][, "percentile"] <- cumsum(TPDList[[comm]][, "prob"])
+    TPDList[[comm]] <- TPDList[[comm]][order(TPDList[[comm]][, "index"]), ]
+    imageTPD[[comm]] <- TPDList[[comm]]
+  }
+  names(imageTPD) <- names(TPDList)
+
+  trait1Edges <- unique(x$data$evaluation_grid[, 1])
+  trait2Edges <- unique(x$data$evaluation_grid[, 2])
+  imageMat <- array(
+    NA,
+    c(length(trait1Edges), length(trait2Edges), length(imageTPD)),
+    dimnames = list(trait1Edges, trait2Edges, names(TPDList))
+  )
+  for (comm in 1:length(TPDList)) {
+    percentileSpace <- x$data$evaluation_grid
+    percentileSpace$percentile <- imageTPD[[comm]][, "percentile"]
+    for (i in 1:length(trait2Edges)) {
+      colAux <- subset(percentileSpace, percentileSpace[, 2] == trait2Edges[i])
+      imageMat[, i, comm] <- colAux$percentile
+    }
+    imageMat[imageMat > thresholdPlot] <- NA
+  }
+  return(imageMat)
+}
+
+overlapF <- function(x, y) {
+  if (!identical(x$eval.points, y$eval.points)) stop("Not identical eval points!")
+  TPDx <- x$estimate
+  if (class(x$eval.points) == "list") {
+    x$eval.points <- expand.grid(x$eval.points)
+  }
+  cellEdge <- numeric()
+  for (i in 1:ncol(x$eval.points)) {
+    cellEdge[i] <- unique(x$eval.points[, i])[2] - unique(x$eval.points[, i])[1]
+  }
+  cellSizex <- prod(cellEdge)
+  TPDx <- TPDx * cellSizex
+  TPDx <- TPDx / sum(TPDx)
+
+  TPDy <- y$estimate
+  TPDy <- TPDy * cellSizex
+  TPDy <- TPDy / sum(TPDy)
+
+  OL <- sum(pmin(TPDx, TPDy))
+  return(OL)
+}
+
+percentileTPD <- function(x) {
+  TPDList <- x$TPDc$TPDc
+  results <- list()
+  for (comm in 1:length(TPDList)) {
+    percentile <- rep(NA, nrow(TPDList[[comm]]))
+    TPDList[[comm]] <- cbind(TPDList[[comm]], percentile)
+    orderTPD <- order(TPDList[[comm]][, "notZeroProb"], decreasing = TRUE)
+    TPDList[[comm]] <- TPDList[[comm]][orderTPD, ]
+    TPDList[[comm]][, "percentile"] <- cumsum(TPDList[[comm]][, "notZeroProb"])
+    TPDList[[comm]] <- TPDList[[comm]][order(TPDList[[comm]][, "notZeroIndex"]), ]
+    results[[comm]] <- TPDList[[comm]]
+  }
+  names(results) <- names(TPDList)
+  return(results)
+}
+
+quantileTPD <- function(x, thresholdPlot = 0.99) {
+  TPDList <- x$TPDc$TPDc
+  quantileTPD <- list()
+  for (comm in 1:length(TPDList)) {
+    percentile <- rep(NA, length(TPDList[[comm]]))
+    TPDList[[comm]] <- cbind(index = 1:length(TPDList[[comm]]),
+                             prob = TPDList[[comm]], percentile)
+    orderTPD <- order(TPDList[[comm]][, "prob"], decreasing = TRUE)
+    TPDList[[comm]] <- TPDList[[comm]][orderTPD, ]
+    TPDList[[comm]][, "percentile"] <- cumsum(TPDList[[comm]][, "prob"])
+    TPDList[[comm]] <- TPDList[[comm]][order(TPDList[[comm]][, "index"]), ]
+    quantileTPD[[comm]] <- TPDList[[comm]]
+  }
+  names(quantileTPD) <- names(TPDList)
+
+  trait1Edges <- unique(x$data$evaluation_grid[, 1])
+  trait2Edges <- unique(x$data$evaluation_grid[, 2])
+  imageMat <- array(
+    NA,
+    c(length(trait1Edges), length(trait2Edges), length(quantileTPD)),
+    dimnames = list(trait1Edges, trait2Edges, names(TPDList))
+  )
+  for (comm in 1:length(TPDList)) {
+    percentileSpace <- x$data$evaluation_grid
+    percentileSpace$percentile <- quantileTPD[[comm]][, "percentile"]
+    for (i in 1:length(trait2Edges)) {
+      colAux <- subset(percentileSpace, percentileSpace[, 2] == trait2Edges[i])
+      imageMat[, i, comm] <- 1 - colAux$percentile
+    }
+    imageMat[imageMat < (1 - thresholdPlot)] <- 0
+  }
+  return(imageMat)
+}
+
+MAE_TPD <- function(x, y) {
+  diffXY <- abs(x - y)
+  MAE <- mean(diffXY)
+  return(MAE)
+}
+```
+
+### Regex & snippets
+
+```{r regex_and_snippets, eval=FALSE}
+# Regex to select all symbols but '_'. useful for identify formulas in dplyr::
+"[^[:alnum:][:space:]_]"
+
+x <- iris
+x <- x[, 1:2]
+colnames(x) <- c("x1", "x2")
+
+library(dplyr)
+
+funfun <- function(data, expr = "log(x1 / x2) * 10^2") {
+  expr <- parse(text = expr)
+  data %>% mutate(x3 = eval(expr))
+}
+
+funfun(x)
+
+## How to make a gower for big data table
+library(cluster)       # daisy() and Gower distance
+library(data.table)    # large data handling
+library(parallel)      # parallel computing
+library(bigstatsr)     # very large matrices
+
+load(here::here("outputs", "test_phenofish_final.RData"))  # assumes object `test_phenofish_final`
+
+data_morph <- test_phenofish_final %>%
+  filter(trait_type == "morphological" & fresh == 1 & trait_coding == "continuous")
+
+data_morph <- data_morph %>%
+  dplyr::group_by(specimen_id, trait_name) %>%
+  mutate(trait_value = as.numeric(trait_value))
+
+data_morph <- data_morph %>%
+  dplyr::group_by(phenofish_name, trait_name) %>%
+  dplyr::summarise(trait_value = mean(trait_value), .groups = "drop")
+
+species_traits <- reshape2::dcast(data_morph, phenofish_name ~ trait_name)
+colnames(species_traits)[1] <- "species"
+rownames(species_traits) <- species_traits[, 1]
+traits <- species_traits[, -1]
+
+block_size <- 10000
+n <- nrow(traits)
+
+gower_matrix <- matrix(NA, n, n)
+
+compute_gower_block <- function(start_idx, end_idx, traits_data) {
+  block_data <- traits_data[start_idx:end_idx, , drop = FALSE]
+  gower_dist_block <- daisy(block_data, metric = "gower")
+  return(as.matrix(gower_dist_block))
+}
+
+block_indices <- split(1:n, ceiling(1:n / block_size))
+
+cl <- makeCluster(detectCores() - 1)
+clusterExport(cl, varlist = c("traits", "daisy", "compute_gower_block"))
+
+gower_blocks <- parLapply(cl, block_indices, function(indices) {
+  start_idx <- indices[1]
+  end_idx <- tail(indices, 1)
+  compute_gower_block(start_idx, end_idx, traits)
+})
+
+for (i in 1:length(gower_blocks)) {
+  idx_range <- block_indices[[i]]
+  gower_matrix[idx_range, idx_range] <- gower_blocks[[i]]
+}
+
+stopCluster(cl)
+
+print(gower_matrix[1:100, 1:100])
+save(gower_matrix, file = "gower_matrix.RData")
+
+pcoa_res <- ape::pcoa(as.dist(gower_matrix))
+pca_res <- cmdscale(as.dist(gower_matrix), k = 2)
+summary(pca_res)
+```
