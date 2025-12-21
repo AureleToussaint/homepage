@@ -20,7 +20,7 @@ world</title>
 
 <b><font size="+6">The INTRAIT project</font></b> <br>
 <b><font size="+2">A project for research and conservation of freshwater
-fish</font></b> <br> \
+fish</font></b> <br>\
 <br>
 
 <left><font size="+1"> Leading by scientists of the **University of
