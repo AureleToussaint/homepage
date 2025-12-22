@@ -15,8 +15,7 @@ output:
       after_body: assets/after_body.html
 ---
 
-
-This page collects reusable R utilities (installation helpers, summary/stat functions, trait workflows, PCA, TPD utilities, and assorted snippets).  
+This page collects reusable R utilities (installation helpers, summary/stat functions, trait workflows, PCA, TPD utilities, and assorted snippets).\
 All chunks are shown for copy/paste but **not evaluated** (`eval = FALSE`).
 
 ## Contents {.tabset .tabset-fade .tabset-pills}
@@ -352,6 +351,315 @@ make.PCA.groups <- function(traitsImputed, traitsMissing,
                                   ifelse(IUCN %in% noThreatCat, 0, NA)))
   return(PCAImpute)
 }
+
+
+# =========================
+# Example for birds
+# =========================
+# 1. Load data
+# =========================
+PCA <- readRDS("data/processed/PCA_Birds.rds")
+shortNames <- read.csv("data/processed/Shortnames_Birds.csv")
+type <- names(PCA)
+title_space = c('Combined','Locomotion','Reproduction','Diet')
+# =========================
+# 2. Define functions
+# =========================
+
+PCA_plot <- function(PCoAPlot,PCoACorPlot,multAx1,multAx,title,legend){
+  Plan12=ggplot(data = data.frame(PCoAPlot$vectors)) +
+    geom_point(aes(x = Axis.1, y = Axis.2),col="grey89") +
+    theme_classic()+
+    ggtitle(title)+
+    xlab(paste0("PCoA 1 (",round(PCoAPlot$values[1,2]*100,2),"%)"))+
+    ylab(paste0("PCoA 2 (",round(PCoAPlot$values[2,2]*100,2),"%)"))+
+    #coord_fixed() + ## need aspect ratio of 1!
+    geom_segment(data = data.frame(PCoACorPlot),
+                 aes(x = 0, xend = Axis.1*multAx, y = 0, yend = Axis.2*multAx),
+                 arrow = arrow(length = unit(0.25, "cm")), colour = PCoACorPlot$color) +
+    geom_text(data = data.frame(PCoACorPlot), 
+              aes(x =  Axis.1*multAx1, y = Axis.2*multAx1, 
+                  label =  names), colour = PCoACorPlot$color,
+              size = 5) +
+    theme(
+      plot.title = element_text(
+        size = 18,       # Increase size (adjust as needed)
+        face = "bold"    # Make it bold
+      )
+    )
+  
+  if(!is.null(legend)){
+    Plan12 = Plan12 + annotate(geom = "text",label = legend, x = Inf, y = -Inf, hjust = 1, vjust = -0.5)      # Make text bold)
+  }
+  
+  
+  
+  Plan12
+}
+
+# ---------- utilities ----------
+.sanitize_axes <- function(df) {
+  stopifnot(all(c("Axis.1","Axis.2") %in% names(df)))
+  df <- df[is.finite(df$Axis.1) & is.finite(df$Axis.2), , drop = FALSE]
+  df$Axis.1 <- as.numeric(df$Axis.1)
+  df$Axis.2 <- as.numeric(df$Axis.2)
+  df
+}
+
+.safe_limits <- function(x, pad_factor = 0.08) {
+  xr <- range(x, finite = TRUE)
+  if (!is.finite(xr[1]) || !is.finite(xr[2])) return(c(-1, 1))
+  if (xr[1] == xr[2]) {
+    eps <- ifelse(abs(xr[1]) > 0, abs(xr[1]) * pad_factor, 1e-6)
+    return(c(xr[1] - eps, xr[2] + eps))
+  }
+  width <- diff(xr)
+  c(xr[1] - width * pad_factor, xr[2] + width * pad_factor)
+}
+
+# KDE grid using {ks}
+.kde_grid <- function(df, gridsize = 181, H = NULL) {
+  if (!requireNamespace("ks", quietly = TRUE)) {
+    stop("Please install.packages('ks') to use the KDE-based density background.")
+  }
+  df <- .sanitize_axes(df)
+  if (nrow(df) < 3) return(list(grid = NULL, x = NULL, y = NULL, z = NULL))
+  
+  xlim <- .safe_limits(df$Axis.1); ylim <- .safe_limits(df$Axis.2)
+  
+  X <- cbind(
+    pmin(pmax(df$Axis.1, xlim[1]), xlim[2]),
+    pmin(pmax(df$Axis.2, ylim[1]), ylim[2])
+  )
+  
+  if (is.null(H)) {
+    H <- try(ks::Hpi(x = X), silent = TRUE)
+    if (inherits(H, "try-error") || any(!is.finite(as.vector(H)))) {
+      H <- try(ks::Hscv(x = X), silent = TRUE)
+    }
+    if (inherits(H, "try-error") || any(!is.finite(as.vector(H)))) {
+      v <- apply(X, 2, stats::var, na.rm = TRUE); v[v <= 0 | !is.finite(v)] <- 1e-6
+      H <- diag(v)
+    }
+  }
+  
+  kde <- ks::kde(
+    x = X, H = H,
+    xmin = c(xlim[1], ylim[1]), xmax = c(xlim[2], ylim[2]),
+    gridsize = c(gridsize, gridsize)
+  )
+  
+  gx <- kde$eval.points[[1]]
+  gy <- kde$eval.points[[2]]
+  gz <- kde$estimate  # matrix [length(gx) x length(gy)]
+  
+  grid <- expand.grid(x = gx, y = gy)
+  grid$z <- as.vector(gz)
+  
+  list(grid = grid, x = gx, y = gy, z = gz)
+}
+
+# Compute density cutoffs (levels) that enclose given probabilities on the grid
+.hdr_levels_grid <- function(gx, gy, gz, probs = c(0.25, 0.5, 0.99)) {
+  # assume regular grid (true for ks::kde)
+  dx <- mean(diff(gx)); dy <- mean(diff(gy))
+  w <- as.vector(gz)
+  ord <- order(w, decreasing = TRUE)
+  cum_mass <- cumsum(w[ord]) * dx * dy
+  # normalize to 1 (numerical integration may be slightly off)
+  cum_mass <- cum_mass / max(cum_mass, na.rm = TRUE)
+  
+  sapply(probs, function(p) {
+    idx <- which(cum_mass >= p)[1]
+    if (is.na(idx)) min(w, na.rm = TRUE) else w[ord][idx]
+  })
+}
+
+# Build contour paths + label positions from a raster grid
+.contour_data <- function(gx, gy, gz, levels, prob_labels) {
+  cls <- contourLines(x = gx, y = gy, z = gz, levels = levels)  # note t()
+  if (length(cls) == 0) return(list(lines = NULL, labels = NULL))
+  lines_df <- do.call(rbind, lapply(seq_along(cls), function(i) {
+    data.frame(x = cls[[i]]$x, y = cls[[i]]$y, level = cls[[i]]$level, id = i)
+  }))
+  labels_df <- do.call(rbind, lapply(seq_along(cls), function(i) {
+    n <- length(cls[[i]]$x); j <- floor(n/2)
+    data.frame(x = cls[[i]]$x[j], y = cls[[i]]$y[j], level = cls[[i]]$level, id = i)
+  }))
+  # map level -> probability text
+  lvl_map <- setNames(prob_labels, levels)
+  labels_df$prob <- lvl_map[as.character(labels_df$level)]
+  list(lines = lines_df, labels = labels_df)
+}
+
+# ---------- funspace-style plot ----------
+PCA_plot_funspace <- function(PCoAPlot, PCoACorPlot, multAx1, multAx, title, legend = NULL,
+                              probs = c(0.25, 0.5, 0.99),
+                              gridsize = 181, H = NULL, bins_filled = 30) {
+  
+  df <- data.frame(PCoAPlot$vectors)
+  df <- .sanitize_axes(df)
+  
+  # KDE grid
+  KG <- .kde_grid(df, gridsize = gridsize, H = H)
+  
+  # density background
+  # continuous raster background
+  p <- ggplot() +
+    geom_raster(
+      data = KG$grid,
+      aes(x = x, y = y, fill = z)
+    ) +
+    scale_fill_gradientn(
+      colours = c(
+        "#FFFFFF",  # white
+        "#FC8D59",  # medium orange-red
+        "#EF6548",  # strong red-orange
+        "#D7301F",  # deep red
+        "#990000"   # dark brownish red
+      ),
+      guide = "none"
+    )
+  
+  # HDR probability contours + labels (0.25, 0.5, 0.95 by default)
+  levs <- .hdr_levels_grid(KG$x, KG$y, KG$z, probs = probs)
+  cd <- .contour_data(KG$x, KG$y, KG$z, levels = as.numeric(levs),
+                      prob_labels = paste0(probs))
+  if (!is.null(cd$lines)) {
+    p <- p +
+      geom_path(data = cd$lines, aes(x, y, group = id),
+                colour = "black", linewidth = 0.6)
+  }
+  if (!is.null(cd$labels)) {
+    p <- p +
+      geom_text(data = cd$labels, aes(x, y, label = prob),
+                colour = "black", size = 3)
+  }
+  
+  # trait loading arrows + labels
+  p <- p +
+    geom_segment(
+      data = data.frame(PCoACorPlot),
+      aes(x = 0, xend = Axis.1 * multAx, y = 0, yend = Axis.2 * multAx),
+      arrow = arrow(length = unit(0.25, "cm")),
+      colour = PCoACorPlot$color, linewidth = 0.5
+    ) +
+    geom_text(
+      data = data.frame(PCoACorPlot),
+      aes(x = Axis.1 * multAx1, y = Axis.2 * multAx1, label = names),
+      colour = PCoACorPlot$color, size = 5
+    ) +
+    theme_classic() +
+    ggtitle(title) +
+    xlab(paste0("PCoA 1 (", round(PCoAPlot$values[1, 2] * 100, 2), "%)")) +
+    ylab(paste0("PCoA 2 (", round(PCoAPlot$values[2, 2] * 100, 2), "%)")) +
+    coord_fixed() +
+    theme(plot.title = element_text(size = 18, face = "bold"))
+  
+  if (!is.null(legend)) {
+    p <- p + annotate("text", label = legend, x = Inf, y = -Inf, hjust = 1, vjust = -0.5)
+  }
+  
+  p
+}
+
+
+## 2.1 Generate a PCA correlation plot with density legend
+make_pca_plot <- function(pca_object, correlation_data, multAx1, multAx, title) {
+  legend_text <- paste0(
+    "Space occupied by:\n",
+    "50% = ", round(pca_object$ALLDensity[1, "0.5"], 2), "\n",
+    "99% = ", round(pca_object$ALLDensity[1, "0.99"], 2)
+  )
+  PCA_plot(pca_object$PCoA, correlation_data, multAx1, multAx, title, legend_text)
+}
+make_pca_plot_34 <- function(pca_object, correlation_data, multAx1, multAx, title) {
+  legend_text <- paste0(
+    "Space occupied by:\n",
+    "50% = ", round(pca_object$ALLDensity[1, "0.5"], 2), "\n",
+    "99% = ", round(pca_object$ALLDensity[1, "0.99"], 2)
+  )
+  PCA_plot_34(pca_object$PCoA, correlation_data, multAx1, multAx, title, legend_text)
+}
+
+## 2.2 Format PCA correlation table with colors and labels
+format_correlation_table <- function(PCoACorPlot, shortNames) {
+  cbind.data.frame(
+    PCoACorPlot,
+    color = shortNames[match(rownames(PCoACorPlot), shortNames$original), "color"],
+    names = shortNames[match(rownames(PCoACorPlot), shortNames$original), "short"]
+  )
+}
+
+## 2.3 Perform Procrustes analysis between PCA spaces
+run_procrustes <- function(PCA_list) {
+  combNames <- combn(names(PCA_list), 2)
+  combNames <- apply(combNames, 2, function(x) paste0(x[1], "_", x[2]))
+  procrustes_table <- matrix(NA, ncol = 1, nrow = length(combNames),
+                             dimnames = list(combNames, 'Birds'))
+  
+  for (j in 1:length(PCA_list)) {
+    x <- PCA_list[[j]]$PCoA$vectors
+    for (i in 1:length(PCA_list)) {
+      if (i > j) {
+        y <- PCA_list[[i]]$PCoA$vectors
+        rownames(y) = rownames(x)
+        prcTest <- ade4::procuste.rtest(as.data.frame(x), as.data.frame(y), nrepet = 999)
+        cor_coef <- prcTest$obs
+        p_val <- prcTest$pvalue
+        signif <- ifelse(p_val < 0.001, "***", ifelse(p_val < 0.01, "**", ifelse(p_val < 0.05, "*", "ns")))
+        procrustes_table[paste0(names(PCA_list)[j], "_", names(PCA_list)[i]), 1] <- 
+          paste0(round(cor_coef, 3), " ", signif)
+      }
+    }
+  }
+  return(procrustes_table)
+}
+
+# =========================
+# 3. Perform analysis
+# =========================
+multAx <- 0.25
+multAx1 <- 0.29
+plotPCAList <- plotPCAList_34 <- list()
+densityTable <- NULL
+
+for (i in seq_along(PCA)) {
+  cor_table <- format_correlation_table(PCA[[i]]$PCoACor, shortNames)
+  plotPCAList[[i]] <- PCA_plot_funspace(PCA[[i]]$PCoA, cor_table, multAx1, multAx, paste0(title_space[i],"-trait space"))
+  #plotPCAList_34[[i]] <- PCA_plot_funspace(PCA[[i]], cor_table, multAx1, multAx, paste0(title_space[i],"-trait space"))
+  
+  densityTable <- rbind(densityTable,
+                        data.frame(`50` = PCA[[i]]$ALLDensity[1, "0.5"],
+                                   `99` = PCA[[i]]$ALLDensity[1, "0.99"],
+                                   `100` = PCA[[i]]$ALLDensity[1, "1"],
+                                   row.names = names(PCA)[i]))
+}
+
+names(plotPCAList)  <- type
+
+# =========================
+# 4. Save outputs
+# =========================
+
+# 4.1 Density table
+write.csv(densityTable, file = "results/tables/BirdstableDensity.csv")
+
+# 4.2 PCA plots grid
+ggarrange(
+  NULL, plotPCAList[["MLD"]], NULL,
+  plotPCAList[["M"]], plotPCAList[["L"]], plotPCAList[["D"]],
+  hjust = 0, align = "v", ncol = 3, nrow = 2
+) %>% ggexport(
+  filename = "results/figures/TraitsSpacesForFramework.png",
+  width = 2800, height = 1800, res = 200, pointsize = 5
+)
+
+# 4.3 Procrustes correlation table
+procrustes_res <- run_procrustes(PCA)
+write.csv(procrustes_res, file = "results/tables/ProcrustesTable.csv")
+
+
 ```
 
 ### Functional diversity
@@ -610,7 +918,515 @@ MAE_TPD <- function(x, y) {
 }
 ```
 
-### Regex & snippets
+### FishMORPH
+
+```{r fishMORPH, eval=FALSE}
+################################################################################
+# data preparation
+################################################################################
+
+# --- Load the data ---
+
+trait <- readRDS("dataOriginal/FishMORPH_Traits.rds")
+phylogeny <- readRDS("dataOriginal/FishMORPH_Phylogeny.rds")
+traitNames <- colnames(trait)[-c(1:6)]
+
+# --- Prepare the data ---
+
+# Species list
+list_sp <- gsub("\\.", " ", as.character(trait$Genus.species))
+
+# Lenght-weight fishbase
+lgtwgt <- as.data.frame(length_weight(list_sp))
+lgtwgt <- lgtwgt[!is.na(lgtwgt$a) & !is.na(lgtwgt$b), ]
+
+# Best coeff
+ab <- lgtwgt %>%
+  group_by(Species) %>%
+  slice_max(order_by = CoeffDetermination, with_ties = FALSE, na_rm = TRUE) %>%
+  dplyr::select(Species, a, b) %>%
+  distinct()
+
+# Other traits
+speciesInfo <- species(list_sp) %>% data.table()
+speciesInfoSub <- speciesInfo[, .(Species, Fresh, LongevityWild, Length, Weight, LTypeMaxM)]
+speciesInfoSub <- unique(speciesInfoSub)
+speciesInfoSub$Species <- gsub(" ", ".", speciesInfoSub$Species)
+speciesInfoSub <- speciesInfoSub %>%
+  mutate(
+    Length = ifelse(LTypeMaxM != "SL", NA, Length),
+    Weight2 = ifelse(Species %in% gsub(" ", ".", rownames(ab)),
+                     ab[gsub("\\.", " ", Species), "a"] * Length^ab[gsub("\\.", " ", Species), "b"],
+                     NA)
+  ) %>%
+  mutate(Weight = ifelse(is.na(Weight) & !is.na(Weight2), Weight2, Weight))
+
+# fusion with Fishmorph
+fishTraits <- merge(trait[,6:15], speciesInfoSub[, .(Species, Length, Weight)], 
+                    by.x = "Genus.species", by.y = "Species", all.x = TRUE)
+
+fishTraits <- fishTraits %>%
+  mutate(across(-Genus.species, ~log10(.x + 1))) %>%
+  rename(species = Genus.species) %>%
+  mutate(species = gsub("\\.", "_", species))
+
+spToKeep <- fishTraits %>% # keep only freshwater species
+  dplyr::select(species) %>%
+  mutate(species = gsub("_", " ", species)) %>%
+  pull() %>%
+  rfishbase::species() %>%
+  as.data.table() %>%
+  filter(Fresh == 1) %>%
+  dplyr::select(Species) %>%
+  mutate(Species = gsub(" ", "_", Species)) %>%
+  pull()
+
+fishTraits <- fishTraits %>%
+  filter(species %in% spToKeep)
+
+#dir.create("dataPrepared/Fish", showWarnings = FALSE, recursive = TRUE)
+
+# write.table(fishTraits, "dataPrepared/Fish/fishTraitsMissing.txt")
+fishTraits <- read.table( "dataPrepared/Fish/fishTraitsMissing.txt")
+
+# --- PCoA phylogenetic ---
+
+phylogeny$tip.label <- gsub("\\.", "_", phylogeny$tip.label)
+phylogeny <- drop.tip(phylogeny, setdiff(phylogeny$tip.label, fishTraits$species))
+phylogenyTraits <- phytools::force.ultrametric(phylogeny)
+phylDiss <- sqrt(cophenetic(phylogenyTraits))
+pcoaPhyl <- cmdscale(phylDiss, k = 10) #long
+
+rownames(pcoaPhyl) = fishTraits$species
+colnames(pcoaPhyl) = paste0("Eigen.", 1:10)
+
+# write.table(pcoaPhyl, "dataPrepared/Fish/pcoaPhylogenyFish.txt")
+pcoaPhyl <- read.table("dataPrepared/Fish/pcoaPhylogenyFish.txt", header = T, stringsAsFactors = F)
+
+# --- Taxonomic standardization (quick) ---
+
+list_sp_raw <- fishTraits$species
+list_sp_raw <- gsub("_", " ", list_sp_raw)
+list_sp_raw <- stringr::str_squish(list_sp_raw)
+
+verified_names <- taxize::gna_verifier( # long
+  names = list_sp_raw,
+  data_sources = c(11), 
+  all_matches = FALSE,   
+  capitalize = TRUE,         
+  species_group = TRUE,      
+  output_type = "table"      
+)
+
+new_names <- gsub(" ", "_", verified_names$matchedCanonicalSimple)
+
+rownames(pcoaPhyl) <- new_names
+fishTraits$species <- new_names
+traitsAndPCOA <- cbind(fishTraits, pcoaPhyl)
+
+# write.table(traitsAndPCOA, "dataPrepared/Fish/traitsWithPCOA.txt")
+traitsAndPCOA <- read.table("dataPrepared/Fish/traitsWithPCOA.txt", header = T, stringsAsFactors = F)
+
+# --- IUCN data ---
+
+species_list <- unique(str_trim(traitsAndPCOA$species))
+iucn_statut <- read.csv("dataOriginal/assessments.csv", header = TRUE, stringsAsFactors = FALSE) # IUCN data 2024
+iucn_clean <- iucn_statut %>%
+  mutate(scientificName = str_trim(scientificName))
+species_list <- gsub("_", " ", species_list)
+matched_species <- inner_join(
+  tibble(species = species_list),
+  iucn_clean,
+  by = c("species" = "scientificName")
+)
+
+species_to_update <- tibble(species = species_list) %>%
+  anti_join(iucn_clean, by = c("species" = "scientificName"))
+synonyms_info <- rfishbase::synonyms(
+  species_list = species_to_update$species,
+  server = "fishbase",
+  version = "latest",
+  fields = NULL
+)
+synonyms_info_filtered <- synonyms_info %>%
+  filter(!Status %in% c("misapplied name", "ambiguous synonym", "provisionally accepted name"))
+synonyms_mapping <- synonyms_info_filtered %>%
+  dplyr::select(Species, synonym) %>%
+  distinct()
+
+iucn_clean <- iucn_clean %>%
+  mutate(scientificName = if_else(
+    scientificName %in% synonyms_mapping$Species,
+    synonyms_mapping$synonym[match(scientificName, synonyms_mapping$Species)],
+    scientificName
+  ))
+matched_species <- inner_join(
+  tibble(species = species_list),
+  iucn_clean,
+  by = c("species" = "scientificName")
+)
+
+species_to_update <- tibble(species = species_list) %>%
+  anti_join(iucn_clean, by = c("species" = "scientificName")) %>%
+  as.data.frame()
+rownames(species_to_update) <- species_to_update$species
+
+# manual correction
+species_to_check <- read.csv("dataOriginal/species_to_update_900_done.csv", sep = ";", header = TRUE, stringsAsFactors = FALSE)
+colnames(species_to_check) <- c("scientificName", "redlistCategory")
+
+iucn_clean <- iucn_clean[, c("scientificName", "redlistCategory")]
+acronyms <- c(
+  "Critically Endangered" = "CR",
+  "Endangered" = "EN",
+  "Vulnerable" = "VU",
+  "Near Threatened" = "NT",
+  "Least Concern" = "LC",
+  "Data Deficient" = "DD",
+  "Extinct" = "EX",
+  "Extinct in the Wild" = "EW",
+  "Not Evaluated" = "NE"
+)
+iucn_clean <- iucn_clean %>%
+  mutate(redlistCategory = dplyr::recode(redlistCategory, !!!acronyms))
+iucn_clean <- bind_rows(iucn_clean, species_to_check)
+iucn_clean <- iucn_clean %>%
+  filter(scientificName %in% species_list)
+iucn_clean <- iucn_clean %>%
+  group_by(scientificName) %>%
+  slice(1) %>%
+  ungroup()
+
+traitsAndPCOA$species <- gsub("_", " ", traitsAndPCOA$species)
+traitsAndPCOA$IUCN <- iucn_clean$redlistCategory[match(traitsAndPCOA$species, iucn_clean$scientificName)]
+
+# write.table(traitsAndPCOA, "dataPrepared/Fish/traitsWithPCOAIUCN.txt")
+traitsAndPCOAIUCN <- read.table("dataPrepared/Fish/traitsWithPCOAIUCN.txt", header = T, stringsAsFactors = F)
+
+# --- Complete taxonomy ---
+
+taxInfo <- pblapply(traitsAndPCOAIUCN$species, function(sp) {
+  tryCatch({
+    traitdataform::get_gbif_taxonomy(sp, subspecies = TRUE, higherrank = TRUE,
+                                     conf_threshold = 80, resolve_synonyms = FALSE)[1, ]
+  }, error = function(e) NULL)
+}) %>% rbindlist(fill = TRUE)
+
+# --- Final table ---
+
+fishTraitsPhylogenyIUCN <- data.table(traitsAndPCOAIUCN)
+
+# write.table(fishTraitsPhylogenyIUCN, "dataPrepared/Fish/AllDataFish_clean.txt")
+fishData <- read.table("dataPrepared/Fish/traitsWithPCOAIUCN.txt", header = T, stringsAsFactors = F)
+
+# define columns
+columnsTraits <- 2:(which(colnames(fishData) == "Eigen.1") - 1)
+columnsImputation <- 2:(which(colnames(fishData) == "IUCN") - 1)
+
+# --- missForest imputation ---
+
+set.seed(123) 
+imputed_forest <- missForest(xmis = fishData[, columnsImputation]) # it takes long
+print(imputed_forest$OOBerror)
+
+traits_names <- colnames(fishData)[columnsTraits]
+fishData_imputed_forest <- fishData
+fishData_imputed_forest[traits_names] <- imputed_forest$ximp[traits_names]
+
+# write.table(fishData_imputed_forest, "dataPrepared/Fish/fishData_imputed_forest.txt", row.names = FALSE)
+fishData_imputed_forest <- read.table("dataPrepared/Fish/fishData_imputed_forest.txt", header = T)
+
+# --- trait selection and renaming ---
+
+selectedTraits <- c("EdHd", "EhBd", "JlHd", "MoBd", "BlBd", "HdBd",
+                    "PFiBd", "PFlBl", "CFdCPd", "Length", "Weight")
+
+newTraitNames <- c("es", "ep", "ms", "mp", "elo", "wid", "pp", "ps", "cs", "svl", "bm")
+
+fishTraitsMissing <- fishData[, selectedTraits]
+colnames(fishTraitsMissing) <- newTraitNames
+rownames(fishTraitsMissing) <- fishData$species
+
+fishTraitsImputed <- fishData_imputed_forest[, selectedTraits]
+colnames(fishTraitsImputed) <- newTraitNames
+rownames(fishTraitsImputed) <- fishData$species
+
+# --- add IUCN to the table ---
+
+fishTraitsMissing <- data.frame(fishTraitsMissing, IUCN = fishData$IUCN)
+# write.table(fishTraitsMissing, "dataPrepared/Fish/TraitFishMissing.txt")
+fishTraitsImputed <- data.frame(fishTraitsImputed, IUCN = fishData$IUCN)
+# write.table(fishTraitsImputed, "dataPrepared/Fish/TraitFishImputed.txt")
+
+# --- ACP and TPD ---
+
+# it takes long !!!
+results <- computePCAandTPDs(fishTraitsImputed[,!colnames(fishTraitsImputed) == "IUCN"])
+# saveRDS(results, "output/All_fish.rds")
+pca_trait = results$PCA
+# saveRDS(pca_trait, "output/PCA_fish.rds")
+tpd_trait = results$TPDs
+# saveRDS(tpd_trait, "output/TPDs_fish.rds")
+
+# --- (optionnal) other fish info ---
+
+fishOtherInfo <- fishData[, (max(columnsTraits) + 1):ncol(fishData)]
+
+# --- add uses to pca_traits ---
+
+df_scraping <- readRDS("output/fish_human_uses_binary_FB.rds") %>% as.data.table()
+df_uni <- fread("data/uni.csv")
+
+setnames(df_scraping, c("species_name", "aquarium", "fisheries", "bait", "game_fish", "aquaculture"),
+         c("Species", "Aquarium", "Fisheries", "Bait", "Game_fish", "Aquaculture"))
+setnames(df_uni, "Game fish", "Game_fish", skip_absent = TRUE)
+
+binary_cols <- c("Fisheries", "Aquaculture", "Aquarium", "Game_fish", "Bait")
+
+merged_df <- merge(
+  df_uni,
+  df_scraping[, c("Species", binary_cols), with = FALSE],
+  by = "Species",
+  suffixes = c("", ".scraping"),
+  all.x = TRUE
+)
+
+for (col in binary_cols) {
+  col_scraping <- paste0(col, ".scraping")
+  if (col_scraping %in% colnames(merged_df)) {
+    merged_df[[col]] <- pmax(
+      as.numeric(merged_df[[col]]),
+      as.numeric(merged_df[[col_scraping]]),
+      na.rm = TRUE
+    )
+    merged_df[[col_scraping]] <- NULL
+  }
+}
+
+merged_df[, All_uses := as.integer(Fisheries + Aquaculture + Aquarium + Game_fish + Bait > 0)]
+
+merged_df_clean <- merged_df %>%
+  select(Species, all_of(binary_cols), All_uses) %>%
+  rename("Game fish" = Game_fish, "All uses" = All_uses)
+
+usage_cols <- c("Fisheries", "Aquaculture", "Aquarium", "Game fish", "Bait", "All uses")
+
+uses_df <- as.data.frame(merged_df_clean[, c("Species", usage_cols), with = FALSE])
+uses_df <- uses_df[!is.na(uses_df$Species) & uses_df$Species != "NA", ]
+rownames(uses_df) <- uses_df$Species
+uses_df$Species <- NULL
+
+uses_df["Centromochlus musaica", ] <- list( # miss match in the species name for Centromochlus musaica
+  Fisheries = 0,
+  Aquaculture = 0,
+  Aquarium = 1, # only one use associated to Centromochlus musaica
+  `Game fish` = 0,
+  Bait = 0,
+  `All uses` = 1
+)
+
+pca_trait$uses <- uses_df[species_ref, usage_cols, drop = FALSE]
+use <- pca_trait$uses
+saveRDS(pca_trait, "output/pca_trait.rds")
+
+# --- create the matrice ---
+
+pca_trait <- readRDS("output/pca_trait.rds")
+  
+species_scores <- as.data.frame(pca_trait$traits_scores[,1:4])
+species_uses <- as.data.frame(pca_trait$uses)
+
+species_uses$rownames <- rownames(species_uses)
+species_scores$rownames <- rownames(species_scores)
+species_scores_uses <- merge(species_uses, species_scores, by = "rownames")
+rownames(species_scores_uses) <- species_scores_uses$rownames
+species_scores_uses$rownames <- NULL
+species_uses$rownames <- NULL
+MatriceFish <- t(as.matrix(species_uses))
+column_names <- rownames(species_uses)
+MatriceFish_1 <- matrix(1, nrow = 1, ncol = length(column_names))
+colnames(MatriceFish_1) <- column_names
+rownames(MatriceFish_1) <- "all"
+MatriceFish <- rbind(MatriceFish, MatriceFish_1)
+
+write.csv(MatriceFish, "output/MatriceFish.csv", row.names = TRUE)
+
+```
+
+### Imputation
+
+```{r imput, eval=FALSE}
+imputeTraits<-function(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed,
+                       sdInputed, nm_PCA, percImpute=1, dimensions, nboot=100){
+  require(missForest)
+  require(Metrics)
+  
+  # Data: extract the species with complete 'selectedTraits'.  For imputation all available traits are used: 'columsImputation'
+  columsImputation <- 1:(which(colnames(traitsData) == "IUCN")-1) 
+  completeSp <- rownames(na.omit(traitsData[,selectedTraits]))
+  missingSp <- setdiff(rownames(traitsData), completeSp)
+  traitWithoutNA<-traitsData[completeSp, columsImputation]
+  traitWithNA <- traitsData[missingSp, columsImputation]
+  #transform the traits with NA values into a mask (1 for existing traits, NA for NA traits)
+  traitNAMask <- replace(traitWithNA, traitWithNA > -Inf, 1)
+  output <- list()
+  for (i in dimensions){
+    output[[i]] <- matrix(NA, nc = nboot, nr = nrow(traitsData), dimnames = list(rownames(traitsData), paste0("Sim. ", 1:nboot)))
+    names(output)[i] <- paste0("PC", i)
+  }
+  RMSE<-matrix(NA,nc=2,nr=nboot,dimnames = list(paste0("Sim.",1:nboot),c("RMSE_PC1","RMSE_PC2")))
+  for (b in 1:nboot){
+    cat(paste0("\n..................SIMULATION ",b," out of ",nboot,"................\n"))
+    
+    # Among the complete data, let's add NA values for 'percImpute' rows:
+    traitSimulNA<-traitWithoutNA[sample(1:nrow(traitWithoutNA), percImpute*nrow(traitWithoutNA)), ]
+    randomMask <- traitNAMask[sample(1:nrow(traitNAMask) , nrow(traitSimulNA)), ]
+    
+    # We create missing values in the traitSimulNA matrix by "pasting" them from real missing observations (this way keeping the structure of missing data):
+    traitSimulNA <-  traitSimulNA * randomMask
+    
+    # We simulate this missing traits using the same imputation method than using in the paper:
+    # Using the phylogenetic eigenvalues
+    # We combine the new dataset of species without NA ('traitWithoutNA') and the other species with 'real' NA:
+    # we impute all traits 
+    traitSimulNAAll <- rbind(traitSimulNA, # Our new NA simulated
+                             traitWithoutNA[setdiff(rownames(traitWithoutNA), rownames(traitSimulNA)),  ]) # the species with complete data without the species with new NA 
+    traitsAux <- rbind(traitSimulNAAll, traitWithNA) # the other species 
+    # Imputation with 'missForest'
+    imputeRFModel <- missForest(xmis = traitsAux)$ximp
+    traitsinPhylImput <- as.matrix(imputeRFModel)
+    
+    # We scale the data using the same mean and SD that we used in the paper: 
+    traitsinPhylImputScaled<-traitsinPhylImput[,selectedTraits]
+    for (i in 1:length(selectedTraits)){
+      traitsinPhylImputScaled[,i]<-(traitsinPhylImput[, selectedTraits[i]] - meanInputed[i]) / sdInputed[i]  
+    }
+    colnames(traitsinPhylImputScaled)<-names(meanInputed)
+    
+    # We predict the position of the imputed species in the functional space:
+    PCApositionNA <- predict(PCAmodel, newdata = traitsinPhylImputScaled[rownames(traitSimulNA), ])
+    
+    # Imputed with PCA compared to original position of the species with the functional space
+    imputed<-PCApositionNA[,dimensions]
+    original<-traitPCA[rownames(PCApositionNA),]
+    
+    RMSE1<-(mean((original[,1] - imputed[,1]) ** 2)) / (max(traitPCA[, 1]) - min(traitPCA[, 1]))
+    RMSE2<-(mean((original[,2] - imputed[,2]) ** 2)) / (max(traitPCA[, 2]) - min(traitPCA[, 2]))
+    
+    RMSE[b,]<-c(RMSE1,RMSE2)
+    
+    for (i in dimensions){
+      output[[i]][rownames(imputed),b]  <- imputed[, i] 
+    }
+    print(apply(RMSE,2,mean,na.rm=T))
+  }
+  return(list(output,RMSE))
+} 
+
+
+for (gr in 2:5){
+  if(gr == 2){
+    pcoaPhyl <- read.table("dataPrepared/Mammals/pcoaPhylogenyMammals.txt",row.names = NULL )
+    traitsData <- read.table("dataPrepared/Mammals/AllDataMammals.txt", header=T)
+    columnsTraits <- 1:(which(colnames(traitsData) == "Eigen.1")-1)
+    traitsData[,columnsTraits] <- log10(traitsData[, columnsTraits])
+    columsImputation <- 1:(which(colnames(traitsData) == "IUCN")-1) 
+    selectedTraits <- c("litter_or_clutch_size_n", "litters_or_clutches_per_y",
+                        "adult_body_mass_g", "longevity_y", "gestation_d", "adult_svl_cm",
+                        "weaning_d", "female_maturity_d")
+    
+    nm_PCA<-c("ls", "ly", "bm", "long", "gest", "svl", "wea", "fmat")
+    
+    traitsDataImputed <- read.table("dataPrepared/Mammals/mammalTraitsImputedIUCN.txt")
+    meanInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,mean)
+    sdInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,sd)
+    
+    traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)] <- 
+      scale(traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)])
+  }
+  if(gr == 3){
+    pcoaPhyl <- read.table("dataPrepared/Aves/pcoaPhylogenyAves.txt",row.names = NULL )
+    traitsData <-read.table("dataPrepared/aves/AllDataAves.txt", header=T)
+    columnsTraits <- 1:(which(colnames(traitsData) == "Eigen.1")-1)
+    traitsData[,columnsTraits] <- log10(traitsData[, columnsTraits])
+    columsImputation <- 1:(which(colnames(traitsData) == "IUCN")-1) 
+    selectedTraits <- c("litter_or_clutch_size_n", "adult_body_mass_g", "egg_mass_g",
+                        "incubation_d", "longevity_y", "fledging_age_d", "litters_or_clutches_per_y", 
+                        "adult_svl_cm")
+    
+    nm_PCA<-c("ls", "bm", "em", "inc", "long", "fa", "ly", "svl")
+    
+    traitsDataImputed <- read.table("dataPrepared/aves/aveTraitsImputedIUCN.txt")
+    meanInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,mean)
+    sdInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,sd)
+    
+    traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)] <- 
+      scale(traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)])
+  }
+  if(gr == 4){
+    pcoaPhyl <- read.table("dataPrepared/reptiles/pcoaPhylogenyReptiles.txt",row.names = NULL )
+    traitsData <-read.table("dataPrepared/reptiles/AllDataReptiles.txt", header=T)
+    columnsTraits <- 1:(which(colnames(traitsData) == "Eigen.1")-1)
+    traitsData[,columnsTraits] <- log10(traitsData[, columnsTraits])
+    columsImputation <- 1:(which(colnames(traitsData) == "IUCN")-1) 
+    selectedTraits <- c("litter_or_clutch_size_n", "litters_or_clutches_per_y",
+                        "adult_body_mass_g", "incubation_d", "longevity_y", "no_sex_svl_cm")
+    
+    nm_PCA<-c("ls", "ly", "bm", "inc", "long", "svl")
+    
+    traitsDataImputed <- read.table("dataPrepared/reptiles/reptileTraitsImputedIUCN.txt")
+    meanInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,mean)
+    sdInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,sd)
+    
+    traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)] <- 
+      scale(traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)])
+  }
+  if(gr == 5){
+    pcoaPhyl <- read.table("dataPrepared/Amphibians/pcoaPhylogenyAmphibians.txt",row.names = NULL )
+    traitsData <-read.table("dataPrepared/Amphibians/AllDataAmphibians.txt", header=T)
+    columnsTraits <- 1:(which(colnames(traitsData) == "Eigen.1")-1)
+    traitsData[,columnsTraits] <- log10(traitsData[, columnsTraits])
+    columsImputation <- 1:(which(colnames(traitsData) == "IUCN")-1) 
+    selectedTraits <- c("Age_at_maturity_min_y",
+                        "Body_size_mm", "Litter_size_max_n",
+                        "Offspring_size_min_mm")
+    
+    nm_PCA<-c("am", "bs", "ls", "os")
+    
+    traitsDataImputed <- read.table("dataPrepared/Amphibians/amphibianTraitsImputedIUCN.txt")
+    meanInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,mean)
+    sdInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,sd)
+    
+    traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)] <- 
+      scale(traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)])
+  }
+  if(gr == 6){
+    pcoaPhyl <- read.table("dataPrepared/Fish/pcoaPhylogenyFish.txt",row.names = NULL )
+    traitsData <- read.table("dataPrepared/Fish/AllDataFish.txt", header=T)
+    selectedTraits <-  c("es","ep","ms","mp","elo","wid","pp","ps","cs","svl","bm")
+    colnames(traitsData)[1:length(selectedTraits)] <- selectedTraits
+    
+    traitsDataImputed <- read.table("dataPrepared/Fish/fishTraitsImputedIUCN.txt")
+    meanInputed<-apply(traitsDataImputed[, !colnames(traitsDataImputed) %in% c("IUCN")], 2, mean)
+    sdInputed<-apply(traitsDataImputed[, !colnames(traitsDataImputed) %in% c("IUCN")],2,sd)
+    traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)] <- 
+      scale(traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)])
+    
+  }
+  
+  traitAll<-PCAImputedALL[[gr]]$traitsMissing
+  traitPCA<-PCAImputedALL[[gr]]$traitsUse
+  PCAmodel<-PCAImputedALL[[gr]]$PCA
+  dimensions<-c(1:PCAImputedALL[[gr]]$dimensions)
+  nreps <- 100
+  cat(paste0("\n....................GROUP:",targetGroupName[gr],"............................\n"))
+  matCov <- imputeTraits(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed, sdInputed, nm_PCA, 
+                         percImpute = 0.50, dimensions, nboot = nreps)
+  saveRDS(matCov,file=paste0("dataPrepared/CovarianceMatrix_",targetGroupName[gr],".RDS"))
+}
+```
+
+### Others functions
 
 ```{r regex_and_snippets, eval=FALSE}
 # Regex to select all symbols but '_'. useful for identify formulas in dplyr::

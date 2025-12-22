@@ -827,7 +827,314 @@ class="section level2 tabset tabset-fade tabset-pills">
 <span id="cb4-63"><a href="#cb4-63" tabindex="-1"></a>                           <span class="fu">ifelse</span>(IUCN <span class="sc">%in%</span> treathCat, <span class="dv">1</span>,</span>
 <span id="cb4-64"><a href="#cb4-64" tabindex="-1"></a>                                  <span class="fu">ifelse</span>(IUCN <span class="sc">%in%</span> noThreatCat, <span class="dv">0</span>, <span class="cn">NA</span>)))</span>
 <span id="cb4-65"><a href="#cb4-65" tabindex="-1"></a>  <span class="fu">return</span>(PCAImpute)</span>
-<span id="cb4-66"><a href="#cb4-66" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb4-66"><a href="#cb4-66" tabindex="-1"></a>}</span>
+<span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a></span>
+<span id="cb4-68"><a href="#cb4-68" tabindex="-1"></a></span>
+<span id="cb4-69"><a href="#cb4-69" tabindex="-1"></a><span class="co"># =========================</span></span>
+<span id="cb4-70"><a href="#cb4-70" tabindex="-1"></a><span class="co"># Example for birds</span></span>
+<span id="cb4-71"><a href="#cb4-71" tabindex="-1"></a><span class="co"># =========================</span></span>
+<span id="cb4-72"><a href="#cb4-72" tabindex="-1"></a><span class="co"># 1. Load data</span></span>
+<span id="cb4-73"><a href="#cb4-73" tabindex="-1"></a><span class="co"># =========================</span></span>
+<span id="cb4-74"><a href="#cb4-74" tabindex="-1"></a>PCA <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/processed/PCA_Birds.rds&quot;</span>)</span>
+<span id="cb4-75"><a href="#cb4-75" tabindex="-1"></a>shortNames <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed/Shortnames_Birds.csv&quot;</span>)</span>
+<span id="cb4-76"><a href="#cb4-76" tabindex="-1"></a>type <span class="ot">&lt;-</span> <span class="fu">names</span>(PCA)</span>
+<span id="cb4-77"><a href="#cb4-77" tabindex="-1"></a>title_space <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&#39;Combined&#39;</span>,<span class="st">&#39;Locomotion&#39;</span>,<span class="st">&#39;Reproduction&#39;</span>,<span class="st">&#39;Diet&#39;</span>)</span>
+<span id="cb4-78"><a href="#cb4-78" tabindex="-1"></a><span class="co"># =========================</span></span>
+<span id="cb4-79"><a href="#cb4-79" tabindex="-1"></a><span class="co"># 2. Define functions</span></span>
+<span id="cb4-80"><a href="#cb4-80" tabindex="-1"></a><span class="co"># =========================</span></span>
+<span id="cb4-81"><a href="#cb4-81" tabindex="-1"></a></span>
+<span id="cb4-82"><a href="#cb4-82" tabindex="-1"></a>PCA_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(PCoAPlot,PCoACorPlot,multAx1,multAx,title,legend){</span>
+<span id="cb4-83"><a href="#cb4-83" tabindex="-1"></a>  Plan12<span class="ot">=</span><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(PCoAPlot<span class="sc">$</span>vectors)) <span class="sc">+</span></span>
+<span id="cb4-84"><a href="#cb4-84" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> Axis<span class="fl">.1</span>, <span class="at">y =</span> Axis<span class="fl">.2</span>),<span class="at">col=</span><span class="st">&quot;grey89&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-85"><a href="#cb4-85" tabindex="-1"></a>    <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb4-86"><a href="#cb4-86" tabindex="-1"></a>    <span class="fu">ggtitle</span>(title)<span class="sc">+</span></span>
+<span id="cb4-87"><a href="#cb4-87" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="fu">paste0</span>(<span class="st">&quot;PCoA 1 (&quot;</span>,<span class="fu">round</span>(PCoAPlot<span class="sc">$</span>values[<span class="dv">1</span>,<span class="dv">2</span>]<span class="sc">*</span><span class="dv">100</span>,<span class="dv">2</span>),<span class="st">&quot;%)&quot;</span>))<span class="sc">+</span></span>
+<span id="cb4-88"><a href="#cb4-88" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="fu">paste0</span>(<span class="st">&quot;PCoA 2 (&quot;</span>,<span class="fu">round</span>(PCoAPlot<span class="sc">$</span>values[<span class="dv">2</span>,<span class="dv">2</span>]<span class="sc">*</span><span class="dv">100</span>,<span class="dv">2</span>),<span class="st">&quot;%)&quot;</span>))<span class="sc">+</span></span>
+<span id="cb4-89"><a href="#cb4-89" tabindex="-1"></a>    <span class="co">#coord_fixed() + ## need aspect ratio of 1!</span></span>
+<span id="cb4-90"><a href="#cb4-90" tabindex="-1"></a>    <span class="fu">geom_segment</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(PCoACorPlot),</span>
+<span id="cb4-91"><a href="#cb4-91" tabindex="-1"></a>                 <span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">xend =</span> Axis<span class="fl">.1</span><span class="sc">*</span>multAx, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> Axis<span class="fl">.2</span><span class="sc">*</span>multAx),</span>
+<span id="cb4-92"><a href="#cb4-92" tabindex="-1"></a>                 <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.25</span>, <span class="st">&quot;cm&quot;</span>)), <span class="at">colour =</span> PCoACorPlot<span class="sc">$</span>color) <span class="sc">+</span></span>
+<span id="cb4-93"><a href="#cb4-93" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(PCoACorPlot), </span>
+<span id="cb4-94"><a href="#cb4-94" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span>  Axis<span class="fl">.1</span><span class="sc">*</span>multAx1, <span class="at">y =</span> Axis<span class="fl">.2</span><span class="sc">*</span>multAx1, </span>
+<span id="cb4-95"><a href="#cb4-95" tabindex="-1"></a>                  <span class="at">label =</span>  names), <span class="at">colour =</span> PCoACorPlot<span class="sc">$</span>color,</span>
+<span id="cb4-96"><a href="#cb4-96" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb4-97"><a href="#cb4-97" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb4-98"><a href="#cb4-98" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb4-99"><a href="#cb4-99" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">18</span>,       <span class="co"># Increase size (adjust as needed)</span></span>
+<span id="cb4-100"><a href="#cb4-100" tabindex="-1"></a>        <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>    <span class="co"># Make it bold</span></span>
+<span id="cb4-101"><a href="#cb4-101" tabindex="-1"></a>      )</span>
+<span id="cb4-102"><a href="#cb4-102" tabindex="-1"></a>    )</span>
+<span id="cb4-103"><a href="#cb4-103" tabindex="-1"></a>  </span>
+<span id="cb4-104"><a href="#cb4-104" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(legend)){</span>
+<span id="cb4-105"><a href="#cb4-105" tabindex="-1"></a>    Plan12 <span class="ot">=</span> Plan12 <span class="sc">+</span> <span class="fu">annotate</span>(<span class="at">geom =</span> <span class="st">&quot;text&quot;</span>,<span class="at">label =</span> legend, <span class="at">x =</span> <span class="cn">Inf</span>, <span class="at">y =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>)      <span class="co"># Make text bold)</span></span>
+<span id="cb4-106"><a href="#cb4-106" tabindex="-1"></a>  }</span>
+<span id="cb4-107"><a href="#cb4-107" tabindex="-1"></a>  </span>
+<span id="cb4-108"><a href="#cb4-108" tabindex="-1"></a>  </span>
+<span id="cb4-109"><a href="#cb4-109" tabindex="-1"></a>  </span>
+<span id="cb4-110"><a href="#cb4-110" tabindex="-1"></a>  Plan12</span>
+<span id="cb4-111"><a href="#cb4-111" tabindex="-1"></a>}</span>
+<span id="cb4-112"><a href="#cb4-112" tabindex="-1"></a></span>
+<span id="cb4-113"><a href="#cb4-113" tabindex="-1"></a><span class="co"># ---------- utilities ----------</span></span>
+<span id="cb4-114"><a href="#cb4-114" tabindex="-1"></a>.sanitize_axes <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
+<span id="cb4-115"><a href="#cb4-115" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">all</span>(<span class="fu">c</span>(<span class="st">&quot;Axis.1&quot;</span>,<span class="st">&quot;Axis.2&quot;</span>) <span class="sc">%in%</span> <span class="fu">names</span>(df)))</span>
+<span id="cb4-116"><a href="#cb4-116" tabindex="-1"></a>  df <span class="ot">&lt;-</span> df[<span class="fu">is.finite</span>(df<span class="sc">$</span>Axis<span class="fl">.1</span>) <span class="sc">&amp;</span> <span class="fu">is.finite</span>(df<span class="sc">$</span>Axis<span class="fl">.2</span>), , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb4-117"><a href="#cb4-117" tabindex="-1"></a>  df<span class="sc">$</span>Axis<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(df<span class="sc">$</span>Axis<span class="fl">.1</span>)</span>
+<span id="cb4-118"><a href="#cb4-118" tabindex="-1"></a>  df<span class="sc">$</span>Axis<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(df<span class="sc">$</span>Axis<span class="fl">.2</span>)</span>
+<span id="cb4-119"><a href="#cb4-119" tabindex="-1"></a>  df</span>
+<span id="cb4-120"><a href="#cb4-120" tabindex="-1"></a>}</span>
+<span id="cb4-121"><a href="#cb4-121" tabindex="-1"></a></span>
+<span id="cb4-122"><a href="#cb4-122" tabindex="-1"></a>.safe_limits <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">pad_factor =</span> <span class="fl">0.08</span>) {</span>
+<span id="cb4-123"><a href="#cb4-123" tabindex="-1"></a>  xr <span class="ot">&lt;-</span> <span class="fu">range</span>(x, <span class="at">finite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-124"><a href="#cb4-124" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.finite</span>(xr[<span class="dv">1</span>]) <span class="sc">||</span> <span class="sc">!</span><span class="fu">is.finite</span>(xr[<span class="dv">2</span>])) <span class="fu">return</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb4-125"><a href="#cb4-125" tabindex="-1"></a>  <span class="cf">if</span> (xr[<span class="dv">1</span>] <span class="sc">==</span> xr[<span class="dv">2</span>]) {</span>
+<span id="cb4-126"><a href="#cb4-126" tabindex="-1"></a>    eps <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">abs</span>(xr[<span class="dv">1</span>]) <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="fu">abs</span>(xr[<span class="dv">1</span>]) <span class="sc">*</span> pad_factor, <span class="fl">1e-6</span>)</span>
+<span id="cb4-127"><a href="#cb4-127" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">c</span>(xr[<span class="dv">1</span>] <span class="sc">-</span> eps, xr[<span class="dv">2</span>] <span class="sc">+</span> eps))</span>
+<span id="cb4-128"><a href="#cb4-128" tabindex="-1"></a>  }</span>
+<span id="cb4-129"><a href="#cb4-129" tabindex="-1"></a>  width <span class="ot">&lt;-</span> <span class="fu">diff</span>(xr)</span>
+<span id="cb4-130"><a href="#cb4-130" tabindex="-1"></a>  <span class="fu">c</span>(xr[<span class="dv">1</span>] <span class="sc">-</span> width <span class="sc">*</span> pad_factor, xr[<span class="dv">2</span>] <span class="sc">+</span> width <span class="sc">*</span> pad_factor)</span>
+<span id="cb4-131"><a href="#cb4-131" tabindex="-1"></a>}</span>
+<span id="cb4-132"><a href="#cb4-132" tabindex="-1"></a></span>
+<span id="cb4-133"><a href="#cb4-133" tabindex="-1"></a><span class="co"># KDE grid using {ks}</span></span>
+<span id="cb4-134"><a href="#cb4-134" tabindex="-1"></a>.kde_grid <span class="ot">&lt;-</span> <span class="cf">function</span>(df, <span class="at">gridsize =</span> <span class="dv">181</span>, <span class="at">H =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb4-135"><a href="#cb4-135" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;ks&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb4-136"><a href="#cb4-136" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Please install.packages(&#39;ks&#39;) to use the KDE-based density background.&quot;</span>)</span>
+<span id="cb4-137"><a href="#cb4-137" tabindex="-1"></a>  }</span>
+<span id="cb4-138"><a href="#cb4-138" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">.sanitize_axes</span>(df)</span>
+<span id="cb4-139"><a href="#cb4-139" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(df) <span class="sc">&lt;</span> <span class="dv">3</span>) <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">grid =</span> <span class="cn">NULL</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">z =</span> <span class="cn">NULL</span>))</span>
+<span id="cb4-140"><a href="#cb4-140" tabindex="-1"></a>  </span>
+<span id="cb4-141"><a href="#cb4-141" tabindex="-1"></a>  xlim <span class="ot">&lt;-</span> <span class="fu">.safe_limits</span>(df<span class="sc">$</span>Axis<span class="fl">.1</span>); ylim <span class="ot">&lt;-</span> <span class="fu">.safe_limits</span>(df<span class="sc">$</span>Axis<span class="fl">.2</span>)</span>
+<span id="cb4-142"><a href="#cb4-142" tabindex="-1"></a>  </span>
+<span id="cb4-143"><a href="#cb4-143" tabindex="-1"></a>  X <span class="ot">&lt;-</span> <span class="fu">cbind</span>(</span>
+<span id="cb4-144"><a href="#cb4-144" tabindex="-1"></a>    <span class="fu">pmin</span>(<span class="fu">pmax</span>(df<span class="sc">$</span>Axis<span class="fl">.1</span>, xlim[<span class="dv">1</span>]), xlim[<span class="dv">2</span>]),</span>
+<span id="cb4-145"><a href="#cb4-145" tabindex="-1"></a>    <span class="fu">pmin</span>(<span class="fu">pmax</span>(df<span class="sc">$</span>Axis<span class="fl">.2</span>, ylim[<span class="dv">1</span>]), ylim[<span class="dv">2</span>])</span>
+<span id="cb4-146"><a href="#cb4-146" tabindex="-1"></a>  )</span>
+<span id="cb4-147"><a href="#cb4-147" tabindex="-1"></a>  </span>
+<span id="cb4-148"><a href="#cb4-148" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(H)) {</span>
+<span id="cb4-149"><a href="#cb4-149" tabindex="-1"></a>    H <span class="ot">&lt;-</span> <span class="fu">try</span>(ks<span class="sc">::</span><span class="fu">Hpi</span>(<span class="at">x =</span> X), <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-150"><a href="#cb4-150" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">inherits</span>(H, <span class="st">&quot;try-error&quot;</span>) <span class="sc">||</span> <span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.finite</span>(<span class="fu">as.vector</span>(H)))) {</span>
+<span id="cb4-151"><a href="#cb4-151" tabindex="-1"></a>      H <span class="ot">&lt;-</span> <span class="fu">try</span>(ks<span class="sc">::</span><span class="fu">Hscv</span>(<span class="at">x =</span> X), <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-152"><a href="#cb4-152" tabindex="-1"></a>    }</span>
+<span id="cb4-153"><a href="#cb4-153" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">inherits</span>(H, <span class="st">&quot;try-error&quot;</span>) <span class="sc">||</span> <span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.finite</span>(<span class="fu">as.vector</span>(H)))) {</span>
+<span id="cb4-154"><a href="#cb4-154" tabindex="-1"></a>      v <span class="ot">&lt;-</span> <span class="fu">apply</span>(X, <span class="dv">2</span>, stats<span class="sc">::</span>var, <span class="at">na.rm =</span> <span class="cn">TRUE</span>); v[v <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">|</span> <span class="sc">!</span><span class="fu">is.finite</span>(v)] <span class="ot">&lt;-</span> <span class="fl">1e-6</span></span>
+<span id="cb4-155"><a href="#cb4-155" tabindex="-1"></a>      H <span class="ot">&lt;-</span> <span class="fu">diag</span>(v)</span>
+<span id="cb4-156"><a href="#cb4-156" tabindex="-1"></a>    }</span>
+<span id="cb4-157"><a href="#cb4-157" tabindex="-1"></a>  }</span>
+<span id="cb4-158"><a href="#cb4-158" tabindex="-1"></a>  </span>
+<span id="cb4-159"><a href="#cb4-159" tabindex="-1"></a>  kde <span class="ot">&lt;-</span> ks<span class="sc">::</span><span class="fu">kde</span>(</span>
+<span id="cb4-160"><a href="#cb4-160" tabindex="-1"></a>    <span class="at">x =</span> X, <span class="at">H =</span> H,</span>
+<span id="cb4-161"><a href="#cb4-161" tabindex="-1"></a>    <span class="at">xmin =</span> <span class="fu">c</span>(xlim[<span class="dv">1</span>], ylim[<span class="dv">1</span>]), <span class="at">xmax =</span> <span class="fu">c</span>(xlim[<span class="dv">2</span>], ylim[<span class="dv">2</span>]),</span>
+<span id="cb4-162"><a href="#cb4-162" tabindex="-1"></a>    <span class="at">gridsize =</span> <span class="fu">c</span>(gridsize, gridsize)</span>
+<span id="cb4-163"><a href="#cb4-163" tabindex="-1"></a>  )</span>
+<span id="cb4-164"><a href="#cb4-164" tabindex="-1"></a>  </span>
+<span id="cb4-165"><a href="#cb4-165" tabindex="-1"></a>  gx <span class="ot">&lt;-</span> kde<span class="sc">$</span>eval.points[[<span class="dv">1</span>]]</span>
+<span id="cb4-166"><a href="#cb4-166" tabindex="-1"></a>  gy <span class="ot">&lt;-</span> kde<span class="sc">$</span>eval.points[[<span class="dv">2</span>]]</span>
+<span id="cb4-167"><a href="#cb4-167" tabindex="-1"></a>  gz <span class="ot">&lt;-</span> kde<span class="sc">$</span>estimate  <span class="co"># matrix [length(gx) x length(gy)]</span></span>
+<span id="cb4-168"><a href="#cb4-168" tabindex="-1"></a>  </span>
+<span id="cb4-169"><a href="#cb4-169" tabindex="-1"></a>  grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">x =</span> gx, <span class="at">y =</span> gy)</span>
+<span id="cb4-170"><a href="#cb4-170" tabindex="-1"></a>  grid<span class="sc">$</span>z <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(gz)</span>
+<span id="cb4-171"><a href="#cb4-171" tabindex="-1"></a>  </span>
+<span id="cb4-172"><a href="#cb4-172" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">grid =</span> grid, <span class="at">x =</span> gx, <span class="at">y =</span> gy, <span class="at">z =</span> gz)</span>
+<span id="cb4-173"><a href="#cb4-173" tabindex="-1"></a>}</span>
+<span id="cb4-174"><a href="#cb4-174" tabindex="-1"></a></span>
+<span id="cb4-175"><a href="#cb4-175" tabindex="-1"></a><span class="co"># Compute density cutoffs (levels) that enclose given probabilities on the grid</span></span>
+<span id="cb4-176"><a href="#cb4-176" tabindex="-1"></a>.hdr_levels_grid <span class="ot">&lt;-</span> <span class="cf">function</span>(gx, gy, gz, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.99</span>)) {</span>
+<span id="cb4-177"><a href="#cb4-177" tabindex="-1"></a>  <span class="co"># assume regular grid (true for ks::kde)</span></span>
+<span id="cb4-178"><a href="#cb4-178" tabindex="-1"></a>  dx <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">diff</span>(gx)); dy <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">diff</span>(gy))</span>
+<span id="cb4-179"><a href="#cb4-179" tabindex="-1"></a>  w <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(gz)</span>
+<span id="cb4-180"><a href="#cb4-180" tabindex="-1"></a>  ord <span class="ot">&lt;-</span> <span class="fu">order</span>(w, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-181"><a href="#cb4-181" tabindex="-1"></a>  cum_mass <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(w[ord]) <span class="sc">*</span> dx <span class="sc">*</span> dy</span>
+<span id="cb4-182"><a href="#cb4-182" tabindex="-1"></a>  <span class="co"># normalize to 1 (numerical integration may be slightly off)</span></span>
+<span id="cb4-183"><a href="#cb4-183" tabindex="-1"></a>  cum_mass <span class="ot">&lt;-</span> cum_mass <span class="sc">/</span> <span class="fu">max</span>(cum_mass, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-184"><a href="#cb4-184" tabindex="-1"></a>  </span>
+<span id="cb4-185"><a href="#cb4-185" tabindex="-1"></a>  <span class="fu">sapply</span>(probs, <span class="cf">function</span>(p) {</span>
+<span id="cb4-186"><a href="#cb4-186" tabindex="-1"></a>    idx <span class="ot">&lt;-</span> <span class="fu">which</span>(cum_mass <span class="sc">&gt;=</span> p)[<span class="dv">1</span>]</span>
+<span id="cb4-187"><a href="#cb4-187" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(idx)) <span class="fu">min</span>(w, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="cf">else</span> w[ord][idx]</span>
+<span id="cb4-188"><a href="#cb4-188" tabindex="-1"></a>  })</span>
+<span id="cb4-189"><a href="#cb4-189" tabindex="-1"></a>}</span>
+<span id="cb4-190"><a href="#cb4-190" tabindex="-1"></a></span>
+<span id="cb4-191"><a href="#cb4-191" tabindex="-1"></a><span class="co"># Build contour paths + label positions from a raster grid</span></span>
+<span id="cb4-192"><a href="#cb4-192" tabindex="-1"></a>.contour_data <span class="ot">&lt;-</span> <span class="cf">function</span>(gx, gy, gz, levels, prob_labels) {</span>
+<span id="cb4-193"><a href="#cb4-193" tabindex="-1"></a>  cls <span class="ot">&lt;-</span> <span class="fu">contourLines</span>(<span class="at">x =</span> gx, <span class="at">y =</span> gy, <span class="at">z =</span> gz, <span class="at">levels =</span> levels)  <span class="co"># note t()</span></span>
+<span id="cb4-194"><a href="#cb4-194" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(cls) <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">lines =</span> <span class="cn">NULL</span>, <span class="at">labels =</span> <span class="cn">NULL</span>))</span>
+<span id="cb4-195"><a href="#cb4-195" tabindex="-1"></a>  lines_df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">seq_along</span>(cls), <span class="cf">function</span>(i) {</span>
+<span id="cb4-196"><a href="#cb4-196" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">x =</span> cls[[i]]<span class="sc">$</span>x, <span class="at">y =</span> cls[[i]]<span class="sc">$</span>y, <span class="at">level =</span> cls[[i]]<span class="sc">$</span>level, <span class="at">id =</span> i)</span>
+<span id="cb4-197"><a href="#cb4-197" tabindex="-1"></a>  }))</span>
+<span id="cb4-198"><a href="#cb4-198" tabindex="-1"></a>  labels_df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">seq_along</span>(cls), <span class="cf">function</span>(i) {</span>
+<span id="cb4-199"><a href="#cb4-199" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">length</span>(cls[[i]]<span class="sc">$</span>x); j <span class="ot">&lt;-</span> <span class="fu">floor</span>(n<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb4-200"><a href="#cb4-200" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">x =</span> cls[[i]]<span class="sc">$</span>x[j], <span class="at">y =</span> cls[[i]]<span class="sc">$</span>y[j], <span class="at">level =</span> cls[[i]]<span class="sc">$</span>level, <span class="at">id =</span> i)</span>
+<span id="cb4-201"><a href="#cb4-201" tabindex="-1"></a>  }))</span>
+<span id="cb4-202"><a href="#cb4-202" tabindex="-1"></a>  <span class="co"># map level -&gt; probability text</span></span>
+<span id="cb4-203"><a href="#cb4-203" tabindex="-1"></a>  lvl_map <span class="ot">&lt;-</span> <span class="fu">setNames</span>(prob_labels, levels)</span>
+<span id="cb4-204"><a href="#cb4-204" tabindex="-1"></a>  labels_df<span class="sc">$</span>prob <span class="ot">&lt;-</span> lvl_map[<span class="fu">as.character</span>(labels_df<span class="sc">$</span>level)]</span>
+<span id="cb4-205"><a href="#cb4-205" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">lines =</span> lines_df, <span class="at">labels =</span> labels_df)</span>
+<span id="cb4-206"><a href="#cb4-206" tabindex="-1"></a>}</span>
+<span id="cb4-207"><a href="#cb4-207" tabindex="-1"></a></span>
+<span id="cb4-208"><a href="#cb4-208" tabindex="-1"></a><span class="co"># ---------- funspace-style plot ----------</span></span>
+<span id="cb4-209"><a href="#cb4-209" tabindex="-1"></a>PCA_plot_funspace <span class="ot">&lt;-</span> <span class="cf">function</span>(PCoAPlot, PCoACorPlot, multAx1, multAx, title, <span class="at">legend =</span> <span class="cn">NULL</span>,</span>
+<span id="cb4-210"><a href="#cb4-210" tabindex="-1"></a>                              <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.99</span>),</span>
+<span id="cb4-211"><a href="#cb4-211" tabindex="-1"></a>                              <span class="at">gridsize =</span> <span class="dv">181</span>, <span class="at">H =</span> <span class="cn">NULL</span>, <span class="at">bins_filled =</span> <span class="dv">30</span>) {</span>
+<span id="cb4-212"><a href="#cb4-212" tabindex="-1"></a>  </span>
+<span id="cb4-213"><a href="#cb4-213" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(PCoAPlot<span class="sc">$</span>vectors)</span>
+<span id="cb4-214"><a href="#cb4-214" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">.sanitize_axes</span>(df)</span>
+<span id="cb4-215"><a href="#cb4-215" tabindex="-1"></a>  </span>
+<span id="cb4-216"><a href="#cb4-216" tabindex="-1"></a>  <span class="co"># KDE grid</span></span>
+<span id="cb4-217"><a href="#cb4-217" tabindex="-1"></a>  KG <span class="ot">&lt;-</span> <span class="fu">.kde_grid</span>(df, <span class="at">gridsize =</span> gridsize, <span class="at">H =</span> H)</span>
+<span id="cb4-218"><a href="#cb4-218" tabindex="-1"></a>  </span>
+<span id="cb4-219"><a href="#cb4-219" tabindex="-1"></a>  <span class="co"># density background</span></span>
+<span id="cb4-220"><a href="#cb4-220" tabindex="-1"></a>  <span class="co"># continuous raster background</span></span>
+<span id="cb4-221"><a href="#cb4-221" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb4-222"><a href="#cb4-222" tabindex="-1"></a>    <span class="fu">geom_raster</span>(</span>
+<span id="cb4-223"><a href="#cb4-223" tabindex="-1"></a>      <span class="at">data =</span> KG<span class="sc">$</span>grid,</span>
+<span id="cb4-224"><a href="#cb4-224" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> z)</span>
+<span id="cb4-225"><a href="#cb4-225" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb4-226"><a href="#cb4-226" tabindex="-1"></a>    <span class="fu">scale_fill_gradientn</span>(</span>
+<span id="cb4-227"><a href="#cb4-227" tabindex="-1"></a>      <span class="at">colours =</span> <span class="fu">c</span>(</span>
+<span id="cb4-228"><a href="#cb4-228" tabindex="-1"></a>        <span class="st">&quot;#FFFFFF&quot;</span>,  <span class="co"># white</span></span>
+<span id="cb4-229"><a href="#cb4-229" tabindex="-1"></a>        <span class="st">&quot;#FC8D59&quot;</span>,  <span class="co"># medium orange-red</span></span>
+<span id="cb4-230"><a href="#cb4-230" tabindex="-1"></a>        <span class="st">&quot;#EF6548&quot;</span>,  <span class="co"># strong red-orange</span></span>
+<span id="cb4-231"><a href="#cb4-231" tabindex="-1"></a>        <span class="st">&quot;#D7301F&quot;</span>,  <span class="co"># deep red</span></span>
+<span id="cb4-232"><a href="#cb4-232" tabindex="-1"></a>        <span class="st">&quot;#990000&quot;</span>   <span class="co"># dark brownish red</span></span>
+<span id="cb4-233"><a href="#cb4-233" tabindex="-1"></a>      ),</span>
+<span id="cb4-234"><a href="#cb4-234" tabindex="-1"></a>      <span class="at">guide =</span> <span class="st">&quot;none&quot;</span></span>
+<span id="cb4-235"><a href="#cb4-235" tabindex="-1"></a>    )</span>
+<span id="cb4-236"><a href="#cb4-236" tabindex="-1"></a>  </span>
+<span id="cb4-237"><a href="#cb4-237" tabindex="-1"></a>  <span class="co"># HDR probability contours + labels (0.25, 0.5, 0.95 by default)</span></span>
+<span id="cb4-238"><a href="#cb4-238" tabindex="-1"></a>  levs <span class="ot">&lt;-</span> <span class="fu">.hdr_levels_grid</span>(KG<span class="sc">$</span>x, KG<span class="sc">$</span>y, KG<span class="sc">$</span>z, <span class="at">probs =</span> probs)</span>
+<span id="cb4-239"><a href="#cb4-239" tabindex="-1"></a>  cd <span class="ot">&lt;-</span> <span class="fu">.contour_data</span>(KG<span class="sc">$</span>x, KG<span class="sc">$</span>y, KG<span class="sc">$</span>z, <span class="at">levels =</span> <span class="fu">as.numeric</span>(levs),</span>
+<span id="cb4-240"><a href="#cb4-240" tabindex="-1"></a>                      <span class="at">prob_labels =</span> <span class="fu">paste0</span>(probs))</span>
+<span id="cb4-241"><a href="#cb4-241" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(cd<span class="sc">$</span>lines)) {</span>
+<span id="cb4-242"><a href="#cb4-242" tabindex="-1"></a>    p <span class="ot">&lt;-</span> p <span class="sc">+</span></span>
+<span id="cb4-243"><a href="#cb4-243" tabindex="-1"></a>      <span class="fu">geom_path</span>(<span class="at">data =</span> cd<span class="sc">$</span>lines, <span class="fu">aes</span>(x, y, <span class="at">group =</span> id),</span>
+<span id="cb4-244"><a href="#cb4-244" tabindex="-1"></a>                <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">linewidth =</span> <span class="fl">0.6</span>)</span>
+<span id="cb4-245"><a href="#cb4-245" tabindex="-1"></a>  }</span>
+<span id="cb4-246"><a href="#cb4-246" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(cd<span class="sc">$</span>labels)) {</span>
+<span id="cb4-247"><a href="#cb4-247" tabindex="-1"></a>    p <span class="ot">&lt;-</span> p <span class="sc">+</span></span>
+<span id="cb4-248"><a href="#cb4-248" tabindex="-1"></a>      <span class="fu">geom_text</span>(<span class="at">data =</span> cd<span class="sc">$</span>labels, <span class="fu">aes</span>(x, y, <span class="at">label =</span> prob),</span>
+<span id="cb4-249"><a href="#cb4-249" tabindex="-1"></a>                <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="dv">3</span>)</span>
+<span id="cb4-250"><a href="#cb4-250" tabindex="-1"></a>  }</span>
+<span id="cb4-251"><a href="#cb4-251" tabindex="-1"></a>  </span>
+<span id="cb4-252"><a href="#cb4-252" tabindex="-1"></a>  <span class="co"># trait loading arrows + labels</span></span>
+<span id="cb4-253"><a href="#cb4-253" tabindex="-1"></a>  p <span class="ot">&lt;-</span> p <span class="sc">+</span></span>
+<span id="cb4-254"><a href="#cb4-254" tabindex="-1"></a>    <span class="fu">geom_segment</span>(</span>
+<span id="cb4-255"><a href="#cb4-255" tabindex="-1"></a>      <span class="at">data =</span> <span class="fu">data.frame</span>(PCoACorPlot),</span>
+<span id="cb4-256"><a href="#cb4-256" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">xend =</span> Axis<span class="fl">.1</span> <span class="sc">*</span> multAx, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> Axis<span class="fl">.2</span> <span class="sc">*</span> multAx),</span>
+<span id="cb4-257"><a href="#cb4-257" tabindex="-1"></a>      <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.25</span>, <span class="st">&quot;cm&quot;</span>)),</span>
+<span id="cb4-258"><a href="#cb4-258" tabindex="-1"></a>      <span class="at">colour =</span> PCoACorPlot<span class="sc">$</span>color, <span class="at">linewidth =</span> <span class="fl">0.5</span></span>
+<span id="cb4-259"><a href="#cb4-259" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb4-260"><a href="#cb4-260" tabindex="-1"></a>    <span class="fu">geom_text</span>(</span>
+<span id="cb4-261"><a href="#cb4-261" tabindex="-1"></a>      <span class="at">data =</span> <span class="fu">data.frame</span>(PCoACorPlot),</span>
+<span id="cb4-262"><a href="#cb4-262" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x =</span> Axis<span class="fl">.1</span> <span class="sc">*</span> multAx1, <span class="at">y =</span> Axis<span class="fl">.2</span> <span class="sc">*</span> multAx1, <span class="at">label =</span> names),</span>
+<span id="cb4-263"><a href="#cb4-263" tabindex="-1"></a>      <span class="at">colour =</span> PCoACorPlot<span class="sc">$</span>color, <span class="at">size =</span> <span class="dv">5</span></span>
+<span id="cb4-264"><a href="#cb4-264" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb4-265"><a href="#cb4-265" tabindex="-1"></a>    <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb4-266"><a href="#cb4-266" tabindex="-1"></a>    <span class="fu">ggtitle</span>(title) <span class="sc">+</span></span>
+<span id="cb4-267"><a href="#cb4-267" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="fu">paste0</span>(<span class="st">&quot;PCoA 1 (&quot;</span>, <span class="fu">round</span>(PCoAPlot<span class="sc">$</span>values[<span class="dv">1</span>, <span class="dv">2</span>] <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">&quot;%)&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb4-268"><a href="#cb4-268" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="fu">paste0</span>(<span class="st">&quot;PCoA 2 (&quot;</span>, <span class="fu">round</span>(PCoAPlot<span class="sc">$</span>values[<span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">&quot;%)&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb4-269"><a href="#cb4-269" tabindex="-1"></a>    <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb4-270"><a href="#cb4-270" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>))</span>
+<span id="cb4-271"><a href="#cb4-271" tabindex="-1"></a>  </span>
+<span id="cb4-272"><a href="#cb4-272" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(legend)) {</span>
+<span id="cb4-273"><a href="#cb4-273" tabindex="-1"></a>    p <span class="ot">&lt;-</span> p <span class="sc">+</span> <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">label =</span> legend, <span class="at">x =</span> <span class="cn">Inf</span>, <span class="at">y =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>)</span>
+<span id="cb4-274"><a href="#cb4-274" tabindex="-1"></a>  }</span>
+<span id="cb4-275"><a href="#cb4-275" tabindex="-1"></a>  </span>
+<span id="cb4-276"><a href="#cb4-276" tabindex="-1"></a>  p</span>
+<span id="cb4-277"><a href="#cb4-277" tabindex="-1"></a>}</span>
+<span id="cb4-278"><a href="#cb4-278" tabindex="-1"></a></span>
+<span id="cb4-279"><a href="#cb4-279" tabindex="-1"></a></span>
+<span id="cb4-280"><a href="#cb4-280" tabindex="-1"></a><span class="do">## 2.1 Generate a PCA correlation plot with density legend</span></span>
+<span id="cb4-281"><a href="#cb4-281" tabindex="-1"></a>make_pca_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(pca_object, correlation_data, multAx1, multAx, title) {</span>
+<span id="cb4-282"><a href="#cb4-282" tabindex="-1"></a>  legend_text <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb4-283"><a href="#cb4-283" tabindex="-1"></a>    <span class="st">&quot;Space occupied by:</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb4-284"><a href="#cb4-284" tabindex="-1"></a>    <span class="st">&quot;50% = &quot;</span>, <span class="fu">round</span>(pca_object<span class="sc">$</span>ALLDensity[<span class="dv">1</span>, <span class="st">&quot;0.5&quot;</span>], <span class="dv">2</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb4-285"><a href="#cb4-285" tabindex="-1"></a>    <span class="st">&quot;99% = &quot;</span>, <span class="fu">round</span>(pca_object<span class="sc">$</span>ALLDensity[<span class="dv">1</span>, <span class="st">&quot;0.99&quot;</span>], <span class="dv">2</span>)</span>
+<span id="cb4-286"><a href="#cb4-286" tabindex="-1"></a>  )</span>
+<span id="cb4-287"><a href="#cb4-287" tabindex="-1"></a>  <span class="fu">PCA_plot</span>(pca_object<span class="sc">$</span>PCoA, correlation_data, multAx1, multAx, title, legend_text)</span>
+<span id="cb4-288"><a href="#cb4-288" tabindex="-1"></a>}</span>
+<span id="cb4-289"><a href="#cb4-289" tabindex="-1"></a>make_pca_plot_34 <span class="ot">&lt;-</span> <span class="cf">function</span>(pca_object, correlation_data, multAx1, multAx, title) {</span>
+<span id="cb4-290"><a href="#cb4-290" tabindex="-1"></a>  legend_text <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb4-291"><a href="#cb4-291" tabindex="-1"></a>    <span class="st">&quot;Space occupied by:</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb4-292"><a href="#cb4-292" tabindex="-1"></a>    <span class="st">&quot;50% = &quot;</span>, <span class="fu">round</span>(pca_object<span class="sc">$</span>ALLDensity[<span class="dv">1</span>, <span class="st">&quot;0.5&quot;</span>], <span class="dv">2</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb4-293"><a href="#cb4-293" tabindex="-1"></a>    <span class="st">&quot;99% = &quot;</span>, <span class="fu">round</span>(pca_object<span class="sc">$</span>ALLDensity[<span class="dv">1</span>, <span class="st">&quot;0.99&quot;</span>], <span class="dv">2</span>)</span>
+<span id="cb4-294"><a href="#cb4-294" tabindex="-1"></a>  )</span>
+<span id="cb4-295"><a href="#cb4-295" tabindex="-1"></a>  <span class="fu">PCA_plot_34</span>(pca_object<span class="sc">$</span>PCoA, correlation_data, multAx1, multAx, title, legend_text)</span>
+<span id="cb4-296"><a href="#cb4-296" tabindex="-1"></a>}</span>
+<span id="cb4-297"><a href="#cb4-297" tabindex="-1"></a></span>
+<span id="cb4-298"><a href="#cb4-298" tabindex="-1"></a><span class="do">## 2.2 Format PCA correlation table with colors and labels</span></span>
+<span id="cb4-299"><a href="#cb4-299" tabindex="-1"></a>format_correlation_table <span class="ot">&lt;-</span> <span class="cf">function</span>(PCoACorPlot, shortNames) {</span>
+<span id="cb4-300"><a href="#cb4-300" tabindex="-1"></a>  <span class="fu">cbind.data.frame</span>(</span>
+<span id="cb4-301"><a href="#cb4-301" tabindex="-1"></a>    PCoACorPlot,</span>
+<span id="cb4-302"><a href="#cb4-302" tabindex="-1"></a>    <span class="at">color =</span> shortNames[<span class="fu">match</span>(<span class="fu">rownames</span>(PCoACorPlot), shortNames<span class="sc">$</span>original), <span class="st">&quot;color&quot;</span>],</span>
+<span id="cb4-303"><a href="#cb4-303" tabindex="-1"></a>    <span class="at">names =</span> shortNames[<span class="fu">match</span>(<span class="fu">rownames</span>(PCoACorPlot), shortNames<span class="sc">$</span>original), <span class="st">&quot;short&quot;</span>]</span>
+<span id="cb4-304"><a href="#cb4-304" tabindex="-1"></a>  )</span>
+<span id="cb4-305"><a href="#cb4-305" tabindex="-1"></a>}</span>
+<span id="cb4-306"><a href="#cb4-306" tabindex="-1"></a></span>
+<span id="cb4-307"><a href="#cb4-307" tabindex="-1"></a><span class="do">## 2.3 Perform Procrustes analysis between PCA spaces</span></span>
+<span id="cb4-308"><a href="#cb4-308" tabindex="-1"></a>run_procrustes <span class="ot">&lt;-</span> <span class="cf">function</span>(PCA_list) {</span>
+<span id="cb4-309"><a href="#cb4-309" tabindex="-1"></a>  combNames <span class="ot">&lt;-</span> <span class="fu">combn</span>(<span class="fu">names</span>(PCA_list), <span class="dv">2</span>)</span>
+<span id="cb4-310"><a href="#cb4-310" tabindex="-1"></a>  combNames <span class="ot">&lt;-</span> <span class="fu">apply</span>(combNames, <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">paste0</span>(x[<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>, x[<span class="dv">2</span>]))</span>
+<span id="cb4-311"><a href="#cb4-311" tabindex="-1"></a>  procrustes_table <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">nrow =</span> <span class="fu">length</span>(combNames),</span>
+<span id="cb4-312"><a href="#cb4-312" tabindex="-1"></a>                             <span class="at">dimnames =</span> <span class="fu">list</span>(combNames, <span class="st">&#39;Birds&#39;</span>))</span>
+<span id="cb4-313"><a href="#cb4-313" tabindex="-1"></a>  </span>
+<span id="cb4-314"><a href="#cb4-314" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(PCA_list)) {</span>
+<span id="cb4-315"><a href="#cb4-315" tabindex="-1"></a>    x <span class="ot">&lt;-</span> PCA_list[[j]]<span class="sc">$</span>PCoA<span class="sc">$</span>vectors</span>
+<span id="cb4-316"><a href="#cb4-316" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(PCA_list)) {</span>
+<span id="cb4-317"><a href="#cb4-317" tabindex="-1"></a>      <span class="cf">if</span> (i <span class="sc">&gt;</span> j) {</span>
+<span id="cb4-318"><a href="#cb4-318" tabindex="-1"></a>        y <span class="ot">&lt;-</span> PCA_list[[i]]<span class="sc">$</span>PCoA<span class="sc">$</span>vectors</span>
+<span id="cb4-319"><a href="#cb4-319" tabindex="-1"></a>        <span class="fu">rownames</span>(y) <span class="ot">=</span> <span class="fu">rownames</span>(x)</span>
+<span id="cb4-320"><a href="#cb4-320" tabindex="-1"></a>        prcTest <span class="ot">&lt;-</span> ade4<span class="sc">::</span><span class="fu">procuste.rtest</span>(<span class="fu">as.data.frame</span>(x), <span class="fu">as.data.frame</span>(y), <span class="at">nrepet =</span> <span class="dv">999</span>)</span>
+<span id="cb4-321"><a href="#cb4-321" tabindex="-1"></a>        cor_coef <span class="ot">&lt;-</span> prcTest<span class="sc">$</span>obs</span>
+<span id="cb4-322"><a href="#cb4-322" tabindex="-1"></a>        p_val <span class="ot">&lt;-</span> prcTest<span class="sc">$</span>pvalue</span>
+<span id="cb4-323"><a href="#cb4-323" tabindex="-1"></a>        signif <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(p_val <span class="sc">&lt;</span> <span class="fl">0.001</span>, <span class="st">&quot;***&quot;</span>, <span class="fu">ifelse</span>(p_val <span class="sc">&lt;</span> <span class="fl">0.01</span>, <span class="st">&quot;**&quot;</span>, <span class="fu">ifelse</span>(p_val <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="st">&quot;*&quot;</span>, <span class="st">&quot;ns&quot;</span>)))</span>
+<span id="cb4-324"><a href="#cb4-324" tabindex="-1"></a>        procrustes_table[<span class="fu">paste0</span>(<span class="fu">names</span>(PCA_list)[j], <span class="st">&quot;_&quot;</span>, <span class="fu">names</span>(PCA_list)[i]), <span class="dv">1</span>] <span class="ot">&lt;-</span> </span>
+<span id="cb4-325"><a href="#cb4-325" tabindex="-1"></a>          <span class="fu">paste0</span>(<span class="fu">round</span>(cor_coef, <span class="dv">3</span>), <span class="st">&quot; &quot;</span>, signif)</span>
+<span id="cb4-326"><a href="#cb4-326" tabindex="-1"></a>      }</span>
+<span id="cb4-327"><a href="#cb4-327" tabindex="-1"></a>    }</span>
+<span id="cb4-328"><a href="#cb4-328" tabindex="-1"></a>  }</span>
+<span id="cb4-329"><a href="#cb4-329" tabindex="-1"></a>  <span class="fu">return</span>(procrustes_table)</span>
+<span id="cb4-330"><a href="#cb4-330" tabindex="-1"></a>}</span>
+<span id="cb4-331"><a href="#cb4-331" tabindex="-1"></a></span>
+<span id="cb4-332"><a href="#cb4-332" tabindex="-1"></a><span class="co"># =========================</span></span>
+<span id="cb4-333"><a href="#cb4-333" tabindex="-1"></a><span class="co"># 3. Perform analysis</span></span>
+<span id="cb4-334"><a href="#cb4-334" tabindex="-1"></a><span class="co"># =========================</span></span>
+<span id="cb4-335"><a href="#cb4-335" tabindex="-1"></a>multAx <span class="ot">&lt;-</span> <span class="fl">0.25</span></span>
+<span id="cb4-336"><a href="#cb4-336" tabindex="-1"></a>multAx1 <span class="ot">&lt;-</span> <span class="fl">0.29</span></span>
+<span id="cb4-337"><a href="#cb4-337" tabindex="-1"></a>plotPCAList <span class="ot">&lt;-</span> plotPCAList_34 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb4-338"><a href="#cb4-338" tabindex="-1"></a>densityTable <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb4-339"><a href="#cb4-339" tabindex="-1"></a></span>
+<span id="cb4-340"><a href="#cb4-340" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(PCA)) {</span>
+<span id="cb4-341"><a href="#cb4-341" tabindex="-1"></a>  cor_table <span class="ot">&lt;-</span> <span class="fu">format_correlation_table</span>(PCA[[i]]<span class="sc">$</span>PCoACor, shortNames)</span>
+<span id="cb4-342"><a href="#cb4-342" tabindex="-1"></a>  plotPCAList[[i]] <span class="ot">&lt;-</span> <span class="fu">PCA_plot_funspace</span>(PCA[[i]]<span class="sc">$</span>PCoA, cor_table, multAx1, multAx, <span class="fu">paste0</span>(title_space[i],<span class="st">&quot;-trait space&quot;</span>))</span>
+<span id="cb4-343"><a href="#cb4-343" tabindex="-1"></a>  <span class="co">#plotPCAList_34[[i]] &lt;- PCA_plot_funspace(PCA[[i]], cor_table, multAx1, multAx, paste0(title_space[i],&quot;-trait space&quot;))</span></span>
+<span id="cb4-344"><a href="#cb4-344" tabindex="-1"></a>  </span>
+<span id="cb4-345"><a href="#cb4-345" tabindex="-1"></a>  densityTable <span class="ot">&lt;-</span> <span class="fu">rbind</span>(densityTable,</span>
+<span id="cb4-346"><a href="#cb4-346" tabindex="-1"></a>                        <span class="fu">data.frame</span>(<span class="st">`</span><span class="at">50</span><span class="st">`</span> <span class="ot">=</span> PCA[[i]]<span class="sc">$</span>ALLDensity[<span class="dv">1</span>, <span class="st">&quot;0.5&quot;</span>],</span>
+<span id="cb4-347"><a href="#cb4-347" tabindex="-1"></a>                                   <span class="st">`</span><span class="at">99</span><span class="st">`</span> <span class="ot">=</span> PCA[[i]]<span class="sc">$</span>ALLDensity[<span class="dv">1</span>, <span class="st">&quot;0.99&quot;</span>],</span>
+<span id="cb4-348"><a href="#cb4-348" tabindex="-1"></a>                                   <span class="st">`</span><span class="at">100</span><span class="st">`</span> <span class="ot">=</span> PCA[[i]]<span class="sc">$</span>ALLDensity[<span class="dv">1</span>, <span class="st">&quot;1&quot;</span>],</span>
+<span id="cb4-349"><a href="#cb4-349" tabindex="-1"></a>                                   <span class="at">row.names =</span> <span class="fu">names</span>(PCA)[i]))</span>
+<span id="cb4-350"><a href="#cb4-350" tabindex="-1"></a>}</span>
+<span id="cb4-351"><a href="#cb4-351" tabindex="-1"></a></span>
+<span id="cb4-352"><a href="#cb4-352" tabindex="-1"></a><span class="fu">names</span>(plotPCAList)  <span class="ot">&lt;-</span> type</span>
+<span id="cb4-353"><a href="#cb4-353" tabindex="-1"></a></span>
+<span id="cb4-354"><a href="#cb4-354" tabindex="-1"></a><span class="co"># =========================</span></span>
+<span id="cb4-355"><a href="#cb4-355" tabindex="-1"></a><span class="co"># 4. Save outputs</span></span>
+<span id="cb4-356"><a href="#cb4-356" tabindex="-1"></a><span class="co"># =========================</span></span>
+<span id="cb4-357"><a href="#cb4-357" tabindex="-1"></a></span>
+<span id="cb4-358"><a href="#cb4-358" tabindex="-1"></a><span class="co"># 4.1 Density table</span></span>
+<span id="cb4-359"><a href="#cb4-359" tabindex="-1"></a><span class="fu">write.csv</span>(densityTable, <span class="at">file =</span> <span class="st">&quot;results/tables/BirdstableDensity.csv&quot;</span>)</span>
+<span id="cb4-360"><a href="#cb4-360" tabindex="-1"></a></span>
+<span id="cb4-361"><a href="#cb4-361" tabindex="-1"></a><span class="co"># 4.2 PCA plots grid</span></span>
+<span id="cb4-362"><a href="#cb4-362" tabindex="-1"></a><span class="fu">ggarrange</span>(</span>
+<span id="cb4-363"><a href="#cb4-363" tabindex="-1"></a>  <span class="cn">NULL</span>, plotPCAList[[<span class="st">&quot;MLD&quot;</span>]], <span class="cn">NULL</span>,</span>
+<span id="cb4-364"><a href="#cb4-364" tabindex="-1"></a>  plotPCAList[[<span class="st">&quot;M&quot;</span>]], plotPCAList[[<span class="st">&quot;L&quot;</span>]], plotPCAList[[<span class="st">&quot;D&quot;</span>]],</span>
+<span id="cb4-365"><a href="#cb4-365" tabindex="-1"></a>  <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">align =</span> <span class="st">&quot;v&quot;</span>, <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">2</span></span>
+<span id="cb4-366"><a href="#cb4-366" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">ggexport</span>(</span>
+<span id="cb4-367"><a href="#cb4-367" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;results/figures/TraitsSpacesForFramework.png&quot;</span>,</span>
+<span id="cb4-368"><a href="#cb4-368" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">2800</span>, <span class="at">height =</span> <span class="dv">1800</span>, <span class="at">res =</span> <span class="dv">200</span>, <span class="at">pointsize =</span> <span class="dv">5</span></span>
+<span id="cb4-369"><a href="#cb4-369" tabindex="-1"></a>)</span>
+<span id="cb4-370"><a href="#cb4-370" tabindex="-1"></a></span>
+<span id="cb4-371"><a href="#cb4-371" tabindex="-1"></a><span class="co"># 4.3 Procrustes correlation table</span></span>
+<span id="cb4-372"><a href="#cb4-372" tabindex="-1"></a>procrustes_res <span class="ot">&lt;-</span> <span class="fu">run_procrustes</span>(PCA)</span>
+<span id="cb4-373"><a href="#cb4-373" tabindex="-1"></a><span class="fu">write.csv</span>(procrustes_res, <span class="at">file =</span> <span class="st">&quot;results/tables/ProcrustesTable.csv&quot;</span>)</span></code></pre></div>
 </div>
 <div id="functional-diversity" class="section level3">
 <h3>Functional diversity</h3>
@@ -1082,83 +1389,586 @@ class="section level2 tabset tabset-fade tabset-pills">
 <span id="cb6-165"><a href="#cb6-165" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
-<div id="regex-snippets" class="section level3">
-<h3>Regex &amp; snippets</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Regex to select all symbols but &#39;_&#39;. useful for identify formulas in dplyr::</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="st">&quot;[^[:alnum:][:space:]_]&quot;</span></span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>x <span class="ot">&lt;-</span> iris</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>x <span class="ot">&lt;-</span> x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="fu">colnames</span>(x) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;x1&quot;</span>, <span class="st">&quot;x2&quot;</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>funfun <span class="ot">&lt;-</span> <span class="cf">function</span>(data, <span class="at">expr =</span> <span class="st">&quot;log(x1 / x2) * 10^2&quot;</span>) {</span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>  expr <span class="ot">&lt;-</span> <span class="fu">parse</span>(<span class="at">text =</span> expr)</span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>  data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">x3 =</span> <span class="fu">eval</span>(expr))</span>
-<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>}</span>
-<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="fu">funfun</span>(x)</span>
-<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="do">## How to make a gower for big data table</span></span>
-<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="fu">library</span>(cluster)       <span class="co"># daisy() and Gower distance</span></span>
-<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="fu">library</span>(data.table)    <span class="co"># large data handling</span></span>
-<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="fu">library</span>(parallel)      <span class="co"># parallel computing</span></span>
-<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="fu">library</span>(bigstatsr)     <span class="co"># very large matrices</span></span>
-<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a></span>
-<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="fu">load</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;outputs&quot;</span>, <span class="st">&quot;test_phenofish_final.RData&quot;</span>))  <span class="co"># assumes object `test_phenofish_final`</span></span>
-<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a></span>
-<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a>data_morph <span class="ot">&lt;-</span> test_phenofish_final <span class="sc">%&gt;%</span></span>
-<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a>  <span class="fu">filter</span>(trait_type <span class="sc">==</span> <span class="st">&quot;morphological&quot;</span> <span class="sc">&amp;</span> fresh <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> trait_coding <span class="sc">==</span> <span class="st">&quot;continuous&quot;</span>)</span>
-<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a></span>
-<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a>data_morph <span class="ot">&lt;-</span> data_morph <span class="sc">%&gt;%</span></span>
-<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(specimen_id, trait_name) <span class="sc">%&gt;%</span></span>
-<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">trait_value =</span> <span class="fu">as.numeric</span>(trait_value))</span>
-<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a></span>
-<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a>data_morph <span class="ot">&lt;-</span> data_morph <span class="sc">%&gt;%</span></span>
-<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(phenofish_name, trait_name) <span class="sc">%&gt;%</span></span>
-<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">trait_value =</span> <span class="fu">mean</span>(trait_value), <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>)</span>
-<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a></span>
-<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a>species_traits <span class="ot">&lt;-</span> reshape2<span class="sc">::</span><span class="fu">dcast</span>(data_morph, phenofish_name <span class="sc">~</span> trait_name)</span>
-<span id="cb7-37"><a href="#cb7-37" tabindex="-1"></a><span class="fu">colnames</span>(species_traits)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;species&quot;</span></span>
-<span id="cb7-38"><a href="#cb7-38" tabindex="-1"></a><span class="fu">rownames</span>(species_traits) <span class="ot">&lt;-</span> species_traits[, <span class="dv">1</span>]</span>
-<span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a>traits <span class="ot">&lt;-</span> species_traits[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<div id="fishmorph" class="section level3">
+<h3>FishMORPH</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="do">################################################################################</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co"># data preparation</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="do">################################################################################</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co"># --- Load the data ---</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>trait <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;dataOriginal/FishMORPH_Traits.rds&quot;</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>phylogeny <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;dataOriginal/FishMORPH_Phylogeny.rds&quot;</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>traitNames <span class="ot">&lt;-</span> <span class="fu">colnames</span>(trait)[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)]</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co"># --- Prepare the data ---</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co"># Species list</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>list_sp <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>, <span class="st">&quot; &quot;</span>, <span class="fu">as.character</span>(trait<span class="sc">$</span>Genus.species))</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co"># Lenght-weight fishbase</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>lgtwgt <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">length_weight</span>(list_sp))</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>lgtwgt <span class="ot">&lt;-</span> lgtwgt[<span class="sc">!</span><span class="fu">is.na</span>(lgtwgt<span class="sc">$</span>a) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(lgtwgt<span class="sc">$</span>b), ]</span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co"># Best coeff</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>ab <span class="ot">&lt;-</span> lgtwgt <span class="sc">%&gt;%</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">%&gt;%</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a>  <span class="fu">slice_max</span>(<span class="at">order_by =</span> CoeffDetermination, <span class="at">with_ties =</span> <span class="cn">FALSE</span>, <span class="at">na_rm =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Species, a, b) <span class="sc">%&gt;%</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="co"># Other traits</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a>speciesInfo <span class="ot">&lt;-</span> <span class="fu">species</span>(list_sp) <span class="sc">%&gt;%</span> <span class="fu">data.table</span>()</span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a>speciesInfoSub <span class="ot">&lt;-</span> speciesInfo[, .(Species, Fresh, LongevityWild, Length, Weight, LTypeMaxM)]</span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a>speciesInfoSub <span class="ot">&lt;-</span> <span class="fu">unique</span>(speciesInfoSub)</span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a>speciesInfoSub<span class="sc">$</span>Species <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;.&quot;</span>, speciesInfoSub<span class="sc">$</span>Species)</span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a>speciesInfoSub <span class="ot">&lt;-</span> speciesInfoSub <span class="sc">%&gt;%</span></span>
+<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a>    <span class="at">Length =</span> <span class="fu">ifelse</span>(LTypeMaxM <span class="sc">!=</span> <span class="st">&quot;SL&quot;</span>, <span class="cn">NA</span>, Length),</span>
+<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a>    <span class="at">Weight2 =</span> <span class="fu">ifelse</span>(Species <span class="sc">%in%</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;.&quot;</span>, <span class="fu">rownames</span>(ab)),</span>
+<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a>                     ab[<span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>, <span class="st">&quot; &quot;</span>, Species), <span class="st">&quot;a&quot;</span>] <span class="sc">*</span> Length<span class="sc">^</span>ab[<span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>, <span class="st">&quot; &quot;</span>, Species), <span class="st">&quot;b&quot;</span>],</span>
+<span id="cb7-37"><a href="#cb7-37" tabindex="-1"></a>                     <span class="cn">NA</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Weight =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(Weight) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(Weight2), Weight2, Weight))</span>
 <span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a></span>
-<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a>block_size <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
-<span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(traits)</span>
-<span id="cb7-43"><a href="#cb7-43" tabindex="-1"></a></span>
-<span id="cb7-44"><a href="#cb7-44" tabindex="-1"></a>gower_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, n, n)</span>
-<span id="cb7-45"><a href="#cb7-45" tabindex="-1"></a></span>
-<span id="cb7-46"><a href="#cb7-46" tabindex="-1"></a>compute_gower_block <span class="ot">&lt;-</span> <span class="cf">function</span>(start_idx, end_idx, traits_data) {</span>
-<span id="cb7-47"><a href="#cb7-47" tabindex="-1"></a>  block_data <span class="ot">&lt;-</span> traits_data[start_idx<span class="sc">:</span>end_idx, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
-<span id="cb7-48"><a href="#cb7-48" tabindex="-1"></a>  gower_dist_block <span class="ot">&lt;-</span> <span class="fu">daisy</span>(block_data, <span class="at">metric =</span> <span class="st">&quot;gower&quot;</span>)</span>
-<span id="cb7-49"><a href="#cb7-49" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">as.matrix</span>(gower_dist_block))</span>
-<span id="cb7-50"><a href="#cb7-50" tabindex="-1"></a>}</span>
-<span id="cb7-51"><a href="#cb7-51" tabindex="-1"></a></span>
-<span id="cb7-52"><a href="#cb7-52" tabindex="-1"></a>block_indices <span class="ot">&lt;-</span> <span class="fu">split</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="fu">ceiling</span>(<span class="dv">1</span><span class="sc">:</span>n <span class="sc">/</span> block_size))</span>
-<span id="cb7-53"><a href="#cb7-53" tabindex="-1"></a></span>
-<span id="cb7-54"><a href="#cb7-54" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="fu">detectCores</span>() <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb7-55"><a href="#cb7-55" tabindex="-1"></a><span class="fu">clusterExport</span>(cl, <span class="at">varlist =</span> <span class="fu">c</span>(<span class="st">&quot;traits&quot;</span>, <span class="st">&quot;daisy&quot;</span>, <span class="st">&quot;compute_gower_block&quot;</span>))</span>
-<span id="cb7-56"><a href="#cb7-56" tabindex="-1"></a></span>
-<span id="cb7-57"><a href="#cb7-57" tabindex="-1"></a>gower_blocks <span class="ot">&lt;-</span> <span class="fu">parLapply</span>(cl, block_indices, <span class="cf">function</span>(indices) {</span>
-<span id="cb7-58"><a href="#cb7-58" tabindex="-1"></a>  start_idx <span class="ot">&lt;-</span> indices[<span class="dv">1</span>]</span>
-<span id="cb7-59"><a href="#cb7-59" tabindex="-1"></a>  end_idx <span class="ot">&lt;-</span> <span class="fu">tail</span>(indices, <span class="dv">1</span>)</span>
-<span id="cb7-60"><a href="#cb7-60" tabindex="-1"></a>  <span class="fu">compute_gower_block</span>(start_idx, end_idx, traits)</span>
-<span id="cb7-61"><a href="#cb7-61" tabindex="-1"></a>})</span>
-<span id="cb7-62"><a href="#cb7-62" tabindex="-1"></a></span>
-<span id="cb7-63"><a href="#cb7-63" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(gower_blocks)) {</span>
-<span id="cb7-64"><a href="#cb7-64" tabindex="-1"></a>  idx_range <span class="ot">&lt;-</span> block_indices[[i]]</span>
-<span id="cb7-65"><a href="#cb7-65" tabindex="-1"></a>  gower_matrix[idx_range, idx_range] <span class="ot">&lt;-</span> gower_blocks[[i]]</span>
-<span id="cb7-66"><a href="#cb7-66" tabindex="-1"></a>}</span>
-<span id="cb7-67"><a href="#cb7-67" tabindex="-1"></a></span>
-<span id="cb7-68"><a href="#cb7-68" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span>
-<span id="cb7-69"><a href="#cb7-69" tabindex="-1"></a></span>
-<span id="cb7-70"><a href="#cb7-70" tabindex="-1"></a><span class="fu">print</span>(gower_matrix[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>])</span>
-<span id="cb7-71"><a href="#cb7-71" tabindex="-1"></a><span class="fu">save</span>(gower_matrix, <span class="at">file =</span> <span class="st">&quot;gower_matrix.RData&quot;</span>)</span>
-<span id="cb7-72"><a href="#cb7-72" tabindex="-1"></a></span>
-<span id="cb7-73"><a href="#cb7-73" tabindex="-1"></a>pcoa_res <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">pcoa</span>(<span class="fu">as.dist</span>(gower_matrix))</span>
-<span id="cb7-74"><a href="#cb7-74" tabindex="-1"></a>pca_res <span class="ot">&lt;-</span> <span class="fu">cmdscale</span>(<span class="fu">as.dist</span>(gower_matrix), <span class="at">k =</span> <span class="dv">2</span>)</span>
-<span id="cb7-75"><a href="#cb7-75" tabindex="-1"></a><span class="fu">summary</span>(pca_res)</span></code></pre></div>
+<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a><span class="co"># fusion with Fishmorph</span></span>
+<span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a>fishTraits <span class="ot">&lt;-</span> <span class="fu">merge</span>(trait[,<span class="dv">6</span><span class="sc">:</span><span class="dv">15</span>], speciesInfoSub[, .(Species, Length, Weight)], </span>
+<span id="cb7-43"><a href="#cb7-43" tabindex="-1"></a>                    <span class="at">by.x =</span> <span class="st">&quot;Genus.species&quot;</span>, <span class="at">by.y =</span> <span class="st">&quot;Species&quot;</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-44"><a href="#cb7-44" tabindex="-1"></a></span>
+<span id="cb7-45"><a href="#cb7-45" tabindex="-1"></a>fishTraits <span class="ot">&lt;-</span> fishTraits <span class="sc">%&gt;%</span></span>
+<span id="cb7-46"><a href="#cb7-46" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="sc">-</span>Genus.species, <span class="sc">~</span><span class="fu">log10</span>(.x <span class="sc">+</span> <span class="dv">1</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb7-47"><a href="#cb7-47" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">species =</span> Genus.species) <span class="sc">%&gt;%</span></span>
+<span id="cb7-48"><a href="#cb7-48" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> <span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>, <span class="st">&quot;_&quot;</span>, species))</span>
+<span id="cb7-49"><a href="#cb7-49" tabindex="-1"></a></span>
+<span id="cb7-50"><a href="#cb7-50" tabindex="-1"></a>spToKeep <span class="ot">&lt;-</span> fishTraits <span class="sc">%&gt;%</span> <span class="co"># keep only freshwater species</span></span>
+<span id="cb7-51"><a href="#cb7-51" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb7-52"><a href="#cb7-52" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">species =</span> <span class="fu">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, species)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-53"><a href="#cb7-53" tabindex="-1"></a>  <span class="fu">pull</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-54"><a href="#cb7-54" tabindex="-1"></a>  rfishbase<span class="sc">::</span><span class="fu">species</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-55"><a href="#cb7-55" tabindex="-1"></a>  <span class="fu">as.data.table</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-56"><a href="#cb7-56" tabindex="-1"></a>  <span class="fu">filter</span>(Fresh <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-57"><a href="#cb7-57" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Species) <span class="sc">%&gt;%</span></span>
+<span id="cb7-58"><a href="#cb7-58" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Species =</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;_&quot;</span>, Species)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-59"><a href="#cb7-59" tabindex="-1"></a>  <span class="fu">pull</span>()</span>
+<span id="cb7-60"><a href="#cb7-60" tabindex="-1"></a></span>
+<span id="cb7-61"><a href="#cb7-61" tabindex="-1"></a>fishTraits <span class="ot">&lt;-</span> fishTraits <span class="sc">%&gt;%</span></span>
+<span id="cb7-62"><a href="#cb7-62" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">%in%</span> spToKeep)</span>
+<span id="cb7-63"><a href="#cb7-63" tabindex="-1"></a></span>
+<span id="cb7-64"><a href="#cb7-64" tabindex="-1"></a><span class="co">#dir.create(&quot;dataPrepared/Fish&quot;, showWarnings = FALSE, recursive = TRUE)</span></span>
+<span id="cb7-65"><a href="#cb7-65" tabindex="-1"></a></span>
+<span id="cb7-66"><a href="#cb7-66" tabindex="-1"></a><span class="co"># write.table(fishTraits, &quot;dataPrepared/Fish/fishTraitsMissing.txt&quot;)</span></span>
+<span id="cb7-67"><a href="#cb7-67" tabindex="-1"></a>fishTraits <span class="ot">&lt;-</span> <span class="fu">read.table</span>( <span class="st">&quot;dataPrepared/Fish/fishTraitsMissing.txt&quot;</span>)</span>
+<span id="cb7-68"><a href="#cb7-68" tabindex="-1"></a></span>
+<span id="cb7-69"><a href="#cb7-69" tabindex="-1"></a><span class="co"># --- PCoA phylogenetic ---</span></span>
+<span id="cb7-70"><a href="#cb7-70" tabindex="-1"></a></span>
+<span id="cb7-71"><a href="#cb7-71" tabindex="-1"></a>phylogeny<span class="sc">$</span>tip.label <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>, <span class="st">&quot;_&quot;</span>, phylogeny<span class="sc">$</span>tip.label)</span>
+<span id="cb7-72"><a href="#cb7-72" tabindex="-1"></a>phylogeny <span class="ot">&lt;-</span> <span class="fu">drop.tip</span>(phylogeny, <span class="fu">setdiff</span>(phylogeny<span class="sc">$</span>tip.label, fishTraits<span class="sc">$</span>species))</span>
+<span id="cb7-73"><a href="#cb7-73" tabindex="-1"></a>phylogenyTraits <span class="ot">&lt;-</span> phytools<span class="sc">::</span><span class="fu">force.ultrametric</span>(phylogeny)</span>
+<span id="cb7-74"><a href="#cb7-74" tabindex="-1"></a>phylDiss <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">cophenetic</span>(phylogenyTraits))</span>
+<span id="cb7-75"><a href="#cb7-75" tabindex="-1"></a>pcoaPhyl <span class="ot">&lt;-</span> <span class="fu">cmdscale</span>(phylDiss, <span class="at">k =</span> <span class="dv">10</span>) <span class="co">#long</span></span>
+<span id="cb7-76"><a href="#cb7-76" tabindex="-1"></a></span>
+<span id="cb7-77"><a href="#cb7-77" tabindex="-1"></a><span class="fu">rownames</span>(pcoaPhyl) <span class="ot">=</span> fishTraits<span class="sc">$</span>species</span>
+<span id="cb7-78"><a href="#cb7-78" tabindex="-1"></a><span class="fu">colnames</span>(pcoaPhyl) <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;Eigen.&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb7-79"><a href="#cb7-79" tabindex="-1"></a></span>
+<span id="cb7-80"><a href="#cb7-80" tabindex="-1"></a><span class="co"># write.table(pcoaPhyl, &quot;dataPrepared/Fish/pcoaPhylogenyFish.txt&quot;)</span></span>
+<span id="cb7-81"><a href="#cb7-81" tabindex="-1"></a>pcoaPhyl <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Fish/pcoaPhylogenyFish.txt&quot;</span>, <span class="at">header =</span> T, <span class="at">stringsAsFactors =</span> F)</span>
+<span id="cb7-82"><a href="#cb7-82" tabindex="-1"></a></span>
+<span id="cb7-83"><a href="#cb7-83" tabindex="-1"></a><span class="co"># --- Taxonomic standardization (quick) ---</span></span>
+<span id="cb7-84"><a href="#cb7-84" tabindex="-1"></a></span>
+<span id="cb7-85"><a href="#cb7-85" tabindex="-1"></a>list_sp_raw <span class="ot">&lt;-</span> fishTraits<span class="sc">$</span>species</span>
+<span id="cb7-86"><a href="#cb7-86" tabindex="-1"></a>list_sp_raw <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, list_sp_raw)</span>
+<span id="cb7-87"><a href="#cb7-87" tabindex="-1"></a>list_sp_raw <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_squish</span>(list_sp_raw)</span>
+<span id="cb7-88"><a href="#cb7-88" tabindex="-1"></a></span>
+<span id="cb7-89"><a href="#cb7-89" tabindex="-1"></a>verified_names <span class="ot">&lt;-</span> taxize<span class="sc">::</span><span class="fu">gna_verifier</span>( <span class="co"># long</span></span>
+<span id="cb7-90"><a href="#cb7-90" tabindex="-1"></a>  <span class="at">names =</span> list_sp_raw,</span>
+<span id="cb7-91"><a href="#cb7-91" tabindex="-1"></a>  <span class="at">data_sources =</span> <span class="fu">c</span>(<span class="dv">11</span>), </span>
+<span id="cb7-92"><a href="#cb7-92" tabindex="-1"></a>  <span class="at">all_matches =</span> <span class="cn">FALSE</span>,   </span>
+<span id="cb7-93"><a href="#cb7-93" tabindex="-1"></a>  <span class="at">capitalize =</span> <span class="cn">TRUE</span>,         </span>
+<span id="cb7-94"><a href="#cb7-94" tabindex="-1"></a>  <span class="at">species_group =</span> <span class="cn">TRUE</span>,      </span>
+<span id="cb7-95"><a href="#cb7-95" tabindex="-1"></a>  <span class="at">output_type =</span> <span class="st">&quot;table&quot;</span>      </span>
+<span id="cb7-96"><a href="#cb7-96" tabindex="-1"></a>)</span>
+<span id="cb7-97"><a href="#cb7-97" tabindex="-1"></a></span>
+<span id="cb7-98"><a href="#cb7-98" tabindex="-1"></a>new_names <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;_&quot;</span>, verified_names<span class="sc">$</span>matchedCanonicalSimple)</span>
+<span id="cb7-99"><a href="#cb7-99" tabindex="-1"></a></span>
+<span id="cb7-100"><a href="#cb7-100" tabindex="-1"></a><span class="fu">rownames</span>(pcoaPhyl) <span class="ot">&lt;-</span> new_names</span>
+<span id="cb7-101"><a href="#cb7-101" tabindex="-1"></a>fishTraits<span class="sc">$</span>species <span class="ot">&lt;-</span> new_names</span>
+<span id="cb7-102"><a href="#cb7-102" tabindex="-1"></a>traitsAndPCOA <span class="ot">&lt;-</span> <span class="fu">cbind</span>(fishTraits, pcoaPhyl)</span>
+<span id="cb7-103"><a href="#cb7-103" tabindex="-1"></a></span>
+<span id="cb7-104"><a href="#cb7-104" tabindex="-1"></a><span class="co"># write.table(traitsAndPCOA, &quot;dataPrepared/Fish/traitsWithPCOA.txt&quot;)</span></span>
+<span id="cb7-105"><a href="#cb7-105" tabindex="-1"></a>traitsAndPCOA <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Fish/traitsWithPCOA.txt&quot;</span>, <span class="at">header =</span> T, <span class="at">stringsAsFactors =</span> F)</span>
+<span id="cb7-106"><a href="#cb7-106" tabindex="-1"></a></span>
+<span id="cb7-107"><a href="#cb7-107" tabindex="-1"></a><span class="co"># --- IUCN data ---</span></span>
+<span id="cb7-108"><a href="#cb7-108" tabindex="-1"></a></span>
+<span id="cb7-109"><a href="#cb7-109" tabindex="-1"></a>species_list <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">str_trim</span>(traitsAndPCOA<span class="sc">$</span>species))</span>
+<span id="cb7-110"><a href="#cb7-110" tabindex="-1"></a>iucn_statut <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;dataOriginal/assessments.csv&quot;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>) <span class="co"># IUCN data 2024</span></span>
+<span id="cb7-111"><a href="#cb7-111" tabindex="-1"></a>iucn_clean <span class="ot">&lt;-</span> iucn_statut <span class="sc">%&gt;%</span></span>
+<span id="cb7-112"><a href="#cb7-112" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">scientificName =</span> <span class="fu">str_trim</span>(scientificName))</span>
+<span id="cb7-113"><a href="#cb7-113" tabindex="-1"></a>species_list <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, species_list)</span>
+<span id="cb7-114"><a href="#cb7-114" tabindex="-1"></a>matched_species <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(</span>
+<span id="cb7-115"><a href="#cb7-115" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">species =</span> species_list),</span>
+<span id="cb7-116"><a href="#cb7-116" tabindex="-1"></a>  iucn_clean,</span>
+<span id="cb7-117"><a href="#cb7-117" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;species&quot;</span> <span class="ot">=</span> <span class="st">&quot;scientificName&quot;</span>)</span>
+<span id="cb7-118"><a href="#cb7-118" tabindex="-1"></a>)</span>
+<span id="cb7-119"><a href="#cb7-119" tabindex="-1"></a></span>
+<span id="cb7-120"><a href="#cb7-120" tabindex="-1"></a>species_to_update <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">species =</span> species_list) <span class="sc">%&gt;%</span></span>
+<span id="cb7-121"><a href="#cb7-121" tabindex="-1"></a>  <span class="fu">anti_join</span>(iucn_clean, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;species&quot;</span> <span class="ot">=</span> <span class="st">&quot;scientificName&quot;</span>))</span>
+<span id="cb7-122"><a href="#cb7-122" tabindex="-1"></a>synonyms_info <span class="ot">&lt;-</span> rfishbase<span class="sc">::</span><span class="fu">synonyms</span>(</span>
+<span id="cb7-123"><a href="#cb7-123" tabindex="-1"></a>  <span class="at">species_list =</span> species_to_update<span class="sc">$</span>species,</span>
+<span id="cb7-124"><a href="#cb7-124" tabindex="-1"></a>  <span class="at">server =</span> <span class="st">&quot;fishbase&quot;</span>,</span>
+<span id="cb7-125"><a href="#cb7-125" tabindex="-1"></a>  <span class="at">version =</span> <span class="st">&quot;latest&quot;</span>,</span>
+<span id="cb7-126"><a href="#cb7-126" tabindex="-1"></a>  <span class="at">fields =</span> <span class="cn">NULL</span></span>
+<span id="cb7-127"><a href="#cb7-127" tabindex="-1"></a>)</span>
+<span id="cb7-128"><a href="#cb7-128" tabindex="-1"></a>synonyms_info_filtered <span class="ot">&lt;-</span> synonyms_info <span class="sc">%&gt;%</span></span>
+<span id="cb7-129"><a href="#cb7-129" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Status <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;misapplied name&quot;</span>, <span class="st">&quot;ambiguous synonym&quot;</span>, <span class="st">&quot;provisionally accepted name&quot;</span>))</span>
+<span id="cb7-130"><a href="#cb7-130" tabindex="-1"></a>synonyms_mapping <span class="ot">&lt;-</span> synonyms_info_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb7-131"><a href="#cb7-131" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Species, synonym) <span class="sc">%&gt;%</span></span>
+<span id="cb7-132"><a href="#cb7-132" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb7-133"><a href="#cb7-133" tabindex="-1"></a></span>
+<span id="cb7-134"><a href="#cb7-134" tabindex="-1"></a>iucn_clean <span class="ot">&lt;-</span> iucn_clean <span class="sc">%&gt;%</span></span>
+<span id="cb7-135"><a href="#cb7-135" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">scientificName =</span> <span class="fu">if_else</span>(</span>
+<span id="cb7-136"><a href="#cb7-136" tabindex="-1"></a>    scientificName <span class="sc">%in%</span> synonyms_mapping<span class="sc">$</span>Species,</span>
+<span id="cb7-137"><a href="#cb7-137" tabindex="-1"></a>    synonyms_mapping<span class="sc">$</span>synonym[<span class="fu">match</span>(scientificName, synonyms_mapping<span class="sc">$</span>Species)],</span>
+<span id="cb7-138"><a href="#cb7-138" tabindex="-1"></a>    scientificName</span>
+<span id="cb7-139"><a href="#cb7-139" tabindex="-1"></a>  ))</span>
+<span id="cb7-140"><a href="#cb7-140" tabindex="-1"></a>matched_species <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(</span>
+<span id="cb7-141"><a href="#cb7-141" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">species =</span> species_list),</span>
+<span id="cb7-142"><a href="#cb7-142" tabindex="-1"></a>  iucn_clean,</span>
+<span id="cb7-143"><a href="#cb7-143" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;species&quot;</span> <span class="ot">=</span> <span class="st">&quot;scientificName&quot;</span>)</span>
+<span id="cb7-144"><a href="#cb7-144" tabindex="-1"></a>)</span>
+<span id="cb7-145"><a href="#cb7-145" tabindex="-1"></a></span>
+<span id="cb7-146"><a href="#cb7-146" tabindex="-1"></a>species_to_update <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">species =</span> species_list) <span class="sc">%&gt;%</span></span>
+<span id="cb7-147"><a href="#cb7-147" tabindex="-1"></a>  <span class="fu">anti_join</span>(iucn_clean, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;species&quot;</span> <span class="ot">=</span> <span class="st">&quot;scientificName&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-148"><a href="#cb7-148" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb7-149"><a href="#cb7-149" tabindex="-1"></a><span class="fu">rownames</span>(species_to_update) <span class="ot">&lt;-</span> species_to_update<span class="sc">$</span>species</span>
+<span id="cb7-150"><a href="#cb7-150" tabindex="-1"></a></span>
+<span id="cb7-151"><a href="#cb7-151" tabindex="-1"></a><span class="co"># manual correction</span></span>
+<span id="cb7-152"><a href="#cb7-152" tabindex="-1"></a>species_to_check <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;dataOriginal/species_to_update_900_done.csv&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-153"><a href="#cb7-153" tabindex="-1"></a><span class="fu">colnames</span>(species_to_check) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;scientificName&quot;</span>, <span class="st">&quot;redlistCategory&quot;</span>)</span>
+<span id="cb7-154"><a href="#cb7-154" tabindex="-1"></a></span>
+<span id="cb7-155"><a href="#cb7-155" tabindex="-1"></a>iucn_clean <span class="ot">&lt;-</span> iucn_clean[, <span class="fu">c</span>(<span class="st">&quot;scientificName&quot;</span>, <span class="st">&quot;redlistCategory&quot;</span>)]</span>
+<span id="cb7-156"><a href="#cb7-156" tabindex="-1"></a>acronyms <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb7-157"><a href="#cb7-157" tabindex="-1"></a>  <span class="st">&quot;Critically Endangered&quot;</span> <span class="ot">=</span> <span class="st">&quot;CR&quot;</span>,</span>
+<span id="cb7-158"><a href="#cb7-158" tabindex="-1"></a>  <span class="st">&quot;Endangered&quot;</span> <span class="ot">=</span> <span class="st">&quot;EN&quot;</span>,</span>
+<span id="cb7-159"><a href="#cb7-159" tabindex="-1"></a>  <span class="st">&quot;Vulnerable&quot;</span> <span class="ot">=</span> <span class="st">&quot;VU&quot;</span>,</span>
+<span id="cb7-160"><a href="#cb7-160" tabindex="-1"></a>  <span class="st">&quot;Near Threatened&quot;</span> <span class="ot">=</span> <span class="st">&quot;NT&quot;</span>,</span>
+<span id="cb7-161"><a href="#cb7-161" tabindex="-1"></a>  <span class="st">&quot;Least Concern&quot;</span> <span class="ot">=</span> <span class="st">&quot;LC&quot;</span>,</span>
+<span id="cb7-162"><a href="#cb7-162" tabindex="-1"></a>  <span class="st">&quot;Data Deficient&quot;</span> <span class="ot">=</span> <span class="st">&quot;DD&quot;</span>,</span>
+<span id="cb7-163"><a href="#cb7-163" tabindex="-1"></a>  <span class="st">&quot;Extinct&quot;</span> <span class="ot">=</span> <span class="st">&quot;EX&quot;</span>,</span>
+<span id="cb7-164"><a href="#cb7-164" tabindex="-1"></a>  <span class="st">&quot;Extinct in the Wild&quot;</span> <span class="ot">=</span> <span class="st">&quot;EW&quot;</span>,</span>
+<span id="cb7-165"><a href="#cb7-165" tabindex="-1"></a>  <span class="st">&quot;Not Evaluated&quot;</span> <span class="ot">=</span> <span class="st">&quot;NE&quot;</span></span>
+<span id="cb7-166"><a href="#cb7-166" tabindex="-1"></a>)</span>
+<span id="cb7-167"><a href="#cb7-167" tabindex="-1"></a>iucn_clean <span class="ot">&lt;-</span> iucn_clean <span class="sc">%&gt;%</span></span>
+<span id="cb7-168"><a href="#cb7-168" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">redlistCategory =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(redlistCategory, <span class="sc">!!!</span>acronyms))</span>
+<span id="cb7-169"><a href="#cb7-169" tabindex="-1"></a>iucn_clean <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(iucn_clean, species_to_check)</span>
+<span id="cb7-170"><a href="#cb7-170" tabindex="-1"></a>iucn_clean <span class="ot">&lt;-</span> iucn_clean <span class="sc">%&gt;%</span></span>
+<span id="cb7-171"><a href="#cb7-171" tabindex="-1"></a>  <span class="fu">filter</span>(scientificName <span class="sc">%in%</span> species_list)</span>
+<span id="cb7-172"><a href="#cb7-172" tabindex="-1"></a>iucn_clean <span class="ot">&lt;-</span> iucn_clean <span class="sc">%&gt;%</span></span>
+<span id="cb7-173"><a href="#cb7-173" tabindex="-1"></a>  <span class="fu">group_by</span>(scientificName) <span class="sc">%&gt;%</span></span>
+<span id="cb7-174"><a href="#cb7-174" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-175"><a href="#cb7-175" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb7-176"><a href="#cb7-176" tabindex="-1"></a></span>
+<span id="cb7-177"><a href="#cb7-177" tabindex="-1"></a>traitsAndPCOA<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, traitsAndPCOA<span class="sc">$</span>species)</span>
+<span id="cb7-178"><a href="#cb7-178" tabindex="-1"></a>traitsAndPCOA<span class="sc">$</span>IUCN <span class="ot">&lt;-</span> iucn_clean<span class="sc">$</span>redlistCategory[<span class="fu">match</span>(traitsAndPCOA<span class="sc">$</span>species, iucn_clean<span class="sc">$</span>scientificName)]</span>
+<span id="cb7-179"><a href="#cb7-179" tabindex="-1"></a></span>
+<span id="cb7-180"><a href="#cb7-180" tabindex="-1"></a><span class="co"># write.table(traitsAndPCOA, &quot;dataPrepared/Fish/traitsWithPCOAIUCN.txt&quot;)</span></span>
+<span id="cb7-181"><a href="#cb7-181" tabindex="-1"></a>traitsAndPCOAIUCN <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Fish/traitsWithPCOAIUCN.txt&quot;</span>, <span class="at">header =</span> T, <span class="at">stringsAsFactors =</span> F)</span>
+<span id="cb7-182"><a href="#cb7-182" tabindex="-1"></a></span>
+<span id="cb7-183"><a href="#cb7-183" tabindex="-1"></a><span class="co"># --- Complete taxonomy ---</span></span>
+<span id="cb7-184"><a href="#cb7-184" tabindex="-1"></a></span>
+<span id="cb7-185"><a href="#cb7-185" tabindex="-1"></a>taxInfo <span class="ot">&lt;-</span> <span class="fu">pblapply</span>(traitsAndPCOAIUCN<span class="sc">$</span>species, <span class="cf">function</span>(sp) {</span>
+<span id="cb7-186"><a href="#cb7-186" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
+<span id="cb7-187"><a href="#cb7-187" tabindex="-1"></a>    traitdataform<span class="sc">::</span><span class="fu">get_gbif_taxonomy</span>(sp, <span class="at">subspecies =</span> <span class="cn">TRUE</span>, <span class="at">higherrank =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-188"><a href="#cb7-188" tabindex="-1"></a>                                     <span class="at">conf_threshold =</span> <span class="dv">80</span>, <span class="at">resolve_synonyms =</span> <span class="cn">FALSE</span>)[<span class="dv">1</span>, ]</span>
+<span id="cb7-189"><a href="#cb7-189" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NULL</span>)</span>
+<span id="cb7-190"><a href="#cb7-190" tabindex="-1"></a>}) <span class="sc">%&gt;%</span> <span class="fu">rbindlist</span>(<span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-191"><a href="#cb7-191" tabindex="-1"></a></span>
+<span id="cb7-192"><a href="#cb7-192" tabindex="-1"></a><span class="co"># --- Final table ---</span></span>
+<span id="cb7-193"><a href="#cb7-193" tabindex="-1"></a></span>
+<span id="cb7-194"><a href="#cb7-194" tabindex="-1"></a>fishTraitsPhylogenyIUCN <span class="ot">&lt;-</span> <span class="fu">data.table</span>(traitsAndPCOAIUCN)</span>
+<span id="cb7-195"><a href="#cb7-195" tabindex="-1"></a></span>
+<span id="cb7-196"><a href="#cb7-196" tabindex="-1"></a><span class="co"># write.table(fishTraitsPhylogenyIUCN, &quot;dataPrepared/Fish/AllDataFish_clean.txt&quot;)</span></span>
+<span id="cb7-197"><a href="#cb7-197" tabindex="-1"></a>fishData <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Fish/traitsWithPCOAIUCN.txt&quot;</span>, <span class="at">header =</span> T, <span class="at">stringsAsFactors =</span> F)</span>
+<span id="cb7-198"><a href="#cb7-198" tabindex="-1"></a></span>
+<span id="cb7-199"><a href="#cb7-199" tabindex="-1"></a><span class="co"># define columns</span></span>
+<span id="cb7-200"><a href="#cb7-200" tabindex="-1"></a>columnsTraits <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(fishData) <span class="sc">==</span> <span class="st">&quot;Eigen.1&quot;</span>) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb7-201"><a href="#cb7-201" tabindex="-1"></a>columnsImputation <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(fishData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb7-202"><a href="#cb7-202" tabindex="-1"></a></span>
+<span id="cb7-203"><a href="#cb7-203" tabindex="-1"></a><span class="co"># --- missForest imputation ---</span></span>
+<span id="cb7-204"><a href="#cb7-204" tabindex="-1"></a></span>
+<span id="cb7-205"><a href="#cb7-205" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) </span>
+<span id="cb7-206"><a href="#cb7-206" tabindex="-1"></a>imputed_forest <span class="ot">&lt;-</span> <span class="fu">missForest</span>(<span class="at">xmis =</span> fishData[, columnsImputation]) <span class="co"># it takes long</span></span>
+<span id="cb7-207"><a href="#cb7-207" tabindex="-1"></a><span class="fu">print</span>(imputed_forest<span class="sc">$</span>OOBerror)</span>
+<span id="cb7-208"><a href="#cb7-208" tabindex="-1"></a></span>
+<span id="cb7-209"><a href="#cb7-209" tabindex="-1"></a>traits_names <span class="ot">&lt;-</span> <span class="fu">colnames</span>(fishData)[columnsTraits]</span>
+<span id="cb7-210"><a href="#cb7-210" tabindex="-1"></a>fishData_imputed_forest <span class="ot">&lt;-</span> fishData</span>
+<span id="cb7-211"><a href="#cb7-211" tabindex="-1"></a>fishData_imputed_forest[traits_names] <span class="ot">&lt;-</span> imputed_forest<span class="sc">$</span>ximp[traits_names]</span>
+<span id="cb7-212"><a href="#cb7-212" tabindex="-1"></a></span>
+<span id="cb7-213"><a href="#cb7-213" tabindex="-1"></a><span class="co"># write.table(fishData_imputed_forest, &quot;dataPrepared/Fish/fishData_imputed_forest.txt&quot;, row.names = FALSE)</span></span>
+<span id="cb7-214"><a href="#cb7-214" tabindex="-1"></a>fishData_imputed_forest <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Fish/fishData_imputed_forest.txt&quot;</span>, <span class="at">header =</span> T)</span>
+<span id="cb7-215"><a href="#cb7-215" tabindex="-1"></a></span>
+<span id="cb7-216"><a href="#cb7-216" tabindex="-1"></a><span class="co"># --- trait selection and renaming ---</span></span>
+<span id="cb7-217"><a href="#cb7-217" tabindex="-1"></a></span>
+<span id="cb7-218"><a href="#cb7-218" tabindex="-1"></a>selectedTraits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;EdHd&quot;</span>, <span class="st">&quot;EhBd&quot;</span>, <span class="st">&quot;JlHd&quot;</span>, <span class="st">&quot;MoBd&quot;</span>, <span class="st">&quot;BlBd&quot;</span>, <span class="st">&quot;HdBd&quot;</span>,</span>
+<span id="cb7-219"><a href="#cb7-219" tabindex="-1"></a>                    <span class="st">&quot;PFiBd&quot;</span>, <span class="st">&quot;PFlBl&quot;</span>, <span class="st">&quot;CFdCPd&quot;</span>, <span class="st">&quot;Length&quot;</span>, <span class="st">&quot;Weight&quot;</span>)</span>
+<span id="cb7-220"><a href="#cb7-220" tabindex="-1"></a></span>
+<span id="cb7-221"><a href="#cb7-221" tabindex="-1"></a>newTraitNames <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;es&quot;</span>, <span class="st">&quot;ep&quot;</span>, <span class="st">&quot;ms&quot;</span>, <span class="st">&quot;mp&quot;</span>, <span class="st">&quot;elo&quot;</span>, <span class="st">&quot;wid&quot;</span>, <span class="st">&quot;pp&quot;</span>, <span class="st">&quot;ps&quot;</span>, <span class="st">&quot;cs&quot;</span>, <span class="st">&quot;svl&quot;</span>, <span class="st">&quot;bm&quot;</span>)</span>
+<span id="cb7-222"><a href="#cb7-222" tabindex="-1"></a></span>
+<span id="cb7-223"><a href="#cb7-223" tabindex="-1"></a>fishTraitsMissing <span class="ot">&lt;-</span> fishData[, selectedTraits]</span>
+<span id="cb7-224"><a href="#cb7-224" tabindex="-1"></a><span class="fu">colnames</span>(fishTraitsMissing) <span class="ot">&lt;-</span> newTraitNames</span>
+<span id="cb7-225"><a href="#cb7-225" tabindex="-1"></a><span class="fu">rownames</span>(fishTraitsMissing) <span class="ot">&lt;-</span> fishData<span class="sc">$</span>species</span>
+<span id="cb7-226"><a href="#cb7-226" tabindex="-1"></a></span>
+<span id="cb7-227"><a href="#cb7-227" tabindex="-1"></a>fishTraitsImputed <span class="ot">&lt;-</span> fishData_imputed_forest[, selectedTraits]</span>
+<span id="cb7-228"><a href="#cb7-228" tabindex="-1"></a><span class="fu">colnames</span>(fishTraitsImputed) <span class="ot">&lt;-</span> newTraitNames</span>
+<span id="cb7-229"><a href="#cb7-229" tabindex="-1"></a><span class="fu">rownames</span>(fishTraitsImputed) <span class="ot">&lt;-</span> fishData<span class="sc">$</span>species</span>
+<span id="cb7-230"><a href="#cb7-230" tabindex="-1"></a></span>
+<span id="cb7-231"><a href="#cb7-231" tabindex="-1"></a><span class="co"># --- add IUCN to the table ---</span></span>
+<span id="cb7-232"><a href="#cb7-232" tabindex="-1"></a></span>
+<span id="cb7-233"><a href="#cb7-233" tabindex="-1"></a>fishTraitsMissing <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(fishTraitsMissing, <span class="at">IUCN =</span> fishData<span class="sc">$</span>IUCN)</span>
+<span id="cb7-234"><a href="#cb7-234" tabindex="-1"></a><span class="co"># write.table(fishTraitsMissing, &quot;dataPrepared/Fish/TraitFishMissing.txt&quot;)</span></span>
+<span id="cb7-235"><a href="#cb7-235" tabindex="-1"></a>fishTraitsImputed <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(fishTraitsImputed, <span class="at">IUCN =</span> fishData<span class="sc">$</span>IUCN)</span>
+<span id="cb7-236"><a href="#cb7-236" tabindex="-1"></a><span class="co"># write.table(fishTraitsImputed, &quot;dataPrepared/Fish/TraitFishImputed.txt&quot;)</span></span>
+<span id="cb7-237"><a href="#cb7-237" tabindex="-1"></a></span>
+<span id="cb7-238"><a href="#cb7-238" tabindex="-1"></a><span class="co"># --- ACP and TPD ---</span></span>
+<span id="cb7-239"><a href="#cb7-239" tabindex="-1"></a></span>
+<span id="cb7-240"><a href="#cb7-240" tabindex="-1"></a><span class="co"># it takes long !!!</span></span>
+<span id="cb7-241"><a href="#cb7-241" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">computePCAandTPDs</span>(fishTraitsImputed[,<span class="sc">!</span><span class="fu">colnames</span>(fishTraitsImputed) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>])</span>
+<span id="cb7-242"><a href="#cb7-242" tabindex="-1"></a><span class="co"># saveRDS(results, &quot;output/All_fish.rds&quot;)</span></span>
+<span id="cb7-243"><a href="#cb7-243" tabindex="-1"></a>pca_trait <span class="ot">=</span> results<span class="sc">$</span>PCA</span>
+<span id="cb7-244"><a href="#cb7-244" tabindex="-1"></a><span class="co"># saveRDS(pca_trait, &quot;output/PCA_fish.rds&quot;)</span></span>
+<span id="cb7-245"><a href="#cb7-245" tabindex="-1"></a>tpd_trait <span class="ot">=</span> results<span class="sc">$</span>TPDs</span>
+<span id="cb7-246"><a href="#cb7-246" tabindex="-1"></a><span class="co"># saveRDS(tpd_trait, &quot;output/TPDs_fish.rds&quot;)</span></span>
+<span id="cb7-247"><a href="#cb7-247" tabindex="-1"></a></span>
+<span id="cb7-248"><a href="#cb7-248" tabindex="-1"></a><span class="co"># --- (optionnal) other fish info ---</span></span>
+<span id="cb7-249"><a href="#cb7-249" tabindex="-1"></a></span>
+<span id="cb7-250"><a href="#cb7-250" tabindex="-1"></a>fishOtherInfo <span class="ot">&lt;-</span> fishData[, (<span class="fu">max</span>(columnsTraits) <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">ncol</span>(fishData)]</span>
+<span id="cb7-251"><a href="#cb7-251" tabindex="-1"></a></span>
+<span id="cb7-252"><a href="#cb7-252" tabindex="-1"></a><span class="co"># --- add uses to pca_traits ---</span></span>
+<span id="cb7-253"><a href="#cb7-253" tabindex="-1"></a></span>
+<span id="cb7-254"><a href="#cb7-254" tabindex="-1"></a>df_scraping <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;output/fish_human_uses_binary_FB.rds&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">as.data.table</span>()</span>
+<span id="cb7-255"><a href="#cb7-255" tabindex="-1"></a>df_uni <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;data/uni.csv&quot;</span>)</span>
+<span id="cb7-256"><a href="#cb7-256" tabindex="-1"></a></span>
+<span id="cb7-257"><a href="#cb7-257" tabindex="-1"></a><span class="fu">setnames</span>(df_scraping, <span class="fu">c</span>(<span class="st">&quot;species_name&quot;</span>, <span class="st">&quot;aquarium&quot;</span>, <span class="st">&quot;fisheries&quot;</span>, <span class="st">&quot;bait&quot;</span>, <span class="st">&quot;game_fish&quot;</span>, <span class="st">&quot;aquaculture&quot;</span>),</span>
+<span id="cb7-258"><a href="#cb7-258" tabindex="-1"></a>         <span class="fu">c</span>(<span class="st">&quot;Species&quot;</span>, <span class="st">&quot;Aquarium&quot;</span>, <span class="st">&quot;Fisheries&quot;</span>, <span class="st">&quot;Bait&quot;</span>, <span class="st">&quot;Game_fish&quot;</span>, <span class="st">&quot;Aquaculture&quot;</span>))</span>
+<span id="cb7-259"><a href="#cb7-259" tabindex="-1"></a><span class="fu">setnames</span>(df_uni, <span class="st">&quot;Game fish&quot;</span>, <span class="st">&quot;Game_fish&quot;</span>, <span class="at">skip_absent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-260"><a href="#cb7-260" tabindex="-1"></a></span>
+<span id="cb7-261"><a href="#cb7-261" tabindex="-1"></a>binary_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Fisheries&quot;</span>, <span class="st">&quot;Aquaculture&quot;</span>, <span class="st">&quot;Aquarium&quot;</span>, <span class="st">&quot;Game_fish&quot;</span>, <span class="st">&quot;Bait&quot;</span>)</span>
+<span id="cb7-262"><a href="#cb7-262" tabindex="-1"></a></span>
+<span id="cb7-263"><a href="#cb7-263" tabindex="-1"></a>merged_df <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
+<span id="cb7-264"><a href="#cb7-264" tabindex="-1"></a>  df_uni,</span>
+<span id="cb7-265"><a href="#cb7-265" tabindex="-1"></a>  df_scraping[, <span class="fu">c</span>(<span class="st">&quot;Species&quot;</span>, binary_cols), <span class="at">with =</span> <span class="cn">FALSE</span>],</span>
+<span id="cb7-266"><a href="#cb7-266" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">&quot;Species&quot;</span>,</span>
+<span id="cb7-267"><a href="#cb7-267" tabindex="-1"></a>  <span class="at">suffixes =</span> <span class="fu">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;.scraping&quot;</span>),</span>
+<span id="cb7-268"><a href="#cb7-268" tabindex="-1"></a>  <span class="at">all.x =</span> <span class="cn">TRUE</span></span>
+<span id="cb7-269"><a href="#cb7-269" tabindex="-1"></a>)</span>
+<span id="cb7-270"><a href="#cb7-270" tabindex="-1"></a></span>
+<span id="cb7-271"><a href="#cb7-271" tabindex="-1"></a><span class="cf">for</span> (col <span class="cf">in</span> binary_cols) {</span>
+<span id="cb7-272"><a href="#cb7-272" tabindex="-1"></a>  col_scraping <span class="ot">&lt;-</span> <span class="fu">paste0</span>(col, <span class="st">&quot;.scraping&quot;</span>)</span>
+<span id="cb7-273"><a href="#cb7-273" tabindex="-1"></a>  <span class="cf">if</span> (col_scraping <span class="sc">%in%</span> <span class="fu">colnames</span>(merged_df)) {</span>
+<span id="cb7-274"><a href="#cb7-274" tabindex="-1"></a>    merged_df[[col]] <span class="ot">&lt;-</span> <span class="fu">pmax</span>(</span>
+<span id="cb7-275"><a href="#cb7-275" tabindex="-1"></a>      <span class="fu">as.numeric</span>(merged_df[[col]]),</span>
+<span id="cb7-276"><a href="#cb7-276" tabindex="-1"></a>      <span class="fu">as.numeric</span>(merged_df[[col_scraping]]),</span>
+<span id="cb7-277"><a href="#cb7-277" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb7-278"><a href="#cb7-278" tabindex="-1"></a>    )</span>
+<span id="cb7-279"><a href="#cb7-279" tabindex="-1"></a>    merged_df[[col_scraping]] <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb7-280"><a href="#cb7-280" tabindex="-1"></a>  }</span>
+<span id="cb7-281"><a href="#cb7-281" tabindex="-1"></a>}</span>
+<span id="cb7-282"><a href="#cb7-282" tabindex="-1"></a></span>
+<span id="cb7-283"><a href="#cb7-283" tabindex="-1"></a>merged_df[, All_uses <span class="sc">:=</span> <span class="fu">as.integer</span>(Fisheries <span class="sc">+</span> Aquaculture <span class="sc">+</span> Aquarium <span class="sc">+</span> Game_fish <span class="sc">+</span> Bait <span class="sc">&gt;</span> <span class="dv">0</span>)]</span>
+<span id="cb7-284"><a href="#cb7-284" tabindex="-1"></a></span>
+<span id="cb7-285"><a href="#cb7-285" tabindex="-1"></a>merged_df_clean <span class="ot">&lt;-</span> merged_df <span class="sc">%&gt;%</span></span>
+<span id="cb7-286"><a href="#cb7-286" tabindex="-1"></a>  <span class="fu">select</span>(Species, <span class="fu">all_of</span>(binary_cols), All_uses) <span class="sc">%&gt;%</span></span>
+<span id="cb7-287"><a href="#cb7-287" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&quot;Game fish&quot;</span> <span class="ot">=</span> Game_fish, <span class="st">&quot;All uses&quot;</span> <span class="ot">=</span> All_uses)</span>
+<span id="cb7-288"><a href="#cb7-288" tabindex="-1"></a></span>
+<span id="cb7-289"><a href="#cb7-289" tabindex="-1"></a>usage_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Fisheries&quot;</span>, <span class="st">&quot;Aquaculture&quot;</span>, <span class="st">&quot;Aquarium&quot;</span>, <span class="st">&quot;Game fish&quot;</span>, <span class="st">&quot;Bait&quot;</span>, <span class="st">&quot;All uses&quot;</span>)</span>
+<span id="cb7-290"><a href="#cb7-290" tabindex="-1"></a></span>
+<span id="cb7-291"><a href="#cb7-291" tabindex="-1"></a>uses_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(merged_df_clean[, <span class="fu">c</span>(<span class="st">&quot;Species&quot;</span>, usage_cols), <span class="at">with =</span> <span class="cn">FALSE</span>])</span>
+<span id="cb7-292"><a href="#cb7-292" tabindex="-1"></a>uses_df <span class="ot">&lt;-</span> uses_df[<span class="sc">!</span><span class="fu">is.na</span>(uses_df<span class="sc">$</span>Species) <span class="sc">&amp;</span> uses_df<span class="sc">$</span>Species <span class="sc">!=</span> <span class="st">&quot;NA&quot;</span>, ]</span>
+<span id="cb7-293"><a href="#cb7-293" tabindex="-1"></a><span class="fu">rownames</span>(uses_df) <span class="ot">&lt;-</span> uses_df<span class="sc">$</span>Species</span>
+<span id="cb7-294"><a href="#cb7-294" tabindex="-1"></a>uses_df<span class="sc">$</span>Species <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb7-295"><a href="#cb7-295" tabindex="-1"></a></span>
+<span id="cb7-296"><a href="#cb7-296" tabindex="-1"></a>uses_df[<span class="st">&quot;Centromochlus musaica&quot;</span>, ] <span class="ot">&lt;-</span> <span class="fu">list</span>( <span class="co"># miss match in the species name for Centromochlus musaica</span></span>
+<span id="cb7-297"><a href="#cb7-297" tabindex="-1"></a>  <span class="at">Fisheries =</span> <span class="dv">0</span>,</span>
+<span id="cb7-298"><a href="#cb7-298" tabindex="-1"></a>  <span class="at">Aquaculture =</span> <span class="dv">0</span>,</span>
+<span id="cb7-299"><a href="#cb7-299" tabindex="-1"></a>  <span class="at">Aquarium =</span> <span class="dv">1</span>, <span class="co"># only one use associated to Centromochlus musaica</span></span>
+<span id="cb7-300"><a href="#cb7-300" tabindex="-1"></a>  <span class="st">`</span><span class="at">Game fish</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
+<span id="cb7-301"><a href="#cb7-301" tabindex="-1"></a>  <span class="at">Bait =</span> <span class="dv">0</span>,</span>
+<span id="cb7-302"><a href="#cb7-302" tabindex="-1"></a>  <span class="st">`</span><span class="at">All uses</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb7-303"><a href="#cb7-303" tabindex="-1"></a>)</span>
+<span id="cb7-304"><a href="#cb7-304" tabindex="-1"></a></span>
+<span id="cb7-305"><a href="#cb7-305" tabindex="-1"></a>pca_trait<span class="sc">$</span>uses <span class="ot">&lt;-</span> uses_df[species_ref, usage_cols, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb7-306"><a href="#cb7-306" tabindex="-1"></a>use <span class="ot">&lt;-</span> pca_trait<span class="sc">$</span>uses</span>
+<span id="cb7-307"><a href="#cb7-307" tabindex="-1"></a><span class="fu">saveRDS</span>(pca_trait, <span class="st">&quot;output/pca_trait.rds&quot;</span>)</span>
+<span id="cb7-308"><a href="#cb7-308" tabindex="-1"></a></span>
+<span id="cb7-309"><a href="#cb7-309" tabindex="-1"></a><span class="co"># --- create the matrice ---</span></span>
+<span id="cb7-310"><a href="#cb7-310" tabindex="-1"></a></span>
+<span id="cb7-311"><a href="#cb7-311" tabindex="-1"></a>pca_trait <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;output/pca_trait.rds&quot;</span>)</span>
+<span id="cb7-312"><a href="#cb7-312" tabindex="-1"></a>  </span>
+<span id="cb7-313"><a href="#cb7-313" tabindex="-1"></a>species_scores <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pca_trait<span class="sc">$</span>traits_scores[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb7-314"><a href="#cb7-314" tabindex="-1"></a>species_uses <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pca_trait<span class="sc">$</span>uses)</span>
+<span id="cb7-315"><a href="#cb7-315" tabindex="-1"></a></span>
+<span id="cb7-316"><a href="#cb7-316" tabindex="-1"></a>species_uses<span class="sc">$</span>rownames <span class="ot">&lt;-</span> <span class="fu">rownames</span>(species_uses)</span>
+<span id="cb7-317"><a href="#cb7-317" tabindex="-1"></a>species_scores<span class="sc">$</span>rownames <span class="ot">&lt;-</span> <span class="fu">rownames</span>(species_scores)</span>
+<span id="cb7-318"><a href="#cb7-318" tabindex="-1"></a>species_scores_uses <span class="ot">&lt;-</span> <span class="fu">merge</span>(species_uses, species_scores, <span class="at">by =</span> <span class="st">&quot;rownames&quot;</span>)</span>
+<span id="cb7-319"><a href="#cb7-319" tabindex="-1"></a><span class="fu">rownames</span>(species_scores_uses) <span class="ot">&lt;-</span> species_scores_uses<span class="sc">$</span>rownames</span>
+<span id="cb7-320"><a href="#cb7-320" tabindex="-1"></a>species_scores_uses<span class="sc">$</span>rownames <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb7-321"><a href="#cb7-321" tabindex="-1"></a>species_uses<span class="sc">$</span>rownames <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb7-322"><a href="#cb7-322" tabindex="-1"></a>MatriceFish <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">as.matrix</span>(species_uses))</span>
+<span id="cb7-323"><a href="#cb7-323" tabindex="-1"></a>column_names <span class="ot">&lt;-</span> <span class="fu">rownames</span>(species_uses)</span>
+<span id="cb7-324"><a href="#cb7-324" tabindex="-1"></a>MatriceFish_1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span>, <span class="at">nrow =</span> <span class="dv">1</span>, <span class="at">ncol =</span> <span class="fu">length</span>(column_names))</span>
+<span id="cb7-325"><a href="#cb7-325" tabindex="-1"></a><span class="fu">colnames</span>(MatriceFish_1) <span class="ot">&lt;-</span> column_names</span>
+<span id="cb7-326"><a href="#cb7-326" tabindex="-1"></a><span class="fu">rownames</span>(MatriceFish_1) <span class="ot">&lt;-</span> <span class="st">&quot;all&quot;</span></span>
+<span id="cb7-327"><a href="#cb7-327" tabindex="-1"></a>MatriceFish <span class="ot">&lt;-</span> <span class="fu">rbind</span>(MatriceFish, MatriceFish_1)</span>
+<span id="cb7-328"><a href="#cb7-328" tabindex="-1"></a></span>
+<span id="cb7-329"><a href="#cb7-329" tabindex="-1"></a><span class="fu">write.csv</span>(MatriceFish, <span class="st">&quot;output/MatriceFish.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+</div>
+<div id="imputation" class="section level3">
+<h3>Imputation</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>imputeTraits<span class="ot">&lt;-</span><span class="cf">function</span>(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed,</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>                       sdInputed, nm_PCA, <span class="at">percImpute=</span><span class="dv">1</span>, dimensions, <span class="at">nboot=</span><span class="dv">100</span>){</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">require</span>(missForest)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="fu">require</span>(Metrics)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  </span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  <span class="co"># Data: extract the species with complete &#39;selectedTraits&#39;.  For imputation all available traits are used: &#39;columsImputation&#39;</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  columsImputation <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>)<span class="sc">-</span><span class="dv">1</span>) </span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  completeSp <span class="ot">&lt;-</span> <span class="fu">rownames</span>(<span class="fu">na.omit</span>(traitsData[,selectedTraits]))</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  missingSp <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">rownames</span>(traitsData), completeSp)</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>  traitWithoutNA<span class="ot">&lt;-</span>traitsData[completeSp, columsImputation]</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>  traitWithNA <span class="ot">&lt;-</span> traitsData[missingSp, columsImputation]</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>  <span class="co">#transform the traits with NA values into a mask (1 for existing traits, NA for NA traits)</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  traitNAMask <span class="ot">&lt;-</span> <span class="fu">replace</span>(traitWithNA, traitWithNA <span class="sc">&gt;</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="dv">1</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  output <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> dimensions){</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>    output[[i]] <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nc =</span> nboot, <span class="at">nr =</span> <span class="fu">nrow</span>(traitsData), <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="fu">rownames</span>(traitsData), <span class="fu">paste0</span>(<span class="st">&quot;Sim. &quot;</span>, <span class="dv">1</span><span class="sc">:</span>nboot)))</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>    <span class="fu">names</span>(output)[i] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, i)</span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>  }</span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>  RMSE<span class="ot">&lt;-</span><span class="fu">matrix</span>(<span class="cn">NA</span>,<span class="at">nc=</span><span class="dv">2</span>,<span class="at">nr=</span>nboot,<span class="at">dimnames =</span> <span class="fu">list</span>(<span class="fu">paste0</span>(<span class="st">&quot;Sim.&quot;</span>,<span class="dv">1</span><span class="sc">:</span>nboot),<span class="fu">c</span>(<span class="st">&quot;RMSE_PC1&quot;</span>,<span class="st">&quot;RMSE_PC2&quot;</span>)))</span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a>  <span class="cf">for</span> (b <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nboot){</span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">..................SIMULATION &quot;</span>,b,<span class="st">&quot; out of &quot;</span>,nboot,<span class="st">&quot;................</span><span class="sc">\n</span><span class="st">&quot;</span>))</span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a>    </span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a>    <span class="co"># Among the complete data, let&#39;s add NA values for &#39;percImpute&#39; rows:</span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a>    traitSimulNA<span class="ot">&lt;-</span>traitWithoutNA[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(traitWithoutNA), percImpute<span class="sc">*</span><span class="fu">nrow</span>(traitWithoutNA)), ]</span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a>    randomMask <span class="ot">&lt;-</span> traitNAMask[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(traitNAMask) , <span class="fu">nrow</span>(traitSimulNA)), ]</span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a>    </span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a>    <span class="co"># We create missing values in the traitSimulNA matrix by &quot;pasting&quot; them from real missing observations (this way keeping the structure of missing data):</span></span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a>    traitSimulNA <span class="ot">&lt;-</span>  traitSimulNA <span class="sc">*</span> randomMask</span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a>    </span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a>    <span class="co"># We simulate this missing traits using the same imputation method than using in the paper:</span></span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a>    <span class="co"># Using the phylogenetic eigenvalues</span></span>
+<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a>    <span class="co"># We combine the new dataset of species without NA (&#39;traitWithoutNA&#39;) and the other species with &#39;real&#39; NA:</span></span>
+<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a>    <span class="co"># we impute all traits </span></span>
+<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a>    traitSimulNAAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(traitSimulNA, <span class="co"># Our new NA simulated</span></span>
+<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a>                             traitWithoutNA[<span class="fu">setdiff</span>(<span class="fu">rownames</span>(traitWithoutNA), <span class="fu">rownames</span>(traitSimulNA)),  ]) <span class="co"># the species with complete data without the species with new NA </span></span>
+<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a>    traitsAux <span class="ot">&lt;-</span> <span class="fu">rbind</span>(traitSimulNAAll, traitWithNA) <span class="co"># the other species </span></span>
+<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a>    <span class="co"># Imputation with &#39;missForest&#39;</span></span>
+<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a>    imputeRFModel <span class="ot">&lt;-</span> <span class="fu">missForest</span>(<span class="at">xmis =</span> traitsAux)<span class="sc">$</span>ximp</span>
+<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a>    traitsinPhylImput <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(imputeRFModel)</span>
+<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a>    </span>
+<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a>    <span class="co"># We scale the data using the same mean and SD that we used in the paper: </span></span>
+<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a>    traitsinPhylImputScaled<span class="ot">&lt;-</span>traitsinPhylImput[,selectedTraits]</span>
+<span id="cb8-43"><a href="#cb8-43" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(selectedTraits)){</span>
+<span id="cb8-44"><a href="#cb8-44" tabindex="-1"></a>      traitsinPhylImputScaled[,i]<span class="ot">&lt;-</span>(traitsinPhylImput[, selectedTraits[i]] <span class="sc">-</span> meanInputed[i]) <span class="sc">/</span> sdInputed[i]  </span>
+<span id="cb8-45"><a href="#cb8-45" tabindex="-1"></a>    }</span>
+<span id="cb8-46"><a href="#cb8-46" tabindex="-1"></a>    <span class="fu">colnames</span>(traitsinPhylImputScaled)<span class="ot">&lt;-</span><span class="fu">names</span>(meanInputed)</span>
+<span id="cb8-47"><a href="#cb8-47" tabindex="-1"></a>    </span>
+<span id="cb8-48"><a href="#cb8-48" tabindex="-1"></a>    <span class="co"># We predict the position of the imputed species in the functional space:</span></span>
+<span id="cb8-49"><a href="#cb8-49" tabindex="-1"></a>    PCApositionNA <span class="ot">&lt;-</span> <span class="fu">predict</span>(PCAmodel, <span class="at">newdata =</span> traitsinPhylImputScaled[<span class="fu">rownames</span>(traitSimulNA), ])</span>
+<span id="cb8-50"><a href="#cb8-50" tabindex="-1"></a>    </span>
+<span id="cb8-51"><a href="#cb8-51" tabindex="-1"></a>    <span class="co"># Imputed with PCA compared to original position of the species with the functional space</span></span>
+<span id="cb8-52"><a href="#cb8-52" tabindex="-1"></a>    imputed<span class="ot">&lt;-</span>PCApositionNA[,dimensions]</span>
+<span id="cb8-53"><a href="#cb8-53" tabindex="-1"></a>    original<span class="ot">&lt;-</span>traitPCA[<span class="fu">rownames</span>(PCApositionNA),]</span>
+<span id="cb8-54"><a href="#cb8-54" tabindex="-1"></a>    </span>
+<span id="cb8-55"><a href="#cb8-55" tabindex="-1"></a>    RMSE1<span class="ot">&lt;-</span>(<span class="fu">mean</span>((original[,<span class="dv">1</span>] <span class="sc">-</span> imputed[,<span class="dv">1</span>]) <span class="sc">**</span> <span class="dv">2</span>)) <span class="sc">/</span> (<span class="fu">max</span>(traitPCA[, <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">min</span>(traitPCA[, <span class="dv">1</span>]))</span>
+<span id="cb8-56"><a href="#cb8-56" tabindex="-1"></a>    RMSE2<span class="ot">&lt;-</span>(<span class="fu">mean</span>((original[,<span class="dv">2</span>] <span class="sc">-</span> imputed[,<span class="dv">2</span>]) <span class="sc">**</span> <span class="dv">2</span>)) <span class="sc">/</span> (<span class="fu">max</span>(traitPCA[, <span class="dv">2</span>]) <span class="sc">-</span> <span class="fu">min</span>(traitPCA[, <span class="dv">2</span>]))</span>
+<span id="cb8-57"><a href="#cb8-57" tabindex="-1"></a>    </span>
+<span id="cb8-58"><a href="#cb8-58" tabindex="-1"></a>    RMSE[b,]<span class="ot">&lt;-</span><span class="fu">c</span>(RMSE1,RMSE2)</span>
+<span id="cb8-59"><a href="#cb8-59" tabindex="-1"></a>    </span>
+<span id="cb8-60"><a href="#cb8-60" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> dimensions){</span>
+<span id="cb8-61"><a href="#cb8-61" tabindex="-1"></a>      output[[i]][<span class="fu">rownames</span>(imputed),b]  <span class="ot">&lt;-</span> imputed[, i] </span>
+<span id="cb8-62"><a href="#cb8-62" tabindex="-1"></a>    }</span>
+<span id="cb8-63"><a href="#cb8-63" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">apply</span>(RMSE,<span class="dv">2</span>,mean,<span class="at">na.rm=</span>T))</span>
+<span id="cb8-64"><a href="#cb8-64" tabindex="-1"></a>  }</span>
+<span id="cb8-65"><a href="#cb8-65" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(output,RMSE))</span>
+<span id="cb8-66"><a href="#cb8-66" tabindex="-1"></a>} </span>
+<span id="cb8-67"><a href="#cb8-67" tabindex="-1"></a></span>
+<span id="cb8-68"><a href="#cb8-68" tabindex="-1"></a></span>
+<span id="cb8-69"><a href="#cb8-69" tabindex="-1"></a><span class="cf">for</span> (gr <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>){</span>
+<span id="cb8-70"><a href="#cb8-70" tabindex="-1"></a>  <span class="cf">if</span>(gr <span class="sc">==</span> <span class="dv">2</span>){</span>
+<span id="cb8-71"><a href="#cb8-71" tabindex="-1"></a>    pcoaPhyl <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Mammals/pcoaPhylogenyMammals.txt&quot;</span>,<span class="at">row.names =</span> <span class="cn">NULL</span> )</span>
+<span id="cb8-72"><a href="#cb8-72" tabindex="-1"></a>    traitsData <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Mammals/AllDataMammals.txt&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb8-73"><a href="#cb8-73" tabindex="-1"></a>    columnsTraits <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;Eigen.1&quot;</span>)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb8-74"><a href="#cb8-74" tabindex="-1"></a>    traitsData[,columnsTraits] <span class="ot">&lt;-</span> <span class="fu">log10</span>(traitsData[, columnsTraits])</span>
+<span id="cb8-75"><a href="#cb8-75" tabindex="-1"></a>    columsImputation <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>)<span class="sc">-</span><span class="dv">1</span>) </span>
+<span id="cb8-76"><a href="#cb8-76" tabindex="-1"></a>    selectedTraits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;litter_or_clutch_size_n&quot;</span>, <span class="st">&quot;litters_or_clutches_per_y&quot;</span>,</span>
+<span id="cb8-77"><a href="#cb8-77" tabindex="-1"></a>                        <span class="st">&quot;adult_body_mass_g&quot;</span>, <span class="st">&quot;longevity_y&quot;</span>, <span class="st">&quot;gestation_d&quot;</span>, <span class="st">&quot;adult_svl_cm&quot;</span>,</span>
+<span id="cb8-78"><a href="#cb8-78" tabindex="-1"></a>                        <span class="st">&quot;weaning_d&quot;</span>, <span class="st">&quot;female_maturity_d&quot;</span>)</span>
+<span id="cb8-79"><a href="#cb8-79" tabindex="-1"></a>    </span>
+<span id="cb8-80"><a href="#cb8-80" tabindex="-1"></a>    nm_PCA<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;ls&quot;</span>, <span class="st">&quot;ly&quot;</span>, <span class="st">&quot;bm&quot;</span>, <span class="st">&quot;long&quot;</span>, <span class="st">&quot;gest&quot;</span>, <span class="st">&quot;svl&quot;</span>, <span class="st">&quot;wea&quot;</span>, <span class="st">&quot;fmat&quot;</span>)</span>
+<span id="cb8-81"><a href="#cb8-81" tabindex="-1"></a>    </span>
+<span id="cb8-82"><a href="#cb8-82" tabindex="-1"></a>    traitsDataImputed <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Mammals/mammalTraitsImputedIUCN.txt&quot;</span>)</span>
+<span id="cb8-83"><a href="#cb8-83" tabindex="-1"></a>    meanInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,mean)</span>
+<span id="cb8-84"><a href="#cb8-84" tabindex="-1"></a>    sdInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,sd)</span>
+<span id="cb8-85"><a href="#cb8-85" tabindex="-1"></a>    </span>
+<span id="cb8-86"><a href="#cb8-86" tabindex="-1"></a>    traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb8-87"><a href="#cb8-87" tabindex="-1"></a>      <span class="fu">scale</span>(traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)])</span>
+<span id="cb8-88"><a href="#cb8-88" tabindex="-1"></a>  }</span>
+<span id="cb8-89"><a href="#cb8-89" tabindex="-1"></a>  <span class="cf">if</span>(gr <span class="sc">==</span> <span class="dv">3</span>){</span>
+<span id="cb8-90"><a href="#cb8-90" tabindex="-1"></a>    pcoaPhyl <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Aves/pcoaPhylogenyAves.txt&quot;</span>,<span class="at">row.names =</span> <span class="cn">NULL</span> )</span>
+<span id="cb8-91"><a href="#cb8-91" tabindex="-1"></a>    traitsData <span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/aves/AllDataAves.txt&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb8-92"><a href="#cb8-92" tabindex="-1"></a>    columnsTraits <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;Eigen.1&quot;</span>)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb8-93"><a href="#cb8-93" tabindex="-1"></a>    traitsData[,columnsTraits] <span class="ot">&lt;-</span> <span class="fu">log10</span>(traitsData[, columnsTraits])</span>
+<span id="cb8-94"><a href="#cb8-94" tabindex="-1"></a>    columsImputation <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>)<span class="sc">-</span><span class="dv">1</span>) </span>
+<span id="cb8-95"><a href="#cb8-95" tabindex="-1"></a>    selectedTraits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;litter_or_clutch_size_n&quot;</span>, <span class="st">&quot;adult_body_mass_g&quot;</span>, <span class="st">&quot;egg_mass_g&quot;</span>,</span>
+<span id="cb8-96"><a href="#cb8-96" tabindex="-1"></a>                        <span class="st">&quot;incubation_d&quot;</span>, <span class="st">&quot;longevity_y&quot;</span>, <span class="st">&quot;fledging_age_d&quot;</span>, <span class="st">&quot;litters_or_clutches_per_y&quot;</span>, </span>
+<span id="cb8-97"><a href="#cb8-97" tabindex="-1"></a>                        <span class="st">&quot;adult_svl_cm&quot;</span>)</span>
+<span id="cb8-98"><a href="#cb8-98" tabindex="-1"></a>    </span>
+<span id="cb8-99"><a href="#cb8-99" tabindex="-1"></a>    nm_PCA<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;ls&quot;</span>, <span class="st">&quot;bm&quot;</span>, <span class="st">&quot;em&quot;</span>, <span class="st">&quot;inc&quot;</span>, <span class="st">&quot;long&quot;</span>, <span class="st">&quot;fa&quot;</span>, <span class="st">&quot;ly&quot;</span>, <span class="st">&quot;svl&quot;</span>)</span>
+<span id="cb8-100"><a href="#cb8-100" tabindex="-1"></a>    </span>
+<span id="cb8-101"><a href="#cb8-101" tabindex="-1"></a>    traitsDataImputed <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/aves/aveTraitsImputedIUCN.txt&quot;</span>)</span>
+<span id="cb8-102"><a href="#cb8-102" tabindex="-1"></a>    meanInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,mean)</span>
+<span id="cb8-103"><a href="#cb8-103" tabindex="-1"></a>    sdInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,sd)</span>
+<span id="cb8-104"><a href="#cb8-104" tabindex="-1"></a>    </span>
+<span id="cb8-105"><a href="#cb8-105" tabindex="-1"></a>    traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb8-106"><a href="#cb8-106" tabindex="-1"></a>      <span class="fu">scale</span>(traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)])</span>
+<span id="cb8-107"><a href="#cb8-107" tabindex="-1"></a>  }</span>
+<span id="cb8-108"><a href="#cb8-108" tabindex="-1"></a>  <span class="cf">if</span>(gr <span class="sc">==</span> <span class="dv">4</span>){</span>
+<span id="cb8-109"><a href="#cb8-109" tabindex="-1"></a>    pcoaPhyl <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/reptiles/pcoaPhylogenyReptiles.txt&quot;</span>,<span class="at">row.names =</span> <span class="cn">NULL</span> )</span>
+<span id="cb8-110"><a href="#cb8-110" tabindex="-1"></a>    traitsData <span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/reptiles/AllDataReptiles.txt&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb8-111"><a href="#cb8-111" tabindex="-1"></a>    columnsTraits <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;Eigen.1&quot;</span>)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb8-112"><a href="#cb8-112" tabindex="-1"></a>    traitsData[,columnsTraits] <span class="ot">&lt;-</span> <span class="fu">log10</span>(traitsData[, columnsTraits])</span>
+<span id="cb8-113"><a href="#cb8-113" tabindex="-1"></a>    columsImputation <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>)<span class="sc">-</span><span class="dv">1</span>) </span>
+<span id="cb8-114"><a href="#cb8-114" tabindex="-1"></a>    selectedTraits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;litter_or_clutch_size_n&quot;</span>, <span class="st">&quot;litters_or_clutches_per_y&quot;</span>,</span>
+<span id="cb8-115"><a href="#cb8-115" tabindex="-1"></a>                        <span class="st">&quot;adult_body_mass_g&quot;</span>, <span class="st">&quot;incubation_d&quot;</span>, <span class="st">&quot;longevity_y&quot;</span>, <span class="st">&quot;no_sex_svl_cm&quot;</span>)</span>
+<span id="cb8-116"><a href="#cb8-116" tabindex="-1"></a>    </span>
+<span id="cb8-117"><a href="#cb8-117" tabindex="-1"></a>    nm_PCA<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;ls&quot;</span>, <span class="st">&quot;ly&quot;</span>, <span class="st">&quot;bm&quot;</span>, <span class="st">&quot;inc&quot;</span>, <span class="st">&quot;long&quot;</span>, <span class="st">&quot;svl&quot;</span>)</span>
+<span id="cb8-118"><a href="#cb8-118" tabindex="-1"></a>    </span>
+<span id="cb8-119"><a href="#cb8-119" tabindex="-1"></a>    traitsDataImputed <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/reptiles/reptileTraitsImputedIUCN.txt&quot;</span>)</span>
+<span id="cb8-120"><a href="#cb8-120" tabindex="-1"></a>    meanInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,mean)</span>
+<span id="cb8-121"><a href="#cb8-121" tabindex="-1"></a>    sdInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,sd)</span>
+<span id="cb8-122"><a href="#cb8-122" tabindex="-1"></a>    </span>
+<span id="cb8-123"><a href="#cb8-123" tabindex="-1"></a>    traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb8-124"><a href="#cb8-124" tabindex="-1"></a>      <span class="fu">scale</span>(traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)])</span>
+<span id="cb8-125"><a href="#cb8-125" tabindex="-1"></a>  }</span>
+<span id="cb8-126"><a href="#cb8-126" tabindex="-1"></a>  <span class="cf">if</span>(gr <span class="sc">==</span> <span class="dv">5</span>){</span>
+<span id="cb8-127"><a href="#cb8-127" tabindex="-1"></a>    pcoaPhyl <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Amphibians/pcoaPhylogenyAmphibians.txt&quot;</span>,<span class="at">row.names =</span> <span class="cn">NULL</span> )</span>
+<span id="cb8-128"><a href="#cb8-128" tabindex="-1"></a>    traitsData <span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Amphibians/AllDataAmphibians.txt&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb8-129"><a href="#cb8-129" tabindex="-1"></a>    columnsTraits <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;Eigen.1&quot;</span>)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb8-130"><a href="#cb8-130" tabindex="-1"></a>    traitsData[,columnsTraits] <span class="ot">&lt;-</span> <span class="fu">log10</span>(traitsData[, columnsTraits])</span>
+<span id="cb8-131"><a href="#cb8-131" tabindex="-1"></a>    columsImputation <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>)<span class="sc">-</span><span class="dv">1</span>) </span>
+<span id="cb8-132"><a href="#cb8-132" tabindex="-1"></a>    selectedTraits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Age_at_maturity_min_y&quot;</span>,</span>
+<span id="cb8-133"><a href="#cb8-133" tabindex="-1"></a>                        <span class="st">&quot;Body_size_mm&quot;</span>, <span class="st">&quot;Litter_size_max_n&quot;</span>,</span>
+<span id="cb8-134"><a href="#cb8-134" tabindex="-1"></a>                        <span class="st">&quot;Offspring_size_min_mm&quot;</span>)</span>
+<span id="cb8-135"><a href="#cb8-135" tabindex="-1"></a>    </span>
+<span id="cb8-136"><a href="#cb8-136" tabindex="-1"></a>    nm_PCA<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;am&quot;</span>, <span class="st">&quot;bs&quot;</span>, <span class="st">&quot;ls&quot;</span>, <span class="st">&quot;os&quot;</span>)</span>
+<span id="cb8-137"><a href="#cb8-137" tabindex="-1"></a>    </span>
+<span id="cb8-138"><a href="#cb8-138" tabindex="-1"></a>    traitsDataImputed <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Amphibians/amphibianTraitsImputedIUCN.txt&quot;</span>)</span>
+<span id="cb8-139"><a href="#cb8-139" tabindex="-1"></a>    meanInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,mean)</span>
+<span id="cb8-140"><a href="#cb8-140" tabindex="-1"></a>    sdInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,sd)</span>
+<span id="cb8-141"><a href="#cb8-141" tabindex="-1"></a>    </span>
+<span id="cb8-142"><a href="#cb8-142" tabindex="-1"></a>    traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb8-143"><a href="#cb8-143" tabindex="-1"></a>      <span class="fu">scale</span>(traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)])</span>
+<span id="cb8-144"><a href="#cb8-144" tabindex="-1"></a>  }</span>
+<span id="cb8-145"><a href="#cb8-145" tabindex="-1"></a>  <span class="cf">if</span>(gr <span class="sc">==</span> <span class="dv">6</span>){</span>
+<span id="cb8-146"><a href="#cb8-146" tabindex="-1"></a>    pcoaPhyl <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Fish/pcoaPhylogenyFish.txt&quot;</span>,<span class="at">row.names =</span> <span class="cn">NULL</span> )</span>
+<span id="cb8-147"><a href="#cb8-147" tabindex="-1"></a>    traitsData <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Fish/AllDataFish.txt&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb8-148"><a href="#cb8-148" tabindex="-1"></a>    selectedTraits <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot;es&quot;</span>,<span class="st">&quot;ep&quot;</span>,<span class="st">&quot;ms&quot;</span>,<span class="st">&quot;mp&quot;</span>,<span class="st">&quot;elo&quot;</span>,<span class="st">&quot;wid&quot;</span>,<span class="st">&quot;pp&quot;</span>,<span class="st">&quot;ps&quot;</span>,<span class="st">&quot;cs&quot;</span>,<span class="st">&quot;svl&quot;</span>,<span class="st">&quot;bm&quot;</span>)</span>
+<span id="cb8-149"><a href="#cb8-149" tabindex="-1"></a>    <span class="fu">colnames</span>(traitsData)[<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(selectedTraits)] <span class="ot">&lt;-</span> selectedTraits</span>
+<span id="cb8-150"><a href="#cb8-150" tabindex="-1"></a>    </span>
+<span id="cb8-151"><a href="#cb8-151" tabindex="-1"></a>    traitsDataImputed <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Fish/fishTraitsImputedIUCN.txt&quot;</span>)</span>
+<span id="cb8-152"><a href="#cb8-152" tabindex="-1"></a>    meanInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[, <span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)], <span class="dv">2</span>, mean)</span>
+<span id="cb8-153"><a href="#cb8-153" tabindex="-1"></a>    sdInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[, <span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,sd)</span>
+<span id="cb8-154"><a href="#cb8-154" tabindex="-1"></a>    traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb8-155"><a href="#cb8-155" tabindex="-1"></a>      <span class="fu">scale</span>(traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)])</span>
+<span id="cb8-156"><a href="#cb8-156" tabindex="-1"></a>    </span>
+<span id="cb8-157"><a href="#cb8-157" tabindex="-1"></a>  }</span>
+<span id="cb8-158"><a href="#cb8-158" tabindex="-1"></a>  </span>
+<span id="cb8-159"><a href="#cb8-159" tabindex="-1"></a>  traitAll<span class="ot">&lt;-</span>PCAImputedALL[[gr]]<span class="sc">$</span>traitsMissing</span>
+<span id="cb8-160"><a href="#cb8-160" tabindex="-1"></a>  traitPCA<span class="ot">&lt;-</span>PCAImputedALL[[gr]]<span class="sc">$</span>traitsUse</span>
+<span id="cb8-161"><a href="#cb8-161" tabindex="-1"></a>  PCAmodel<span class="ot">&lt;-</span>PCAImputedALL[[gr]]<span class="sc">$</span>PCA</span>
+<span id="cb8-162"><a href="#cb8-162" tabindex="-1"></a>  dimensions<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>PCAImputedALL[[gr]]<span class="sc">$</span>dimensions)</span>
+<span id="cb8-163"><a href="#cb8-163" tabindex="-1"></a>  nreps <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb8-164"><a href="#cb8-164" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">....................GROUP:&quot;</span>,targetGroupName[gr],<span class="st">&quot;............................</span><span class="sc">\n</span><span class="st">&quot;</span>))</span>
+<span id="cb8-165"><a href="#cb8-165" tabindex="-1"></a>  matCov <span class="ot">&lt;-</span> <span class="fu">imputeTraits</span>(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed, sdInputed, nm_PCA, </span>
+<span id="cb8-166"><a href="#cb8-166" tabindex="-1"></a>                         <span class="at">percImpute =</span> <span class="fl">0.50</span>, dimensions, <span class="at">nboot =</span> nreps)</span>
+<span id="cb8-167"><a href="#cb8-167" tabindex="-1"></a>  <span class="fu">saveRDS</span>(matCov,<span class="at">file=</span><span class="fu">paste0</span>(<span class="st">&quot;dataPrepared/CovarianceMatrix_&quot;</span>,targetGroupName[gr],<span class="st">&quot;.RDS&quot;</span>))</span>
+<span id="cb8-168"><a href="#cb8-168" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="others-functions" class="section level3">
+<h3>Others functions</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Regex to select all symbols but &#39;_&#39;. useful for identify formulas in dplyr::</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="st">&quot;[^[:alnum:][:space:]_]&quot;</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>x <span class="ot">&lt;-</span> iris</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>x <span class="ot">&lt;-</span> x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="fu">colnames</span>(x) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;x1&quot;</span>, <span class="st">&quot;x2&quot;</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>funfun <span class="ot">&lt;-</span> <span class="cf">function</span>(data, <span class="at">expr =</span> <span class="st">&quot;log(x1 / x2) * 10^2&quot;</span>) {</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>  expr <span class="ot">&lt;-</span> <span class="fu">parse</span>(<span class="at">text =</span> expr)</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>  data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">x3 =</span> <span class="fu">eval</span>(expr))</span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>}</span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="fu">funfun</span>(x)</span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="do">## How to make a gower for big data table</span></span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="fu">library</span>(cluster)       <span class="co"># daisy() and Gower distance</span></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="fu">library</span>(data.table)    <span class="co"># large data handling</span></span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="fu">library</span>(parallel)      <span class="co"># parallel computing</span></span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="fu">library</span>(bigstatsr)     <span class="co"># very large matrices</span></span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a><span class="fu">load</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;outputs&quot;</span>, <span class="st">&quot;test_phenofish_final.RData&quot;</span>))  <span class="co"># assumes object `test_phenofish_final`</span></span>
+<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a></span>
+<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a>data_morph <span class="ot">&lt;-</span> test_phenofish_final <span class="sc">%&gt;%</span></span>
+<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a>  <span class="fu">filter</span>(trait_type <span class="sc">==</span> <span class="st">&quot;morphological&quot;</span> <span class="sc">&amp;</span> fresh <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> trait_coding <span class="sc">==</span> <span class="st">&quot;continuous&quot;</span>)</span>
+<span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a>data_morph <span class="ot">&lt;-</span> data_morph <span class="sc">%&gt;%</span></span>
+<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(specimen_id, trait_name) <span class="sc">%&gt;%</span></span>
+<span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">trait_value =</span> <span class="fu">as.numeric</span>(trait_value))</span>
+<span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a></span>
+<span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a>data_morph <span class="ot">&lt;-</span> data_morph <span class="sc">%&gt;%</span></span>
+<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(phenofish_name, trait_name) <span class="sc">%&gt;%</span></span>
+<span id="cb9-34"><a href="#cb9-34" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">trait_value =</span> <span class="fu">mean</span>(trait_value), <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>)</span>
+<span id="cb9-35"><a href="#cb9-35" tabindex="-1"></a></span>
+<span id="cb9-36"><a href="#cb9-36" tabindex="-1"></a>species_traits <span class="ot">&lt;-</span> reshape2<span class="sc">::</span><span class="fu">dcast</span>(data_morph, phenofish_name <span class="sc">~</span> trait_name)</span>
+<span id="cb9-37"><a href="#cb9-37" tabindex="-1"></a><span class="fu">colnames</span>(species_traits)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;species&quot;</span></span>
+<span id="cb9-38"><a href="#cb9-38" tabindex="-1"></a><span class="fu">rownames</span>(species_traits) <span class="ot">&lt;-</span> species_traits[, <span class="dv">1</span>]</span>
+<span id="cb9-39"><a href="#cb9-39" tabindex="-1"></a>traits <span class="ot">&lt;-</span> species_traits[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb9-40"><a href="#cb9-40" tabindex="-1"></a></span>
+<span id="cb9-41"><a href="#cb9-41" tabindex="-1"></a>block_size <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb9-42"><a href="#cb9-42" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(traits)</span>
+<span id="cb9-43"><a href="#cb9-43" tabindex="-1"></a></span>
+<span id="cb9-44"><a href="#cb9-44" tabindex="-1"></a>gower_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, n, n)</span>
+<span id="cb9-45"><a href="#cb9-45" tabindex="-1"></a></span>
+<span id="cb9-46"><a href="#cb9-46" tabindex="-1"></a>compute_gower_block <span class="ot">&lt;-</span> <span class="cf">function</span>(start_idx, end_idx, traits_data) {</span>
+<span id="cb9-47"><a href="#cb9-47" tabindex="-1"></a>  block_data <span class="ot">&lt;-</span> traits_data[start_idx<span class="sc">:</span>end_idx, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb9-48"><a href="#cb9-48" tabindex="-1"></a>  gower_dist_block <span class="ot">&lt;-</span> <span class="fu">daisy</span>(block_data, <span class="at">metric =</span> <span class="st">&quot;gower&quot;</span>)</span>
+<span id="cb9-49"><a href="#cb9-49" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">as.matrix</span>(gower_dist_block))</span>
+<span id="cb9-50"><a href="#cb9-50" tabindex="-1"></a>}</span>
+<span id="cb9-51"><a href="#cb9-51" tabindex="-1"></a></span>
+<span id="cb9-52"><a href="#cb9-52" tabindex="-1"></a>block_indices <span class="ot">&lt;-</span> <span class="fu">split</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="fu">ceiling</span>(<span class="dv">1</span><span class="sc">:</span>n <span class="sc">/</span> block_size))</span>
+<span id="cb9-53"><a href="#cb9-53" tabindex="-1"></a></span>
+<span id="cb9-54"><a href="#cb9-54" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="fu">detectCores</span>() <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb9-55"><a href="#cb9-55" tabindex="-1"></a><span class="fu">clusterExport</span>(cl, <span class="at">varlist =</span> <span class="fu">c</span>(<span class="st">&quot;traits&quot;</span>, <span class="st">&quot;daisy&quot;</span>, <span class="st">&quot;compute_gower_block&quot;</span>))</span>
+<span id="cb9-56"><a href="#cb9-56" tabindex="-1"></a></span>
+<span id="cb9-57"><a href="#cb9-57" tabindex="-1"></a>gower_blocks <span class="ot">&lt;-</span> <span class="fu">parLapply</span>(cl, block_indices, <span class="cf">function</span>(indices) {</span>
+<span id="cb9-58"><a href="#cb9-58" tabindex="-1"></a>  start_idx <span class="ot">&lt;-</span> indices[<span class="dv">1</span>]</span>
+<span id="cb9-59"><a href="#cb9-59" tabindex="-1"></a>  end_idx <span class="ot">&lt;-</span> <span class="fu">tail</span>(indices, <span class="dv">1</span>)</span>
+<span id="cb9-60"><a href="#cb9-60" tabindex="-1"></a>  <span class="fu">compute_gower_block</span>(start_idx, end_idx, traits)</span>
+<span id="cb9-61"><a href="#cb9-61" tabindex="-1"></a>})</span>
+<span id="cb9-62"><a href="#cb9-62" tabindex="-1"></a></span>
+<span id="cb9-63"><a href="#cb9-63" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(gower_blocks)) {</span>
+<span id="cb9-64"><a href="#cb9-64" tabindex="-1"></a>  idx_range <span class="ot">&lt;-</span> block_indices[[i]]</span>
+<span id="cb9-65"><a href="#cb9-65" tabindex="-1"></a>  gower_matrix[idx_range, idx_range] <span class="ot">&lt;-</span> gower_blocks[[i]]</span>
+<span id="cb9-66"><a href="#cb9-66" tabindex="-1"></a>}</span>
+<span id="cb9-67"><a href="#cb9-67" tabindex="-1"></a></span>
+<span id="cb9-68"><a href="#cb9-68" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span>
+<span id="cb9-69"><a href="#cb9-69" tabindex="-1"></a></span>
+<span id="cb9-70"><a href="#cb9-70" tabindex="-1"></a><span class="fu">print</span>(gower_matrix[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>])</span>
+<span id="cb9-71"><a href="#cb9-71" tabindex="-1"></a><span class="fu">save</span>(gower_matrix, <span class="at">file =</span> <span class="st">&quot;gower_matrix.RData&quot;</span>)</span>
+<span id="cb9-72"><a href="#cb9-72" tabindex="-1"></a></span>
+<span id="cb9-73"><a href="#cb9-73" tabindex="-1"></a>pcoa_res <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">pcoa</span>(<span class="fu">as.dist</span>(gower_matrix))</span>
+<span id="cb9-74"><a href="#cb9-74" tabindex="-1"></a>pca_res <span class="ot">&lt;-</span> <span class="fu">cmdscale</span>(<span class="fu">as.dist</span>(gower_matrix), <span class="at">k =</span> <span class="dv">2</span>)</span>
+<span id="cb9-75"><a href="#cb9-75" tabindex="-1"></a><span class="fu">summary</span>(pca_res)</span></code></pre></div>
 </div>
 </div>
 
