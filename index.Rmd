@@ -117,27 +117,6 @@ Research Council (MOBJD-276)*
 <a href="https://www.khu.ac.kr/eng/main/index.do" target="_blank">Kyung
 Hee University</a>, Seoul (Korea)
 
-<h1 align="center">
-
-<b>Student supervision</b>
-
-</h1>
-
-**Pierre Bertrand.** *Master.* 2026. Quantification de la diversité
-intraspécifique des poissons d’eau douce de Guyane française et impact
-sur les mesures de diversité fonctionnelle.
-
-**Nell Pause**. *Master**.*** 2025. Disentangling morphological,
-life-history, and dietary predictors of extinction risk and population
-trends on birds.
-
-**Pierre Bouchet**. *PhD Student*. 2024 - 2027. Diversité fonctionnelle
-des vertébrés et utilisation par l'homme: liens entre traits
-fonctionnels, utilisation anthropique et crise de biodiversité.
-
-**Adrien Solacroup**. *Master*. 2014. Characterization of the
-morphological intra specific variability on the French Guyana and
-European freshwater fish community.
 
 <h1 align="center">
 
@@ -361,6 +340,37 @@ and
 <a href="https://www.cnrs.fr/occitanie-ouest/CNRS-Hebdo/Actualites/18686/Suite.aspx" target="_blank">CNRS
 press release</a>, [Supplementary1](data/geb12141-sup-0001-si.doc);
 [Supplementary2](data/geb12141-sup-0002-si.doc)
+
+<h1 align="center">
+
+<b>Student supervision</b>
+
+</h1>
+
+**Adrien Lagalle.** *Master.* 2026. Comparaison des methodes de mesure des traits fonctionnels des poissons d'eau douce
+
+**Anouk Schneider.** *Master.* 2026. Quantification du biais utilisateur dans la mesure des traits morphologiques des poissons d'eau douce.
+
+**Laura Boutic.** *Bachelor.* 2026. Quantification du biais utilisateur dans la mesure des traits morphologiques des poissons d'eau douce.
+
+**Joseph Crochez.** *Bachelor.* 2026. Quantification du biais utilisateur dans la mesure des traits morphologiques des poissons d'eau douce.
+
+**Pierre Bertrand.** *Master.* 2026. Quantification de la diversité
+intraspécifique des poissons d’eau douce de Guyane française et impact
+sur les mesures de diversité fonctionnelle.
+
+**Nell Pause**. *Master**.*** 2025. Disentangling morphological,
+life-history, and dietary predictors of extinction risk and population
+trends on birds.
+
+**Pierre Bouchet**. *PhD Student*. 2024 - 2027. Diversité fonctionnelle
+des vertébrés et utilisation par l'homme: liens entre traits
+fonctionnels, utilisation anthropique et crise de biodiversité.
+
+**Adrien Solacroup**. *Master*. 2014. Characterization of the
+morphological intra specific variability on the French Guyana and
+European freshwater fish community.
+
 
 <h1 align="center">
 
