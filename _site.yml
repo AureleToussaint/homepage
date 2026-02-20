@@ -15,7 +15,7 @@ navbar:
       href: RData.html
     - text: "R scripts"
       href: Rscripts.html      
-    - text: "INTRAIT"
+    - text: "Fish'in-trait"
       href: PicTheFish.html
   right:
     - icon: fa-envelope fa-lg

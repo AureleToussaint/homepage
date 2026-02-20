@@ -13,18 +13,18 @@ editor_options:
     wrap: 72
 ---
 
-<title>INTRAIT: intraspecific morphology of freshwater fish across the
-world</title>
+<title>Fish'in-Trait: intraspecific morphology of freshwater fish across
+the world</title>
 
 <link rel="stylesheet" href="styles.css" type="text/css">
 
-<b><font size="+6">The INTRAIT project</font></b> <br>
+<b><font size="+6">The Fish'in-Trait project</font></b> <br>
 <b><font size="+2">A project for research and conservation of freshwater
 fish</font></b> <br>\
 <br>
 
 <left><font size="+1"> Leading by scientists of the **University of
-Toulouse**, the **INTRAIT** project aims to better understand the
+Toulouse**, the **Fish'in-Trait** project aims to better understand the
 *ecological role* of freshwater fishes and the consequences of *human
 disturbances*.<br><br> With your help, we aim to better understand the
 morphological features of fish species. </font> </left>
