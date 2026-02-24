@@ -83,6 +83,18 @@ h1.section-title {
   text-align: right;
 }
 
+.pub-list li.pub-year-label {
+  counter-increment: none;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+  padding: 20px 0 4px 0;
+  border-bottom: none;
+}
+
+.pub-list li.pub-year-label::before {
+  content: none;
+}
 .pub-year {
   font-size: 1.2em;
   font-weight: bold;
@@ -297,15 +309,9 @@ h1.section-title {
 <a href="https://www.researchgate.net/profile/Aurele_Toussaint" target="_blank">ResearchGate</a>.
 Data repository available <a href="RData.html">here</a>.</p>
 
-<p class="pub-year">2025</p>
 <ol class="pub-list">
 
-  <li>
-    Chen Z., Xu C., Brosse S., <strong>Toussaint A.</strong>, Xu J., Su G.
-    Global Patterns and Determinants of Multiple Facets of Freshwater Fishes Beta Diversity.
-    <em>Global Ecology and Biogeography</em>.
-    <a href="data/2025_Chen_GEB.pdf" target="_blank">PDF</a>
-  </li>
+  <li class="pub-year-label">2025</li>
 
   <li>
     Partel M., Tamme R., …, <strong>Toussaint A.</strong>, …, Zobel M.
@@ -317,23 +323,20 @@ Data repository available <a href="RData.html">here</a>.</p>
     <a href="https://www.eurekalert.org/news-releases/1078990" target="_blank">EurekAlert</a>
   </li>
 
-</ol>
-
-<p class="pub-year">2024</p>
-<ol class="pub-list">
-
   <li>
-    Coulon N., Pilet S., Lizé A., Lacoue-Labarthe T., Sturbois A., <strong>Toussaint A.</strong>, Feunteun E., Carpentier A.
-    Shark critical life stage vulnerability to monthly temperature variations under climate change.
-    <em>Marine Environmental Research</em>, 198, 106531.
-    <a href="data/2024_Coulon_MER.pdf" target="_blank">PDF</a>
+    Chen Z., Xu C., Brosse S., <strong>Toussaint A.</strong>, Xu J., Su G.
+    Global Patterns and Determinants of Multiple Facets of Freshwater Fishes Beta Diversity.
+    <em>Global Ecology and Biogeography</em>.
+    <a href="data/2025_Chen_GEB.pdf" target="_blank">PDF</a>
   </li>
 
+  <li class="pub-year-label">2024</li>
+
   <li>
-    Carmona C.P., Pärtel M., Tamme R., <strong>Toussaint A.</strong>
-    OTSIMAS ELURIKKUSE MÕÕTMEID LOOMADE JA TAIMEDE SEAST, MAA ALT JA MAA PEALT.
-    <em>EESTI VABARIIGI PREEMIAD</em>.
-    <a href="data/2024_Carmona_EESTI.pdf" target="_blank">PDF</a>
+    <strong>Toussaint A.</strong>, Pärtel M., Carmona C.P.
+    Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in bird assemblages.
+    <em>Ecology Letters</em>, 27, e14373.
+    <a href="data/2024_Toussaint_EcolLett.pdf" target="_blank">PDF</a>
   </li>
 
   <li>
@@ -344,16 +347,20 @@ Data repository available <a href="RData.html">here</a>.</p>
   </li>
 
   <li>
-    <strong>Toussaint A.</strong>, Pärtel M., Carmona C.P.
-    Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in bird assemblages.
-    <em>Ecology Letters</em>, 27, e14373.
-    <a href="data/2024_Toussaint_EcolLett.pdf" target="_blank">PDF</a>
+    Carmona C.P., Pärtel M., Tamme R., <strong>Toussaint A.</strong>
+    OTSIMAS ELURIKKUSE MÕÕTMEID LOOMADE JA TAIMEDE SEAST, MAA ALT JA MAA PEALT.
+    <em>EESTI VABARIIGI PREEMIAD</em>.
+    <a href="data/2024_Carmona_EESTI.pdf" target="_blank">PDF</a>
   </li>
 
-</ol>
+  <li>
+    Coulon N., Pilet S., Lizé A., Lacoue-Labarthe T., Sturbois A., <strong>Toussaint A.</strong>, Feunteun E., Carpentier A.
+    Shark critical life stage vulnerability to monthly temperature variations under climate change.
+    <em>Marine Environmental Research</em>, 198, 106531.
+    <a href="data/2024_Coulon_MER.pdf" target="_blank">PDF</a>
+  </li>
 
-<p class="pub-year">2023</p>
-<ol class="pub-list">
+  <li class="pub-year-label">2023</li>
 
   <li>
     <strong>Toussaint A.</strong>, Pärtel M., Carmona C.P.
@@ -390,10 +397,7 @@ Data repository available <a href="RData.html">here</a>.</p>
     <a href="data/2023_deTombeur.pdf" target="_blank">PDF</a>
   </li>
 
-</ol>
-
-<p class="pub-year">2022</p>
-<ol class="pub-list">
+  <li class="pub-year-label">2022</li>
 
   <li>
     Auber A., Waldock C., Maire A., Goberville E., Albouy C., Algar A.C., McLean M., Brind'Amour A., Green A.L., Tupper M., Vigliola L., Kaschner K., Kesner-Reyes K., Beger M., Tjiputra J., <strong>Toussaint A.</strong>, Violle C., Mouquet N., Thuiller W., Mouillot D.
@@ -416,38 +420,7 @@ Data repository available <a href="RData.html">here</a>.</p>
     <a href="data/2022_Su_GEB.pdf" target="_blank">PDF</a>
   </li>
 
-</ol>
-
-<p class="pub-year">2021</p>
-<ol class="pub-list">
-
-  <li>
-    Brosse S., Charpin N., Su G., <strong>Toussaint A.</strong>, Herrera-R. G.A., Tedesco P.A., Villeger S.
-    FISHMORPH: A global database on morphological traits of freshwater fishes.
-    <em>Global Ecology and Biogeography</em>, 30(12), 2330–2336.
-    <a href="data/2021_Brosse_GEB.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Carmona C.P., Bueno C.G., <strong>Toussaint A.</strong>, Träger S., Diaz S., Moora M., Munson D.A., Pärtel M., Zobel M., Tamme R.
-    Fine-root traits in the global spectrum of plant form and function.
-    <em>Nature</em>, 597(7878), 683–687.
-    <a href="data/2021_Carmona_Nature.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    <strong>Toussaint A.</strong>, Brosse S., Bueno C.G., Pärtel M., Tamme S., Carmona C.P.
-    Extinction of threatened vertebrates will lead to idiosyncratic changes in functional diversity across the world.
-    <em>Nature Communications</em>, 12(1), 1–12.
-    <a href="data/2021_Toussaint_NatCom.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Tordoni E., <strong>Toussaint A.</strong>, Pärtel M., Nogues-Bravo D., Carmona C.P.
-    Combining taxonomic, phylogenetic and functional diversity reveals new global priority areas for tetrapod conservation.
-    <em>bioRxiv</em>.
-    <a href="https://doi.org/10.1101/2021.07.01.450689" target="_blank">doi: 10.1101/2021.07.01.450689</a>
-  </li>
+  <li class="pub-year-label">2021</li>
 
   <li>
     Carmona C.P., Tamme R., Pärtel M., de Bello F., Brosse S., Capdevila P., Gonzalez-M R., Gonzalez-Suarez M., Salguero-Gomez R., Vasquez-Valderrama M., <strong>Toussaint A.</strong>
@@ -458,16 +431,41 @@ Data repository available <a href="RData.html">here</a>.</p>
     <a href="https://www.eurekalert.org/news-releases/546861" target="_blank">EurekAlert!</a>
   </li>
 
-</ol>
-
-<p class="pub-year">2020</p>
-<ol class="pub-list">
+  <li>
+    Tordoni E., <strong>Toussaint A.</strong>, Pärtel M., Nogues-Bravo D., Carmona C.P.
+    Combining taxonomic, phylogenetic and functional diversity reveals new global priority areas for tetrapod conservation.
+    <em>bioRxiv</em>.
+    <a href="https://doi.org/10.1101/2021.07.01.450689" target="_blank">doi: 10.1101/2021.07.01.450689</a>
+  </li>
 
   <li>
-    Carmona C.P., Tamme R., Partel M., de Bello F., Brosse S., Capdevila P., Gonzalez-M R., Gonzalez-Suarez M., Salguero-Gomez R., Vasquez-Valderrama M., <strong>Toussaint A.</strong>
-    Mapping extinction risk in the global functional spectra across the tree of life.
-    <em>bioRxiv</em>.
-    <a href="https://doi.org/10.1101/2020.06.29.179143" target="_blank">doi: 10.1101/2020.06.29.179143</a>
+    <strong>Toussaint A.</strong>, Brosse S., Bueno C.G., Pärtel M., Tamme S., Carmona C.P.
+    Extinction of threatened vertebrates will lead to idiosyncratic changes in functional diversity across the world.
+    <em>Nature Communications</em>, 12(1), 1–12.
+    <a href="data/2021_Toussaint_NatCom.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Carmona C.P., Bueno C.G., <strong>Toussaint A.</strong>, Träger S., Diaz S., Moora M., Munson D.A., Pärtel M., Zobel M., Tamme R.
+    Fine-root traits in the global spectrum of plant form and function.
+    <em>Nature</em>, 597(7878), 683–687.
+    <a href="data/2021_Carmona_Nature.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Brosse S., Charpin N., Su G., <strong>Toussaint A.</strong>, Herrera-R. G.A., Tedesco P.A., Villeger S.
+    FISHMORPH: A global database on morphological traits of freshwater fishes.
+    <em>Global Ecology and Biogeography</em>, 30(12), 2330–2336.
+    <a href="data/2021_Brosse_GEB.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li class="pub-year-label">2020</li>
+
+  <li>
+    <strong>Toussaint A.</strong>, Bueno C.G., Davison J., Moora M., Tedersoo L., Zobel M., Opik M., Partel M.
+    Asymmetric patterns of global diversity among plants and mycorrhizal fungi.
+    <em>Journal of Vegetation Science</em>, 31(2), 355–366.
+    <a href="data/2019_Toussaint_JVS.pdf" target="_blank">PDF</a>
   </li>
 
   <li>
@@ -478,16 +476,27 @@ Data repository available <a href="RData.html">here</a>.</p>
   </li>
 
   <li>
-    <strong>Toussaint A.</strong>, Bueno C.G., Davison J., Moora M., Tedersoo L., Zobel M., Opik M., Partel M.
-    Asymmetric patterns of global diversity among plants and mycorrhizal fungi.
-    <em>Journal of Vegetation Science</em>, 31(2), 355–366.
-    <a href="data/2019_Toussaint_JVS.pdf" target="_blank">PDF</a>
+    Carmona C.P., Tamme R., Partel M., de Bello F., Brosse S., Capdevila P., Gonzalez-M R., Gonzalez-Suarez M., Salguero-Gomez R., Vasquez-Valderrama M., <strong>Toussaint A.</strong>
+    Mapping extinction risk in the global functional spectra across the tree of life.
+    <em>bioRxiv</em>.
+    <a href="https://doi.org/10.1101/2020.06.29.179143" target="_blank">doi: 10.1101/2020.06.29.179143</a>
   </li>
 
-</ol>
+  <li class="pub-year-label">2018</li>
 
-<p class="pub-year">2018</p>
-<ol class="pub-list">
+  <li>
+    Tedersoo L., Laanisto L., Rahimlou S., <strong>Toussaint A.</strong>, Hallikma T., Pärtel M.
+    Global database of plants with root-symbiotic nitrogen fixation: Nod DB.
+    <em>Journal of Vegetation Science</em>, 29(3), 560–568.
+    <a href="data/2018_Tedersoo_JVS.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Kuczynski L., Côte J., <strong>Toussaint A.</strong>, Brosse S., Buisson L., Grenouillet G.
+    Spatial mismatch in morphological, ecological and phylogenetic diversity in historical and contemporary European freshwater fish faunas.
+    <em>Ecography</em>, 41, 1665–1674.
+    <a href="data/2018_Kuczinski_et_al_Ecography.pdf" target="_blank">PDF</a>
+  </li>
 
   <li>
     <strong>Toussaint A.</strong>, Charpin N., Beauchard O., Grenouillet G., Oberdorff T., Tedesco P.A., Villéger S., Brosse S.
@@ -500,24 +509,14 @@ Data repository available <a href="RData.html">here</a>.</p>
     <a href="data/ele13141-sup-0001-suppinfo.docx" target="_blank">Supplementary</a>
   </li>
 
-  <li>
-    Kuczynski L., Côte J., <strong>Toussaint A.</strong>, Brosse S., Buisson L., Grenouillet G.
-    Spatial mismatch in morphological, ecological and phylogenetic diversity in historical and contemporary European freshwater fish faunas.
-    <em>Ecography</em>, 41, 1665–1674.
-    <a href="data/2018_Kuczinski_et_al_Ecography.pdf" target="_blank">PDF</a>
-  </li>
+  <li class="pub-year-label">2016</li>
 
   <li>
-    Tedersoo L., Laanisto L., Rahimlou S., <strong>Toussaint A.</strong>, Hallikma T., Pärtel M.
-    Global database of plants with root-symbiotic nitrogen fixation: Nod DB.
-    <em>Journal of Vegetation Science</em>, 29(3), 560–568.
-    <a href="data/2018_Tedersoo_JVS.pdf" target="_blank">PDF</a>
+    <strong>Toussaint A.</strong>, Beauchard O., Oberdorff T., Brosse S., Villeger S.
+    Worldwide freshwater fish homogenization is driven by a few widespread non-native species.
+    <em>Biological Invasions</em>, 18, 1295–1304.
+    <a href="data/2016_Toussaint_BiologicalInvasions.pdf" target="_blank">PDF</a>
   </li>
-
-</ol>
-
-<p class="pub-year">2016</p>
-<ol class="pub-list">
 
   <li>
     <strong>Toussaint A.</strong>, Charpin N., Brosse S., Villéger S.
@@ -529,17 +528,7 @@ Data repository available <a href="RData.html">here</a>.</p>
     <a href="data/srep22125-s1.docx" target="_blank">Supplementary</a>
   </li>
 
-  <li>
-    <strong>Toussaint A.</strong>, Beauchard O., Oberdorff T., Brosse S., Villeger S.
-    Worldwide freshwater fish homogenization is driven by a few widespread non-native species.
-    <em>Biological Invasions</em>, 18, 1295–1304.
-    <a href="data/2016_Toussaint_BiologicalInvasions.pdf" target="_blank">PDF</a>
-  </li>
-
-</ol>
-
-<p class="pub-year">2015</p>
-<ol class="pub-list">
+  <li class="pub-year-label">2015</li>
 
   <li>
     Allard L., <strong>Toussaint A.</strong>, Vigouroux R., Brosse S.
@@ -548,10 +537,7 @@ Data repository available <a href="RData.html">here</a>.</p>
     <a href="data/2016_Toussaint_BiologicalInvasions.pdf" target="_blank">PDF</a>
   </li>
 
-</ol>
-
-<p class="pub-year">2014</p>
-<ol class="pub-list">
+  <li class="pub-year-label">2014</li>
 
   <li>
     <strong>Toussaint A.</strong>, Beauchard O., Oberdorff T., Brosse S., Villéger S.
@@ -564,7 +550,6 @@ Data repository available <a href="RData.html">here</a>.</p>
   </li>
 
 </ol>
-
 <!-- ══════════════════════════════════════════════════ -->
 <!--  STUDENT SUPERVISION                              -->
 <!-- ══════════════════════════════════════════════════ -->
