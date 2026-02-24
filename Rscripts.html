@@ -13,7 +13,7 @@
 
 <title>R scripts</title>
 
-<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -446,7 +446,7 @@ div.tocify {
   <a href="Rscripts.html">R scripts</a>
 </li>
 <li>
-  <a href="PicTheFish.html">INTRAIT</a>
+  <a href="PicTheFish.html">Fish'in-trait</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -1892,83 +1892,100 @@ class="section level2 tabset tabset-fade tabset-pills">
 <span id="cb8-167"><a href="#cb8-167" tabindex="-1"></a>  <span class="fu">saveRDS</span>(matCov,<span class="at">file=</span><span class="fu">paste0</span>(<span class="st">&quot;dataPrepared/CovarianceMatrix_&quot;</span>,targetGroupName[gr],<span class="st">&quot;.RDS&quot;</span>))</span>
 <span id="cb8-168"><a href="#cb8-168" tabindex="-1"></a>}</span></code></pre></div>
 </div>
+<div id="intra-specific-variability" class="section level3">
+<h3>Intra-specific variability</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  <span class="st">&quot;ade4&quot;</span>,<span class="st">&quot;ape&quot;</span>,<span class="st">&quot;berryFunctions&quot;</span>,<span class="st">&quot;betapart&quot;</span>,<span class="st">&quot;biscale&quot;</span>,<span class="st">&quot;cowplot&quot;</span>,<span class="st">&quot;PCA_TRAITS.table&quot;</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="st">&quot;dplyr&quot;</span>,<span class="st">&quot;funrar&quot;</span>,<span class="st">&quot;geiger&quot;</span>,<span class="st">&quot;ggplot2&quot;</span>,<span class="st">&quot;ggpubr&quot;</span>,<span class="st">&quot;lsmeans&quot;</span>,<span class="st">&quot;missForest&quot;</span>,<span class="st">&quot;motmot&quot;</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="st">&quot;multcomp&quot;</span>,<span class="st">&quot;mvMORPH&quot;</span>,<span class="st">&quot;paleotree&quot;</span>,<span class="st">&quot;pals&quot;</span>,<span class="st">&quot;paran&quot;</span>,<span class="st">&quot;phylobase&quot;</span>,<span class="st">&quot;phytools&quot;</span>,<span class="st">&quot;picante&quot;</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="st">&quot;plotly&quot;</span>,<span class="st">&quot;plotrix&quot;</span>,<span class="st">&quot;psych&quot;</span>,<span class="st">&quot;quanteda&quot;</span>,<span class="st">&quot;ratematrix&quot;</span>,<span class="st">&quot;RColorBrewer&quot;</span>,<span class="st">&quot;readr&quot;</span>,<span class="st">&quot;rgbif&quot;</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  <span class="st">&quot;rnaturalearth&quot;</span>,<span class="st">&quot;rredlist&quot;</span>,<span class="st">&quot;sf&quot;</span>,<span class="st">&quot;shape&quot;</span>,<span class="st">&quot;stats&quot;</span>,<span class="st">&quot;tidyr&quot;</span>,<span class="st">&quot;TPD&quot;</span>,<span class="st">&quot;vegan&quot;</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  <span class="st">&quot;VennDiagram&quot;</span>,<span class="st">&quot;viridis&quot;</span>,<span class="st">&quot;wesanderson&quot;</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>)</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>installed_packages <span class="ot">&lt;-</span> packages <span class="sc">%in%</span> <span class="fu">rownames</span>(<span class="fu">installed.packages</span>())</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">any</span>(installed_packages <span class="sc">==</span> <span class="cn">FALSE</span>)) {</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>  <span class="fu">install.packages</span>(packages[<span class="sc">!</span>installed_packages])</span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>}</span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co"># Packages loading</span></span></code></pre></div>
+</div>
 <div id="others-functions" class="section level3">
 <h3>Others functions</h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Regex to select all symbols but &#39;_&#39;. useful for identify formulas in dplyr::</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="st">&quot;[^[:alnum:][:space:]_]&quot;</span></span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>x <span class="ot">&lt;-</span> iris</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>x <span class="ot">&lt;-</span> x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="fu">colnames</span>(x) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;x1&quot;</span>, <span class="st">&quot;x2&quot;</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>funfun <span class="ot">&lt;-</span> <span class="cf">function</span>(data, <span class="at">expr =</span> <span class="st">&quot;log(x1 / x2) * 10^2&quot;</span>) {</span>
-<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>  expr <span class="ot">&lt;-</span> <span class="fu">parse</span>(<span class="at">text =</span> expr)</span>
-<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>  data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">x3 =</span> <span class="fu">eval</span>(expr))</span>
-<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>}</span>
-<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a></span>
-<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="fu">funfun</span>(x)</span>
-<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="do">## How to make a gower for big data table</span></span>
-<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="fu">library</span>(cluster)       <span class="co"># daisy() and Gower distance</span></span>
-<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="fu">library</span>(data.table)    <span class="co"># large data handling</span></span>
-<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="fu">library</span>(parallel)      <span class="co"># parallel computing</span></span>
-<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="fu">library</span>(bigstatsr)     <span class="co"># very large matrices</span></span>
-<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a></span>
-<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a><span class="fu">load</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;outputs&quot;</span>, <span class="st">&quot;test_phenofish_final.RData&quot;</span>))  <span class="co"># assumes object `test_phenofish_final`</span></span>
-<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a></span>
-<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a>data_morph <span class="ot">&lt;-</span> test_phenofish_final <span class="sc">%&gt;%</span></span>
-<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a>  <span class="fu">filter</span>(trait_type <span class="sc">==</span> <span class="st">&quot;morphological&quot;</span> <span class="sc">&amp;</span> fresh <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> trait_coding <span class="sc">==</span> <span class="st">&quot;continuous&quot;</span>)</span>
-<span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a></span>
-<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a>data_morph <span class="ot">&lt;-</span> data_morph <span class="sc">%&gt;%</span></span>
-<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(specimen_id, trait_name) <span class="sc">%&gt;%</span></span>
-<span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">trait_value =</span> <span class="fu">as.numeric</span>(trait_value))</span>
-<span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a></span>
-<span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a>data_morph <span class="ot">&lt;-</span> data_morph <span class="sc">%&gt;%</span></span>
-<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(phenofish_name, trait_name) <span class="sc">%&gt;%</span></span>
-<span id="cb9-34"><a href="#cb9-34" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">trait_value =</span> <span class="fu">mean</span>(trait_value), <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>)</span>
-<span id="cb9-35"><a href="#cb9-35" tabindex="-1"></a></span>
-<span id="cb9-36"><a href="#cb9-36" tabindex="-1"></a>species_traits <span class="ot">&lt;-</span> reshape2<span class="sc">::</span><span class="fu">dcast</span>(data_morph, phenofish_name <span class="sc">~</span> trait_name)</span>
-<span id="cb9-37"><a href="#cb9-37" tabindex="-1"></a><span class="fu">colnames</span>(species_traits)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;species&quot;</span></span>
-<span id="cb9-38"><a href="#cb9-38" tabindex="-1"></a><span class="fu">rownames</span>(species_traits) <span class="ot">&lt;-</span> species_traits[, <span class="dv">1</span>]</span>
-<span id="cb9-39"><a href="#cb9-39" tabindex="-1"></a>traits <span class="ot">&lt;-</span> species_traits[, <span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb9-40"><a href="#cb9-40" tabindex="-1"></a></span>
-<span id="cb9-41"><a href="#cb9-41" tabindex="-1"></a>block_size <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
-<span id="cb9-42"><a href="#cb9-42" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(traits)</span>
-<span id="cb9-43"><a href="#cb9-43" tabindex="-1"></a></span>
-<span id="cb9-44"><a href="#cb9-44" tabindex="-1"></a>gower_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, n, n)</span>
-<span id="cb9-45"><a href="#cb9-45" tabindex="-1"></a></span>
-<span id="cb9-46"><a href="#cb9-46" tabindex="-1"></a>compute_gower_block <span class="ot">&lt;-</span> <span class="cf">function</span>(start_idx, end_idx, traits_data) {</span>
-<span id="cb9-47"><a href="#cb9-47" tabindex="-1"></a>  block_data <span class="ot">&lt;-</span> traits_data[start_idx<span class="sc">:</span>end_idx, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
-<span id="cb9-48"><a href="#cb9-48" tabindex="-1"></a>  gower_dist_block <span class="ot">&lt;-</span> <span class="fu">daisy</span>(block_data, <span class="at">metric =</span> <span class="st">&quot;gower&quot;</span>)</span>
-<span id="cb9-49"><a href="#cb9-49" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">as.matrix</span>(gower_dist_block))</span>
-<span id="cb9-50"><a href="#cb9-50" tabindex="-1"></a>}</span>
-<span id="cb9-51"><a href="#cb9-51" tabindex="-1"></a></span>
-<span id="cb9-52"><a href="#cb9-52" tabindex="-1"></a>block_indices <span class="ot">&lt;-</span> <span class="fu">split</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="fu">ceiling</span>(<span class="dv">1</span><span class="sc">:</span>n <span class="sc">/</span> block_size))</span>
-<span id="cb9-53"><a href="#cb9-53" tabindex="-1"></a></span>
-<span id="cb9-54"><a href="#cb9-54" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="fu">detectCores</span>() <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb9-55"><a href="#cb9-55" tabindex="-1"></a><span class="fu">clusterExport</span>(cl, <span class="at">varlist =</span> <span class="fu">c</span>(<span class="st">&quot;traits&quot;</span>, <span class="st">&quot;daisy&quot;</span>, <span class="st">&quot;compute_gower_block&quot;</span>))</span>
-<span id="cb9-56"><a href="#cb9-56" tabindex="-1"></a></span>
-<span id="cb9-57"><a href="#cb9-57" tabindex="-1"></a>gower_blocks <span class="ot">&lt;-</span> <span class="fu">parLapply</span>(cl, block_indices, <span class="cf">function</span>(indices) {</span>
-<span id="cb9-58"><a href="#cb9-58" tabindex="-1"></a>  start_idx <span class="ot">&lt;-</span> indices[<span class="dv">1</span>]</span>
-<span id="cb9-59"><a href="#cb9-59" tabindex="-1"></a>  end_idx <span class="ot">&lt;-</span> <span class="fu">tail</span>(indices, <span class="dv">1</span>)</span>
-<span id="cb9-60"><a href="#cb9-60" tabindex="-1"></a>  <span class="fu">compute_gower_block</span>(start_idx, end_idx, traits)</span>
-<span id="cb9-61"><a href="#cb9-61" tabindex="-1"></a>})</span>
-<span id="cb9-62"><a href="#cb9-62" tabindex="-1"></a></span>
-<span id="cb9-63"><a href="#cb9-63" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(gower_blocks)) {</span>
-<span id="cb9-64"><a href="#cb9-64" tabindex="-1"></a>  idx_range <span class="ot">&lt;-</span> block_indices[[i]]</span>
-<span id="cb9-65"><a href="#cb9-65" tabindex="-1"></a>  gower_matrix[idx_range, idx_range] <span class="ot">&lt;-</span> gower_blocks[[i]]</span>
-<span id="cb9-66"><a href="#cb9-66" tabindex="-1"></a>}</span>
-<span id="cb9-67"><a href="#cb9-67" tabindex="-1"></a></span>
-<span id="cb9-68"><a href="#cb9-68" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span>
-<span id="cb9-69"><a href="#cb9-69" tabindex="-1"></a></span>
-<span id="cb9-70"><a href="#cb9-70" tabindex="-1"></a><span class="fu">print</span>(gower_matrix[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>])</span>
-<span id="cb9-71"><a href="#cb9-71" tabindex="-1"></a><span class="fu">save</span>(gower_matrix, <span class="at">file =</span> <span class="st">&quot;gower_matrix.RData&quot;</span>)</span>
-<span id="cb9-72"><a href="#cb9-72" tabindex="-1"></a></span>
-<span id="cb9-73"><a href="#cb9-73" tabindex="-1"></a>pcoa_res <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">pcoa</span>(<span class="fu">as.dist</span>(gower_matrix))</span>
-<span id="cb9-74"><a href="#cb9-74" tabindex="-1"></a>pca_res <span class="ot">&lt;-</span> <span class="fu">cmdscale</span>(<span class="fu">as.dist</span>(gower_matrix), <span class="at">k =</span> <span class="dv">2</span>)</span>
-<span id="cb9-75"><a href="#cb9-75" tabindex="-1"></a><span class="fu">summary</span>(pca_res)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Regex to select all symbols but &#39;_&#39;. useful for identify formulas in dplyr::</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="st">&quot;[^[:alnum:][:space:]_]&quot;</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>x <span class="ot">&lt;-</span> iris</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>x <span class="ot">&lt;-</span> x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="fu">colnames</span>(x) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;x1&quot;</span>, <span class="st">&quot;x2&quot;</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>funfun <span class="ot">&lt;-</span> <span class="cf">function</span>(data, <span class="at">expr =</span> <span class="st">&quot;log(x1 / x2) * 10^2&quot;</span>) {</span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>  expr <span class="ot">&lt;-</span> <span class="fu">parse</span>(<span class="at">text =</span> expr)</span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">x3 =</span> <span class="fu">eval</span>(expr))</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>}</span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="fu">funfun</span>(x)</span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="do">## How to make a gower for big data table</span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="fu">library</span>(cluster)       <span class="co"># daisy() and Gower distance</span></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="fu">library</span>(data.table)    <span class="co"># large data handling</span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="fu">library</span>(parallel)      <span class="co"># parallel computing</span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="fu">library</span>(bigstatsr)     <span class="co"># very large matrices</span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a></span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="fu">load</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;outputs&quot;</span>, <span class="st">&quot;test_phenofish_final.RData&quot;</span>))  <span class="co"># assumes object `test_phenofish_final`</span></span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a></span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a>data_morph <span class="ot">&lt;-</span> test_phenofish_final <span class="sc">%&gt;%</span></span>
+<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a>  <span class="fu">filter</span>(trait_type <span class="sc">==</span> <span class="st">&quot;morphological&quot;</span> <span class="sc">&amp;</span> fresh <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> trait_coding <span class="sc">==</span> <span class="st">&quot;continuous&quot;</span>)</span>
+<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a></span>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a>data_morph <span class="ot">&lt;-</span> data_morph <span class="sc">%&gt;%</span></span>
+<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(specimen_id, trait_name) <span class="sc">%&gt;%</span></span>
+<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">trait_value =</span> <span class="fu">as.numeric</span>(trait_value))</span>
+<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a></span>
+<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a>data_morph <span class="ot">&lt;-</span> data_morph <span class="sc">%&gt;%</span></span>
+<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(phenofish_name, trait_name) <span class="sc">%&gt;%</span></span>
+<span id="cb10-34"><a href="#cb10-34" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">trait_value =</span> <span class="fu">mean</span>(trait_value), <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>)</span>
+<span id="cb10-35"><a href="#cb10-35" tabindex="-1"></a></span>
+<span id="cb10-36"><a href="#cb10-36" tabindex="-1"></a>species_traits <span class="ot">&lt;-</span> reshape2<span class="sc">::</span><span class="fu">dcast</span>(data_morph, phenofish_name <span class="sc">~</span> trait_name)</span>
+<span id="cb10-37"><a href="#cb10-37" tabindex="-1"></a><span class="fu">colnames</span>(species_traits)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;species&quot;</span></span>
+<span id="cb10-38"><a href="#cb10-38" tabindex="-1"></a><span class="fu">rownames</span>(species_traits) <span class="ot">&lt;-</span> species_traits[, <span class="dv">1</span>]</span>
+<span id="cb10-39"><a href="#cb10-39" tabindex="-1"></a>traits <span class="ot">&lt;-</span> species_traits[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb10-40"><a href="#cb10-40" tabindex="-1"></a></span>
+<span id="cb10-41"><a href="#cb10-41" tabindex="-1"></a>block_size <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb10-42"><a href="#cb10-42" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(traits)</span>
+<span id="cb10-43"><a href="#cb10-43" tabindex="-1"></a></span>
+<span id="cb10-44"><a href="#cb10-44" tabindex="-1"></a>gower_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, n, n)</span>
+<span id="cb10-45"><a href="#cb10-45" tabindex="-1"></a></span>
+<span id="cb10-46"><a href="#cb10-46" tabindex="-1"></a>compute_gower_block <span class="ot">&lt;-</span> <span class="cf">function</span>(start_idx, end_idx, traits_data) {</span>
+<span id="cb10-47"><a href="#cb10-47" tabindex="-1"></a>  block_data <span class="ot">&lt;-</span> traits_data[start_idx<span class="sc">:</span>end_idx, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb10-48"><a href="#cb10-48" tabindex="-1"></a>  gower_dist_block <span class="ot">&lt;-</span> <span class="fu">daisy</span>(block_data, <span class="at">metric =</span> <span class="st">&quot;gower&quot;</span>)</span>
+<span id="cb10-49"><a href="#cb10-49" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">as.matrix</span>(gower_dist_block))</span>
+<span id="cb10-50"><a href="#cb10-50" tabindex="-1"></a>}</span>
+<span id="cb10-51"><a href="#cb10-51" tabindex="-1"></a></span>
+<span id="cb10-52"><a href="#cb10-52" tabindex="-1"></a>block_indices <span class="ot">&lt;-</span> <span class="fu">split</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="fu">ceiling</span>(<span class="dv">1</span><span class="sc">:</span>n <span class="sc">/</span> block_size))</span>
+<span id="cb10-53"><a href="#cb10-53" tabindex="-1"></a></span>
+<span id="cb10-54"><a href="#cb10-54" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="fu">detectCores</span>() <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb10-55"><a href="#cb10-55" tabindex="-1"></a><span class="fu">clusterExport</span>(cl, <span class="at">varlist =</span> <span class="fu">c</span>(<span class="st">&quot;traits&quot;</span>, <span class="st">&quot;daisy&quot;</span>, <span class="st">&quot;compute_gower_block&quot;</span>))</span>
+<span id="cb10-56"><a href="#cb10-56" tabindex="-1"></a></span>
+<span id="cb10-57"><a href="#cb10-57" tabindex="-1"></a>gower_blocks <span class="ot">&lt;-</span> <span class="fu">parLapply</span>(cl, block_indices, <span class="cf">function</span>(indices) {</span>
+<span id="cb10-58"><a href="#cb10-58" tabindex="-1"></a>  start_idx <span class="ot">&lt;-</span> indices[<span class="dv">1</span>]</span>
+<span id="cb10-59"><a href="#cb10-59" tabindex="-1"></a>  end_idx <span class="ot">&lt;-</span> <span class="fu">tail</span>(indices, <span class="dv">1</span>)</span>
+<span id="cb10-60"><a href="#cb10-60" tabindex="-1"></a>  <span class="fu">compute_gower_block</span>(start_idx, end_idx, traits)</span>
+<span id="cb10-61"><a href="#cb10-61" tabindex="-1"></a>})</span>
+<span id="cb10-62"><a href="#cb10-62" tabindex="-1"></a></span>
+<span id="cb10-63"><a href="#cb10-63" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(gower_blocks)) {</span>
+<span id="cb10-64"><a href="#cb10-64" tabindex="-1"></a>  idx_range <span class="ot">&lt;-</span> block_indices[[i]]</span>
+<span id="cb10-65"><a href="#cb10-65" tabindex="-1"></a>  gower_matrix[idx_range, idx_range] <span class="ot">&lt;-</span> gower_blocks[[i]]</span>
+<span id="cb10-66"><a href="#cb10-66" tabindex="-1"></a>}</span>
+<span id="cb10-67"><a href="#cb10-67" tabindex="-1"></a></span>
+<span id="cb10-68"><a href="#cb10-68" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span>
+<span id="cb10-69"><a href="#cb10-69" tabindex="-1"></a></span>
+<span id="cb10-70"><a href="#cb10-70" tabindex="-1"></a><span class="fu">print</span>(gower_matrix[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>])</span>
+<span id="cb10-71"><a href="#cb10-71" tabindex="-1"></a><span class="fu">save</span>(gower_matrix, <span class="at">file =</span> <span class="st">&quot;gower_matrix.RData&quot;</span>)</span>
+<span id="cb10-72"><a href="#cb10-72" tabindex="-1"></a></span>
+<span id="cb10-73"><a href="#cb10-73" tabindex="-1"></a>pcoa_res <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">pcoa</span>(<span class="fu">as.dist</span>(gower_matrix))</span>
+<span id="cb10-74"><a href="#cb10-74" tabindex="-1"></a>pca_res <span class="ot">&lt;-</span> <span class="fu">cmdscale</span>(<span class="fu">as.dist</span>(gower_matrix), <span class="at">k =</span> <span class="dv">2</span>)</span>
+<span id="cb10-75"><a href="#cb10-75" tabindex="-1"></a><span class="fu">summary</span>(pca_res)</span></code></pre></div>
 </div>
 </div>
 

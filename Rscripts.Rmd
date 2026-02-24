@@ -1426,6 +1426,25 @@ for (gr in 2:5){
 }
 ```
 
+### Intra-specific variability
+
+```{r itv, eval=FALSE}
+packages <- c(
+  "ade4","ape","berryFunctions","betapart","biscale","cowplot","PCA_TRAITS.table",
+  "dplyr","funrar","geiger","ggplot2","ggpubr","lsmeans","missForest","motmot",
+  "multcomp","mvMORPH","paleotree","pals","paran","phylobase","phytools","picante",
+  "plotly","plotrix","psych","quanteda","ratematrix","RColorBrewer","readr","rgbif",
+  "rnaturalearth","rredlist","sf","shape","stats","tidyr","TPD","vegan",
+  "VennDiagram","viridis","wesanderson"
+)
+
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+# Packages loading
+```
+
 ### Others functions
 
 ```{r regex_and_snippets, eval=FALSE}
