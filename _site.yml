@@ -7,18 +7,17 @@ navbar:
     - text: ""
       icon: fa-home
       href: index.html
-    - text: "My blog"
-      href: my-blog/site
     - text: "Projects"
       href: Projects.html
     - text: "Data"
       href: RData.html
     - text: "R scripts"
-      href: Rscripts.html      
-    - text: "Fish'in-trait"
-      href: PicTheFish.html
-    - text: "R Course"
+      href: Rscripts.html
+    - text: "Trait-based courses"
       href: Rcourse.html
+    - text: "My blog"
+      href: my-blog/site
+
   right:
     - icon: fa-envelope fa-lg
       href: contact.html

@@ -1333,6 +1333,347 @@ write.csv(MatriceFish, "output/MatriceFish.csv", row.names = TRUE)
 
 ```
 
+### FunctionalSpace
+
+```{r fishMORPH_FSpace, eval=FALSE}
+library(ggplot2)
+library(rphylopic)
+library(MASS)
+library(dplyr)
+library(readr)
+
+PARAMS = list(
+  type = c("min1","min3","min5"),
+  
+  data = c("data/SpVar_2sp_75cutoff.csv","data/SpVar_min3.csv","data/SpVar_min5.csv")
+)
+
+#' Compute PCA on a (pre-scaled, log10-transformed) trait matrix
+#' @param TRAITS       Species × traits matrix
+#' @param dimensionsAux Number of PCA axes to retain
+#' @param savePCA      File path to save the result, or NA to skip saving
+make.PCA <- function(TRAITS, dimensionsAux, savePCA) {
+  paran_aux <- paran::paran(TRAITS)
+  pca_obj   <- list()
+  pca_obj$traits     <- TRAITS
+  pca_obj$PCA        <- princomp(TRAITS)
+  pca_obj$dimensions <- dimensionsAux
+  eigenvalues        <- summary(pca_obj$PCA)[[1]]^2
+  pca_obj$variance   <- eigenvalues[seq_len(dimensionsAux)] / sum(eigenvalues)
+  pca_obj$loadings   <- pca_obj$PCA$loadings
+  pca_obj$traitsUse  <- data.frame(pca_obj$PCA$scores[, seq_len(dimensionsAux)])
+  if (!is.na(savePCA)) saveRDS(pca_obj, savePCA)
+  pca_obj
+}
+
+
+density_threshold <- function(z, p) {
+  dx <- sort(as.vector(z), decreasing = TRUE)
+  cs <- cumsum(dx) / sum(dx)
+  dx[which(cs >= p)[1]]
+}
+
+# Helper : calcule un objet kde2d sur une fenêtre donnée + seuils
+compute_kde <- function(scores, n_grid, lims, thresholds = c(0.5, 0.99),
+                        bw_mult = 1) {
+  # Bandwidth par défaut de kde2d, réduit par bw_mult
+  h <- c(MASS::bandwidth.nrd(scores[, 1]),
+         MASS::bandwidth.nrd(scores[, 2])) * bw_mult
+  kd <- MASS::kde2d(scores[, 1], scores[, 2],
+                    n = n_grid, lims = lims, h = h)
+  df <- expand.grid(PC1 = kd$x, PC2 = kd$y)
+  df$z <- as.vector(kd$z)
+  thr <- sapply(thresholds, function(p) density_threshold(kd$z, p))
+  names(thr) <- as.character(thresholds)
+  list(kd = kd, df = df, thr = thr)
+}
+
+compute_phylopic_positions <- function(scores, species,
+                                       radius_frac   = 0.25,
+                                       min_angle_sep = 18) {
+  species <- intersect(species, rownames(scores))
+  if (length(species) == 0) return(NULL)
+  
+  max_x <- max(abs(scores[, 1])); max_y <- max(abs(scores[, 2]))
+  rx <- max_x * (1 + radius_frac); ry <- max_y * (1 + radius_frac)
+  
+  nat_ang <- atan2(scores[species, 2], scores[species, 1]) * 180 / pi
+  names(nat_ang) <- species
+  ord <- order(nat_ang)
+  ang_sorted <- nat_ang[ord]; sp_sorted <- species[ord]
+  n <- length(species)
+  
+  for (iter in 1:50) {
+    changed <- FALSE
+    for (i in 1:(n - 1)) {
+      gap <- ang_sorted[i + 1] - ang_sorted[i]
+      if (gap < min_angle_sep) {
+        push <- (min_angle_sep - gap) / 2
+        ang_sorted[i] <- ang_sorted[i] - push
+        ang_sorted[i + 1] <- ang_sorted[i + 1] + push
+        changed <- TRUE
+      }
+    }
+    gap_wrap <- (ang_sorted[1] + 360) - ang_sorted[n]
+    if (gap_wrap < min_angle_sep) {
+      push <- (min_angle_sep - gap_wrap) / 2
+      ang_sorted[n] <- ang_sorted[n] - push
+      ang_sorted[1] <- ang_sorted[1] + push
+      changed <- TRUE
+    }
+    if (!changed) break
+  }
+  
+  ang_rad <- ang_sorted * pi / 180
+  data.frame(
+    species = sp_sorted,
+    x0 = scores[sp_sorted, 1], y0 = scores[sp_sorted, 2],
+    x_sil = rx * cos(ang_rad), y_sil = ry * sin(ang_rad),
+    row.names = NULL
+  )
+}
+
+# =============================================================================
+# FONCTION PRINCIPALE
+# =============================================================================
+plot_FS_new <- function(pca_sub,
+                        pca_all,
+                        com_sp,
+                        group_mode             = c("single", "groups", "global_only"),
+                        fric_stats             = NULL,
+                        title                  = NULL,
+                        show_procrustes        = F,
+                        phylopic_species       = NULL,
+                        phylopic_height_frac   = 0.08,
+                        phylopic_radius_frac   = 0.25,
+                        phylopic_min_angle_sep = 18,
+                        phylopic_color         = "grey15",
+                        arrow_mult             = 1.4,   # ← NOUVEAU : facteur de taille des flèches
+                        contour_lwd            = 1.1,   # ← NOUVEAU : épaisseur du contour 0.99
+                        contour_col            = "grey30", # ← NOUVEAU : couleur du contour 0.99
+                        n_grid                 = 200,
+                        threshold              = 0.99,
+                        pad                    = 2,
+                        bw_mult = 0.45,    # ← NOUVEAU : multiplicateur de bandwidth (<1 = plus découpé)
+                        n_density_bands = 20,
+                        band_line_lwd   = 0.07) {
+  
+  group_mode <- match.arg(group_mode)
+  
+  # ---- Choix des scores selon le mode -------------------------------------
+  # "fill_scores"    = ce qui génère la nappe colorée + points
+  # "contour_scores" = ce qui génère le contour 0.99 de référence
+  if (group_mode == "global_only") {
+    fill_scores    <- pca_all$PCA$scores[, 1:2]
+    contour_scores <- pca_all$PCA$scores[, 1:2]
+    pca_for_arrows <- pca_all
+    allScores = pca_all$PCA$scores[, 1:2] 
+  } else if (group_mode == "groups") {
+    fill_scores    <- pca_all$PCA$scores[com_sp, 1:2]          # densité = sous-ensemble
+    contour_scores <- pca_all$PCA$scores[, 1:2]          # contour = global
+    pca_for_arrows <- pca_all
+    allScores = pca_all$PCA$scores[, 1:2] 
+  } else { # "single"
+    fill_scores    <- pca_sub$PCA$scores[, 1:2]
+    contour_scores <- pca_sub$PCA$scores[, 1:2]
+    pca_for_arrows <- pca_sub
+    allScores = pca_all$PCA$scores[, 1:2] 
+  }
+  colnames(fill_scores)    <- c("PC1", "PC2")
+  colnames(contour_scores) <- c("PC1", "PC2")
+  
+  # ---- Procrustes (optionnel) ---------------------------------------------
+  subtitle <- NULL
+  if (show_procrustes && group_mode != "global_only") {
+    pca_all_set   <- pca_all$PCA$scores[com_sp, 1:2]
+    pca_sub_trait <- pca_sub$PCA$scores[com_sp, 1:2]
+    pro_t <- vegan::protest(pca_all_set, pca_sub_trait, permutations = 9999)
+    subtitle <- sprintf("Procrustes r = %.2f", pro_t$t0)
+  }
+  
+  # ---- Loadings (flèches) -------------------------------------------------
+  loadings_df <- as.data.frame(pca_for_arrows$PCA$loadings[, 1:2])
+  colnames(loadings_df) <- c("PC1", "PC2")
+  loadings_df$trait <- rownames(loadings_df)
+  arrow_scale <- min(max(abs(fill_scores[, "PC1"])), max(abs(fill_scores[, "PC2"]))) /
+    max(abs(as.matrix(loadings_df[, 1:2]))) * arrow_mult
+  loadings_df$PC1 <- loadings_df$PC1 * arrow_scale
+  loadings_df$PC2 <- loadings_df$PC2 * arrow_scale
+  
+  # ---- Variance expliquée -------------------------------------------------
+  var_exp <- pca_for_arrows$PCA$sdev^2 / sum(pca_for_arrows$PCA$sdev^2) * 100
+  xlab <- sprintf("PC1 (%.2f%%)", var_exp[1])
+  ylab <- sprintf("PC2 (%.2f%%)", var_exp[2])
+  
+  # ---- Fenêtre commune pour les deux KDE ----------------------------------
+  # On englobe les deux nuages pour que fill et contour soient sur la même grille
+  all_pts <- rbind(fill_scores, allScores,contour_scores)
+  rng_x <- range(all_pts[, "PC1"]) + c(-pad, pad)
+  rng_y <- range(all_pts[, "PC2"]) + c(-pad, pad)
+  lims  <- c(rng_x, rng_y)
+  
+  # KDE pour la nappe (fill)
+  # KDE pour la nappe (fill) — bandwidth réduit pour l'effet découpé
+  kde_fill <- compute_kde(fill_scores, n_grid, lims,
+                          thresholds = c(0.5, threshold),
+                          bw_mult = bw_mult)
+
+  fill_df  <- kde_fill$df
+  thr_fill_99 <- kde_fill$thr[as.character(threshold)]
+  thr_fill_50 <- kde_fill$thr["0.5"]
+  fill_df$z_masked <- ifelse(fill_df$z >= thr_fill_99, fill_df$z, NA)
+  
+  # KDE pour le contour de référence
+  kde_cont <- compute_kde(contour_scores, n_grid, lims,
+                          thresholds = c(threshold),
+                          bw_mult = 1)
+  cont_df  <- kde_cont$df
+  thr_cont_99 <- kde_cont$thr[as.character(threshold)]
+  
+  # ---- Points à afficher (toujours le fill_scores) ------------------------
+  pts_df <- as.data.frame(fill_scores)
+  pts_df$species <- rownames(fill_scores)
+  
+  # ---- Silhouettes --------------------------------------------------------
+  phylopic_df <- NULL
+  if (!is.null(phylopic_species)) {
+    phylopic_df <- compute_phylopic_positions(
+      scores        = pca_sub$PCA$scores[, 1:2],
+      species       = phylopic_species,
+      radius_frac   = phylopic_radius_frac,
+      min_angle_sep = phylopic_min_angle_sep
+    )
+  }
+  height_abs <- 2 * max(abs(fill_scores[, "PC2"])) * phylopic_height_frac
+  
+  # ---- Construction du plot -----------------------------------------------
+  # ---- Bandes de quantiles de densité (style funspace quant.plot) ----------
+  # On définit une série de seuils de densité correspondant à des quantiles
+  # cumulés réguliers, puis on remplit entre ces seuils + trait noir fin.
+  quant_probs <- seq(0.1,1, length.out = n_density_bands)   # 10 bandes
+  quant_breaks <- sapply(quant_probs, function(p) density_threshold(kde_fill$kd$z, p))
+  quant_breaks <- sort(unique(c(0, quant_breaks, max(fill_df$z, na.rm = TRUE))))
+  
+  # Masquage hors 0.99 : on met à NA la densité sous le seuil 0.99
+  fill_df$z_clip <- ifelse(fill_df$z >= thr_fill_99, fill_df$z, NA)
+  
+  max_ext <- max(abs(c(rng_x, rng_y)))   # plus grande amplitude observée
+  lim_sym <- c(-max_ext, max_ext)
+  p <- ggplot() +
+    lims(x=rng_x,y=rng_y)+
+    # Bandes de densité remplies (découpage en quantiles)
+    geom_contour_filled(data = fill_df,
+                        aes(x = PC1, y = PC2, z = z_clip),
+                        breaks = quant_breaks) +
+    scale_fill_manual(values = colorRampPalette(
+      c("#FFFFCC", "#FFEDA0", "#FED976", "#FEB24C",
+        "#FD8D3C", "#FC4E2A", "#E31A1C", "#B10026"))(length(quant_breaks) - 1),
+      na.value = "transparent", guide = "none") +
+    # Fins traits noirs entre TOUTES les bandes, y compris le bord externe (0.99)
+    geom_contour(data = fill_df,
+                 aes(x = PC1, y = PC2, z = z),       # ← z complet, pas z_clip
+                 breaks = c(thr_fill_99),
+                 colour = "grey20", linewidth = band_line_lwd) +
+    # Contour 0.99 de référence — épais
+    geom_contour(data = cont_df,
+                 aes(x = PC1, y = PC2, z = z),
+                 breaks = thr_cont_99,
+                 colour = contour_col, linewidth = contour_lwd)  +
+    geom_point(data = pts_df,
+               aes(x = PC1, y = PC2), colour = "grey10", size = 0.5) +
+    geom_segment(data = loadings_df,
+                 aes(x = 0, y = 0, xend = PC1, yend = PC2),
+                 arrow = arrow(length = unit(0.2, "cm")),
+                 colour = "black", linewidth = 0.4) +
+    geom_text(data = loadings_df,
+              aes(x = PC1 * 1.08, y = PC2 * 1.08, label = trait),
+              size = 3, fontface = "bold") +
+    labs(
+      x = xlab, y = ylab,
+      title = if (!is.null(title)) title else
+        sprintf("Functional spectrum (%d species)", nrow(fill_scores)),
+    ) +
+    coord_fixed(xlim = lim_sym, ylim = lim_sym, expand = FALSE)+
+    theme_classic(base_size = 11) +
+    theme(
+      plot.title    = element_text(face = "bold", size = 13),
+      plot.subtitle = element_text(face = "bold", size = 10),
+      panel.border  = element_rect(fill = NA, colour = "black"),
+      axis.line     = element_blank()
+    )
+  
+  if (!is.null(phylopic_df) && nrow(phylopic_df) > 0) {
+    p <- p +
+      geom_segment(data = phylopic_df,
+                   aes(x = x0, y = y0, xend = x_sil, yend = y_sil),
+                   colour = "grey60", linewidth = 0.3) +
+      geom_point(data = phylopic_df,
+                 aes(x = x0, y = y0),
+                 shape = 21, fill = "white", colour = "grey20",
+                 size = 1.2, stroke = 0.4) +
+      rphylopic::geom_phylopic(
+        data = phylopic_df,
+        mapping = aes(x = x_sil, y = y_sil, name = species),
+        height = height_abs, fill = phylopic_color, alpha = 1)
+  }
+  
+  if (group_mode == "groups" && !is.null(fric_stats)) {
+    annot_lab <- sprintf(
+      "N = %.2f\nFRic = %.2f\nSES = %.2f\nP = %.2f",
+      fric_stats["SpeciesRichness"],
+      fric_stats["Observed"]*100,
+      fric_stats["SES"],
+      fric_stats["Pval"]
+    )
+    p <- p +
+      annotate("text",
+               x      = rng_x[1],          # bord gauche
+               y      = rng_y[2],          # bord haut
+               label  = annot_lab,
+               hjust  = 0,                 # ancrage à gauche
+               vjust  = 1,                 # ancrage en haut
+               size   = 3.2,
+               fontface = "bold",
+               lineheight = 0.95)
+  }
+  
+  return(p)
+}
+
+  p_groups <- plot_FS_new(
+    pca_sub          = pca_sub,
+    pca_all          = pca_all,
+    com_sp           = com_sp,
+    group_mode       = "groups",
+    fric_stats = fric_stats,
+    title            = sprintf("Functional spectrum of the '%s' (%d species)",
+                               PARAMS$type[i], length(com_sp)),
+    phylopic_species = sp_to_show,
+    arrow_mult       = 1.2,    
+    contour_lwd      = 0.4,   
+    n_density_bands = 20 ,
+    bw_mult = 0.4,  
+     band_line_lwd   = 0.07
+  )
+  
+  # Panel "single" : tout calculé sur le sous-ensemble seul (votre panel droit)
+  p_single <- plot_FS_new(
+    pca_sub = pca_sub, pca_all = pca_all, com_sp = com_sp,
+    group_mode = "single",
+    phylopic_species = sp_to_show,
+    title            = sprintf("Procrustes test: r = %g (P < 0.001)",
+                               round(pro_t$t0,2)),
+    contour_lwd      = 0.4, 
+    n_density_bands = 20,
+    bw_mult = 1,   
+    arrow_mult       = 1.2,   
+  )
+
+  (p_groups | p_single)
+
+
+```
+
 ### Imputation
 
 ```{r imput, eval=FALSE}
