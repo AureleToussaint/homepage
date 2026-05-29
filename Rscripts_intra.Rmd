@@ -104,7 +104,7 @@ div.tocify,
 <div class="fn-nav" id="fn-nav">
   <div class="fn-nav-title">Functions</div>
   <ul>
-    <li><a href="#fn-packages">packages — ITV analysis setup</a></li>
+    <li><a href="#fn-packages">ITV - error measurement</a></li>
   </ul>
 </div>
 
@@ -264,35 +264,214 @@ if (sessionStorage.getItem("rscripts_unlocked") === "1")
 
 
 ```{=html}
-<h3 class="fn-section-divider"><span>ITV package loading</span><hr></h3>
+<h3 class="fn-section-divider"><span>ITV error</span><hr></h3>
 ```
 
 ```{=html}
 <div class="fn-card">
 <div class="fn-header">
   <div>
-    <h4 class="fn-name" id="fn-packages">packages — ITV analysis setup</h4>
-    <div class="fn-desc">Install and load all packages required for intraspecific trait variability analyses.</div>
+    <h4 class="fn-name" id="fn-packages">ITV error measurement</h4>
+    <div class="fn-desc">Defined the error made by the operator</div>
     <div class="fn-tags"><span class="fn-tag tag-util">utility</span></div>
   </div>
 </div>
 ```
 
 ```{r fn_intra_itv_packages_0, eval=FALSE}
-packages <- c(
-  "ade4","ape","berryFunctions","betapart","biscale","cowplot","PCA_TRAITS.table",
-  "dplyr","funrar","geiger","ggplot2","ggpubr","lsmeans","missForest","motmot",
-  "multcomp","mvMORPH","paleotree","pals","paran","phylobase","phytools","picante",
-  "plotly","plotrix","psych","quanteda","ratematrix","RColorBrewer","readr","rgbif",
-  "rnaturalearth","rredlist","sf","shape","stats","tidyr","TPD","vegan",
-  "VennDiagram","viridis","wesanderson"
-)
+# -----------------------------------------------------------------------------
+# 0. Libraries
+# -----------------------------------------------------------------------------
 
-installed_packages <- packages %in% rownames(installed.packages())
-if (any(installed_packages == FALSE)) {
-  install.packages(packages[!installed_packages])
-}
-# Packages loading
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(lme4)
+library(glmmTMB)
+library(DHARMa)
+library(performance)
+
+
+# -----------------------------------------------------------------------------
+# 1. Load data
+# -----------------------------------------------------------------------------
+
+data_error <- read_csv("data/data_error.csv")
+
+str(data_error)
+
+
+# -----------------------------------------------------------------------------
+# 2. Image reference dimensions
+# -----------------------------------------------------------------------------
+
+img_width    <- 4000
+img_height   <- 3000
+img_diagonal <- sqrt(img_width^2 + img_height^2)
+
+
+# -----------------------------------------------------------------------------
+# 3. Preprocessing — coerce factor/character columns, reshape to long format
+# -----------------------------------------------------------------------------
+
+# Cast metadata columns to character
+df <- data_error %>%
+  mutate(across(c(Code, Genus_species, Site, Lot_1), as.character))
+
+# Identify landmark coordinate columns (pattern: "<n>_X" or "<n>_Y")
+xy_cols <- names(df)[grepl("^\\d+_[XY]$", names(df))]
+
+# Pivot from wide to long: one row per (individual × landmark × replicate)
+long <- df %>%
+  mutate(rep = row_number()) %>%
+  pivot_longer(
+    cols      = all_of(xy_cols),
+    names_to  = c("landmark", "coord"),
+    names_pattern = "^(\\d+)_(X|Y)$",
+    values_to = "value"
+  ) %>%
+  pivot_wider(names_from = coord, values_from = value) %>%
+  mutate(landmark = as.integer(landmark)) %>%
+  filter(
+    !is.na(X), !is.na(Y),
+    !landmark %in% c(20, 21)   # remove semi-landmarks or problematic points
+  )
+
+
+# -----------------------------------------------------------------------------
+# 4. Reference scale — inter-landmark distance between landmarks 1 and 2
+# -----------------------------------------------------------------------------
+# Option A (implemented): median distance across replicates per individual.
+# Option B (alternative, preferred): distance computed on mean coordinates —
+#   avoids digitization noise in the scale estimate.
+#
+#   ref_species <- long %>%
+#     filter(landmark %in% c(1, 2)) %>%
+#     group_by(Code, landmark) %>%
+#     summarise(mX = mean(X), mY = mean(Y), .groups = "drop") %>%
+#     pivot_wider(names_from = landmark, values_from = c(mX, mY)) %>%
+#     mutate(ref_value = sqrt((mX_1 - mX_2)^2 + (mY_1 - mY_2)^2)) %>%
+#     select(Code, ref_value)
+
+ref_species <- long %>%
+  filter(landmark %in% c(1, 2)) %>%
+  pivot_wider(
+    names_from  = landmark,
+    values_from = c(X, Y),
+    names_sep   = "_"
+  ) %>%
+  mutate(ref_value = sqrt((X_1 - X_2)^2 + (Y_1 - Y_2)^2)) %>%
+  group_by(Code) %>%
+  summarise(ref_value = median(ref_value, na.rm = TRUE), .groups = "drop")
+
+
+# -----------------------------------------------------------------------------
+# 5. Per-landmark digitization error
+# -----------------------------------------------------------------------------
+# For each replicate, compute the Euclidean distance from the landmark
+# position to the mean position across replicates, then normalize by the
+# reference inter-landmark distance (expressed as %).
+
+landmark_err <- long %>%
+  group_by(Code, Genus_species, Site, landmark) %>%
+  reframe(
+    X_coord = X,
+    Y_coord = Y,
+    mean_X  = mean(X, na.rm = TRUE),
+    mean_Y  = mean(Y, na.rm = TRUE),
+    dist    = sqrt((X - mean_X)^2 + (Y - mean_Y)^2)
+  ) %>%
+  left_join(ref_species, by = "Code") %>%
+  mutate(dist_norm = (dist / ref_value) * 100)
+
+
+# -----------------------------------------------------------------------------
+# 6. Summary tables
+# -----------------------------------------------------------------------------
+
+# Error per individual (averaged over all landmarks and replicates)
+indiv_err <- landmark_err %>%
+  group_by(Code, Genus_species) %>%
+  summarise(
+    n_obs        = n(),
+    mean_dist    = mean(dist_norm, na.rm = TRUE),
+    sd_dist      = sd(dist_norm,   na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Error per species
+species_err <- landmark_err %>%
+  group_by(Genus_species) %>%
+  summarise(
+    n_obs        = n(),
+    mean_dist    = mean(dist_norm, na.rm = TRUE),
+    sd_dist      = sd(dist_norm,   na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Error per site
+site_err <- landmark_err %>%
+  group_by(Site) %>%
+  summarise(
+    n_obs        = n(),
+    mean_dist    = mean(dist_norm, na.rm = TRUE),
+    sd_dist      = sd(dist_norm,   na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Global error (all individuals, landmarks, and replicates)
+global_err <- landmark_err %>%
+  summarise(
+    n_obs        = n(),
+    mean_dist    = mean(dist_norm, na.rm = TRUE),
+    sd_dist      = sd(dist_norm,   na.rm = TRUE)
+  )
+
+# Error per landmark point (ranked by decreasing mean error)
+point_err <- landmark_err %>%
+  group_by(landmark) %>%
+  summarise(
+    n_obs        = n(),
+    mean_dist    = mean(dist_norm, na.rm = TRUE),
+    sd_dist      = sd(dist_norm,   na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(mean_dist))
+
+
+# -----------------------------------------------------------------------------
+# 7. Export results
+# -----------------------------------------------------------------------------
+
+dir.create("output", showWarnings = FALSE)
+
+write_csv(landmark_err, "output/erreur_landmark_par_individu.csv")
+write_csv(indiv_err,    "output/erreur_par_individu.csv")
+write_csv(species_err,  "output/erreur_par_espece.csv")
+write_csv(site_err,     "output/erreur_par_site.csv")
+write_csv(global_err,   "output/erreur_globale.csv")
+write_csv(point_err,    "output/erreur_par_landmark.csv")
+
+
+# -----------------------------------------------------------------------------
+# 8. Visualization — digitization error by individual
+# -----------------------------------------------------------------------------
+
+p_indiv <- ggplot(
+  indiv_err,
+  aes(x = reorder(Code, sd_dist), y = sd_dist, fill = Genus_species)
+) +
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  labs(
+    title = "Erreur de mesure par individu",
+    x     = "Individu (Code)",
+    y     = "Écart-type des distances normalisées (%)"
+  ) +
+  theme_minimal(base_size = 12)
+
+ggsave("output/erreur_par_individu.png", p_indiv, width = 10, height = 8, dpi = 300)
 ```
 
 ```{=html}
