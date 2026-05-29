@@ -105,6 +105,7 @@ div.tocify,
   <div class="fn-nav-title">Functions</div>
   <ul>
     <li><a href="#fn-fishmorph">FishMORPH — data preparation</a></li>
+    <li><a href="#fn-funSpace">FishMORPH — Functional space</a></li>
   </ul>
 </div>
 
@@ -251,7 +252,6 @@ if (sessionStorage.getItem("rscripts_unlocked") === "1")
 </script>
 ```
 
-
 ```{=html}
 <div class="page-intro">
   <div class="page-intro-icon" style="background:#c0392b;">🐟</div>
@@ -260,11 +260,6 @@ if (sessionStorage.getItem("rscripts_unlocked") === "1")
     <p>Data preparation, FishBase queries and morphological trait workflows</p>
   </div>
 </div>
-```
-
-
-```{=html}
-<h3 class="fn-section-divider"><span>Data loading & preparation</span><hr></h3>
 ```
 
 ```{=html}
@@ -277,6 +272,7 @@ if (sessionStorage.getItem("rscripts_unlocked") === "1")
   </div>
 </div>
 <div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">FishMORPH_Traits.rds — trait RDS</span><span class="fn-arg">FishMORPH_Phylogeny.rds — phylogeny RDS</span></div>
+</div>
 ```
 
 ```{r fn_fishmorph_fishmorph_data_prep_0, eval=FALSE}
@@ -612,5 +608,356 @@ write.csv(MatriceFish, "output/MatriceFish.csv", row.names = TRUE)
 ```
 
 ```{=html}
+<div class="fn-card">
+<div class="fn-header">
+<div>
+<h4 class="fn-name" id="fn-funSpace">FishMORPH — FSpace</h4>
+  <div class="fn-desc">Representation of the functional space based on subset of fish</div>
+  <div class="fn-tags"><span class="fn-tag tag-data">data</span><span class="fn-tag tag-morph">morphology</span></div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">FishMORPH_Traits.rds — trait RDS</span><span class="fn-arg">FishMORPH_Phylogeny.rds — phylogeny RDS</span></div>
 </div>
 ```
+
+```{r fn_fishmorph_fspace, eval=FALSE}
+# =============================================================================
+# 0. LIBRAIRIES
+# =============================================================================
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(data.table)
+library(pbapply)
+library(traitdataform)
+library(openxlsx)
+library(tibble)
+
+set.seed(20260527)   # reproductibilité des tirages au genre/famille
+
+make.PCA <- function(TRAITS, dimensionsAux, savePCA) {
+  paran_aux <- paran::paran(TRAITS)
+  pca_obj   <- list()
+  pca_obj$traits     <- TRAITS
+  pca_obj$PCA        <- princomp(TRAITS)
+  pca_obj$dimensions <- dimensionsAux
+  eigenvalues        <- summary(pca_obj$PCA)[[1]]^2
+  pca_obj$variance   <- eigenvalues[seq_len(dimensionsAux)] / sum(eigenvalues)
+  pca_obj$loadings   <- pca_obj$PCA$loadings
+  pca_obj$traitsUse  <- data.frame(pca_obj$PCA$scores[, seq_len(dimensionsAux)])
+  if (!is.na(savePCA)) saveRDS(pca_obj, savePCA)
+  pca_obj
+}
+
+# =============================================================================
+# 1. LISTE D'ESPECES (Amazonie)
+# =============================================================================
+setwd("~/Library/CloudStorage/OneDrive-Personnel/iCloud Drive/00_Co-authors/Marcello")
+planilha <- read_excel("Planilha_selecao_especies_kedma.xlsx")
+
+species <- planilha[["...3"]] |> trimws()
+species <- species[!is.na(species) & species != "" & grepl(" ", species)]
+species <- sort(unique(species))
+
+# =============================================================================
+# 2. CHARGEMENT FISHMORPH + RESOLUTION GBIF
+# =============================================================================
+setwd("~/Library/CloudStorage/OneDrive-Personnel/iCloud Drive/00_Co-authors/Julien")
+fishTraitsImputed <- read.table("data/TraitFishImputed.txt")
+pca_trait         <- readRDS("data/pca_trait.rds")
+setwd("~/Library/CloudStorage/OneDrive-Personnel/iCloud Drive/00_Co-authors/Marcello")
+
+traitCols <- setdiff(colnames(fishTraitsImputed), "IUCN")
+fishMorph <- trimws(rownames(fishTraitsImputed))
+
+fishMORPH_info <- pbapply::pblapply(fishMorph, function(sp) {
+  tryCatch(
+    get_gbif_taxonomy(sp, subspecies = TRUE, higherrank = TRUE,
+                      conf_threshold = 80, resolve_synonyms = TRUE)[1, ],
+    error = function(e) NULL
+  )
+}) %>% data.table::rbindlist(fill = TRUE)
+
+# Tables de correspondance pour FishMORPH (réutilisées en sections 6 et 6bis)
+fishMORPH_lookup <- data.table(
+  scientificName = fishMorph,
+  genus  = sub(" .*$", "", fishMorph),
+  family = fishMORPH_info$family
+)
+# Index ligne dans fishTraitsImputed (l'ordre des deux objets est aligné)
+fishMORPH_lookup[, row_id := .I]
+
+# =============================================================================
+# 3. APPARIEMENT EXACT (verbatim == FishMORPH)
+# =============================================================================
+commonSP   <- intersect(species, fishMorph)
+spToCheck  <- species[!species %in% commonSP]
+
+# =============================================================================
+# 4. RESOLUTION GBIF DES NON-APPARIES
+# =============================================================================
+taxInfo <- pbapply::pblapply(spToCheck, function(sp) {
+  tryCatch(
+    get_gbif_taxonomy(sp, subspecies = TRUE, higherrank = TRUE,
+                      conf_threshold = 80, resolve_synonyms = TRUE)[1, ],
+    error = function(e) NULL
+  )
+}) %>% data.table::rbindlist(fill = TRUE)
+
+taxInfo <- as.data.table(taxInfo)
+taxInfo[is.na(scientificName) | scientificName == "",
+        scientificName := verbatimScientificName]
+
+# =============================================================================
+# 5. SECOND APPARIEMENT EXACT (sur nom GBIF résolu)
+# =============================================================================
+commonSP2     <- intersect(taxInfo$scientificName, fishMorph)
+spToCheck2All <- taxInfo[!scientificName %in% commonSP2, ]
+
+traits_species <- fishTraitsImputed[unique(c(commonSP, commonSP2)), traitCols]
+traits_species <- tibble::rownames_to_column(traits_species, var = "scientificName")
+traits_species$match_level <- "species"
+
+# =============================================================================
+# 6. APPARIEMENT AU GENRE
+# =============================================================================
+spGenus <- sub(" .*$", "", spToCheck2All$scientificName)
+
+# Helper : tirage normal coordonnée par coordonnée pour n>=2 congénères,
+# moyenne sinon. Filet de sécurité contre sd indéfini.
+draw_traits <- function(mat) {
+  if (nrow(mat) == 1L) return(unlist(mat[1, , drop = TRUE]))
+  apply(mat, 2, function(x) {
+    m <- mean(x, na.rm = TRUE); s <- sd(x, na.rm = TRUE)
+    if (is.na(s) || s == 0) m else rnorm(1, mean = m, sd = s)
+  })
+}
+
+genusList <- lapply(seq_len(nrow(spToCheck2All)), function(i) {
+  idx <- fishMORPH_lookup[genus == spGenus[i], row_id]
+  if (length(idx) == 0L) return(NULL)
+  vals <- draw_traits(fishTraitsImputed[idx, traitCols, drop = FALSE])
+  data.frame(
+    verbatimScientificName = spToCheck2All$verbatimScientificName[i],
+    scientificName         = spToCheck2All$scientificName[i],
+    as.list(vals),
+    match_level            = "genus",
+    check.names = FALSE, stringsAsFactors = FALSE
+  )
+})
+traits_genus <- data.table::rbindlist(genusList, fill = TRUE)
+
+# =============================================================================
+# 6bis. APPARIEMENT A LA FAMILLE (espèces sans congénère dans FishMORPH)
+# =============================================================================
+spToCheckFam <- spToCheck2All[!scientificName %in% traits_genus$scientificName, ]
+
+# Famille manquante après GBIF -> on ne peut pas apparier
+spToCheckFam <- spToCheckFam[!is.na(family) & family != "", ]
+
+familyList <- lapply(seq_len(nrow(spToCheckFam)), function(i) {
+  fam <- spToCheckFam$family[i]
+  idx <- fishMORPH_lookup[family == fam, row_id]
+  if (length(idx) == 0L) return(NULL)
+  vals <- draw_traits(fishTraitsImputed[idx, traitCols, drop = FALSE])
+  data.frame(
+    verbatimScientificName = spToCheckFam$verbatimScientificName[i],
+    scientificName         = spToCheckFam$scientificName[i],
+    family                 = fam,
+    n_family_donors        = length(idx),
+    as.list(vals),
+    match_level            = "family",
+    check.names = FALSE, stringsAsFactors = FALSE
+  )
+})
+traits_family <- data.table::rbindlist(familyList, fill = TRUE)
+
+# =============================================================================
+# 7. NON TROUVEES (ni espèce, ni genre, ni famille)
+# =============================================================================
+matched_all <- unique(c(traits_genus$scientificName, traits_family$scientificName))
+traits_notfound <- unique(
+  spToCheck2All[!scientificName %in% matched_all,
+                c("verbatimScientificName", "scientificName", "family")]
+)
+
+# =============================================================================
+# 8. CONSTRUCTION DU POOL POUR LA PCA (alignement strict)
+# =============================================================================
+fishMORPH_df <- fishTraitsImputed[, traitCols] |>
+  tibble::rownames_to_column(var = "scientificName") |>
+  dplyr::mutate(match_level = "fishMORPH")
+
+cols_pca <- c("scientificName", traitCols, "match_level")
+add_species <- traits_species[, cols_pca]
+add_genus   <- as.data.frame(traits_genus)[,   cols_pca]
+add_family  <- as.data.frame(traits_family)[,  cols_pca]
+
+# On exclut du pool FishMORPH les espèces déjà identifiées par appariement
+# direct (commonSP / commonSP2) : elles seraient sinon dupliquées.
+already_in_fishMORPH <- intersect(add_species$scientificName,
+                                  fishMORPH_df$scientificName)
+add_species_extra <- add_species[!add_species$scientificName %in% already_in_fishMORPH, ]
+
+# Et on évite tout doublon (un nom imputé au genre/famille déjà résolu à l'espèce)
+add_genus_extra  <- add_genus[!add_genus$scientificName  %in% fishMORPH_df$scientificName, ]
+add_family_extra <- add_family[!add_family$scientificName %in% c(fishMORPH_df$scientificName,
+                                                                 add_genus_extra$scientificName), ]
+
+trait_pool <- rbind(fishMORPH_df, add_species_extra, add_genus_extra, add_family_extra)
+
+# Identifiants uniques (au cas où des noms se répéteraient encore, ex. synonymes)
+trait_pool$row_label <- make.unique(trait_pool$scientificName, sep = "__")
+rownames(trait_pool) <- trait_pool$row_label
+
+# Indices des espèces du sous-ensemble amazonien (toutes les espèces appariées
+# à l'espèce, au genre ou à la famille)
+sub_names <- c(commonSP, commonSP2,
+               traits_genus$scientificName,
+               traits_family$scientificName)
+sub_idx_pool <- which(trait_pool$scientificName %in% sub_names)
+
+# =============================================================================
+# 9. DEUX PCA INDEPENDANTES, ESPECES DU SOUS-ENSEMBLE ALIGNEES
+# =============================================================================
+
+# --- 9a. PCA globale sur l'ensemble du pool (FishMORPH + espèces ajoutées) -----
+trait_mat_all <- scale(trait_pool[, traitCols])
+keep_all      <- stats::complete.cases(trait_mat_all)
+trait_mat_all <- trait_mat_all[keep_all, ]
+labels_all    <- rownames(trait_pool)[keep_all]
+rownames(trait_mat_all) <- labels_all
+
+pca_all <- make.PCA(trait_mat_all, dimensionsAux = 4, savePCA = NA)
+# Stabilisation du signe de PC1 (convention héritée du script original)
+pca_all$PCA$loadings[, 1] <- pca_all$PCA$loadings[, 1] * (-1)
+pca_all$PCA$scores[,   1] <- pca_all$PCA$scores[,   1] * (-1)
+
+# --- 9b. Liste de référence des espèces du sous-ensemble amazonien -------------
+# On part des row_label du pool (uniques, gérant les éventuels doublons de noms)
+sub_labels_target <- trait_pool$row_label[sub_idx_pool]
+
+# On ne garde que celles qui ont survécu au filtrage NA dans pca_all : c'est cette
+# liste qui définit le sous-ensemble effectivement représentable.
+sub_labels <- intersect(sub_labels_target, labels_all)
+
+# Diagnostic explicite des pertes éventuelles (NA dans les traits)
+dropped_NA <- setdiff(sub_labels_target, sub_labels)
+if (length(dropped_NA) > 0L) {
+  message(length(dropped_NA),
+          " espèce(s) du sous-ensemble écartée(s) pour traits manquants : ",
+          paste(head(dropped_NA, 5), collapse = ", "),
+          if (length(dropped_NA) > 5) " ..." else "")
+}
+
+# --- 9c. PCA recalculée sur le seul sous-ensemble ------------------------------
+sub_pool        <- trait_pool[sub_labels, , drop = FALSE]
+trait_mat_sub   <- scale(sub_pool[, traitCols])
+keep_sub        <- stats::complete.cases(trait_mat_sub)   # par sécurité
+trait_mat_sub   <- trait_mat_sub[keep_sub, ]
+rownames(trait_mat_sub) <- sub_labels[keep_sub]
+
+pca_sub <- make.PCA(trait_mat_sub, dimensionsAux = 4, savePCA = NA)
+
+# --- 9d. Cohérence de l'orientation des axes entre les deux PCA ----------------
+# Deux PCA indépendantes peuvent inverser arbitrairement le signe d'un axe.
+# On aligne le signe de chaque axe de pca_sub sur celui de pca_all en comparant
+# les loadings : si la corrélation est négative, on retourne l'axe.
+for (k in seq_len(pca_sub$dimensions)) {
+  l_all <- pca_all$PCA$loadings[, k]
+  l_sub <- pca_sub$PCA$loadings[, k]
+  if (stats::cor(l_all, l_sub) < 0) {
+    pca_sub$PCA$loadings[, k] <- pca_sub$PCA$loadings[, k] * (-1)
+    pca_sub$PCA$scores[,   k] <- pca_sub$PCA$scores[,   k] * (-1)
+    pca_sub$loadings[,     k] <- pca_sub$loadings[,     k] * (-1)
+    pca_sub$traitsUse[,    k] <- pca_sub$traitsUse[,    k] * (-1)
+  }
+}
+
+# --- 9e. Vecteur d'espèces du sous-ensemble (pour les plots et TPD) ------------
+com_sp <- rownames(pca_sub$PCA$scores)
+
+# =============================================================================
+# 10. COMMUNAUTES + TPD/FRic + SES
+# =============================================================================
+comm_mat <- matrix(0,
+                   nrow = 2,
+                   ncol = nrow(pca_all$PCA$scores),
+                   dimnames = list(paste0("Comm.", 1:2),
+                                   rownames(pca_all$PCA$scores)))
+comm_mat[1, ] <- 1
+comm_mat[2, com_sp] <- 1
+
+gridSize <- 100
+scores2  <- pca_all$PCA$scores[, c(1, 2)]
+sdTraits <- sqrt(diag(ks::Hpi.diag(scores2)))
+
+TPDsAux <- TPD::TPDsMean(
+  species = rownames(scores2),
+  means   = scores2,
+  sds     = matrix(rep(sdTraits, nrow(scores2)), byrow = TRUE, ncol = 2),
+  alpha   = 0.95,
+  n_divisions = gridSize
+)
+TPDcAux <- TPD::TPDc(TPDs = TPDsAux, sampUnit = comm_mat)
+FRic    <- TPD::REND(TPDcAux)
+
+obs    <- numeric(100)
+obs[1] <- FRic$communities$FRichness[2] / FRic$communities$FRichness[1]
+for (b in 1:99) {
+  rdm_comm <- comm_mat
+  rdm_comm[2, ] <- sample(rdm_comm[2, ])
+  TPDcRdm  <- TPD::TPDc(TPDs = TPDsAux, sampUnit = rdm_comm)
+  FRicRdm  <- TPD::REND(TPDcRdm)
+  obs[b + 1] <- FRicRdm$communities$FRichness[2] / FRic$communities$FRichness[1]
+}
+
+sesandpvalues_bis <- function(sr, obs, rand, nreps, probs = c(0.025, 0.975), rnd = 2) {
+  SES      <- (obs - mean(rand)) / sd(rand)
+  pValsSES <- rank(c(obs, rand))[1] / (length(rand) + 1)
+  out <- round(c(sr, obs, SES, mean(rand), quantile(rand, prob = probs), pValsSES, nreps), rnd)
+  names(out) <- c("SpeciesRichness", "Observed", "SES",
+                  "MeanRd", "CI025Rd", "CI975Rd", "Pval", "Nreps")
+  out
+}
+fric_stats <- sesandpvalues_bis(sr = sum(comm_mat[2, ]),
+                                obs = obs[1], rand = obs[-1],
+                                nreps = 99)
+
+# =============================================================================
+# 11. EXPORT EXCEL : 4 feuilles
+# =============================================================================
+openxlsx::write.xlsx(
+  list(
+    "Species"    = traits_species,
+    "Genus_avg"  = as.data.frame(traits_genus),
+    "Family_avg" = as.data.frame(traits_family),
+    "Not_Found"  = as.data.frame(traits_notfound),
+    "Pool_PCA"   = trait_pool
+  ),
+  file = "Traits_FishMORPH.xlsx",
+  rowNames = FALSE, overwrite = TRUE
+)
+
+# =============================================================================
+# 12. FIGURES
+# =============================================================================
+p_groups <- plot_FS_new(
+  pca_sub = NULL, pca_all = pca_all, com_sp = com_sp,
+  group_mode = "groups", fric_stats = fric_stats,
+  title = "PCA on FishMORPH", phylopic_species = NULL,
+  arrow_mult = 1.2, contour_lwd = 0.4,
+  n_density_bands = 20, bw_mult = 0.4, band_line_lwd = 0.07
+)
+p_single <- plot_FS_new(
+  pca_sub = pca_sub, pca_all = pca_all, com_sp = com_sp,
+  group_mode = "single", phylopic_species = NULL,
+  title = "PCA on subset",
+  contour_lwd = 0.4, n_density_bands = 20,
+  bw_mult = 1, arrow_mult = 1.2
+)
+ggsave("FS_main.png", (p_groups | p_single),
+       width = 15, height = 6, dpi = 300)
+
+```
+
+</div>
