@@ -13,8 +13,8 @@ navbar:
       href: RData.html
     - text: "R scripts"
       href: Rscripts.html
-    - text: "Trait-based courses"
-      href: Rcourse.html
+    - text: "Courses"
+      href: Courses.html
     - text: "My blog"
       href: my-blog/site
 

@@ -305,6 +305,21 @@ h1.section-title {
 </div>
 
 <!-- ══════════════════════════════════════════════════ -->
+<!--  COURSES                                   -->
+<!-- ══════════════════════════════════════════════════ -->
+
+<h1 class="section-title">Courses</h1>
+
+<div class="grant-item">
+  <em>2026</em> &nbsp;|&nbsp; <strong>Trait-Based approach in functional ecology</strong> — Belém, BRAZIL.
+</div>
+
+<div class="grant-item">
+  <em>2024–...</em> &nbsp;|&nbsp; <strong>Trait-Based approach in community ecology</strong> — Master FBE Toulouse, FRANCE.
+</div>. 
+
+
+<!-- ══════════════════════════════════════════════════ -->
 <!--  PUBLICATIONS                                     -->
 <!-- ══════════════════════════════════════════════════ -->
 

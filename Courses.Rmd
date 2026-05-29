@@ -1,0 +1,167 @@
+---
+title: ""
+pagetitle: "Courses — Aurèle Toussaint"
+output:
+  html_document:
+    self_contained: false
+    toc: false
+    includes:
+      in_header: header.html
+---
+
+```{=html}
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<style>
+.courses-header {
+  text-align: center;
+  margin: 40px 0 36px 0;
+}
+.courses-header h1 {
+  font-size: 2em;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+.courses-header p {
+  color: #777;
+  font-size: 1.05em;
+}
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  margin: 0 0 60px 0;
+}
+
+.course-card {
+  background: #fff;
+  border: 1px solid #dde3ea;
+  border-radius: 12px;
+  padding: 28px 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  transition: box-shadow .2s, transform .15s;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+.course-card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+  transform: translateY(-3px);
+  text-decoration: none !important;
+}
+
+.course-card-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.course-flag {
+  font-size: 2.2em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.course-meta h3 {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 2px 0;
+}
+.course-meta span {
+  font-size: 0.85em;
+  color: #888;
+}
+
+.course-desc {
+  font-size: 0.9em;
+  color: #666;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.course-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+.tag {
+  font-size: 0.78em;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.tag-r      { background: #e8f5e9; color: #27ae60; }
+.tag-eco    { background: #e3f2fd; color: #2980b9; }
+.tag-fd     { background: #f3e5f5; color: #8e44ad; }
+.tag-traits { background: #fff3e0; color: #e67e22; }
+
+.course-arrow {
+  text-align: right;
+  font-size: 1.2em;
+  color: #bbb;
+  margin-top: auto;
+}
+</style>
+
+<div class="courses-header">
+  <h1>Courses</h1>
+  <p>Select a course to access its materials. Each course is password-protected.</p>
+</div>
+
+<div class="courses-grid">
+
+  <!-- ── Belém 2026 ── -->
+  <a class="course-card" href="Rcourse.html">
+    <div class="course-card-top">
+      <div class="course-flag">🇧🇷</div>
+      <div class="course-meta">
+        <h3>Belém 2026</h3>
+        <span>Universidade Federal do Pará · Brazil</span>
+      </div>
+    </div>
+    <p class="course-desc">
+      Introduction to functional ecology in R: trait data, functional diversity indices,
+      RLQ &amp; fourth-corner analyses, and fish landmark morphometrics.
+    </p>
+    <div class="course-tags">
+      <span class="tag tag-r">R</span>
+      <span class="tag tag-eco">Ecology</span>
+      <span class="tag tag-fd">Functional diversity</span>
+      <span class="tag tag-traits">Traits</span>
+    </div>
+    <div class="course-arrow">→</div>
+  </a>
+
+  <!-- ── Master FBE Toulouse ── -->
+  <a class="course-card" href="RcourseFBE.html">
+    <div class="course-card-top">
+      <div class="course-flag">🇫🇷</div>
+      <div class="course-meta">
+        <h3>Master FBE — Toulouse</h3>
+        <span>Université de Toulouse · France</span>
+      </div>
+    </div>
+    <p class="course-desc">
+      Introduction to functional ecology in R: trait data handling, functional
+      diversity indices, and community-level analyses for master students.
+    </p>
+    <div class="course-tags">
+      <span class="tag tag-r">R</span>
+      <span class="tag tag-eco">Ecology</span>
+      <span class="tag tag-fd">Functional diversity</span>
+      <span class="tag tag-traits">Traits</span>
+    </div>
+    <div class="course-arrow">→</div>
+  </a>
+
+  <!-- Add future courses below following the same pattern -->
+
+</div>
+```
