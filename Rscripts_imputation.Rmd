@@ -1,0 +1,260 @@
+---
+title: ""
+pagetitle: "Imputation — R Scripts"
+output:
+  html_document:
+    self_contained: false
+    toc: true
+    toc_depth: 4
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: show
+    highlight: tango
+    df_print: paged
+    css: assets/custom.css
+    includes:
+      after_body: assets/after_body.html
+---
+
+```{=html}
+<style>
+#pw-overlay {
+  position: fixed; inset: 0; background: rgba(255,255,255,0.97);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+}
+.pw-box {
+  background: #fff; border: 1px solid #dde3ea; border-radius: 12px;
+  padding: 40px 48px; text-align: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-width: 400px; width: 90%;
+}
+.pw-box h2 { margin: 0 0 6px 0; font-size: 1.5em; color: #2c3e50; }
+.pw-box p  { color: #666; font-size: 0.95em; margin: 0 0 22px 0; }
+.pw-lock   { font-size: 3em; margin-bottom: 8px; }
+.pw-row    { display: flex; gap: 8px; }
+.pw-row input {
+  flex:1; padding: 10px 14px; border: 1px solid #ccc;
+  border-radius: 8px; font-size: 1em; outline: none;
+}
+.pw-row input:focus { border-color: #7f8c8d; }
+.pw-row button {
+  padding: 10px 18px; background: #7f8c8d; color: #fff;
+  border: none; border-radius: 8px; font-size: 1em; cursor: pointer;
+}
+.pw-row button:hover { opacity: 0.85; }
+.pw-err { color: #c0392b; font-size: 0.9em; margin: 8px 0 0 0; min-height: 20px; }
+.back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
+.back-link a { color: #7f8c8d; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+</style>
+
+<div id="pw-overlay">
+  <div class="pw-box">
+    <div class="pw-lock">🔒</div>
+    <h2>Imputation</h2>
+    <p>Please enter the access password.</p>
+    <div class="pw-row">
+      <input type="password" id="pw-input" placeholder="Password…"
+             onkeydown="if(event.key==='Enter') checkPw()"/>
+      <button onclick="checkPw()">Enter</button>
+    </div>
+    <p class="pw-err" id="pw-error"></p>
+  </div>
+</div>
+
+<div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
+
+<script>
+const CORRECT_HASH = "2a13e95aa73dfc75b912af3da940c7639be680f74fb6659504bbad28060f110f";
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+async function checkPw() {
+  const hash = await sha256(document.getElementById("pw-input").value);
+  if (hash === CORRECT_HASH) {
+    document.getElementById("pw-overlay").style.display = "none";
+    sessionStorage.setItem("rscripts_unlocked", "1");
+  } else {
+    const err = document.getElementById("pw-error");
+    err.textContent = "Incorrect password. Please try again.";
+    document.getElementById("pw-input").value = "";
+    document.getElementById("pw-input").focus();
+    setTimeout(()=>{ err.textContent=""; }, 3000);
+  }
+}
+if (sessionStorage.getItem("rscripts_unlocked") === "1")
+  document.getElementById("pw-overlay").style.display = "none";
+</script>
+```
+
+```{r imput, eval=FALSE}
+imputeTraits<-function(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed,
+                       sdInputed, nm_PCA, percImpute=1, dimensions, nboot=100){
+  require(missForest)
+  require(Metrics)
+  
+  # Data: extract the species with complete 'selectedTraits'.  For imputation all available traits are used: 'columsImputation'
+  columsImputation <- 1:(which(colnames(traitsData) == "IUCN")-1) 
+  completeSp <- rownames(na.omit(traitsData[,selectedTraits]))
+  missingSp <- setdiff(rownames(traitsData), completeSp)
+  traitWithoutNA<-traitsData[completeSp, columsImputation]
+  traitWithNA <- traitsData[missingSp, columsImputation]
+  #transform the traits with NA values into a mask (1 for existing traits, NA for NA traits)
+  traitNAMask <- replace(traitWithNA, traitWithNA > -Inf, 1)
+  output <- list()
+  for (i in dimensions){
+    output[[i]] <- matrix(NA, nc = nboot, nr = nrow(traitsData), dimnames = list(rownames(traitsData), paste0("Sim. ", 1:nboot)))
+    names(output)[i] <- paste0("PC", i)
+  }
+  RMSE<-matrix(NA,nc=2,nr=nboot,dimnames = list(paste0("Sim.",1:nboot),c("RMSE_PC1","RMSE_PC2")))
+  for (b in 1:nboot){
+    cat(paste0("\n..................SIMULATION ",b," out of ",nboot,"................\n"))
+    
+    # Among the complete data, let's add NA values for 'percImpute' rows:
+    traitSimulNA<-traitWithoutNA[sample(1:nrow(traitWithoutNA), percImpute*nrow(traitWithoutNA)), ]
+    randomMask <- traitNAMask[sample(1:nrow(traitNAMask) , nrow(traitSimulNA)), ]
+    
+    # We create missing values in the traitSimulNA matrix by "pasting" them from real missing observations (this way keeping the structure of missing data):
+    traitSimulNA <-  traitSimulNA * randomMask
+    
+    # We simulate this missing traits using the same imputation method than using in the paper:
+    # Using the phylogenetic eigenvalues
+    # We combine the new dataset of species without NA ('traitWithoutNA') and the other species with 'real' NA:
+    # we impute all traits 
+    traitSimulNAAll <- rbind(traitSimulNA, # Our new NA simulated
+                             traitWithoutNA[setdiff(rownames(traitWithoutNA), rownames(traitSimulNA)),  ]) # the species with complete data without the species with new NA 
+    traitsAux <- rbind(traitSimulNAAll, traitWithNA) # the other species 
+    # Imputation with 'missForest'
+    imputeRFModel <- missForest(xmis = traitsAux)$ximp
+    traitsinPhylImput <- as.matrix(imputeRFModel)
+    
+    # We scale the data using the same mean and SD that we used in the paper: 
+    traitsinPhylImputScaled<-traitsinPhylImput[,selectedTraits]
+    for (i in 1:length(selectedTraits)){
+      traitsinPhylImputScaled[,i]<-(traitsinPhylImput[, selectedTraits[i]] - meanInputed[i]) / sdInputed[i]  
+    }
+    colnames(traitsinPhylImputScaled)<-names(meanInputed)
+    
+    # We predict the position of the imputed species in the functional space:
+    PCApositionNA <- predict(PCAmodel, newdata = traitsinPhylImputScaled[rownames(traitSimulNA), ])
+    
+    # Imputed with PCA compared to original position of the species with the functional space
+    imputed<-PCApositionNA[,dimensions]
+    original<-traitPCA[rownames(PCApositionNA),]
+    
+    RMSE1<-(mean((original[,1] - imputed[,1]) ** 2)) / (max(traitPCA[, 1]) - min(traitPCA[, 1]))
+    RMSE2<-(mean((original[,2] - imputed[,2]) ** 2)) / (max(traitPCA[, 2]) - min(traitPCA[, 2]))
+    
+    RMSE[b,]<-c(RMSE1,RMSE2)
+    
+    for (i in dimensions){
+      output[[i]][rownames(imputed),b]  <- imputed[, i] 
+    }
+    print(apply(RMSE,2,mean,na.rm=T))
+  }
+  return(list(output,RMSE))
+} 
+
+
+for (gr in 2:5){
+  if(gr == 2){
+    pcoaPhyl <- read.table("dataPrepared/Mammals/pcoaPhylogenyMammals.txt",row.names = NULL )
+    traitsData <- read.table("dataPrepared/Mammals/AllDataMammals.txt", header=T)
+    columnsTraits <- 1:(which(colnames(traitsData) == "Eigen.1")-1)
+    traitsData[,columnsTraits] <- log10(traitsData[, columnsTraits])
+    columsImputation <- 1:(which(colnames(traitsData) == "IUCN")-1) 
+    selectedTraits <- c("litter_or_clutch_size_n", "litters_or_clutches_per_y",
+                        "adult_body_mass_g", "longevity_y", "gestation_d", "adult_svl_cm",
+                        "weaning_d", "female_maturity_d")
+    
+    nm_PCA<-c("ls", "ly", "bm", "long", "gest", "svl", "wea", "fmat")
+    
+    traitsDataImputed <- read.table("dataPrepared/Mammals/mammalTraitsImputedIUCN.txt")
+    meanInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,mean)
+    sdInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,sd)
+    
+    traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)] <- 
+      scale(traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)])
+  }
+  if(gr == 3){
+    pcoaPhyl <- read.table("dataPrepared/Aves/pcoaPhylogenyAves.txt",row.names = NULL )
+    traitsData <-read.table("dataPrepared/aves/AllDataAves.txt", header=T)
+    columnsTraits <- 1:(which(colnames(traitsData) == "Eigen.1")-1)
+    traitsData[,columnsTraits] <- log10(traitsData[, columnsTraits])
+    columsImputation <- 1:(which(colnames(traitsData) == "IUCN")-1) 
+    selectedTraits <- c("litter_or_clutch_size_n", "adult_body_mass_g", "egg_mass_g",
+                        "incubation_d", "longevity_y", "fledging_age_d", "litters_or_clutches_per_y", 
+                        "adult_svl_cm")
+    
+    nm_PCA<-c("ls", "bm", "em", "inc", "long", "fa", "ly", "svl")
+    
+    traitsDataImputed <- read.table("dataPrepared/aves/aveTraitsImputedIUCN.txt")
+    meanInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,mean)
+    sdInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,sd)
+    
+    traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)] <- 
+      scale(traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)])
+  }
+  if(gr == 4){
+    pcoaPhyl <- read.table("dataPrepared/reptiles/pcoaPhylogenyReptiles.txt",row.names = NULL )
+    traitsData <-read.table("dataPrepared/reptiles/AllDataReptiles.txt", header=T)
+    columnsTraits <- 1:(which(colnames(traitsData) == "Eigen.1")-1)
+    traitsData[,columnsTraits] <- log10(traitsData[, columnsTraits])
+    columsImputation <- 1:(which(colnames(traitsData) == "IUCN")-1) 
+    selectedTraits <- c("litter_or_clutch_size_n", "litters_or_clutches_per_y",
+                        "adult_body_mass_g", "incubation_d", "longevity_y", "no_sex_svl_cm")
+    
+    nm_PCA<-c("ls", "ly", "bm", "inc", "long", "svl")
+    
+    traitsDataImputed <- read.table("dataPrepared/reptiles/reptileTraitsImputedIUCN.txt")
+    meanInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,mean)
+    sdInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,sd)
+    
+    traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)] <- 
+      scale(traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)])
+  }
+  if(gr == 5){
+    pcoaPhyl <- read.table("dataPrepared/Amphibians/pcoaPhylogenyAmphibians.txt",row.names = NULL )
+    traitsData <-read.table("dataPrepared/Amphibians/AllDataAmphibians.txt", header=T)
+    columnsTraits <- 1:(which(colnames(traitsData) == "Eigen.1")-1)
+    traitsData[,columnsTraits] <- log10(traitsData[, columnsTraits])
+    columsImputation <- 1:(which(colnames(traitsData) == "IUCN")-1) 
+    selectedTraits <- c("Age_at_maturity_min_y",
+                        "Body_size_mm", "Litter_size_max_n",
+                        "Offspring_size_min_mm")
+    
+    nm_PCA<-c("am", "bs", "ls", "os")
+    
+    traitsDataImputed <- read.table("dataPrepared/Amphibians/amphibianTraitsImputedIUCN.txt")
+    meanInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,mean)
+    sdInputed<-apply(traitsDataImputed[,!colnames(traitsDataImputed)%in%c("IUCN")],2,sd)
+    
+    traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)] <- 
+      scale(traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)])
+  }
+  if(gr == 6){
+    pcoaPhyl <- read.table("dataPrepared/Fish/pcoaPhylogenyFish.txt",row.names = NULL )
+    traitsData <- read.table("dataPrepared/Fish/AllDataFish.txt", header=T)
+    selectedTraits <-  c("es","ep","ms","mp","elo","wid","pp","ps","cs","svl","bm")
+    colnames(traitsData)[1:length(selectedTraits)] <- selectedTraits
+    
+    traitsDataImputed <- read.table("dataPrepared/Fish/fishTraitsImputedIUCN.txt")
+    meanInputed<-apply(traitsDataImputed[, !colnames(traitsDataImputed) %in% c("IUCN")], 2, mean)
+    sdInputed<-apply(traitsDataImputed[, !colnames(traitsDataImputed) %in% c("IUCN")],2,sd)
+    traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)] <- 
+      scale(traitsDataImputed[, 1:(ncol(traitsDataImputed)-1)])
+    
+  }
+  
+  traitAll<-PCAImputedALL[[gr]]$traitsMissing
+  traitPCA<-PCAImputedALL[[gr]]$traitsUse
+  PCAmodel<-PCAImputedALL[[gr]]$PCA
+  dimensions<-c(1:PCAImputedALL[[gr]]$dimensions)
+  nreps <- 100
+  cat(paste0("\n....................GROUP:",targetGroupName[gr],"............................\n"))
+  matCov <- imputeTraits(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed, sdInputed, nm_PCA, 
+                         percImpute = 0.50, dimensions, nboot = nreps)
+  saveRDS(matCov,file=paste0("dataPrepared/CovarianceMatrix_",targetGroupName[gr],".RDS"))
+}
+```

@@ -1,0 +1,467 @@
+---
+title: ""
+pagetitle: "PCA — R Scripts"
+output:
+  html_document:
+    self_contained: false
+    toc: true
+    toc_depth: 4
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: show
+    highlight: tango
+    df_print: paged
+    css: assets/custom.css
+    includes:
+      after_body: assets/after_body.html
+---
+
+```{=html}
+<style>
+#pw-overlay {
+  position: fixed; inset: 0; background: rgba(255,255,255,0.97);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+}
+.pw-box {
+  background: #fff; border: 1px solid #dde3ea; border-radius: 12px;
+  padding: 40px 48px; text-align: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-width: 400px; width: 90%;
+}
+.pw-box h2 { margin: 0 0 6px 0; font-size: 1.5em; color: #2c3e50; }
+.pw-box p  { color: #666; font-size: 0.95em; margin: 0 0 22px 0; }
+.pw-lock   { font-size: 3em; margin-bottom: 8px; }
+.pw-row    { display: flex; gap: 8px; }
+.pw-row input {
+  flex:1; padding: 10px 14px; border: 1px solid #ccc;
+  border-radius: 8px; font-size: 1em; outline: none;
+}
+.pw-row input:focus { border-color: #16a085; }
+.pw-row button {
+  padding: 10px 18px; background: #16a085; color: #fff;
+  border: none; border-radius: 8px; font-size: 1em; cursor: pointer;
+}
+.pw-row button:hover { opacity: 0.85; }
+.pw-err { color: #c0392b; font-size: 0.9em; margin: 8px 0 0 0; min-height: 20px; }
+.back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
+.back-link a { color: #16a085; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+</style>
+
+<div id="pw-overlay">
+  <div class="pw-box">
+    <div class="pw-lock">🔒</div>
+    <h2>PCA</h2>
+    <p>Please enter the access password.</p>
+    <div class="pw-row">
+      <input type="password" id="pw-input" placeholder="Password…"
+             onkeydown="if(event.key==='Enter') checkPw()"/>
+      <button onclick="checkPw()">Enter</button>
+    </div>
+    <p class="pw-err" id="pw-error"></p>
+  </div>
+</div>
+
+<div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
+
+<script>
+const CORRECT_HASH = "2a13e95aa73dfc75b912af3da940c7639be680f74fb6659504bbad28060f110f";
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+async function checkPw() {
+  const hash = await sha256(document.getElementById("pw-input").value);
+  if (hash === CORRECT_HASH) {
+    document.getElementById("pw-overlay").style.display = "none";
+    sessionStorage.setItem("rscripts_unlocked", "1");
+  } else {
+    const err = document.getElementById("pw-error");
+    err.textContent = "Incorrect password. Please try again.";
+    document.getElementById("pw-input").value = "";
+    document.getElementById("pw-input").focus();
+    setTimeout(()=>{ err.textContent=""; }, 3000);
+  }
+}
+if (sessionStorage.getItem("rscripts_unlocked") === "1")
+  document.getElementById("pw-overlay").style.display = "none";
+</script>
+```
+
+```{r pca, eval=FALSE}
+# Perform PCA
+# TRAITS: table of traits sp x tr : MUST BE SCALED AND log10
+make.PCA <- function(TRAITS, dimensionsAux, savePCA) {
+  paranAux <- paran(TRAITS)
+  PCA_TRAITS <- list()
+  PCA_TRAITS$traits <- TRAITS
+  PCA_TRAITS$PCA <- princomp(PCA_TRAITS$traits)
+  PCA_TRAITS$dimensions <- dimensionsAux
+  PCA_TRAITS$variance <- (summary(PCA_TRAITS$PCA)[1][[1]]^2)[1:dimensionsAux] /
+    sum(summary(PCA_TRAITS$PCA)[1][[1]]^2)
+  PCA_TRAITS$loadings <- PCA_TRAITS$PCA$loadings
+  PCA_TRAITS$traitsUse <- data.frame(PCA_TRAITS$PCA$scores[, 1:PCA_TRAITS$dimensions])
+  if (!is.na(savePCA)) {
+    saveRDS(PCA_TRAITS, savePCA)
+  }
+  return(PCA_TRAITS)
+}
+
+# Possible to turn it as function for all groups (Nat Comm 2021)
+make.PCA.groups <- function(traitsImputed, traitsMissing,
+                            group = c("Plants","Birds","Mammals","Reptiles","Amphibians","Fishes")) {
+  require(paran)
+  paranAux <- paran(traitsImputed[, 1:(ncol(traitsImputed) - 1)])
+  if (paranAux$Retained < 2) paranAux$Retained <- 2
+  dimensionsAux <- paranAux$Retained
+
+  PCAImpute <- list()
+  PCAImpute$traits <- traitsImputed[, 1:(ncol(traitsImputed) - 1)]
+  PCAImpute$traitsMissing <- traitsMissing[, 1:(ncol(traitsImputed) - 1)]
+  PCAImpute$nImputed <- rowSums(is.na(PCAImpute$traitsMissing))
+  PCAImpute$PCA <- princomp(traitsImputed[, 1:(ncol(traitsImputed) - 1)])
+  PCAImpute$dimensions <- dimensionsAux
+  PCAImpute$variance <- (summary(PCAImpute$PCA)[1][[1]]^2)[1:dimensionsAux] /
+    sum(summary(PCAImpute$PCA)[1][[1]]^2)
+
+  if (group %in% c("Birds","Mammals")) { # Mammals & Birds
+    multPC1 <- ifelse(PCAImpute$PCA$loadings["bm", "Comp.1"] > 0, 1, -1)
+    PCAImpute$PCA$scores[, 1] <- multPC1 * PCAImpute$PCA$scores[, 1]
+    PCAImpute$PCA$loadings[, "Comp.1"] <- multPC1 * PCAImpute$PCA$loadings[, "Comp.1"]
+  }
+
+  if (group == "Reptiles") { # Reptiles
+    multPC2 <- ifelse(PCAImpute$PCA$loadings["inc", "Comp.2"] > 0, -1, 1)
+    PCAImpute$PCA$scores[, 2] <- multPC2 * PCAImpute$PCA$scores[, 2]
+    PCAImpute$PCA$loadings[, "Comp.2"] <- multPC2 * PCAImpute$PCA$loadings[, "Comp.2"]
+  }
+
+  if (group == "Fishes") { # Fishes
+    multPC1 <- ifelse(PCAImpute$PCA$loadings["svl", "Comp.1"] > 0, 1, -1)
+    multPC2 <- ifelse(PCAImpute$PCA$loadings["svl", "Comp.2"] < 0, 1, -1)
+    PCAImpute$PCA$scores[, 1] <- multPC1 * PCAImpute$PCA$scores[, 1]
+    PCAImpute$PCA$loadings[, "Comp.1"] <- multPC1 * PCAImpute$PCA$loadings[, "Comp.1"]
+    PCAImpute$PCA$scores[, 2] <- multPC2 * PCAImpute$PCA$scores[, 2]
+    PCAImpute$PCA$loadings[, "Comp.2"] <- multPC2 * PCAImpute$PCA$loadings[, "Comp.2"]
+  }
+
+  PCAImpute$loadings <- PCAImpute$PCA$loadings
+  PCAImpute$traitsUse <- data.frame(PCAImpute$PCA$scores[, 1:PCAImpute$dimensions])
+
+  treathCat <- c("EX", "EW", "CR", "EN", "VU")
+  noThreatCat <- c("LC", "NT")
+  PCAImpute$Threat <- with(traitsImputed,
+                           ifelse(IUCN %in% treathCat, 1,
+                                  ifelse(IUCN %in% noThreatCat, 0, NA)))
+  return(PCAImpute)
+}
+
+
+# =========================
+# Example for birds
+# =========================
+# 1. Load data
+# =========================
+PCA <- readRDS("data/processed/PCA_Birds.rds")
+shortNames <- read.csv("data/processed/Shortnames_Birds.csv")
+type <- names(PCA)
+title_space = c('Combined','Locomotion','Reproduction','Diet')
+# =========================
+# 2. Define functions
+# =========================
+
+PCA_plot <- function(PCoAPlot,PCoACorPlot,multAx1,multAx,title,legend){
+  Plan12=ggplot(data = data.frame(PCoAPlot$vectors)) +
+    geom_point(aes(x = Axis.1, y = Axis.2),col="grey89") +
+    theme_classic()+
+    ggtitle(title)+
+    xlab(paste0("PCoA 1 (",round(PCoAPlot$values[1,2]*100,2),"%)"))+
+    ylab(paste0("PCoA 2 (",round(PCoAPlot$values[2,2]*100,2),"%)"))+
+    #coord_fixed() + ## need aspect ratio of 1!
+    geom_segment(data = data.frame(PCoACorPlot),
+                 aes(x = 0, xend = Axis.1*multAx, y = 0, yend = Axis.2*multAx),
+                 arrow = arrow(length = unit(0.25, "cm")), colour = PCoACorPlot$color) +
+    geom_text(data = data.frame(PCoACorPlot), 
+              aes(x =  Axis.1*multAx1, y = Axis.2*multAx1, 
+                  label =  names), colour = PCoACorPlot$color,
+              size = 5) +
+    theme(
+      plot.title = element_text(
+        size = 18,       # Increase size (adjust as needed)
+        face = "bold"    # Make it bold
+      )
+    )
+  
+  if(!is.null(legend)){
+    Plan12 = Plan12 + annotate(geom = "text",label = legend, x = Inf, y = -Inf, hjust = 1, vjust = -0.5)      # Make text bold)
+  }
+  
+  
+  
+  Plan12
+}
+
+# ---------- utilities ----------
+.sanitize_axes <- function(df) {
+  stopifnot(all(c("Axis.1","Axis.2") %in% names(df)))
+  df <- df[is.finite(df$Axis.1) & is.finite(df$Axis.2), , drop = FALSE]
+  df$Axis.1 <- as.numeric(df$Axis.1)
+  df$Axis.2 <- as.numeric(df$Axis.2)
+  df
+}
+
+.safe_limits <- function(x, pad_factor = 0.08) {
+  xr <- range(x, finite = TRUE)
+  if (!is.finite(xr[1]) || !is.finite(xr[2])) return(c(-1, 1))
+  if (xr[1] == xr[2]) {
+    eps <- ifelse(abs(xr[1]) > 0, abs(xr[1]) * pad_factor, 1e-6)
+    return(c(xr[1] - eps, xr[2] + eps))
+  }
+  width <- diff(xr)
+  c(xr[1] - width * pad_factor, xr[2] + width * pad_factor)
+}
+
+# KDE grid using {ks}
+.kde_grid <- function(df, gridsize = 181, H = NULL) {
+  if (!requireNamespace("ks", quietly = TRUE)) {
+    stop("Please install.packages('ks') to use the KDE-based density background.")
+  }
+  df <- .sanitize_axes(df)
+  if (nrow(df) < 3) return(list(grid = NULL, x = NULL, y = NULL, z = NULL))
+  
+  xlim <- .safe_limits(df$Axis.1); ylim <- .safe_limits(df$Axis.2)
+  
+  X <- cbind(
+    pmin(pmax(df$Axis.1, xlim[1]), xlim[2]),
+    pmin(pmax(df$Axis.2, ylim[1]), ylim[2])
+  )
+  
+  if (is.null(H)) {
+    H <- try(ks::Hpi(x = X), silent = TRUE)
+    if (inherits(H, "try-error") || any(!is.finite(as.vector(H)))) {
+      H <- try(ks::Hscv(x = X), silent = TRUE)
+    }
+    if (inherits(H, "try-error") || any(!is.finite(as.vector(H)))) {
+      v <- apply(X, 2, stats::var, na.rm = TRUE); v[v <= 0 | !is.finite(v)] <- 1e-6
+      H <- diag(v)
+    }
+  }
+  
+  kde <- ks::kde(
+    x = X, H = H,
+    xmin = c(xlim[1], ylim[1]), xmax = c(xlim[2], ylim[2]),
+    gridsize = c(gridsize, gridsize)
+  )
+  
+  gx <- kde$eval.points[[1]]
+  gy <- kde$eval.points[[2]]
+  gz <- kde$estimate  # matrix [length(gx) x length(gy)]
+  
+  grid <- expand.grid(x = gx, y = gy)
+  grid$z <- as.vector(gz)
+  
+  list(grid = grid, x = gx, y = gy, z = gz)
+}
+
+# Compute density cutoffs (levels) that enclose given probabilities on the grid
+.hdr_levels_grid <- function(gx, gy, gz, probs = c(0.25, 0.5, 0.99)) {
+  # assume regular grid (true for ks::kde)
+  dx <- mean(diff(gx)); dy <- mean(diff(gy))
+  w <- as.vector(gz)
+  ord <- order(w, decreasing = TRUE)
+  cum_mass <- cumsum(w[ord]) * dx * dy
+  # normalize to 1 (numerical integration may be slightly off)
+  cum_mass <- cum_mass / max(cum_mass, na.rm = TRUE)
+  
+  sapply(probs, function(p) {
+    idx <- which(cum_mass >= p)[1]
+    if (is.na(idx)) min(w, na.rm = TRUE) else w[ord][idx]
+  })
+}
+
+# Build contour paths + label positions from a raster grid
+.contour_data <- function(gx, gy, gz, levels, prob_labels) {
+  cls <- contourLines(x = gx, y = gy, z = gz, levels = levels)  # note t()
+  if (length(cls) == 0) return(list(lines = NULL, labels = NULL))
+  lines_df <- do.call(rbind, lapply(seq_along(cls), function(i) {
+    data.frame(x = cls[[i]]$x, y = cls[[i]]$y, level = cls[[i]]$level, id = i)
+  }))
+  labels_df <- do.call(rbind, lapply(seq_along(cls), function(i) {
+    n <- length(cls[[i]]$x); j <- floor(n/2)
+    data.frame(x = cls[[i]]$x[j], y = cls[[i]]$y[j], level = cls[[i]]$level, id = i)
+  }))
+  # map level -> probability text
+  lvl_map <- setNames(prob_labels, levels)
+  labels_df$prob <- lvl_map[as.character(labels_df$level)]
+  list(lines = lines_df, labels = labels_df)
+}
+
+# ---------- funspace-style plot ----------
+PCA_plot_funspace <- function(PCoAPlot, PCoACorPlot, multAx1, multAx, title, legend = NULL,
+                              probs = c(0.25, 0.5, 0.99),
+                              gridsize = 181, H = NULL, bins_filled = 30) {
+  
+  df <- data.frame(PCoAPlot$vectors)
+  df <- .sanitize_axes(df)
+  
+  # KDE grid
+  KG <- .kde_grid(df, gridsize = gridsize, H = H)
+  
+  # density background
+  # continuous raster background
+  p <- ggplot() +
+    geom_raster(
+      data = KG$grid,
+      aes(x = x, y = y, fill = z)
+    ) +
+    scale_fill_gradientn(
+      colours = c(
+        "#FFFFFF",  # white
+        "#FC8D59",  # medium orange-red
+        "#EF6548",  # strong red-orange
+        "#D7301F",  # deep red
+        "#990000"   # dark brownish red
+      ),
+      guide = "none"
+    )
+  
+  # HDR probability contours + labels (0.25, 0.5, 0.95 by default)
+  levs <- .hdr_levels_grid(KG$x, KG$y, KG$z, probs = probs)
+  cd <- .contour_data(KG$x, KG$y, KG$z, levels = as.numeric(levs),
+                      prob_labels = paste0(probs))
+  if (!is.null(cd$lines)) {
+    p <- p +
+      geom_path(data = cd$lines, aes(x, y, group = id),
+                colour = "black", linewidth = 0.6)
+  }
+  if (!is.null(cd$labels)) {
+    p <- p +
+      geom_text(data = cd$labels, aes(x, y, label = prob),
+                colour = "black", size = 3)
+  }
+  
+  # trait loading arrows + labels
+  p <- p +
+    geom_segment(
+      data = data.frame(PCoACorPlot),
+      aes(x = 0, xend = Axis.1 * multAx, y = 0, yend = Axis.2 * multAx),
+      arrow = arrow(length = unit(0.25, "cm")),
+      colour = PCoACorPlot$color, linewidth = 0.5
+    ) +
+    geom_text(
+      data = data.frame(PCoACorPlot),
+      aes(x = Axis.1 * multAx1, y = Axis.2 * multAx1, label = names),
+      colour = PCoACorPlot$color, size = 5
+    ) +
+    theme_classic() +
+    ggtitle(title) +
+    xlab(paste0("PCoA 1 (", round(PCoAPlot$values[1, 2] * 100, 2), "%)")) +
+    ylab(paste0("PCoA 2 (", round(PCoAPlot$values[2, 2] * 100, 2), "%)")) +
+    coord_fixed() +
+    theme(plot.title = element_text(size = 18, face = "bold"))
+  
+  if (!is.null(legend)) {
+    p <- p + annotate("text", label = legend, x = Inf, y = -Inf, hjust = 1, vjust = -0.5)
+  }
+  
+  p
+}
+
+
+## 2.1 Generate a PCA correlation plot with density legend
+make_pca_plot <- function(pca_object, correlation_data, multAx1, multAx, title) {
+  legend_text <- paste0(
+    "Space occupied by:\n",
+    "50% = ", round(pca_object$ALLDensity[1, "0.5"], 2), "\n",
+    "99% = ", round(pca_object$ALLDensity[1, "0.99"], 2)
+  )
+  PCA_plot(pca_object$PCoA, correlation_data, multAx1, multAx, title, legend_text)
+}
+make_pca_plot_34 <- function(pca_object, correlation_data, multAx1, multAx, title) {
+  legend_text <- paste0(
+    "Space occupied by:\n",
+    "50% = ", round(pca_object$ALLDensity[1, "0.5"], 2), "\n",
+    "99% = ", round(pca_object$ALLDensity[1, "0.99"], 2)
+  )
+  PCA_plot_34(pca_object$PCoA, correlation_data, multAx1, multAx, title, legend_text)
+}
+
+## 2.2 Format PCA correlation table with colors and labels
+format_correlation_table <- function(PCoACorPlot, shortNames) {
+  cbind.data.frame(
+    PCoACorPlot,
+    color = shortNames[match(rownames(PCoACorPlot), shortNames$original), "color"],
+    names = shortNames[match(rownames(PCoACorPlot), shortNames$original), "short"]
+  )
+}
+
+## 2.3 Perform Procrustes analysis between PCA spaces
+run_procrustes <- function(PCA_list) {
+  combNames <- combn(names(PCA_list), 2)
+  combNames <- apply(combNames, 2, function(x) paste0(x[1], "_", x[2]))
+  procrustes_table <- matrix(NA, ncol = 1, nrow = length(combNames),
+                             dimnames = list(combNames, 'Birds'))
+  
+  for (j in 1:length(PCA_list)) {
+    x <- PCA_list[[j]]$PCoA$vectors
+    for (i in 1:length(PCA_list)) {
+      if (i > j) {
+        y <- PCA_list[[i]]$PCoA$vectors
+        rownames(y) = rownames(x)
+        prcTest <- ade4::procuste.rtest(as.data.frame(x), as.data.frame(y), nrepet = 999)
+        cor_coef <- prcTest$obs
+        p_val <- prcTest$pvalue
+        signif <- ifelse(p_val < 0.001, "***", ifelse(p_val < 0.01, "**", ifelse(p_val < 0.05, "*", "ns")))
+        procrustes_table[paste0(names(PCA_list)[j], "_", names(PCA_list)[i]), 1] <- 
+          paste0(round(cor_coef, 3), " ", signif)
+      }
+    }
+  }
+  return(procrustes_table)
+}
+
+# =========================
+# 3. Perform analysis
+# =========================
+multAx <- 0.25
+multAx1 <- 0.29
+plotPCAList <- plotPCAList_34 <- list()
+densityTable <- NULL
+
+for (i in seq_along(PCA)) {
+  cor_table <- format_correlation_table(PCA[[i]]$PCoACor, shortNames)
+  plotPCAList[[i]] <- PCA_plot_funspace(PCA[[i]]$PCoA, cor_table, multAx1, multAx, paste0(title_space[i],"-trait space"))
+  #plotPCAList_34[[i]] <- PCA_plot_funspace(PCA[[i]], cor_table, multAx1, multAx, paste0(title_space[i],"-trait space"))
+  
+  densityTable <- rbind(densityTable,
+                        data.frame(`50` = PCA[[i]]$ALLDensity[1, "0.5"],
+                                   `99` = PCA[[i]]$ALLDensity[1, "0.99"],
+                                   `100` = PCA[[i]]$ALLDensity[1, "1"],
+                                   row.names = names(PCA)[i]))
+}
+
+names(plotPCAList)  <- type
+
+# =========================
+# 4. Save outputs
+# =========================
+
+# 4.1 Density table
+write.csv(densityTable, file = "results/tables/BirdstableDensity.csv")
+
+# 4.2 PCA plots grid
+ggarrange(
+  NULL, plotPCAList[["MLD"]], NULL,
+  plotPCAList[["M"]], plotPCAList[["L"]], plotPCAList[["D"]],
+  hjust = 0, align = "v", ncol = 3, nrow = 2
+) %>% ggexport(
+  filename = "results/figures/TraitsSpacesForFramework.png",
+  width = 2800, height = 1800, res = 200, pointsize = 5
+)
+
+# 4.3 Procrustes correlation table
+procrustes_res <- run_procrustes(PCA)
+write.csv(procrustes_res, file = "results/tables/ProcrustesTable.csv")
+
+
+```

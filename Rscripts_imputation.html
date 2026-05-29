@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Imputation — R Scripts</title>
+
+<script src="site_libs/header-attrs-2.31/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="assets/custom.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    
+  </a>
+</li>
+<li>
+  <a href="Projects.html">Projects</a>
+</li>
+<li>
+  <a href="RData.html">Data</a>
+</li>
+<li>
+  <a href="Rscripts.html">R scripts</a>
+</li>
+<li>
+  <a href="Courses.html">Courses</a>
+</li>
+<li>
+  <a href="my-blog/site">My blog</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="contact.html">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/AureleToussaint">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://twitter.com/ToussaintAurele">
+    <span class="fa fa-twitter fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/atoussaint/">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<style>
+#pw-overlay {
+  position: fixed; inset: 0; background: rgba(255,255,255,0.97);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+}
+.pw-box {
+  background: #fff; border: 1px solid #dde3ea; border-radius: 12px;
+  padding: 40px 48px; text-align: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-width: 400px; width: 90%;
+}
+.pw-box h2 { margin: 0 0 6px 0; font-size: 1.5em; color: #2c3e50; }
+.pw-box p  { color: #666; font-size: 0.95em; margin: 0 0 22px 0; }
+.pw-lock   { font-size: 3em; margin-bottom: 8px; }
+.pw-row    { display: flex; gap: 8px; }
+.pw-row input {
+  flex:1; padding: 10px 14px; border: 1px solid #ccc;
+  border-radius: 8px; font-size: 1em; outline: none;
+}
+.pw-row input:focus { border-color: #7f8c8d; }
+.pw-row button {
+  padding: 10px 18px; background: #7f8c8d; color: #fff;
+  border: none; border-radius: 8px; font-size: 1em; cursor: pointer;
+}
+.pw-row button:hover { opacity: 0.85; }
+.pw-err { color: #c0392b; font-size: 0.9em; margin: 8px 0 0 0; min-height: 20px; }
+.back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
+.back-link a { color: #7f8c8d; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+</style>
+
+<div id="pw-overlay">
+  <div class="pw-box">
+    <div class="pw-lock">🔒</div>
+    <h2>Imputation</h2>
+    <p>Please enter the access password.</p>
+    <div class="pw-row">
+      <input type="password" id="pw-input" placeholder="Password…"
+             onkeydown="if(event.key==='Enter') checkPw()"/>
+      <button onclick="checkPw()">Enter</button>
+    </div>
+    <p class="pw-err" id="pw-error"></p>
+  </div>
+</div>
+
+<div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
+
+<script>
+const CORRECT_HASH = "2a13e95aa73dfc75b912af3da940c7639be680f74fb6659504bbad28060f110f";
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+async function checkPw() {
+  const hash = await sha256(document.getElementById("pw-input").value);
+  if (hash === CORRECT_HASH) {
+    document.getElementById("pw-overlay").style.display = "none";
+    sessionStorage.setItem("rscripts_unlocked", "1");
+  } else {
+    const err = document.getElementById("pw-error");
+    err.textContent = "Incorrect password. Please try again.";
+    document.getElementById("pw-input").value = "";
+    document.getElementById("pw-input").focus();
+    setTimeout(()=>{ err.textContent=""; }, 3000);
+  }
+}
+if (sessionStorage.getItem("rscripts_unlocked") === "1")
+  document.getElementById("pw-overlay").style.display = "none";
+</script>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>imputeTraits<span class="ot">&lt;-</span><span class="cf">function</span>(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed,</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>                       sdInputed, nm_PCA, <span class="at">percImpute=</span><span class="dv">1</span>, dimensions, <span class="at">nboot=</span><span class="dv">100</span>){</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">require</span>(missForest)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="fu">require</span>(Metrics)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  </span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="co"># Data: extract the species with complete &#39;selectedTraits&#39;.  For imputation all available traits are used: &#39;columsImputation&#39;</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  columsImputation <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>)<span class="sc">-</span><span class="dv">1</span>) </span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  completeSp <span class="ot">&lt;-</span> <span class="fu">rownames</span>(<span class="fu">na.omit</span>(traitsData[,selectedTraits]))</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  missingSp <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">rownames</span>(traitsData), completeSp)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>  traitWithoutNA<span class="ot">&lt;-</span>traitsData[completeSp, columsImputation]</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  traitWithNA <span class="ot">&lt;-</span> traitsData[missingSp, columsImputation]</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  <span class="co">#transform the traits with NA values into a mask (1 for existing traits, NA for NA traits)</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  traitNAMask <span class="ot">&lt;-</span> <span class="fu">replace</span>(traitWithNA, traitWithNA <span class="sc">&gt;</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="dv">1</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>  output <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> dimensions){</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>    output[[i]] <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nc =</span> nboot, <span class="at">nr =</span> <span class="fu">nrow</span>(traitsData), <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="fu">rownames</span>(traitsData), <span class="fu">paste0</span>(<span class="st">&quot;Sim. &quot;</span>, <span class="dv">1</span><span class="sc">:</span>nboot)))</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>    <span class="fu">names</span>(output)[i] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, i)</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>  }</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>  RMSE<span class="ot">&lt;-</span><span class="fu">matrix</span>(<span class="cn">NA</span>,<span class="at">nc=</span><span class="dv">2</span>,<span class="at">nr=</span>nboot,<span class="at">dimnames =</span> <span class="fu">list</span>(<span class="fu">paste0</span>(<span class="st">&quot;Sim.&quot;</span>,<span class="dv">1</span><span class="sc">:</span>nboot),<span class="fu">c</span>(<span class="st">&quot;RMSE_PC1&quot;</span>,<span class="st">&quot;RMSE_PC2&quot;</span>)))</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>  <span class="cf">for</span> (b <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nboot){</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">..................SIMULATION &quot;</span>,b,<span class="st">&quot; out of &quot;</span>,nboot,<span class="st">&quot;................</span><span class="sc">\n</span><span class="st">&quot;</span>))</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>    </span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>    <span class="co"># Among the complete data, let&#39;s add NA values for &#39;percImpute&#39; rows:</span></span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>    traitSimulNA<span class="ot">&lt;-</span>traitWithoutNA[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(traitWithoutNA), percImpute<span class="sc">*</span><span class="fu">nrow</span>(traitWithoutNA)), ]</span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>    randomMask <span class="ot">&lt;-</span> traitNAMask[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(traitNAMask) , <span class="fu">nrow</span>(traitSimulNA)), ]</span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>    </span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>    <span class="co"># We create missing values in the traitSimulNA matrix by &quot;pasting&quot; them from real missing observations (this way keeping the structure of missing data):</span></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a>    traitSimulNA <span class="ot">&lt;-</span>  traitSimulNA <span class="sc">*</span> randomMask</span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>    </span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>    <span class="co"># We simulate this missing traits using the same imputation method than using in the paper:</span></span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a>    <span class="co"># Using the phylogenetic eigenvalues</span></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a>    <span class="co"># We combine the new dataset of species without NA (&#39;traitWithoutNA&#39;) and the other species with &#39;real&#39; NA:</span></span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a>    <span class="co"># we impute all traits </span></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a>    traitSimulNAAll <span class="ot">&lt;-</span> <span class="fu">rbind</span>(traitSimulNA, <span class="co"># Our new NA simulated</span></span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a>                             traitWithoutNA[<span class="fu">setdiff</span>(<span class="fu">rownames</span>(traitWithoutNA), <span class="fu">rownames</span>(traitSimulNA)),  ]) <span class="co"># the species with complete data without the species with new NA </span></span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a>    traitsAux <span class="ot">&lt;-</span> <span class="fu">rbind</span>(traitSimulNAAll, traitWithNA) <span class="co"># the other species </span></span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a>    <span class="co"># Imputation with &#39;missForest&#39;</span></span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a>    imputeRFModel <span class="ot">&lt;-</span> <span class="fu">missForest</span>(<span class="at">xmis =</span> traitsAux)<span class="sc">$</span>ximp</span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a>    traitsinPhylImput <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(imputeRFModel)</span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a>    </span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a>    <span class="co"># We scale the data using the same mean and SD that we used in the paper: </span></span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a>    traitsinPhylImputScaled<span class="ot">&lt;-</span>traitsinPhylImput[,selectedTraits]</span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(selectedTraits)){</span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a>      traitsinPhylImputScaled[,i]<span class="ot">&lt;-</span>(traitsinPhylImput[, selectedTraits[i]] <span class="sc">-</span> meanInputed[i]) <span class="sc">/</span> sdInputed[i]  </span>
+<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a>    }</span>
+<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a>    <span class="fu">colnames</span>(traitsinPhylImputScaled)<span class="ot">&lt;-</span><span class="fu">names</span>(meanInputed)</span>
+<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a>    </span>
+<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a>    <span class="co"># We predict the position of the imputed species in the functional space:</span></span>
+<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a>    PCApositionNA <span class="ot">&lt;-</span> <span class="fu">predict</span>(PCAmodel, <span class="at">newdata =</span> traitsinPhylImputScaled[<span class="fu">rownames</span>(traitSimulNA), ])</span>
+<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a>    </span>
+<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a>    <span class="co"># Imputed with PCA compared to original position of the species with the functional space</span></span>
+<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a>    imputed<span class="ot">&lt;-</span>PCApositionNA[,dimensions]</span>
+<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a>    original<span class="ot">&lt;-</span>traitPCA[<span class="fu">rownames</span>(PCApositionNA),]</span>
+<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a>    </span>
+<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a>    RMSE1<span class="ot">&lt;-</span>(<span class="fu">mean</span>((original[,<span class="dv">1</span>] <span class="sc">-</span> imputed[,<span class="dv">1</span>]) <span class="sc">**</span> <span class="dv">2</span>)) <span class="sc">/</span> (<span class="fu">max</span>(traitPCA[, <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">min</span>(traitPCA[, <span class="dv">1</span>]))</span>
+<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a>    RMSE2<span class="ot">&lt;-</span>(<span class="fu">mean</span>((original[,<span class="dv">2</span>] <span class="sc">-</span> imputed[,<span class="dv">2</span>]) <span class="sc">**</span> <span class="dv">2</span>)) <span class="sc">/</span> (<span class="fu">max</span>(traitPCA[, <span class="dv">2</span>]) <span class="sc">-</span> <span class="fu">min</span>(traitPCA[, <span class="dv">2</span>]))</span>
+<span id="cb1-57"><a href="#cb1-57" tabindex="-1"></a>    </span>
+<span id="cb1-58"><a href="#cb1-58" tabindex="-1"></a>    RMSE[b,]<span class="ot">&lt;-</span><span class="fu">c</span>(RMSE1,RMSE2)</span>
+<span id="cb1-59"><a href="#cb1-59" tabindex="-1"></a>    </span>
+<span id="cb1-60"><a href="#cb1-60" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> dimensions){</span>
+<span id="cb1-61"><a href="#cb1-61" tabindex="-1"></a>      output[[i]][<span class="fu">rownames</span>(imputed),b]  <span class="ot">&lt;-</span> imputed[, i] </span>
+<span id="cb1-62"><a href="#cb1-62" tabindex="-1"></a>    }</span>
+<span id="cb1-63"><a href="#cb1-63" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">apply</span>(RMSE,<span class="dv">2</span>,mean,<span class="at">na.rm=</span>T))</span>
+<span id="cb1-64"><a href="#cb1-64" tabindex="-1"></a>  }</span>
+<span id="cb1-65"><a href="#cb1-65" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(output,RMSE))</span>
+<span id="cb1-66"><a href="#cb1-66" tabindex="-1"></a>} </span>
+<span id="cb1-67"><a href="#cb1-67" tabindex="-1"></a></span>
+<span id="cb1-68"><a href="#cb1-68" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" tabindex="-1"></a><span class="cf">for</span> (gr <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>){</span>
+<span id="cb1-70"><a href="#cb1-70" tabindex="-1"></a>  <span class="cf">if</span>(gr <span class="sc">==</span> <span class="dv">2</span>){</span>
+<span id="cb1-71"><a href="#cb1-71" tabindex="-1"></a>    pcoaPhyl <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Mammals/pcoaPhylogenyMammals.txt&quot;</span>,<span class="at">row.names =</span> <span class="cn">NULL</span> )</span>
+<span id="cb1-72"><a href="#cb1-72" tabindex="-1"></a>    traitsData <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Mammals/AllDataMammals.txt&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb1-73"><a href="#cb1-73" tabindex="-1"></a>    columnsTraits <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;Eigen.1&quot;</span>)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb1-74"><a href="#cb1-74" tabindex="-1"></a>    traitsData[,columnsTraits] <span class="ot">&lt;-</span> <span class="fu">log10</span>(traitsData[, columnsTraits])</span>
+<span id="cb1-75"><a href="#cb1-75" tabindex="-1"></a>    columsImputation <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>)<span class="sc">-</span><span class="dv">1</span>) </span>
+<span id="cb1-76"><a href="#cb1-76" tabindex="-1"></a>    selectedTraits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;litter_or_clutch_size_n&quot;</span>, <span class="st">&quot;litters_or_clutches_per_y&quot;</span>,</span>
+<span id="cb1-77"><a href="#cb1-77" tabindex="-1"></a>                        <span class="st">&quot;adult_body_mass_g&quot;</span>, <span class="st">&quot;longevity_y&quot;</span>, <span class="st">&quot;gestation_d&quot;</span>, <span class="st">&quot;adult_svl_cm&quot;</span>,</span>
+<span id="cb1-78"><a href="#cb1-78" tabindex="-1"></a>                        <span class="st">&quot;weaning_d&quot;</span>, <span class="st">&quot;female_maturity_d&quot;</span>)</span>
+<span id="cb1-79"><a href="#cb1-79" tabindex="-1"></a>    </span>
+<span id="cb1-80"><a href="#cb1-80" tabindex="-1"></a>    nm_PCA<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;ls&quot;</span>, <span class="st">&quot;ly&quot;</span>, <span class="st">&quot;bm&quot;</span>, <span class="st">&quot;long&quot;</span>, <span class="st">&quot;gest&quot;</span>, <span class="st">&quot;svl&quot;</span>, <span class="st">&quot;wea&quot;</span>, <span class="st">&quot;fmat&quot;</span>)</span>
+<span id="cb1-81"><a href="#cb1-81" tabindex="-1"></a>    </span>
+<span id="cb1-82"><a href="#cb1-82" tabindex="-1"></a>    traitsDataImputed <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Mammals/mammalTraitsImputedIUCN.txt&quot;</span>)</span>
+<span id="cb1-83"><a href="#cb1-83" tabindex="-1"></a>    meanInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,mean)</span>
+<span id="cb1-84"><a href="#cb1-84" tabindex="-1"></a>    sdInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,sd)</span>
+<span id="cb1-85"><a href="#cb1-85" tabindex="-1"></a>    </span>
+<span id="cb1-86"><a href="#cb1-86" tabindex="-1"></a>    traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb1-87"><a href="#cb1-87" tabindex="-1"></a>      <span class="fu">scale</span>(traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)])</span>
+<span id="cb1-88"><a href="#cb1-88" tabindex="-1"></a>  }</span>
+<span id="cb1-89"><a href="#cb1-89" tabindex="-1"></a>  <span class="cf">if</span>(gr <span class="sc">==</span> <span class="dv">3</span>){</span>
+<span id="cb1-90"><a href="#cb1-90" tabindex="-1"></a>    pcoaPhyl <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Aves/pcoaPhylogenyAves.txt&quot;</span>,<span class="at">row.names =</span> <span class="cn">NULL</span> )</span>
+<span id="cb1-91"><a href="#cb1-91" tabindex="-1"></a>    traitsData <span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/aves/AllDataAves.txt&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb1-92"><a href="#cb1-92" tabindex="-1"></a>    columnsTraits <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;Eigen.1&quot;</span>)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb1-93"><a href="#cb1-93" tabindex="-1"></a>    traitsData[,columnsTraits] <span class="ot">&lt;-</span> <span class="fu">log10</span>(traitsData[, columnsTraits])</span>
+<span id="cb1-94"><a href="#cb1-94" tabindex="-1"></a>    columsImputation <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>)<span class="sc">-</span><span class="dv">1</span>) </span>
+<span id="cb1-95"><a href="#cb1-95" tabindex="-1"></a>    selectedTraits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;litter_or_clutch_size_n&quot;</span>, <span class="st">&quot;adult_body_mass_g&quot;</span>, <span class="st">&quot;egg_mass_g&quot;</span>,</span>
+<span id="cb1-96"><a href="#cb1-96" tabindex="-1"></a>                        <span class="st">&quot;incubation_d&quot;</span>, <span class="st">&quot;longevity_y&quot;</span>, <span class="st">&quot;fledging_age_d&quot;</span>, <span class="st">&quot;litters_or_clutches_per_y&quot;</span>, </span>
+<span id="cb1-97"><a href="#cb1-97" tabindex="-1"></a>                        <span class="st">&quot;adult_svl_cm&quot;</span>)</span>
+<span id="cb1-98"><a href="#cb1-98" tabindex="-1"></a>    </span>
+<span id="cb1-99"><a href="#cb1-99" tabindex="-1"></a>    nm_PCA<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;ls&quot;</span>, <span class="st">&quot;bm&quot;</span>, <span class="st">&quot;em&quot;</span>, <span class="st">&quot;inc&quot;</span>, <span class="st">&quot;long&quot;</span>, <span class="st">&quot;fa&quot;</span>, <span class="st">&quot;ly&quot;</span>, <span class="st">&quot;svl&quot;</span>)</span>
+<span id="cb1-100"><a href="#cb1-100" tabindex="-1"></a>    </span>
+<span id="cb1-101"><a href="#cb1-101" tabindex="-1"></a>    traitsDataImputed <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/aves/aveTraitsImputedIUCN.txt&quot;</span>)</span>
+<span id="cb1-102"><a href="#cb1-102" tabindex="-1"></a>    meanInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,mean)</span>
+<span id="cb1-103"><a href="#cb1-103" tabindex="-1"></a>    sdInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,sd)</span>
+<span id="cb1-104"><a href="#cb1-104" tabindex="-1"></a>    </span>
+<span id="cb1-105"><a href="#cb1-105" tabindex="-1"></a>    traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb1-106"><a href="#cb1-106" tabindex="-1"></a>      <span class="fu">scale</span>(traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)])</span>
+<span id="cb1-107"><a href="#cb1-107" tabindex="-1"></a>  }</span>
+<span id="cb1-108"><a href="#cb1-108" tabindex="-1"></a>  <span class="cf">if</span>(gr <span class="sc">==</span> <span class="dv">4</span>){</span>
+<span id="cb1-109"><a href="#cb1-109" tabindex="-1"></a>    pcoaPhyl <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/reptiles/pcoaPhylogenyReptiles.txt&quot;</span>,<span class="at">row.names =</span> <span class="cn">NULL</span> )</span>
+<span id="cb1-110"><a href="#cb1-110" tabindex="-1"></a>    traitsData <span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/reptiles/AllDataReptiles.txt&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb1-111"><a href="#cb1-111" tabindex="-1"></a>    columnsTraits <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;Eigen.1&quot;</span>)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb1-112"><a href="#cb1-112" tabindex="-1"></a>    traitsData[,columnsTraits] <span class="ot">&lt;-</span> <span class="fu">log10</span>(traitsData[, columnsTraits])</span>
+<span id="cb1-113"><a href="#cb1-113" tabindex="-1"></a>    columsImputation <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>)<span class="sc">-</span><span class="dv">1</span>) </span>
+<span id="cb1-114"><a href="#cb1-114" tabindex="-1"></a>    selectedTraits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;litter_or_clutch_size_n&quot;</span>, <span class="st">&quot;litters_or_clutches_per_y&quot;</span>,</span>
+<span id="cb1-115"><a href="#cb1-115" tabindex="-1"></a>                        <span class="st">&quot;adult_body_mass_g&quot;</span>, <span class="st">&quot;incubation_d&quot;</span>, <span class="st">&quot;longevity_y&quot;</span>, <span class="st">&quot;no_sex_svl_cm&quot;</span>)</span>
+<span id="cb1-116"><a href="#cb1-116" tabindex="-1"></a>    </span>
+<span id="cb1-117"><a href="#cb1-117" tabindex="-1"></a>    nm_PCA<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;ls&quot;</span>, <span class="st">&quot;ly&quot;</span>, <span class="st">&quot;bm&quot;</span>, <span class="st">&quot;inc&quot;</span>, <span class="st">&quot;long&quot;</span>, <span class="st">&quot;svl&quot;</span>)</span>
+<span id="cb1-118"><a href="#cb1-118" tabindex="-1"></a>    </span>
+<span id="cb1-119"><a href="#cb1-119" tabindex="-1"></a>    traitsDataImputed <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/reptiles/reptileTraitsImputedIUCN.txt&quot;</span>)</span>
+<span id="cb1-120"><a href="#cb1-120" tabindex="-1"></a>    meanInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,mean)</span>
+<span id="cb1-121"><a href="#cb1-121" tabindex="-1"></a>    sdInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,sd)</span>
+<span id="cb1-122"><a href="#cb1-122" tabindex="-1"></a>    </span>
+<span id="cb1-123"><a href="#cb1-123" tabindex="-1"></a>    traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb1-124"><a href="#cb1-124" tabindex="-1"></a>      <span class="fu">scale</span>(traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)])</span>
+<span id="cb1-125"><a href="#cb1-125" tabindex="-1"></a>  }</span>
+<span id="cb1-126"><a href="#cb1-126" tabindex="-1"></a>  <span class="cf">if</span>(gr <span class="sc">==</span> <span class="dv">5</span>){</span>
+<span id="cb1-127"><a href="#cb1-127" tabindex="-1"></a>    pcoaPhyl <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Amphibians/pcoaPhylogenyAmphibians.txt&quot;</span>,<span class="at">row.names =</span> <span class="cn">NULL</span> )</span>
+<span id="cb1-128"><a href="#cb1-128" tabindex="-1"></a>    traitsData <span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Amphibians/AllDataAmphibians.txt&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb1-129"><a href="#cb1-129" tabindex="-1"></a>    columnsTraits <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;Eigen.1&quot;</span>)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb1-130"><a href="#cb1-130" tabindex="-1"></a>    traitsData[,columnsTraits] <span class="ot">&lt;-</span> <span class="fu">log10</span>(traitsData[, columnsTraits])</span>
+<span id="cb1-131"><a href="#cb1-131" tabindex="-1"></a>    columsImputation <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(traitsData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>)<span class="sc">-</span><span class="dv">1</span>) </span>
+<span id="cb1-132"><a href="#cb1-132" tabindex="-1"></a>    selectedTraits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Age_at_maturity_min_y&quot;</span>,</span>
+<span id="cb1-133"><a href="#cb1-133" tabindex="-1"></a>                        <span class="st">&quot;Body_size_mm&quot;</span>, <span class="st">&quot;Litter_size_max_n&quot;</span>,</span>
+<span id="cb1-134"><a href="#cb1-134" tabindex="-1"></a>                        <span class="st">&quot;Offspring_size_min_mm&quot;</span>)</span>
+<span id="cb1-135"><a href="#cb1-135" tabindex="-1"></a>    </span>
+<span id="cb1-136"><a href="#cb1-136" tabindex="-1"></a>    nm_PCA<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;am&quot;</span>, <span class="st">&quot;bs&quot;</span>, <span class="st">&quot;ls&quot;</span>, <span class="st">&quot;os&quot;</span>)</span>
+<span id="cb1-137"><a href="#cb1-137" tabindex="-1"></a>    </span>
+<span id="cb1-138"><a href="#cb1-138" tabindex="-1"></a>    traitsDataImputed <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Amphibians/amphibianTraitsImputedIUCN.txt&quot;</span>)</span>
+<span id="cb1-139"><a href="#cb1-139" tabindex="-1"></a>    meanInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,mean)</span>
+<span id="cb1-140"><a href="#cb1-140" tabindex="-1"></a>    sdInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[,<span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed)<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,sd)</span>
+<span id="cb1-141"><a href="#cb1-141" tabindex="-1"></a>    </span>
+<span id="cb1-142"><a href="#cb1-142" tabindex="-1"></a>    traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb1-143"><a href="#cb1-143" tabindex="-1"></a>      <span class="fu">scale</span>(traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)])</span>
+<span id="cb1-144"><a href="#cb1-144" tabindex="-1"></a>  }</span>
+<span id="cb1-145"><a href="#cb1-145" tabindex="-1"></a>  <span class="cf">if</span>(gr <span class="sc">==</span> <span class="dv">6</span>){</span>
+<span id="cb1-146"><a href="#cb1-146" tabindex="-1"></a>    pcoaPhyl <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Fish/pcoaPhylogenyFish.txt&quot;</span>,<span class="at">row.names =</span> <span class="cn">NULL</span> )</span>
+<span id="cb1-147"><a href="#cb1-147" tabindex="-1"></a>    traitsData <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Fish/AllDataFish.txt&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb1-148"><a href="#cb1-148" tabindex="-1"></a>    selectedTraits <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot;es&quot;</span>,<span class="st">&quot;ep&quot;</span>,<span class="st">&quot;ms&quot;</span>,<span class="st">&quot;mp&quot;</span>,<span class="st">&quot;elo&quot;</span>,<span class="st">&quot;wid&quot;</span>,<span class="st">&quot;pp&quot;</span>,<span class="st">&quot;ps&quot;</span>,<span class="st">&quot;cs&quot;</span>,<span class="st">&quot;svl&quot;</span>,<span class="st">&quot;bm&quot;</span>)</span>
+<span id="cb1-149"><a href="#cb1-149" tabindex="-1"></a>    <span class="fu">colnames</span>(traitsData)[<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(selectedTraits)] <span class="ot">&lt;-</span> selectedTraits</span>
+<span id="cb1-150"><a href="#cb1-150" tabindex="-1"></a>    </span>
+<span id="cb1-151"><a href="#cb1-151" tabindex="-1"></a>    traitsDataImputed <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;dataPrepared/Fish/fishTraitsImputedIUCN.txt&quot;</span>)</span>
+<span id="cb1-152"><a href="#cb1-152" tabindex="-1"></a>    meanInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[, <span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)], <span class="dv">2</span>, mean)</span>
+<span id="cb1-153"><a href="#cb1-153" tabindex="-1"></a>    sdInputed<span class="ot">&lt;-</span><span class="fu">apply</span>(traitsDataImputed[, <span class="sc">!</span><span class="fu">colnames</span>(traitsDataImputed) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;IUCN&quot;</span>)],<span class="dv">2</span>,sd)</span>
+<span id="cb1-154"><a href="#cb1-154" tabindex="-1"></a>    traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb1-155"><a href="#cb1-155" tabindex="-1"></a>      <span class="fu">scale</span>(traitsDataImputed[, <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(traitsDataImputed)<span class="sc">-</span><span class="dv">1</span>)])</span>
+<span id="cb1-156"><a href="#cb1-156" tabindex="-1"></a>    </span>
+<span id="cb1-157"><a href="#cb1-157" tabindex="-1"></a>  }</span>
+<span id="cb1-158"><a href="#cb1-158" tabindex="-1"></a>  </span>
+<span id="cb1-159"><a href="#cb1-159" tabindex="-1"></a>  traitAll<span class="ot">&lt;-</span>PCAImputedALL[[gr]]<span class="sc">$</span>traitsMissing</span>
+<span id="cb1-160"><a href="#cb1-160" tabindex="-1"></a>  traitPCA<span class="ot">&lt;-</span>PCAImputedALL[[gr]]<span class="sc">$</span>traitsUse</span>
+<span id="cb1-161"><a href="#cb1-161" tabindex="-1"></a>  PCAmodel<span class="ot">&lt;-</span>PCAImputedALL[[gr]]<span class="sc">$</span>PCA</span>
+<span id="cb1-162"><a href="#cb1-162" tabindex="-1"></a>  dimensions<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>PCAImputedALL[[gr]]<span class="sc">$</span>dimensions)</span>
+<span id="cb1-163"><a href="#cb1-163" tabindex="-1"></a>  nreps <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-164"><a href="#cb1-164" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">....................GROUP:&quot;</span>,targetGroupName[gr],<span class="st">&quot;............................</span><span class="sc">\n</span><span class="st">&quot;</span>))</span>
+<span id="cb1-165"><a href="#cb1-165" tabindex="-1"></a>  matCov <span class="ot">&lt;-</span> <span class="fu">imputeTraits</span>(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed, sdInputed, nm_PCA, </span>
+<span id="cb1-166"><a href="#cb1-166" tabindex="-1"></a>                         <span class="at">percImpute =</span> <span class="fl">0.50</span>, dimensions, <span class="at">nboot =</span> nreps)</span>
+<span id="cb1-167"><a href="#cb1-167" tabindex="-1"></a>  <span class="fu">saveRDS</span>(matCov,<span class="at">file=</span><span class="fu">paste0</span>(<span class="st">&quot;dataPrepared/CovarianceMatrix_&quot;</span>,targetGroupName[gr],<span class="st">&quot;.RDS&quot;</span>))</span>
+<span id="cb1-168"><a href="#cb1-168" tabindex="-1"></a>}</span></code></pre></div>
+
+<script src="assets/copy-code.js"></script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

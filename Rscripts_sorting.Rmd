@@ -1,0 +1,214 @@
+---
+title: ""
+pagetitle: "Sorting data — R Scripts"
+output:
+  html_document:
+    self_contained: false
+    toc: true
+    toc_depth: 4
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: show
+    highlight: tango
+    df_print: paged
+    css: assets/custom.css
+    includes:
+      after_body: assets/after_body.html
+---
+
+```{=html}
+<style>
+#pw-overlay {
+  position: fixed; inset: 0; background: rgba(255,255,255,0.97);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+}
+.pw-box {
+  background: #fff; border: 1px solid #dde3ea; border-radius: 12px;
+  padding: 40px 48px; text-align: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-width: 400px; width: 90%;
+}
+.pw-box h2 { margin: 0 0 6px 0; font-size: 1.5em; color: #2c3e50; }
+.pw-box p  { color: #666; font-size: 0.95em; margin: 0 0 22px 0; }
+.pw-lock   { font-size: 3em; margin-bottom: 8px; }
+.pw-row    { display: flex; gap: 8px; }
+.pw-row input {
+  flex:1; padding: 10px 14px; border: 1px solid #ccc;
+  border-radius: 8px; font-size: 1em; outline: none;
+}
+.pw-row input:focus { border-color: #8e44ad; }
+.pw-row button {
+  padding: 10px 18px; background: #8e44ad; color: #fff;
+  border: none; border-radius: 8px; font-size: 1em; cursor: pointer;
+}
+.pw-row button:hover { opacity: 0.85; }
+.pw-err { color: #c0392b; font-size: 0.9em; margin: 8px 0 0 0; min-height: 20px; }
+.back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
+.back-link a { color: #8e44ad; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+</style>
+
+<div id="pw-overlay">
+  <div class="pw-box">
+    <div class="pw-lock">🔒</div>
+    <h2>Sorting data</h2>
+    <p>Please enter the access password.</p>
+    <div class="pw-row">
+      <input type="password" id="pw-input" placeholder="Password…"
+             onkeydown="if(event.key==='Enter') checkPw()"/>
+      <button onclick="checkPw()">Enter</button>
+    </div>
+    <p class="pw-err" id="pw-error"></p>
+  </div>
+</div>
+
+<div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
+
+<script>
+const CORRECT_HASH = "2a13e95aa73dfc75b912af3da940c7639be680f74fb6659504bbad28060f110f";
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+async function checkPw() {
+  const hash = await sha256(document.getElementById("pw-input").value);
+  if (hash === CORRECT_HASH) {
+    document.getElementById("pw-overlay").style.display = "none";
+    sessionStorage.setItem("rscripts_unlocked", "1");
+  } else {
+    const err = document.getElementById("pw-error");
+    err.textContent = "Incorrect password. Please try again.";
+    document.getElementById("pw-input").value = "";
+    document.getElementById("pw-input").focus();
+    setTimeout(()=>{ err.textContent=""; }, 3000);
+  }
+}
+if (sessionStorage.getItem("rscripts_unlocked") === "1")
+  document.getElementById("pw-overlay").style.display = "none";
+</script>
+```
+
+```{r sorting_data, eval=FALSE}
+standard_names <- function(Traits, nrowTraits, source = 163, dim = NA) {
+  require(taxize)
+  standNamesTraits <- as.data.frame(
+    matrix(
+      NA,
+      nrow = nrowTraits,
+      ncol = 1,
+      dimnames = list(rownames(Traits), "IUCNName")
+    )
+  )
+  batchSize <- 1000
+
+  for (i in 1:(ceiling(nrowTraits / batchSize))) {
+    cat(paste0("\nBatch ", i, " out of ", (ceiling(nrowTraits / batchSize)), "\n"))
+    rowsSelect <- ((i - 1) * batchSize + 1):min((i * batchSize), nrowTraits)
+    taxoAux <- as.data.frame(
+      taxize::gnr_resolve(
+        names = rownames(standNamesTraits)[rowsSelect],
+        preferred_data_sources = source, # 163 is IUCN
+        best_match_only = TRUE,
+        canonical = TRUE
+      )
+    )
+    standNamesTraits[taxoAux$user_supplied_name, "IUCNName"] <- taxoAux$matched_name2
+  }
+
+  standNamesTraits[, "IUCNName"] <- gsub(
+    x = standNamesTraits[, "IUCNName"],
+    pattern = " ",
+    replacement = "_"
+  )
+  naIUCN <- which(is.na(standNamesTraits[, "IUCNName"]))
+  standNamesTraits[naIUCN, "IUCNName"] <- rownames(standNamesTraits)[naIUCN]
+
+  # Some species could not be resolved into IUCN naming. Remove them:
+  yesName <- which(!is.na(standNamesTraits[, "IUCNName"]))
+  if (dim == 1) {
+    return(Traits[yesName])
+  } else {
+    return(Traits[yesName, ])
+  }
+}
+
+addToPhylo <- function(phylogenyTraits, GROUPTraits) {
+  phylogenyTraits <- force.ultrametric(tree = phylogenyTraits, method = c("extend"))
+  tipsToAdd <- which(!rownames(GROUPTraits) %in% phylogenyTraits$tip.label)
+  namesToAdd <- rownames(GROUPTraits)[tipsToAdd]
+  genusToAdd <- unlist(strsplit(namesToAdd, "_"))[
+    which(1:length(strsplit(namesToAdd, "_")) %% 2 == 1)
+  ]
+  phylogenyTraitsAdd <- phylogenyTraits
+
+  for (add in 1:length(namesToAdd)) {
+    cat(paste("\rADDING SP TO GENUS IN PHYLOGENY", add, "/", length(namesToAdd), "\r"))
+    phylogenyTraitsAdd <- add.species.to.genus(
+      tree = phylogenyTraitsAdd,
+      species = namesToAdd[add],
+      genus = genusToAdd[add],
+      where = "root"
+    )
+  }
+  return(phylogenyTraitsAdd)
+}
+
+RedToTraits <- function(IUCNGROUPtoTraits) {
+  RedToTraits <- matrix(
+    rep(NA, nrow(IUCNGROUPtoTraits)),
+    ncol = 1,
+    dimnames = list(IUCNGROUPtoTraits$Species, "IUCN")
+  )
+
+  for (i in 1:nrow(IUCNGROUPtoTraits)) {
+    selRows <- which(IUCNGROUPtoTraits$Species == IUCNGROUPtoTraits$Species[i])
+    if (length(selRows) > 1) {
+      dataAux <- IUCNGROUPtoTraits[selRows, ]
+      if (any(is.na(dataAux$infra_name))) {
+        coger <- which(is.na(dataAux$infra_name))
+        if (length(coger) == 1) {
+          RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <- as.character(dataAux$categorySimp[coger])
+        } else {
+          if (length(unique(dataAux$categorySimp[coger])) == 1) {
+            RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <-
+              as.character(unique(dataAux$categorySimp[coger]))
+          } else {
+            RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <-
+              as.character(sort(unique(dataAux$categorySimp))[1])
+          }
+        }
+      } else {
+        RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <-
+          as.character(sort(unique(dataAux$categorySimp))[1])
+      }
+    } else {
+      RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <-
+        as.character(IUCNGROUPtoTraits[selRows, "categorySimp"])
+    }
+  }
+  return(RedToTraits)
+}
+
+imputation_trait <- function(GROUPData, selectedTraits, shortnames = c("am", "bs", "ls", "os")) {
+  require(missForest)
+  columnsTraits <- 1:(which(colnames(GROUPData) == "Eigen.1") - 1)
+  GROUPData[, columnsTraits] <- log10(GROUPData[, columnsTraits])
+
+  # NOTE: All traits are kept for imputation
+  columsImputation <- 1:(which(colnames(GROUPData) == "IUCN") - 1)
+  GROUPTraitslogImputed <- as.matrix(missForest(xmis = GROUPData[, columsImputation])$ximp)
+
+  GROUPTraitsImputed <- GROUPTraitsMissing <- GROUPData
+  GROUPTraitsImputed[, columnsTraits] <- GROUPTraitslogImputed[, columnsTraits]
+
+  GROUPTraitsMissing <- GROUPTraitsMissing[, selectedTraits]
+  GROUPTraitsImputed <- GROUPTraitsImputed[, selectedTraits]
+  colnames(GROUPTraitsMissing) <- colnames(GROUPTraitsImputed) <- shortnames
+
+  GROUPOtherInfo <- GROUPData[, (max(columnsTraits) + 1):ncol(GROUPData)]
+  GROUPTraitsImputed <- data.frame(GROUPTraitsImputed, IUCN = GROUPData$IUCN)
+  GROUPTraitsMissing <- data.frame(GROUPTraitsMissing, IUCN = GROUPData$IUCN)
+
+  return(list(GROUPTraitsImputed, GROUPTraitsMissing))
+}
+```
