@@ -408,6 +408,42 @@ $(document).ready(function () {
   text-transform: uppercase; color: #aaa;
   margin: 0 0 6px 2px; text-align: left; width: 100%;
 }
+
+/* ── Upload section ─────────────────────────────────── */
+.upload-section {
+  border-top: 1px solid #e5e5e5;
+  margin: 10px 0 60px 0;
+  padding-top: 36px;
+}
+.upload-title { font-size: 1.4em; font-weight: 600; color: #2c3e50; margin-bottom: 6px; }
+.upload-subtitle { color: #777; font-size: 0.95em; margin-bottom: 24px; }
+.upload-fields {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px;
+}
+@media (max-width: 640px) { .upload-fields { grid-template-columns: 1fr; } }
+.upload-field { display: flex; flex-direction: column; gap: 4px; }
+.upload-field label { font-size: 0.85em; font-weight: 600; color: #555; }
+.upload-field input,
+.upload-field select,
+.upload-field textarea {
+  padding: 9px 12px; border: 1px solid #ccc; border-radius: 8px;
+  font-size: 0.95em; outline: none; transition: border-color .2s; font-family: inherit;
+}
+.upload-field input:focus,
+.upload-field select:focus,
+.upload-field textarea:focus { border-color: #2980b9; }
+.drop-zone {
+  border: 2px dashed #ccc; border-radius: 10px; padding: 28px 20px;
+  text-align: center; background: #fafafa; transition: border-color .2s, background .2s; cursor: pointer;
+}
+.drop-zone.drag-over { border-color: #2980b9; background: #eaf4fb; }
+.drop-zone p { margin: 8px 0 0 0; color: #777; font-size: 0.92em; }
+.file-label { color: #2980b9; cursor: pointer; text-decoration: underline; font-weight: 500; }
+.upload-btn {
+  margin-top: 18px; padding: 10px 28px; background: #2980b9; color: #fff;
+  border: none; border-radius: 8px; font-size: 1em; cursor: pointer; transition: background .2s;
+}
+.upload-btn:hover { background: #1f6391; }
 </style>
 
 <!-- ══════════════════════════════════════════════════ -->
@@ -522,6 +558,64 @@ $(document).ready(function () {
     </div>
 
   </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!--  UPLOAD SECTION                                   -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="upload-section">
+    <h2 class="upload-title"><i class="fa fa-upload"></i> &nbsp;Submit your results</h2>
+    <p class="upload-subtitle">
+      Upload your R script or output file for grading. Accepted formats: <code>.R</code>, <code>.Rmd</code>, <code>.html</code>, <code>.pdf</code>, <code>.zip</code> (max 10 MB).
+    </p>
+
+    <!-- ⚙️ SETUP: replace YOUR_FORM_ID with your Formspree form ID (different from Belém course).
+         Create a free form at https://formspree.io → "New Form" → copy the ID from the endpoint URL. -->
+    <form id="upload-form"
+          action="https://formspree.io/f/YOUR_FORM_ID"
+          method="POST"
+          enctype="multipart/form-data">
+
+      <div class="upload-fields">
+        <div class="upload-field">
+          <label for="student-name">Full name</label>
+          <input type="text" id="student-name" name="name" placeholder="First Last" required/>
+        </div>
+        <div class="upload-field">
+          <label for="student-email">E-mail</label>
+          <input type="email" id="student-email" name="email" placeholder="you@example.com" required/>
+        </div>
+        <div class="upload-field">
+          <label for="session-select">Session</label>
+          <select id="session-select" name="session" required>
+            <option value="" disabled selected>Select a session…</option>
+            <option value="Session 1">Session 1</option>
+            <option value="Session 2">Session 2</option>
+            <option value="Session 3">Session 3</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="drop-zone" id="drop-zone">
+        <i class="fa fa-cloud-upload" style="font-size:2em; color:#aaa;"></i>
+        <p>Drag &amp; drop your file here, or <label for="file-input" class="file-label">browse</label></p>
+        <input type="file" id="file-input" name="file" accept=".R,.Rmd,.html,.pdf,.zip"
+               style="display:none;" onchange="showFileName(this)"/>
+        <p id="file-name" style="font-size:0.85em; color:#555; margin:0;"></p>
+      </div>
+
+      <div class="upload-field" style="margin-top:12px;">
+        <label for="upload-comment">Comment (optional)</label>
+        <textarea id="upload-comment" name="comment" rows="2"
+                  placeholder="Any note for the instructor…"></textarea>
+      </div>
+
+      <button type="submit" class="upload-btn">
+        <i class="fa fa-paper-plane"></i> &nbsp;Send
+      </button>
+      <p id="upload-status" style="margin-top:10px; font-size:0.9em;"></p>
+    </form>
+  </div>
+
 </div>
 
 <!-- ══════════════════════════════════════════════════ -->
@@ -555,6 +649,57 @@ async function checkPw() {
 if (sessionStorage.getItem("fbe_unlocked") === "1") {
   document.getElementById("pw-overlay").style.display = "none";
   document.getElementById("course-content").style.display = "block";
+}
+
+// ── Upload helpers ──────────────────────────────────
+function showFileName(input) {
+  const label = document.getElementById("file-name");
+  label.textContent = input.files.length ? "📎 " + input.files[0].name : "";
+}
+
+const dropZone = document.getElementById("drop-zone");
+if (dropZone) {
+  dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classList.add("drag-over"); });
+  dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
+  dropZone.addEventListener("drop", e => {
+    e.preventDefault();
+    dropZone.classList.remove("drag-over");
+    const fi = document.getElementById("file-input");
+    fi.files = e.dataTransfer.files;
+    showFileName(fi);
+  });
+  dropZone.addEventListener("click", () => document.getElementById("file-input").click());
+}
+
+const uploadForm = document.getElementById("upload-form");
+if (uploadForm) {
+  uploadForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    const status = document.getElementById("upload-status");
+    const btn = uploadForm.querySelector(".upload-btn");
+    btn.disabled = true;
+    btn.textContent = "Sending…";
+    try {
+      const res = await fetch(uploadForm.action, {
+        method: "POST",
+        body: new FormData(uploadForm),
+        headers: { "Accept": "application/json" }
+      });
+      if (res.ok) {
+        status.style.color = "#27ae60";
+        status.textContent = "✔ File submitted successfully. Thank you!";
+        uploadForm.reset();
+        document.getElementById("file-name").textContent = "";
+      } else {
+        throw new Error("Server error");
+      }
+    } catch {
+      status.style.color = "#c0392b";
+      status.textContent = "✘ Submission failed. Please try again or contact the instructor.";
+    }
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa fa-paper-plane"></i> &nbsp;Send';
+  });
 }
 </script>
 
