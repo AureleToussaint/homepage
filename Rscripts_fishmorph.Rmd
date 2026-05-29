@@ -19,6 +19,112 @@ output:
 
 ```{=html}
 <style>
+/* Custom function TOC — overrides rmarkdown floating TOC */
+#TOC,
+.tocify-wrapper,
+div[data-spy="affix"] {
+  display: none !important;
+  width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.fn-nav {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 205px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: 14px 10px 20px 14px;
+  border-right: 1px solid #e8e8e8;
+  background: #fafafa;
+  font-size: 0.82em;
+  z-index: 100;
+}
+.fn-nav .fn-nav-title {
+  font-size: 0.7em;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #bbb;
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+.fn-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.fn-nav li a {
+  display: block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #444;
+  text-decoration: none;
+  font-family: monospace;
+  font-size: 0.95em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fn-nav li a:hover {
+  background: #eef2f7;
+  color: #2c3e50;
+}
+.fn-nav li a.active {
+  background: #e3f0fb;
+  color: #1a6faf;
+  font-weight: 600;
+}
+/* push main content right to make room */
+body {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+.main-container {
+  margin-left: 210px !important;
+  max-width: calc(100vw - 230px) !important;
+  width: calc(100vw - 230px) !important;
+  padding-right: 30px !important;
+}
+/* kill rmarkdown's bootstrap TOC column entirely */
+.col-xs-12.col-sm-4.col-md-3,
+.tocify-wrapper,
+div.tocify,
+#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
+/* expand content column to full width */
+.col-xs-12.col-sm-8.col-md-9 {
+  width: 100% !important;
+  -webkit-flex: none !important;
+  flex: none !important;
+}
+.row { margin-left: 0 !important; margin-right: 0 !important; }
+</style>
+
+<div class="fn-nav" id="fn-nav">
+  <div class="fn-nav-title">Functions</div>
+  <ul>
+    <li><a href="#fn-fishmorph">FishMORPH — data preparation</a></li>
+  </ul>
+</div>
+
+<script>
+/* Highlight active function on scroll */
+window.addEventListener("scroll", function() {
+  var links = document.querySelectorAll(".fn-nav li a");
+  var current = "";
+  links.forEach(function(a) {
+    var id = a.getAttribute("href").slice(1);
+    var el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 120) current = id;
+  });
+  links.forEach(function(a) {
+    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
+  });
+});
+</script>
+
+<style>
 #pw-overlay {
   position: fixed; inset: 0; background: rgba(255,255,255,0.97);
   z-index: 9999; display: flex; align-items: center; justify-content: center;
@@ -46,6 +152,63 @@ output:
 .back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
 .back-link a { color: #c0392b; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
+
+/* ── Function cards ────────────────────────────────── */
+.page-intro {
+  display:flex; align-items:center; gap:14px;
+  padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
+}
+.page-intro-icon {
+  width:48px; height:48px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5em; color:#fff; flex-shrink:0;
+}
+.page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
+.page-intro p  { font-size:0.92em; color:#777; margin:0; }
+
+.fn-section-divider {
+  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+}
+.fn-section-divider span {
+  font-size:0.75em; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:#aaa; white-space:nowrap;
+}
+.fn-section-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
+
+.fn-card {
+  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+}
+.fn-header {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
+}
+.fn-name {
+  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
+  margin:0; padding:0; line-height:1.4;
+}
+.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
+.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+.fn-tag {
+  font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600;
+}
+.tag-stat   { background:#e8f5e9; color:#1b6b2f; }
+.tag-util   { background:#e3f2fd; color:#1557a0; }
+.tag-viz    { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd     { background:#fff3e0; color:#b25000; }
+.tag-data   { background:#fce4ec; color:#880e4f; }
+.tag-ml     { background:#e8eaf6; color:#283593; }
+.tag-morph  { background:#e0f2f1; color:#00574e; }
+
+.fn-args {
+  display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
+  background:#fff; border-bottom:1px solid #f0f0f0; align-items:center;
+}
+.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
+.fn-arg {
+  font-family:monospace; font-size:0.78em; padding:2px 8px;
+  background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555;
+}
+
 </style>
 
 <div id="pw-overlay">
@@ -88,15 +251,43 @@ if (sessionStorage.getItem("rscripts_unlocked") === "1")
 </script>
 ```
 
-```{r fishMORPH, eval=FALSE}
+
+```{=html}
+<div class="page-intro">
+  <div class="page-intro-icon" style="background:#c0392b;">🐟</div>
+  <div>
+    <h1>FishMORPH</h1>
+    <p>Data preparation, FishBase queries and morphological trait workflows</p>
+  </div>
+</div>
+```
+
+
+```{=html}
+<h3 class="fn-section-divider"><span>Data loading & preparation</span><hr></h3>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-fishmorph">FishMORPH — data preparation</h4>
+    <div class="fn-desc">Load FishMORPH trait and phylogeny objects, standardise species names and prepare the full species list.</div>
+    <div class="fn-tags"><span class="fn-tag tag-data">data</span><span class="fn-tag tag-morph">morphology</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">FishMORPH_Traits.rds — trait RDS</span><span class="fn-arg">FishMORPH_Phylogeny.rds — phylogeny RDS</span></div>
+```
+
+```{r fn_fishmorph_fishmorph_data_prep_0, eval=FALSE}
 ################################################################################
 # data preparation
 ################################################################################
 
 # --- Load the data ---
 
-trait <- readRDS("dataOriginal/FishMORPH_Traits.rds")
-phylogeny <- readRDS("dataOriginal/FishMORPH_Phylogeny.rds")
+trait <- readRDS("FishMORPH_Traits.rds")
+phylogeny <- readRDS("FishMORPH_Phylogeny.rds")
 traitNames <- colnames(trait)[-c(1:6)]
 
 # --- Prepare the data ---
@@ -418,5 +609,8 @@ rownames(MatriceFish_1) <- "all"
 MatriceFish <- rbind(MatriceFish, MatriceFish_1)
 
 write.csv(MatriceFish, "output/MatriceFish.csv", row.names = TRUE)
+```
 
+```{=html}
+</div>
 ```

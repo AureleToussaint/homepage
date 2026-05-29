@@ -19,6 +19,119 @@ output:
 
 ```{=html}
 <style>
+/* Custom function TOC — overrides rmarkdown floating TOC */
+#TOC,
+.tocify-wrapper,
+div[data-spy="affix"] {
+  display: none !important;
+  width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.fn-nav {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 205px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: 14px 10px 20px 14px;
+  border-right: 1px solid #e8e8e8;
+  background: #fafafa;
+  font-size: 0.82em;
+  z-index: 100;
+}
+.fn-nav .fn-nav-title {
+  font-size: 0.7em;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #bbb;
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+.fn-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.fn-nav li a {
+  display: block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #444;
+  text-decoration: none;
+  font-family: monospace;
+  font-size: 0.95em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fn-nav li a:hover {
+  background: #eef2f7;
+  color: #2c3e50;
+}
+.fn-nav li a.active {
+  background: #e3f0fb;
+  color: #1a6faf;
+  font-weight: 600;
+}
+/* push main content right to make room */
+body {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+.main-container {
+  margin-left: 210px !important;
+  max-width: calc(100vw - 230px) !important;
+  width: calc(100vw - 230px) !important;
+  padding-right: 30px !important;
+}
+/* kill rmarkdown's bootstrap TOC column entirely */
+.col-xs-12.col-sm-4.col-md-3,
+.tocify-wrapper,
+div.tocify,
+#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
+/* expand content column to full width */
+.col-xs-12.col-sm-8.col-md-9 {
+  width: 100% !important;
+  -webkit-flex: none !important;
+  flex: none !important;
+}
+.row { margin-left: 0 !important; margin-right: 0 !important; }
+</style>
+
+<div class="fn-nav" id="fn-nav">
+  <div class="fn-nav-title">Functions</div>
+  <ul>
+    <li><a href="#fn-make.pca">make.PCA</a></li>
+    <li><a href="#fn-make.pca.groups">make.PCA.groups</a></li>
+    <li><a href="#fn-pca-plot">PCA_plot</a></li>
+    <li><a href="#fn-pca-plot-funspace">PCA_plot_funspace</a></li>
+    <li><a href="#fn-make-pca-plot">make_pca_plot</a></li>
+    <li><a href="#fn-make-pca-plot-34">make_pca_plot_34</a></li>
+    <li><a href="#fn-format-correlation-table">format_correlation_table</a></li>
+    <li><a href="#fn-run-procrustes">run_procrustes</a></li>
+  </ul>
+</div>
+
+<script>
+/* Highlight active function on scroll */
+window.addEventListener("scroll", function() {
+  var links = document.querySelectorAll(".fn-nav li a");
+  var current = "";
+  links.forEach(function(a) {
+    var id = a.getAttribute("href").slice(1);
+    var el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 120) current = id;
+  });
+  links.forEach(function(a) {
+    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
+  });
+});
+</script>
+
+<style>
 #pw-overlay {
   position: fixed; inset: 0; background: rgba(255,255,255,0.97);
   z-index: 9999; display: flex; align-items: center; justify-content: center;
@@ -46,6 +159,63 @@ output:
 .back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
 .back-link a { color: #16a085; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
+
+/* ── Function cards ────────────────────────────────── */
+.page-intro {
+  display:flex; align-items:center; gap:14px;
+  padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
+}
+.page-intro-icon {
+  width:48px; height:48px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5em; color:#fff; flex-shrink:0;
+}
+.page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
+.page-intro p  { font-size:0.92em; color:#777; margin:0; }
+
+.fn-section-divider {
+  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+}
+.fn-section-divider span {
+  font-size:0.75em; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:#aaa; white-space:nowrap;
+}
+.fn-section-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
+
+.fn-card {
+  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+}
+.fn-header {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
+}
+.fn-name {
+  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
+  margin:0; padding:0; line-height:1.4;
+}
+.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
+.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+.fn-tag {
+  font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600;
+}
+.tag-stat   { background:#e8f5e9; color:#1b6b2f; }
+.tag-util   { background:#e3f2fd; color:#1557a0; }
+.tag-viz    { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd     { background:#fff3e0; color:#b25000; }
+.tag-data   { background:#fce4ec; color:#880e4f; }
+.tag-ml     { background:#e8eaf6; color:#283593; }
+.tag-morph  { background:#e0f2f1; color:#00574e; }
+
+.fn-args {
+  display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
+  background:#fff; border-bottom:1px solid #f0f0f0; align-items:center;
+}
+.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
+.fn-arg {
+  font-family:monospace; font-size:0.78em; padding:2px 8px;
+  background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555;
+}
+
 </style>
 
 <div id="pw-overlay">
@@ -88,9 +258,35 @@ if (sessionStorage.getItem("rscripts_unlocked") === "1")
 </script>
 ```
 
-```{r pca, eval=FALSE}
-# Perform PCA
-# TRAITS: table of traits sp x tr : MUST BE SCALED AND log10
+
+```{=html}
+<div class="page-intro">
+  <div class="page-intro-icon" style="background:#16a085;">🔵</div>
+  <div>
+    <h1>PCA</h1>
+    <p>Principal component analyses, functional space biplots, density plots and Procrustes</p>
+  </div>
+</div>
+```
+
+
+```{=html}
+<h3 class="fn-section-divider"><span>Compute PCA</span><hr></h3>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-make.pca">make.PCA(TRAITS, dimensionsAux, savePCA)</h4>
+    <div class="fn-desc">Run a PCA on a trait matrix and return axes scores, loadings and explained variance.</div>
+    <div class="fn-tags"><span class="fn-tag tag-stat">statistics</span><span class="fn-tag tag-fd">functional diversity</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">TRAITS — species × traits matrix</span><span class="fn-arg">dimensionsAux — number of axes to retain</span><span class="fn-arg">savePCA — file path to save the result</span></div>
+```
+
+```{r fn_pca_make_PCA_0, eval=FALSE}
 make.PCA <- function(TRAITS, dimensionsAux, savePCA) {
   paranAux <- paran(TRAITS)
   PCA_TRAITS <- list()
@@ -106,8 +302,25 @@ make.PCA <- function(TRAITS, dimensionsAux, savePCA) {
   }
   return(PCA_TRAITS)
 }
+```
 
-# Possible to turn it as function for all groups (Nat Comm 2021)
+```{=html}
+</div>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-make.pca.groups">make.PCA.groups(traitsImputed, traitsMissing, ...)</h4>
+    <div class="fn-desc">PCA with separate point sets for imputed and missing-trait species.</div>
+    <div class="fn-tags"><span class="fn-tag tag-stat">statistics</span><span class="fn-tag tag-fd">functional diversity</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">traitsImputed — complete trait matrix</span><span class="fn-arg">traitsMissing — species with missing traits</span></div>
+```
+
+```{r fn_pca_make_PCA_groups_1, eval=FALSE}
 make.PCA.groups <- function(traitsImputed, traitsMissing,
                             group = c("Plants","Birds","Mammals","Reptiles","Amphibians","Fishes")) {
   require(paran)
@@ -155,21 +368,29 @@ make.PCA.groups <- function(traitsImputed, traitsMissing,
                                   ifelse(IUCN %in% noThreatCat, 0, NA)))
   return(PCAImpute)
 }
+```
 
+```{=html}
+</div>
+```
 
-# =========================
-# Example for birds
-# =========================
-# 1. Load data
-# =========================
-PCA <- readRDS("data/processed/PCA_Birds.rds")
-shortNames <- read.csv("data/processed/Shortnames_Birds.csv")
-type <- names(PCA)
-title_space = c('Combined','Locomotion','Reproduction','Diet')
-# =========================
-# 2. Define functions
-# =========================
+```{=html}
+<h3 class="fn-section-divider"><span>Visualisation</span><hr></h3>
+```
 
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-pca-plot">PCA_plot(PCoAPlot, PCoACorPlot, multAx1, multAx, title, legend)</h4>
+    <div class="fn-desc">Biplot of PCA scores with correlation arrows and optional group legend.</div>
+    <div class="fn-tags"><span class="fn-tag tag-viz">visualisation</span><span class="fn-tag tag-fd">functional diversity</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">PCoAPlot — score data frame</span><span class="fn-arg">PCoACorPlot — loading data frame</span><span class="fn-arg">multAx1/multAx — axis scaling</span><span class="fn-arg">title — plot title</span><span class="fn-arg">legend — show legend</span></div>
+```
+
+```{r fn_pca_PCA_plot_2, eval=FALSE}
 PCA_plot <- function(PCoAPlot,PCoACorPlot,multAx1,multAx,title,legend){
   Plan12=ggplot(data = data.frame(PCoAPlot$vectors)) +
     geom_point(aes(x = Axis.1, y = Axis.2),col="grey89") +
@@ -200,175 +421,46 @@ PCA_plot <- function(PCoAPlot,PCoACorPlot,multAx1,multAx,title,legend){
   
   Plan12
 }
+```
 
-# ---------- utilities ----------
-.sanitize_axes <- function(df) {
-  stopifnot(all(c("Axis.1","Axis.2") %in% names(df)))
-  df <- df[is.finite(df$Axis.1) & is.finite(df$Axis.2), , drop = FALSE]
-  df$Axis.1 <- as.numeric(df$Axis.1)
-  df$Axis.2 <- as.numeric(df$Axis.2)
-  df
-}
+```{=html}
+</div>
+```
 
-.safe_limits <- function(x, pad_factor = 0.08) {
-  xr <- range(x, finite = TRUE)
-  if (!is.finite(xr[1]) || !is.finite(xr[2])) return(c(-1, 1))
-  if (xr[1] == xr[2]) {
-    eps <- ifelse(abs(xr[1]) > 0, abs(xr[1]) * pad_factor, 1e-6)
-    return(c(xr[1] - eps, xr[2] + eps))
-  }
-  width <- diff(xr)
-  c(xr[1] - width * pad_factor, xr[2] + width * pad_factor)
-}
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-pca-plot-funspace">PCA_plot_funspace(PCoAPlot, PCoACorPlot, ...)</h4>
+    <div class="fn-desc">Functional-space biplot with KDE density shading and phylopic image overlays.</div>
+    <div class="fn-tags"><span class="fn-tag tag-viz">visualisation</span><span class="fn-tag tag-fd">functional diversity</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">PCoAPlot — score data frame</span><span class="fn-arg">PCoACorPlot — loading data frame</span><span class="fn-arg">legend — optional legend</span></div>
+```
 
-# KDE grid using {ks}
-.kde_grid <- function(df, gridsize = 181, H = NULL) {
-  if (!requireNamespace("ks", quietly = TRUE)) {
-    stop("Please install.packages('ks') to use the KDE-based density background.")
-  }
-  df <- .sanitize_axes(df)
-  if (nrow(df) < 3) return(list(grid = NULL, x = NULL, y = NULL, z = NULL))
-  
-  xlim <- .safe_limits(df$Axis.1); ylim <- .safe_limits(df$Axis.2)
-  
-  X <- cbind(
-    pmin(pmax(df$Axis.1, xlim[1]), xlim[2]),
-    pmin(pmax(df$Axis.2, ylim[1]), ylim[2])
-  )
-  
-  if (is.null(H)) {
-    H <- try(ks::Hpi(x = X), silent = TRUE)
-    if (inherits(H, "try-error") || any(!is.finite(as.vector(H)))) {
-      H <- try(ks::Hscv(x = X), silent = TRUE)
-    }
-    if (inherits(H, "try-error") || any(!is.finite(as.vector(H)))) {
-      v <- apply(X, 2, stats::var, na.rm = TRUE); v[v <= 0 | !is.finite(v)] <- 1e-6
-      H <- diag(v)
-    }
-  }
-  
-  kde <- ks::kde(
-    x = X, H = H,
-    xmin = c(xlim[1], ylim[1]), xmax = c(xlim[2], ylim[2]),
-    gridsize = c(gridsize, gridsize)
-  )
-  
-  gx <- kde$eval.points[[1]]
-  gy <- kde$eval.points[[2]]
-  gz <- kde$estimate  # matrix [length(gx) x length(gy)]
-  
-  grid <- expand.grid(x = gx, y = gy)
-  grid$z <- as.vector(gz)
-  
-  list(grid = grid, x = gx, y = gy, z = gz)
-}
-
-# Compute density cutoffs (levels) that enclose given probabilities on the grid
-.hdr_levels_grid <- function(gx, gy, gz, probs = c(0.25, 0.5, 0.99)) {
-  # assume regular grid (true for ks::kde)
-  dx <- mean(diff(gx)); dy <- mean(diff(gy))
-  w <- as.vector(gz)
-  ord <- order(w, decreasing = TRUE)
-  cum_mass <- cumsum(w[ord]) * dx * dy
-  # normalize to 1 (numerical integration may be slightly off)
-  cum_mass <- cum_mass / max(cum_mass, na.rm = TRUE)
-  
-  sapply(probs, function(p) {
-    idx <- which(cum_mass >= p)[1]
-    if (is.na(idx)) min(w, na.rm = TRUE) else w[ord][idx]
-  })
-}
-
-# Build contour paths + label positions from a raster grid
-.contour_data <- function(gx, gy, gz, levels, prob_labels) {
-  cls <- contourLines(x = gx, y = gy, z = gz, levels = levels)  # note t()
-  if (length(cls) == 0) return(list(lines = NULL, labels = NULL))
-  lines_df <- do.call(rbind, lapply(seq_along(cls), function(i) {
-    data.frame(x = cls[[i]]$x, y = cls[[i]]$y, level = cls[[i]]$level, id = i)
-  }))
-  labels_df <- do.call(rbind, lapply(seq_along(cls), function(i) {
-    n <- length(cls[[i]]$x); j <- floor(n/2)
-    data.frame(x = cls[[i]]$x[j], y = cls[[i]]$y[j], level = cls[[i]]$level, id = i)
-  }))
-  # map level -> probability text
-  lvl_map <- setNames(prob_labels, levels)
-  labels_df$prob <- lvl_map[as.character(labels_df$level)]
-  list(lines = lines_df, labels = labels_df)
-}
-
-# ---------- funspace-style plot ----------
+```{r fn_pca_PCA_plot_funspace_3, eval=FALSE}
 PCA_plot_funspace <- function(PCoAPlot, PCoACorPlot, multAx1, multAx, title, legend = NULL,
                               probs = c(0.25, 0.5, 0.99),
-                              gridsize = 181, H = NULL, bins_filled = 30) {
-  
-  df <- data.frame(PCoAPlot$vectors)
-  df <- .sanitize_axes(df)
-  
-  # KDE grid
-  KG <- .kde_grid(df, gridsize = gridsize, H = H)
-  
-  # density background
-  # continuous raster background
-  p <- ggplot() +
-    geom_raster(
-      data = KG$grid,
-      aes(x = x, y = y, fill = z)
-    ) +
-    scale_fill_gradientn(
-      colours = c(
-        "#FFFFFF",  # white
-        "#FC8D59",  # medium orange-red
-        "#EF6548",  # strong red-orange
-        "#D7301F",  # deep red
-        "#990000"   # dark brownish red
-      ),
-      guide = "none"
-    )
-  
-  # HDR probability contours + labels (0.25, 0.5, 0.95 by default)
-  levs <- .hdr_levels_grid(KG$x, KG$y, KG$z, probs = probs)
-  cd <- .contour_data(KG$x, KG$y, KG$z, levels = as.numeric(levs),
-                      prob_labels = paste0(probs))
-  if (!is.null(cd$lines)) {
-    p <- p +
-      geom_path(data = cd$lines, aes(x, y, group = id),
-                colour = "black", linewidth = 0.6)
-  }
-  if (!is.null(cd$labels)) {
-    p <- p +
-      geom_text(data = cd$labels, aes(x, y, label = prob),
-                colour = "black", size = 3)
-  }
-  
-  # trait loading arrows + labels
-  p <- p +
-    geom_segment(
-      data = data.frame(PCoACorPlot),
-      aes(x = 0, xend = Axis.1 * multAx, y = 0, yend = Axis.2 * multAx),
-      arrow = arrow(length = unit(0.25, "cm")),
-      colour = PCoACorPlot$color, linewidth = 0.5
-    ) +
-    geom_text(
-      data = data.frame(PCoACorPlot),
-      aes(x = Axis.1 * multAx1, y = Axis.2 * multAx1, label = names),
-      colour = PCoACorPlot$color, size = 5
-    ) +
-    theme_classic() +
-    ggtitle(title) +
-    xlab(paste0("PCoA 1 (", round(PCoAPlot$values[1, 2] * 100, 2), "%)")) +
-    ylab(paste0("PCoA 2 (", round(PCoAPlot$values[2, 2] * 100, 2), "%)")) +
-    coord_fixed() +
-    theme(plot.title = element_text(size = 18, face = "bold"))
-  
-  if (!is.null(legend)) {
-    p <- p + annotate("text", label = legend, x = Inf, y = -Inf, hjust = 1, vjust = -0.5)
-  }
-  
-  p
-}
+```
 
+```{=html}
+</div>
+```
 
-## 2.1 Generate a PCA correlation plot with density legend
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-make-pca-plot">make_pca_plot(pca_object, correlation_data, ...)</h4>
+    <div class="fn-desc">PCA correlation plot with 2D density legend (axes 1–2).</div>
+    <div class="fn-tags"><span class="fn-tag tag-viz">visualisation</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">pca_object — PCA result</span><span class="fn-arg">correlation_data — loadings</span><span class="fn-arg">multAx1/multAx — scaling</span><span class="fn-arg">title — plot title</span></div>
+```
+
+```{r fn_pca_make_pca_plot_4, eval=FALSE}
 make_pca_plot <- function(pca_object, correlation_data, multAx1, multAx, title) {
   legend_text <- paste0(
     "Space occupied by:\n",
@@ -377,6 +469,25 @@ make_pca_plot <- function(pca_object, correlation_data, multAx1, multAx, title) 
   )
   PCA_plot(pca_object$PCoA, correlation_data, multAx1, multAx, title, legend_text)
 }
+```
+
+```{=html}
+</div>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-make-pca-plot-34">make_pca_plot_34(pca_object, correlation_data, ...)</h4>
+    <div class="fn-desc">Same as make_pca_plot but for axes 3–4.</div>
+    <div class="fn-tags"><span class="fn-tag tag-viz">visualisation</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">pca_object — PCA result</span><span class="fn-arg">correlation_data — loadings</span></div>
+```
+
+```{r fn_pca_make_pca_plot_34_5, eval=FALSE}
 make_pca_plot_34 <- function(pca_object, correlation_data, multAx1, multAx, title) {
   legend_text <- paste0(
     "Space occupied by:\n",
@@ -385,8 +496,29 @@ make_pca_plot_34 <- function(pca_object, correlation_data, multAx1, multAx, titl
   )
   PCA_plot_34(pca_object$PCoA, correlation_data, multAx1, multAx, title, legend_text)
 }
+```
 
-## 2.2 Format PCA correlation table with colors and labels
+```{=html}
+</div>
+```
+
+```{=html}
+<h3 class="fn-section-divider"><span>Tables & Procrustes</span><hr></h3>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-format-correlation-table">format_correlation_table(PCoACorPlot, shortNames)</h4>
+    <div class="fn-desc">Format a PCA loading table with colour-coded cells and abbreviated trait names.</div>
+    <div class="fn-tags"><span class="fn-tag tag-util">utility</span><span class="fn-tag tag-viz">visualisation</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">PCoACorPlot — loading data frame</span><span class="fn-arg">shortNames — abbreviated trait labels</span></div>
+```
+
+```{r fn_pca_format_correlation_table_6, eval=FALSE}
 format_correlation_table <- function(PCoACorPlot, shortNames) {
   cbind.data.frame(
     PCoACorPlot,
@@ -394,8 +526,25 @@ format_correlation_table <- function(PCoACorPlot, shortNames) {
     names = shortNames[match(rownames(PCoACorPlot), shortNames$original), "short"]
   )
 }
+```
 
-## 2.3 Perform Procrustes analysis between PCA spaces
+```{=html}
+</div>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-run-procrustes">run_procrustes(PCA_list)</h4>
+    <div class="fn-desc">Procrustes analysis comparing PCA spaces across multiple groups or datasets.</div>
+    <div class="fn-tags"><span class="fn-tag tag-stat">statistics</span><span class="fn-tag tag-fd">functional diversity</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">PCA_list — named list of PCA score matrices</span></div>
+```
+
+```{r fn_pca_run_procrustes_7, eval=FALSE}
 run_procrustes <- function(PCA_list) {
   combNames <- combn(names(PCA_list), 2)
   combNames <- apply(combNames, 2, function(x) paste0(x[1], "_", x[2]))
@@ -419,49 +568,8 @@ run_procrustes <- function(PCA_list) {
   }
   return(procrustes_table)
 }
+```
 
-# =========================
-# 3. Perform analysis
-# =========================
-multAx <- 0.25
-multAx1 <- 0.29
-plotPCAList <- plotPCAList_34 <- list()
-densityTable <- NULL
-
-for (i in seq_along(PCA)) {
-  cor_table <- format_correlation_table(PCA[[i]]$PCoACor, shortNames)
-  plotPCAList[[i]] <- PCA_plot_funspace(PCA[[i]]$PCoA, cor_table, multAx1, multAx, paste0(title_space[i],"-trait space"))
-  #plotPCAList_34[[i]] <- PCA_plot_funspace(PCA[[i]], cor_table, multAx1, multAx, paste0(title_space[i],"-trait space"))
-  
-  densityTable <- rbind(densityTable,
-                        data.frame(`50` = PCA[[i]]$ALLDensity[1, "0.5"],
-                                   `99` = PCA[[i]]$ALLDensity[1, "0.99"],
-                                   `100` = PCA[[i]]$ALLDensity[1, "1"],
-                                   row.names = names(PCA)[i]))
-}
-
-names(plotPCAList)  <- type
-
-# =========================
-# 4. Save outputs
-# =========================
-
-# 4.1 Density table
-write.csv(densityTable, file = "results/tables/BirdstableDensity.csv")
-
-# 4.2 PCA plots grid
-ggarrange(
-  NULL, plotPCAList[["MLD"]], NULL,
-  plotPCAList[["M"]], plotPCAList[["L"]], plotPCAList[["D"]],
-  hjust = 0, align = "v", ncol = 3, nrow = 2
-) %>% ggexport(
-  filename = "results/figures/TraitsSpacesForFramework.png",
-  width = 2800, height = 1800, res = 200, pointsize = 5
-)
-
-# 4.3 Procrustes correlation table
-procrustes_res <- run_procrustes(PCA)
-write.csv(procrustes_res, file = "results/tables/ProcrustesTable.csv")
-
-
+```{=html}
+</div>
 ```

@@ -19,6 +19,120 @@ output:
 
 ```{=html}
 <style>
+/* Custom function TOC — overrides rmarkdown floating TOC */
+#TOC,
+.tocify-wrapper,
+div[data-spy="affix"] {
+  display: none !important;
+  width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.fn-nav {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 205px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: 14px 10px 20px 14px;
+  border-right: 1px solid #e8e8e8;
+  background: #fafafa;
+  font-size: 0.82em;
+  z-index: 100;
+}
+.fn-nav .fn-nav-title {
+  font-size: 0.7em;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #bbb;
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+.fn-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.fn-nav li a {
+  display: block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #444;
+  text-decoration: none;
+  font-family: monospace;
+  font-size: 0.95em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fn-nav li a:hover {
+  background: #eef2f7;
+  color: #2c3e50;
+}
+.fn-nav li a.active {
+  background: #e3f0fb;
+  color: #1a6faf;
+  font-weight: 600;
+}
+/* push main content right to make room */
+body {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+.main-container {
+  margin-left: 210px !important;
+  max-width: calc(100vw - 230px) !important;
+  width: calc(100vw - 230px) !important;
+  padding-right: 30px !important;
+}
+/* kill rmarkdown's bootstrap TOC column entirely */
+.col-xs-12.col-sm-4.col-md-3,
+.tocify-wrapper,
+div.tocify,
+#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
+/* expand content column to full width */
+.col-xs-12.col-sm-8.col-md-9 {
+  width: 100% !important;
+  -webkit-flex: none !important;
+  flex: none !important;
+}
+.row { margin-left: 0 !important; margin-right: 0 !important; }
+</style>
+
+<div class="fn-nav" id="fn-nav">
+  <div class="fn-nav-title">Functions</div>
+  <ul>
+    <li><a href="#fn-make.tpd.2d.high.def">make.TPD.2D.high.def</a></li>
+    <li><a href="#fn-make.tpd.2d.low.def">make.TPD.2D.low.def</a></li>
+    <li><a href="#fn-make.tpdlarge">make.TPDLarge</a></li>
+    <li><a href="#fn-tpdrichness">TPDRichness</a></li>
+    <li><a href="#fn-imagetpd">imageTPD</a></li>
+    <li><a href="#fn-overlapf">overlapF</a></li>
+    <li><a href="#fn-percentiletpd">percentileTPD</a></li>
+    <li><a href="#fn-quantiletpd">quantileTPD</a></li>
+    <li><a href="#fn-mae-tpd">MAE_TPD</a></li>
+  </ul>
+</div>
+
+<script>
+/* Highlight active function on scroll */
+window.addEventListener("scroll", function() {
+  var links = document.querySelectorAll(".fn-nav li a");
+  var current = "";
+  links.forEach(function(a) {
+    var id = a.getAttribute("href").slice(1);
+    var el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 120) current = id;
+  });
+  links.forEach(function(a) {
+    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
+  });
+});
+</script>
+
+<style>
 #pw-overlay {
   position: fixed; inset: 0; background: rgba(255,255,255,0.97);
   z-index: 9999; display: flex; align-items: center; justify-content: center;
@@ -46,6 +160,63 @@ output:
 .back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
 .back-link a { color: #e67e22; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
+
+/* ── Function cards ────────────────────────────────── */
+.page-intro {
+  display:flex; align-items:center; gap:14px;
+  padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
+}
+.page-intro-icon {
+  width:48px; height:48px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5em; color:#fff; flex-shrink:0;
+}
+.page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
+.page-intro p  { font-size:0.92em; color:#777; margin:0; }
+
+.fn-section-divider {
+  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+}
+.fn-section-divider span {
+  font-size:0.75em; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:#aaa; white-space:nowrap;
+}
+.fn-section-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
+
+.fn-card {
+  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+}
+.fn-header {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
+}
+.fn-name {
+  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
+  margin:0; padding:0; line-height:1.4;
+}
+.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
+.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+.fn-tag {
+  font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600;
+}
+.tag-stat   { background:#e8f5e9; color:#1b6b2f; }
+.tag-util   { background:#e3f2fd; color:#1557a0; }
+.tag-viz    { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd     { background:#fff3e0; color:#b25000; }
+.tag-data   { background:#fce4ec; color:#880e4f; }
+.tag-ml     { background:#e8eaf6; color:#283593; }
+.tag-morph  { background:#e0f2f1; color:#00574e; }
+
+.fn-args {
+  display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
+  background:#fff; border-bottom:1px solid #f0f0f0; align-items:center;
+}
+.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
+.fn-arg {
+  font-family:monospace; font-size:0.78em; padding:2px 8px;
+  background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555;
+}
+
 </style>
 
 <div id="pw-overlay">
@@ -90,22 +261,35 @@ if (sessionStorage.getItem("rscripts_unlocked") === "1")
 
 #### TPDsMean without ITV
 
-```{r tpd_mean_without_itv, eval=FALSE}
-# PCA_TRAITS: object from PCA previously done
-dimensions <- PCA_TRAITS$dimensions
-traitsUSE <- PCA_TRAITS$traitsUse
-colnames(traitsUSE) <- paste0("Comp.", 1:dimensions)
-gridSize <- ifelse(dimensions == 4, 30, 100)
-sdTraits <- sqrt(diag(Hpi.diag(traitsUSE)))
 
-TPDsAux <- TPDsMean(
-  species = rownames(traitsUSE),
-  means = traitsUSE,
-  sds = matrix(rep(sdTraits, nrow(traitsUSE)), byrow = TRUE, ncol = dimensions),
-  alpha = 0.95,
-  n_divisions = gridSize
-)
+```{=html}
+<div class="page-intro">
+  <div class="page-intro-icon" style="background:#e67e22;">🌿</div>
+  <div>
+    <h1>Functional diversity</h1>
+    <p>TPD estimation, functional richness, overlap and space visualisation</p>
+  </div>
+</div>
+```
 
+
+```{=html}
+<h3 class="fn-section-divider"><span>TPD estimation</span><hr></h3>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-make.tpd.2d.high.def">make.TPD.2D.high.def(targetGroupName, PCAImpute, alphaUse=0.95, ...)</h4>
+    <div class="fn-desc">High-resolution 2D TPD (Trait Probability Density) estimation for a taxonomic group.</div>
+    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">targetGroupName — group identifier</span><span class="fn-arg">PCAImpute — PCA scores</span><span class="fn-arg">alphaUse=0.95 — alpha hull threshold</span></div>
+```
+
+```{r fn_fd_make_TPD_2D_high_def_0, eval=FALSE}
 make.TPD.2D.high.def <- function(targetGroupName, PCAImpute, alphaUse = 0.95,
                                  saveFile = paste0(getwd(), "/TPDs2DHighDef.rds")) {
   require(TPD)
@@ -127,7 +311,25 @@ make.TPD.2D.high.def <- function(targetGroupName, PCAImpute, alphaUse = 0.95,
   TPDsAux <- NULL
   gc()
 }
+```
 
+```{=html}
+</div>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-make.tpd.2d.low.def">make.TPD.2D.low.def(targetGroupName, PCAImpute, alphaUse=0.95, ...)</h4>
+    <div class="fn-desc">Low-resolution 2D TPD estimation — faster, suited for large datasets.</div>
+    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">targetGroupName — group identifier</span><span class="fn-arg">PCAImpute — PCA scores</span><span class="fn-arg">alphaUse=0.95 — threshold</span></div>
+```
+
+```{r fn_fd_make_TPD_2D_low_def_1, eval=FALSE}
 make.TPD.2D.low.def <- function(targetGroupName, PCAImpute, alphaUse = 0.95,
                                 saveFile = paste0(getwd(), "/TPDs2DLowDef.rds")) {
   require(TPD)
@@ -149,7 +351,25 @@ make.TPD.2D.low.def <- function(targetGroupName, PCAImpute, alphaUse = 0.95,
   TPDsAux <- NULL
   gc()
 }
+```
 
+```{=html}
+</div>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-make.tpdlarge">make.TPDLarge(targetGroupName, PCAImpute, alphaUse=0.95, TPDsMean_large, ...)</h4>
+    <div class="fn-desc">TPD computation for very large assemblages using a pre-computed reference TPD.</div>
+    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">targetGroupName — group name</span><span class="fn-arg">PCAImpute — scores</span><span class="fn-arg">TPDsMean_large — reference TPD object</span></div>
+```
+
+```{r fn_fd_make_TPDLarge_2, eval=FALSE}
 make.TPDLarge <- function(targetGroupName, PCAImpute, alphaUse = 0.95, TPDsMean_large,
                           saveFile = paste0(getwd(), "/TPDsLarge.rds")) {
   cat(paste("\n ESTIMATING TPDs for: ", targetGroupName, "\n"))
@@ -172,9 +392,27 @@ make.TPDLarge <- function(targetGroupName, PCAImpute, alphaUse = 0.95, TPDsMean_
 }
 ```
 
-#### Function TPD package updated
+```{=html}
+</div>
+```
 
-```{r tpd_updated_functions, eval=FALSE}
+```{=html}
+<h3 class="fn-section-divider"><span>TPD package functions (updated)</span><hr></h3>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-tpdrichness">TPDRichness(TPDc=NULL, TPDs=NULL)</h4>
+    <div class="fn-desc">Compute functional richness (FRIC) from community or species TPD objects.</div>
+    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">TPDc — community TPD</span><span class="fn-arg">TPDs — species TPD</span></div>
+```
+
+```{r fn_fd_TPDRichness_3, eval=FALSE}
 TPDRichness <- function(TPDc = NULL, TPDs = NULL) {
   if (is.null(TPDc) & is.null(TPDs)) {
     stop("At least one of 'TPDc' or 'TPDs' must be supplied")
@@ -228,7 +466,25 @@ TPDRichness <- function(TPDc = NULL, TPDs = NULL) {
   }
   return(results)
 }
+```
 
+```{=html}
+</div>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-imagetpd">imageTPD(x, thresholdPlot=0.99)</h4>
+    <div class="fn-desc">Plot a TPD object as a filled image at a given probability threshold.</div>
+    <div class="fn-tags"><span class="fn-tag tag-viz">visualisation</span><span class="fn-tag tag-fd">functional diversity</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">x — TPD object</span><span class="fn-arg">thresholdPlot=0.99 — probability threshold for display</span></div>
+```
+
+```{r fn_fd_imageTPD_4, eval=FALSE}
 imageTPD <- function(x, thresholdPlot = 0.99) {
   TPDList <- x$TPDc$TPDc
   imageTPD <- list()
@@ -262,7 +518,25 @@ imageTPD <- function(x, thresholdPlot = 0.99) {
   }
   return(imageMat)
 }
+```
 
+```{=html}
+</div>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-overlapf">overlapF(x, y)</h4>
+    <div class="fn-desc">Functional overlap between two TPD distributions (Bhattacharyya coefficient).</div>
+    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">x — first TPD object</span><span class="fn-arg">y — second TPD object</span></div>
+```
+
+```{r fn_fd_overlapF_5, eval=FALSE}
 overlapF <- function(x, y) {
   if (!identical(x$eval.points, y$eval.points)) stop("Not identical eval points!")
   TPDx <- x$estimate
@@ -284,7 +558,25 @@ overlapF <- function(x, y) {
   OL <- sum(pmin(TPDx, TPDy))
   return(OL)
 }
+```
 
+```{=html}
+</div>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-percentiletpd">percentileTPD(x)</h4>
+    <div class="fn-desc">Percentile-based summary statistics of a TPD probability distribution.</div>
+    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span><span class="fn-tag tag-stat">statistics</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">x — TPD object</span></div>
+```
+
+```{r fn_fd_percentileTPD_6, eval=FALSE}
 percentileTPD <- function(x) {
   TPDList <- x$TPDc$TPDc
   results <- list()
@@ -300,7 +592,25 @@ percentileTPD <- function(x) {
   names(results) <- names(TPDList)
   return(results)
 }
+```
 
+```{=html}
+</div>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-quantiletpd">quantileTPD(x, thresholdPlot=0.99)</h4>
+    <div class="fn-desc">Extract contour lines at given probability quantiles from a 2D TPD.</div>
+    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span><span class="fn-tag tag-viz">visualisation</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">x — TPD object</span><span class="fn-arg">thresholdPlot=0.99 — quantile threshold</span></div>
+```
+
+```{r fn_fd_quantileTPD_7, eval=FALSE}
 quantileTPD <- function(x, thresholdPlot = 0.99) {
   TPDList <- x$TPDc$TPDc
   quantileTPD <- list()
@@ -334,10 +644,32 @@ quantileTPD <- function(x, thresholdPlot = 0.99) {
   }
   return(imageMat)
 }
+```
 
+```{=html}
+</div>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-mae-tpd">MAE_TPD(x, y)</h4>
+    <div class="fn-desc">Mean absolute error between two TPD probability distributions.</div>
+    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span><span class="fn-tag tag-stat">statistics</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">x — first TPD</span><span class="fn-arg">y — second TPD</span></div>
+```
+
+```{r fn_fd_MAE_TPD_8, eval=FALSE}
 MAE_TPD <- function(x, y) {
   diffXY <- abs(x - y)
   MAE <- mean(diffXY)
   return(MAE)
 }
+```
+
+```{=html}
+</div>
 ```

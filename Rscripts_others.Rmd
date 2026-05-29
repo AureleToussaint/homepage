@@ -19,6 +19,113 @@ output:
 
 ```{=html}
 <style>
+/* Custom function TOC — overrides rmarkdown floating TOC */
+#TOC,
+.tocify-wrapper,
+div[data-spy="affix"] {
+  display: none !important;
+  width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.fn-nav {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 205px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: 14px 10px 20px 14px;
+  border-right: 1px solid #e8e8e8;
+  background: #fafafa;
+  font-size: 0.82em;
+  z-index: 100;
+}
+.fn-nav .fn-nav-title {
+  font-size: 0.7em;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #bbb;
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+.fn-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.fn-nav li a {
+  display: block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #444;
+  text-decoration: none;
+  font-family: monospace;
+  font-size: 0.95em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fn-nav li a:hover {
+  background: #eef2f7;
+  color: #2c3e50;
+}
+.fn-nav li a.active {
+  background: #e3f0fb;
+  color: #1a6faf;
+  font-weight: 600;
+}
+/* push main content right to make room */
+body {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+.main-container {
+  margin-left: 210px !important;
+  max-width: calc(100vw - 230px) !important;
+  width: calc(100vw - 230px) !important;
+  padding-right: 30px !important;
+}
+/* kill rmarkdown's bootstrap TOC column entirely */
+.col-xs-12.col-sm-4.col-md-3,
+.tocify-wrapper,
+div.tocify,
+#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
+/* expand content column to full width */
+.col-xs-12.col-sm-8.col-md-9 {
+  width: 100% !important;
+  -webkit-flex: none !important;
+  flex: none !important;
+}
+.row { margin-left: 0 !important; margin-right: 0 !important; }
+</style>
+
+<div class="fn-nav" id="fn-nav">
+  <div class="fn-nav-title">Functions</div>
+  <ul>
+    <li><a href="#fn-funfun">funfun</a></li>
+    <li><a href="#fn-compute-gower-block">compute_gower_block</a></li>
+  </ul>
+</div>
+
+<script>
+/* Highlight active function on scroll */
+window.addEventListener("scroll", function() {
+  var links = document.querySelectorAll(".fn-nav li a");
+  var current = "";
+  links.forEach(function(a) {
+    var id = a.getAttribute("href").slice(1);
+    var el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 120) current = id;
+  });
+  links.forEach(function(a) {
+    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
+  });
+});
+</script>
+
+<style>
 #pw-overlay {
   position: fixed; inset: 0; background: rgba(255,255,255,0.97);
   z-index: 9999; display: flex; align-items: center; justify-content: center;
@@ -46,6 +153,63 @@ output:
 .back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
 .back-link a { color: #95a5a6; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
+
+/* ── Function cards ────────────────────────────────── */
+.page-intro {
+  display:flex; align-items:center; gap:14px;
+  padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
+}
+.page-intro-icon {
+  width:48px; height:48px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5em; color:#fff; flex-shrink:0;
+}
+.page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
+.page-intro p  { font-size:0.92em; color:#777; margin:0; }
+
+.fn-section-divider {
+  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+}
+.fn-section-divider span {
+  font-size:0.75em; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:#aaa; white-space:nowrap;
+}
+.fn-section-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
+
+.fn-card {
+  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+}
+.fn-header {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
+}
+.fn-name {
+  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
+  margin:0; padding:0; line-height:1.4;
+}
+.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
+.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+.fn-tag {
+  font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600;
+}
+.tag-stat   { background:#e8f5e9; color:#1b6b2f; }
+.tag-util   { background:#e3f2fd; color:#1557a0; }
+.tag-viz    { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd     { background:#fff3e0; color:#b25000; }
+.tag-data   { background:#fce4ec; color:#880e4f; }
+.tag-ml     { background:#e8eaf6; color:#283593; }
+.tag-morph  { background:#e0f2f1; color:#00574e; }
+
+.fn-args {
+  display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
+  background:#fff; border-bottom:1px solid #f0f0f0; align-items:center;
+}
+.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
+.fn-arg {
+  font-family:monospace; font-size:0.78em; padding:2px 8px;
+  background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555;
+}
+
 </style>
 
 <div id="pw-overlay">
@@ -88,80 +252,69 @@ if (sessionStorage.getItem("rscripts_unlocked") === "1")
 </script>
 ```
 
-```{r regex_and_snippets, eval=FALSE}
-# Regex to select all symbols but '_'. useful for identify formulas in dplyr::
-"[^[:alnum:][:space:]_]"
 
-x <- iris
-x <- x[, 1:2]
-colnames(x) <- c("x1", "x2")
+```{=html}
+<div class="page-intro">
+  <div class="page-intro-icon" style="background:#95a5a6;">⚙️</div>
+  <div>
+    <h1>Other functions</h1>
+    <p>Custom formula application and memory-safe Gower distance computation</p>
+  </div>
+</div>
+```
 
-library(dplyr)
 
+```{=html}
+<h3 class="fn-section-divider"><span>Data transformation</span><hr></h3>
+```
+
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-funfun">funfun(data, expr='log(x1/x2)*10^2')</h4>
+    <div class="fn-desc">Apply a custom arithmetic expression to columns of a data frame using column aliases x1, x2…</div>
+    <div class="fn-tags"><span class="fn-tag tag-util">utility</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">data — data frame</span><span class="fn-arg">expr — R expression string with x1/x2/… as column placeholders</span></div>
+```
+
+```{r fn_others_funfun_0, eval=FALSE}
 funfun <- function(data, expr = "log(x1 / x2) * 10^2") {
   expr <- parse(text = expr)
   data %>% mutate(x3 = eval(expr))
 }
+```
 
-funfun(x)
+```{=html}
+</div>
+```
 
-## How to make a gower for big data table
-library(cluster)       # daisy() and Gower distance
-library(data.table)    # large data handling
-library(parallel)      # parallel computing
-library(bigstatsr)     # very large matrices
+```{=html}
+<h3 class="fn-section-divider"><span>Gower distance</span><hr></h3>
+```
 
-load(here::here("outputs", "test_phenofish_final.RData"))  # assumes object `test_phenofish_final`
+```{=html}
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-compute-gower-block">compute_gower_block(start_idx, end_idx, traits_data)</h4>
+    <div class="fn-desc">Compute Gower distances for a row subset — use in a loop to handle large trait matrices in memory-safe blocks.</div>
+    <div class="fn-tags"><span class="fn-tag tag-util">utility</span><span class="fn-tag tag-data">data</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">start_idx — first row index</span><span class="fn-arg">end_idx — last row index</span><span class="fn-arg">traits_data — full trait data frame</span></div>
+```
 
-data_morph <- test_phenofish_final %>%
-  filter(trait_type == "morphological" & fresh == 1 & trait_coding == "continuous")
-
-data_morph <- data_morph %>%
-  dplyr::group_by(specimen_id, trait_name) %>%
-  mutate(trait_value = as.numeric(trait_value))
-
-data_morph <- data_morph %>%
-  dplyr::group_by(phenofish_name, trait_name) %>%
-  dplyr::summarise(trait_value = mean(trait_value), .groups = "drop")
-
-species_traits <- reshape2::dcast(data_morph, phenofish_name ~ trait_name)
-colnames(species_traits)[1] <- "species"
-rownames(species_traits) <- species_traits[, 1]
-traits <- species_traits[, -1]
-
-block_size <- 10000
-n <- nrow(traits)
-
-gower_matrix <- matrix(NA, n, n)
-
+```{r fn_others_compute_gower_block_1, eval=FALSE}
 compute_gower_block <- function(start_idx, end_idx, traits_data) {
   block_data <- traits_data[start_idx:end_idx, , drop = FALSE]
   gower_dist_block <- daisy(block_data, metric = "gower")
   return(as.matrix(gower_dist_block))
 }
+```
 
-block_indices <- split(1:n, ceiling(1:n / block_size))
-
-cl <- makeCluster(detectCores() - 1)
-clusterExport(cl, varlist = c("traits", "daisy", "compute_gower_block"))
-
-gower_blocks <- parLapply(cl, block_indices, function(indices) {
-  start_idx <- indices[1]
-  end_idx <- tail(indices, 1)
-  compute_gower_block(start_idx, end_idx, traits)
-})
-
-for (i in 1:length(gower_blocks)) {
-  idx_range <- block_indices[[i]]
-  gower_matrix[idx_range, idx_range] <- gower_blocks[[i]]
-}
-
-stopCluster(cl)
-
-print(gower_matrix[1:100, 1:100])
-save(gower_matrix, file = "gower_matrix.RData")
-
-pcoa_res <- ape::pcoa(as.dist(gower_matrix))
-pca_res <- cmdscale(as.dist(gower_matrix), k = 2)
-summary(pca_res)
+```{=html}
+</div>
 ```

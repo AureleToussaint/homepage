@@ -496,6 +496,115 @@ div.tocify {
 
 
 <style>
+/* Custom function TOC — overrides rmarkdown floating TOC */
+#TOC,
+.tocify-wrapper,
+div[data-spy="affix"] {
+  display: none !important;
+  width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.fn-nav {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 205px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: 14px 10px 20px 14px;
+  border-right: 1px solid #e8e8e8;
+  background: #fafafa;
+  font-size: 0.82em;
+  z-index: 100;
+}
+.fn-nav .fn-nav-title {
+  font-size: 0.7em;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #bbb;
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+.fn-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.fn-nav li a {
+  display: block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #444;
+  text-decoration: none;
+  font-family: monospace;
+  font-size: 0.95em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fn-nav li a:hover {
+  background: #eef2f7;
+  color: #2c3e50;
+}
+.fn-nav li a.active {
+  background: #e3f0fb;
+  color: #1a6faf;
+  font-weight: 600;
+}
+/* push main content right to make room */
+body {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+.main-container {
+  margin-left: 210px !important;
+  max-width: calc(100vw - 230px) !important;
+  width: calc(100vw - 230px) !important;
+  padding-right: 30px !important;
+}
+/* kill rmarkdown's bootstrap TOC column entirely */
+.col-xs-12.col-sm-4.col-md-3,
+.tocify-wrapper,
+div.tocify,
+#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
+/* expand content column to full width */
+.col-xs-12.col-sm-8.col-md-9 {
+  width: 100% !important;
+  -webkit-flex: none !important;
+  flex: none !important;
+}
+.row { margin-left: 0 !important; margin-right: 0 !important; }
+</style>
+
+<div class="fn-nav" id="fn-nav">
+  <div class="fn-nav-title">Functions</div>
+  <ul>
+    <li><a href="#fn-standard-names">standard_names</a></li>
+    <li><a href="#fn-addtophylo">addToPhylo</a></li>
+    <li><a href="#fn-redtotraits">RedToTraits</a></li>
+    <li><a href="#fn-imputation-trait">imputation_trait</a></li>
+  </ul>
+</div>
+
+<script>
+/* Highlight active function on scroll */
+window.addEventListener("scroll", function() {
+  var links = document.querySelectorAll(".fn-nav li a");
+  var current = "";
+  links.forEach(function(a) {
+    var id = a.getAttribute("href").slice(1);
+    var el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 120) current = id;
+  });
+  links.forEach(function(a) {
+    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
+  });
+});
+</script>
+
+<style>
 #pw-overlay {
   position: fixed; inset: 0; background: rgba(255,255,255,0.97);
   z-index: 9999; display: flex; align-items: center; justify-content: center;
@@ -523,6 +632,63 @@ div.tocify {
 .back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
 .back-link a { color: #8e44ad; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
+
+/* ── Function cards ────────────────────────────────── */
+.page-intro {
+  display:flex; align-items:center; gap:14px;
+  padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
+}
+.page-intro-icon {
+  width:48px; height:48px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5em; color:#fff; flex-shrink:0;
+}
+.page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
+.page-intro p  { font-size:0.92em; color:#777; margin:0; }
+
+.fn-section-divider {
+  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+}
+.fn-section-divider span {
+  font-size:0.75em; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:#aaa; white-space:nowrap;
+}
+.fn-section-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
+
+.fn-card {
+  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+}
+.fn-header {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
+}
+.fn-name {
+  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
+  margin:0; padding:0; line-height:1.4;
+}
+.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
+.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+.fn-tag {
+  font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600;
+}
+.tag-stat   { background:#e8f5e9; color:#1b6b2f; }
+.tag-util   { background:#e3f2fd; color:#1557a0; }
+.tag-viz    { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd     { background:#fff3e0; color:#b25000; }
+.tag-data   { background:#fce4ec; color:#880e4f; }
+.tag-ml     { background:#e8eaf6; color:#283593; }
+.tag-morph  { background:#e0f2f1; color:#00574e; }
+
+.fn-args {
+  display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
+  background:#fff; border-bottom:1px solid #f0f0f0; align-items:center;
+}
+.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
+.fn-arg {
+  font-family:monospace; font-size:0.78em; padding:2px 8px;
+  background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555;
+}
+
 </style>
 
 <div id="pw-overlay">
@@ -563,6 +729,23 @@ async function checkPw() {
 if (sessionStorage.getItem("rscripts_unlocked") === "1")
   document.getElementById("pw-overlay").style.display = "none";
 </script>
+<div class="page-intro">
+  <div class="page-intro-icon" style="background:#8e44ad;">🔀</div>
+  <div>
+    <h1>Sorting data</h1>
+    <p>Species name standardisation, phylogeny pruning, IUCN merging and trait imputation</p>
+  </div>
+</div>
+<h3 class="fn-section-divider"><span>Name & taxonomy</span><hr></h3>
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-standard-names">standard_names(Traits, nrowTraits, source=163, dim=NA)</h4>
+    <div class="fn-desc">Standardise species names across datasets by removing duplicates and mismatches.</div>
+    <div class="fn-tags"><span class="fn-tag tag-util">utility</span><span class="fn-tag tag-data">data</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">Traits — trait data frame</span><span class="fn-arg">nrowTraits — expected row count</span><span class="fn-arg">source=163 — source ID</span><span class="fn-arg">dim=NA — trait dimensions</span></div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>standard_names <span class="ot">&lt;-</span> <span class="cf">function</span>(Traits, nrowTraits, <span class="at">source =</span> <span class="dv">163</span>, <span class="at">dim =</span> <span class="cn">NA</span>) {</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">require</span>(taxize)</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  standNamesTraits <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(</span>
@@ -604,87 +787,116 @@ if (sessionStorage.getItem("rscripts_unlocked") === "1")
 <span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
 <span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a>    <span class="fu">return</span>(Traits[yesName, ])</span>
 <span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a>  }</span>
-<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a>}</span>
-<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a>addToPhylo <span class="ot">&lt;-</span> <span class="cf">function</span>(phylogenyTraits, GROUPTraits) {</span>
-<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a>  phylogenyTraits <span class="ot">&lt;-</span> <span class="fu">force.ultrametric</span>(<span class="at">tree =</span> phylogenyTraits, <span class="at">method =</span> <span class="fu">c</span>(<span class="st">&quot;extend&quot;</span>))</span>
-<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a>  tipsToAdd <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">rownames</span>(GROUPTraits) <span class="sc">%in%</span> phylogenyTraits<span class="sc">$</span>tip.label)</span>
-<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a>  namesToAdd <span class="ot">&lt;-</span> <span class="fu">rownames</span>(GROUPTraits)[tipsToAdd]</span>
-<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a>  genusToAdd <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">strsplit</span>(namesToAdd, <span class="st">&quot;_&quot;</span>))[</span>
-<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a>    <span class="fu">which</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">strsplit</span>(namesToAdd, <span class="st">&quot;_&quot;</span>)) <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a>  ]</span>
-<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a>  phylogenyTraitsAdd <span class="ot">&lt;-</span> phylogenyTraits</span>
-<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a>  <span class="cf">for</span> (add <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(namesToAdd)) {</span>
-<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="fu">paste</span>(<span class="st">&quot;</span><span class="sc">\r</span><span class="st">ADDING SP TO GENUS IN PHYLOGENY&quot;</span>, add, <span class="st">&quot;/&quot;</span>, <span class="fu">length</span>(namesToAdd), <span class="st">&quot;</span><span class="sc">\r</span><span class="st">&quot;</span>))</span>
-<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a>    phylogenyTraitsAdd <span class="ot">&lt;-</span> <span class="fu">add.species.to.genus</span>(</span>
-<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a>      <span class="at">tree =</span> phylogenyTraitsAdd,</span>
-<span id="cb1-57"><a href="#cb1-57" tabindex="-1"></a>      <span class="at">species =</span> namesToAdd[add],</span>
-<span id="cb1-58"><a href="#cb1-58" tabindex="-1"></a>      <span class="at">genus =</span> genusToAdd[add],</span>
-<span id="cb1-59"><a href="#cb1-59" tabindex="-1"></a>      <span class="at">where =</span> <span class="st">&quot;root&quot;</span></span>
-<span id="cb1-60"><a href="#cb1-60" tabindex="-1"></a>    )</span>
-<span id="cb1-61"><a href="#cb1-61" tabindex="-1"></a>  }</span>
-<span id="cb1-62"><a href="#cb1-62" tabindex="-1"></a>  <span class="fu">return</span>(phylogenyTraitsAdd)</span>
-<span id="cb1-63"><a href="#cb1-63" tabindex="-1"></a>}</span>
-<span id="cb1-64"><a href="#cb1-64" tabindex="-1"></a></span>
-<span id="cb1-65"><a href="#cb1-65" tabindex="-1"></a>RedToTraits <span class="ot">&lt;-</span> <span class="cf">function</span>(IUCNGROUPtoTraits) {</span>
-<span id="cb1-66"><a href="#cb1-66" tabindex="-1"></a>  RedToTraits <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
-<span id="cb1-67"><a href="#cb1-67" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(IUCNGROUPtoTraits)),</span>
-<span id="cb1-68"><a href="#cb1-68" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">1</span>,</span>
-<span id="cb1-69"><a href="#cb1-69" tabindex="-1"></a>    <span class="at">dimnames =</span> <span class="fu">list</span>(IUCNGROUPtoTraits<span class="sc">$</span>Species, <span class="st">&quot;IUCN&quot;</span>)</span>
-<span id="cb1-70"><a href="#cb1-70" tabindex="-1"></a>  )</span>
-<span id="cb1-71"><a href="#cb1-71" tabindex="-1"></a></span>
-<span id="cb1-72"><a href="#cb1-72" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(IUCNGROUPtoTraits)) {</span>
-<span id="cb1-73"><a href="#cb1-73" tabindex="-1"></a>    selRows <span class="ot">&lt;-</span> <span class="fu">which</span>(IUCNGROUPtoTraits<span class="sc">$</span>Species <span class="sc">==</span> IUCNGROUPtoTraits<span class="sc">$</span>Species[i])</span>
-<span id="cb1-74"><a href="#cb1-74" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(selRows) <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
-<span id="cb1-75"><a href="#cb1-75" tabindex="-1"></a>      dataAux <span class="ot">&lt;-</span> IUCNGROUPtoTraits[selRows, ]</span>
-<span id="cb1-76"><a href="#cb1-76" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">is.na</span>(dataAux<span class="sc">$</span>infra_name))) {</span>
-<span id="cb1-77"><a href="#cb1-77" tabindex="-1"></a>        coger <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">is.na</span>(dataAux<span class="sc">$</span>infra_name))</span>
-<span id="cb1-78"><a href="#cb1-78" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">length</span>(coger) <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb1-79"><a href="#cb1-79" tabindex="-1"></a>          RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span> <span class="fu">as.character</span>(dataAux<span class="sc">$</span>categorySimp[coger])</span>
-<span id="cb1-80"><a href="#cb1-80" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
-<span id="cb1-81"><a href="#cb1-81" tabindex="-1"></a>          <span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">unique</span>(dataAux<span class="sc">$</span>categorySimp[coger])) <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb1-82"><a href="#cb1-82" tabindex="-1"></a>            RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span></span>
-<span id="cb1-83"><a href="#cb1-83" tabindex="-1"></a>              <span class="fu">as.character</span>(<span class="fu">unique</span>(dataAux<span class="sc">$</span>categorySimp[coger]))</span>
-<span id="cb1-84"><a href="#cb1-84" tabindex="-1"></a>          } <span class="cf">else</span> {</span>
-<span id="cb1-85"><a href="#cb1-85" tabindex="-1"></a>            RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span></span>
-<span id="cb1-86"><a href="#cb1-86" tabindex="-1"></a>              <span class="fu">as.character</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(dataAux<span class="sc">$</span>categorySimp))[<span class="dv">1</span>])</span>
-<span id="cb1-87"><a href="#cb1-87" tabindex="-1"></a>          }</span>
-<span id="cb1-88"><a href="#cb1-88" tabindex="-1"></a>        }</span>
-<span id="cb1-89"><a href="#cb1-89" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
-<span id="cb1-90"><a href="#cb1-90" tabindex="-1"></a>        RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span></span>
-<span id="cb1-91"><a href="#cb1-91" tabindex="-1"></a>          <span class="fu">as.character</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(dataAux<span class="sc">$</span>categorySimp))[<span class="dv">1</span>])</span>
-<span id="cb1-92"><a href="#cb1-92" tabindex="-1"></a>      }</span>
-<span id="cb1-93"><a href="#cb1-93" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb1-94"><a href="#cb1-94" tabindex="-1"></a>      RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span></span>
-<span id="cb1-95"><a href="#cb1-95" tabindex="-1"></a>        <span class="fu">as.character</span>(IUCNGROUPtoTraits[selRows, <span class="st">&quot;categorySimp&quot;</span>])</span>
-<span id="cb1-96"><a href="#cb1-96" tabindex="-1"></a>    }</span>
-<span id="cb1-97"><a href="#cb1-97" tabindex="-1"></a>  }</span>
-<span id="cb1-98"><a href="#cb1-98" tabindex="-1"></a>  <span class="fu">return</span>(RedToTraits)</span>
-<span id="cb1-99"><a href="#cb1-99" tabindex="-1"></a>}</span>
-<span id="cb1-100"><a href="#cb1-100" tabindex="-1"></a></span>
-<span id="cb1-101"><a href="#cb1-101" tabindex="-1"></a>imputation_trait <span class="ot">&lt;-</span> <span class="cf">function</span>(GROUPData, selectedTraits, <span class="at">shortnames =</span> <span class="fu">c</span>(<span class="st">&quot;am&quot;</span>, <span class="st">&quot;bs&quot;</span>, <span class="st">&quot;ls&quot;</span>, <span class="st">&quot;os&quot;</span>)) {</span>
-<span id="cb1-102"><a href="#cb1-102" tabindex="-1"></a>  <span class="fu">require</span>(missForest)</span>
-<span id="cb1-103"><a href="#cb1-103" tabindex="-1"></a>  columnsTraits <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(GROUPData) <span class="sc">==</span> <span class="st">&quot;Eigen.1&quot;</span>) <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb1-104"><a href="#cb1-104" tabindex="-1"></a>  GROUPData[, columnsTraits] <span class="ot">&lt;-</span> <span class="fu">log10</span>(GROUPData[, columnsTraits])</span>
-<span id="cb1-105"><a href="#cb1-105" tabindex="-1"></a></span>
-<span id="cb1-106"><a href="#cb1-106" tabindex="-1"></a>  <span class="co"># </span><span class="al">NOTE</span><span class="co">: All traits are kept for imputation</span></span>
-<span id="cb1-107"><a href="#cb1-107" tabindex="-1"></a>  columsImputation <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(GROUPData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>) <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb1-108"><a href="#cb1-108" tabindex="-1"></a>  GROUPTraitslogImputed <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">missForest</span>(<span class="at">xmis =</span> GROUPData[, columsImputation])<span class="sc">$</span>ximp)</span>
-<span id="cb1-109"><a href="#cb1-109" tabindex="-1"></a></span>
-<span id="cb1-110"><a href="#cb1-110" tabindex="-1"></a>  GROUPTraitsImputed <span class="ot">&lt;-</span> GROUPTraitsMissing <span class="ot">&lt;-</span> GROUPData</span>
-<span id="cb1-111"><a href="#cb1-111" tabindex="-1"></a>  GROUPTraitsImputed[, columnsTraits] <span class="ot">&lt;-</span> GROUPTraitslogImputed[, columnsTraits]</span>
-<span id="cb1-112"><a href="#cb1-112" tabindex="-1"></a></span>
-<span id="cb1-113"><a href="#cb1-113" tabindex="-1"></a>  GROUPTraitsMissing <span class="ot">&lt;-</span> GROUPTraitsMissing[, selectedTraits]</span>
-<span id="cb1-114"><a href="#cb1-114" tabindex="-1"></a>  GROUPTraitsImputed <span class="ot">&lt;-</span> GROUPTraitsImputed[, selectedTraits]</span>
-<span id="cb1-115"><a href="#cb1-115" tabindex="-1"></a>  <span class="fu">colnames</span>(GROUPTraitsMissing) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(GROUPTraitsImputed) <span class="ot">&lt;-</span> shortnames</span>
-<span id="cb1-116"><a href="#cb1-116" tabindex="-1"></a></span>
-<span id="cb1-117"><a href="#cb1-117" tabindex="-1"></a>  GROUPOtherInfo <span class="ot">&lt;-</span> GROUPData[, (<span class="fu">max</span>(columnsTraits) <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">ncol</span>(GROUPData)]</span>
-<span id="cb1-118"><a href="#cb1-118" tabindex="-1"></a>  GROUPTraitsImputed <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(GROUPTraitsImputed, <span class="at">IUCN =</span> GROUPData<span class="sc">$</span>IUCN)</span>
-<span id="cb1-119"><a href="#cb1-119" tabindex="-1"></a>  GROUPTraitsMissing <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(GROUPTraitsMissing, <span class="at">IUCN =</span> GROUPData<span class="sc">$</span>IUCN)</span>
-<span id="cb1-120"><a href="#cb1-120" tabindex="-1"></a></span>
-<span id="cb1-121"><a href="#cb1-121" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(GROUPTraitsImputed, GROUPTraitsMissing))</span>
-<span id="cb1-122"><a href="#cb1-122" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-addtophylo">addToPhylo(phylogenyTraits, GROUPTraits)</h4>
+    <div class="fn-desc">Prune a phylogeny to the set of species present in a trait data frame.</div>
+    <div class="fn-tags"><span class="fn-tag tag-util">utility</span><span class="fn-tag tag-data">data</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">phylogenyTraits — phylo object</span><span class="fn-arg">GROUPTraits — trait data frame with species names</span></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>addToPhylo <span class="ot">&lt;-</span> <span class="cf">function</span>(phylogenyTraits, GROUPTraits) {</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  phylogenyTraits <span class="ot">&lt;-</span> <span class="fu">force.ultrametric</span>(<span class="at">tree =</span> phylogenyTraits, <span class="at">method =</span> <span class="fu">c</span>(<span class="st">&quot;extend&quot;</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  tipsToAdd <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">rownames</span>(GROUPTraits) <span class="sc">%in%</span> phylogenyTraits<span class="sc">$</span>tip.label)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  namesToAdd <span class="ot">&lt;-</span> <span class="fu">rownames</span>(GROUPTraits)[tipsToAdd]</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  genusToAdd <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">strsplit</span>(namesToAdd, <span class="st">&quot;_&quot;</span>))[</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>    <span class="fu">which</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">strsplit</span>(namesToAdd, <span class="st">&quot;_&quot;</span>)) <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  ]</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  phylogenyTraitsAdd <span class="ot">&lt;-</span> phylogenyTraits</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="cf">for</span> (add <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(namesToAdd)) {</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="fu">paste</span>(<span class="st">&quot;</span><span class="sc">\r</span><span class="st">ADDING SP TO GENUS IN PHYLOGENY&quot;</span>, add, <span class="st">&quot;/&quot;</span>, <span class="fu">length</span>(namesToAdd), <span class="st">&quot;</span><span class="sc">\r</span><span class="st">&quot;</span>))</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>    phylogenyTraitsAdd <span class="ot">&lt;-</span> <span class="fu">add.species.to.genus</span>(</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>      <span class="at">tree =</span> phylogenyTraitsAdd,</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>      <span class="at">species =</span> namesToAdd[add],</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>      <span class="at">genus =</span> genusToAdd[add],</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>      <span class="at">where =</span> <span class="st">&quot;root&quot;</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>    )</span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>  }</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>  <span class="fu">return</span>(phylogenyTraitsAdd)</span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-redtotraits">RedToTraits(IUCNGROUPtoTraits)</h4>
+    <div class="fn-desc">Merge IUCN Red List threat category into a trait data frame by matching species names.</div>
+    <div class="fn-tags"><span class="fn-tag tag-data">data</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">IUCNGROUPtoTraits — data frame with species and IUCN status columns</span></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>RedToTraits <span class="ot">&lt;-</span> <span class="cf">function</span>(IUCNGROUPtoTraits) {</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  RedToTraits <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(IUCNGROUPtoTraits)),</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">1</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>    <span class="at">dimnames =</span> <span class="fu">list</span>(IUCNGROUPtoTraits<span class="sc">$</span>Species, <span class="st">&quot;IUCN&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  )</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(IUCNGROUPtoTraits)) {</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>    selRows <span class="ot">&lt;-</span> <span class="fu">which</span>(IUCNGROUPtoTraits<span class="sc">$</span>Species <span class="sc">==</span> IUCNGROUPtoTraits<span class="sc">$</span>Species[i])</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(selRows) <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>      dataAux <span class="ot">&lt;-</span> IUCNGROUPtoTraits[selRows, ]</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">is.na</span>(dataAux<span class="sc">$</span>infra_name))) {</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>        coger <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">is.na</span>(dataAux<span class="sc">$</span>infra_name))</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">length</span>(coger) <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>          RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span> <span class="fu">as.character</span>(dataAux<span class="sc">$</span>categorySimp[coger])</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>          <span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">unique</span>(dataAux<span class="sc">$</span>categorySimp[coger])) <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>            RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>              <span class="fu">as.character</span>(<span class="fu">unique</span>(dataAux<span class="sc">$</span>categorySimp[coger]))</span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>          } <span class="cf">else</span> {</span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>            RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>              <span class="fu">as.character</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(dataAux<span class="sc">$</span>categorySimp))[<span class="dv">1</span>])</span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>          }</span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>        }</span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>        RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a>          <span class="fu">as.character</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(dataAux<span class="sc">$</span>categorySimp))[<span class="dv">1</span>])</span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>      }</span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a>      RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>        <span class="fu">as.character</span>(IUCNGROUPtoTraits[selRows, <span class="st">&quot;categorySimp&quot;</span>])</span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a>    }</span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a>  }</span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a>  <span class="fu">return</span>(RedToTraits)</span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<h3 class="fn-section-divider"><span>Imputation</span><hr></h3>
+<div class="fn-card">
+<div class="fn-header">
+  <div>
+    <h4 class="fn-name" id="fn-imputation-trait">imputation_trait(GROUPData, selectedTraits, shortnames)</h4>
+    <div class="fn-desc">Wrapper around missForest to impute missing trait values for a taxonomic group.</div>
+    <div class="fn-tags"><span class="fn-tag tag-ml">machine learning</span><span class="fn-tag tag-util">utility</span></div>
+  </div>
+</div>
+<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">GROUPData — trait data frame with NAs</span><span class="fn-arg">selectedTraits — columns to impute</span><span class="fn-arg">shortnames — abbreviated group labels</span></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>imputation_trait <span class="ot">&lt;-</span> <span class="cf">function</span>(GROUPData, selectedTraits, <span class="at">shortnames =</span> <span class="fu">c</span>(<span class="st">&quot;am&quot;</span>, <span class="st">&quot;bs&quot;</span>, <span class="st">&quot;ls&quot;</span>, <span class="st">&quot;os&quot;</span>)) {</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">require</span>(missForest)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  columnsTraits <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(GROUPData) <span class="sc">==</span> <span class="st">&quot;Eigen.1&quot;</span>) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  GROUPData[, columnsTraits] <span class="ot">&lt;-</span> <span class="fu">log10</span>(GROUPData[, columnsTraits])</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="co"># </span><span class="al">NOTE</span><span class="co">: All traits are kept for imputation</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  columsImputation <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(GROUPData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  GROUPTraitslogImputed <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">missForest</span>(<span class="at">xmis =</span> GROUPData[, columsImputation])<span class="sc">$</span>ximp)</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  GROUPTraitsImputed <span class="ot">&lt;-</span> GROUPTraitsMissing <span class="ot">&lt;-</span> GROUPData</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  GROUPTraitsImputed[, columnsTraits] <span class="ot">&lt;-</span> GROUPTraitslogImputed[, columnsTraits]</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  GROUPTraitsMissing <span class="ot">&lt;-</span> GROUPTraitsMissing[, selectedTraits]</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  GROUPTraitsImputed <span class="ot">&lt;-</span> GROUPTraitsImputed[, selectedTraits]</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  <span class="fu">colnames</span>(GROUPTraitsMissing) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(GROUPTraitsImputed) <span class="ot">&lt;-</span> shortnames</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>  GROUPOtherInfo <span class="ot">&lt;-</span> GROUPData[, (<span class="fu">max</span>(columnsTraits) <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">ncol</span>(GROUPData)]</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>  GROUPTraitsImputed <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(GROUPTraitsImputed, <span class="at">IUCN =</span> GROUPData<span class="sc">$</span>IUCN)</span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>  GROUPTraitsMissing <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(GROUPTraitsMissing, <span class="at">IUCN =</span> GROUPData<span class="sc">$</span>IUCN)</span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(GROUPTraitsImputed, GROUPTraitsMissing))</span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>}</span></code></pre></div>
+</div>
 
 <script src="assets/copy-code.js"></script>
 
