@@ -1,0 +1,544 @@
+ObsDataID,AccSpeciesID,AccSpeciesName,TraitID,TraitName,StdValue,UnitName,Reference
+1,10054,Dryas octopetala,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",11.1036,mm2 mg-1,GLORIA network 2019
+2,10054,Dryas octopetala,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",12.7788,mm2 mg-1,GLORIA network 2019
+3,10054,Dryas octopetala,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",12.7655,mm2 mg-1,Alpine trait survey CNRS 2021
+4,10054,Dryas octopetala,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",316.0364,mg g-1,Alpine trait survey CNRS 2021
+5,10054,Dryas octopetala,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",329.6361,mg g-1,Alpine trait survey CNRS 2021
+6,10054,Dryas octopetala,14,Leaf nitrogen (N) content per leaf dry mass,20.9275,mg g-1,TRY contributor: Kattge et al. 2020
+7,10054,Dryas octopetala,14,Leaf nitrogen (N) content per leaf dry mass,22.3067,mg g-1,LEFE Toulouse field campaign 2022
+8,10054,Dryas octopetala,14,Leaf nitrogen (N) content per leaf dry mass,20.0872,mg g-1,Alpine trait survey CNRS 2021
+9,10054,Dryas octopetala,14,Leaf nitrogen (N) content per leaf dry mass,23.3721,mg g-1,Alpine trait survey CNRS 2021
+10,10054,Dryas octopetala,3106,Plant height vegetative,4.8237,cm,GLORIA network 2019
+11,10054,Dryas octopetala,3106,Plant height vegetative,5.3963,cm,TRY contributor: Kattge et al. 2020
+12,10054,Dryas octopetala,3106,Plant height vegetative,5.166,cm,TRY contributor: Kattge et al. 2020
+13,10054,Dryas octopetala,3106,Plant height vegetative,4.9534,cm,LEFE Toulouse field campaign 2022
+14,10054,Dryas octopetala,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.2488,g g-1,GLORIA network 2019
+15,10054,Dryas octopetala,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.5077,g g-1,LEFE Toulouse field campaign 2022
+16,10054,Dryas octopetala,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.1756,g g-1,GLORIA network 2019
+17,10054,Dryas octopetala,26,Seed dry mass,0.3118,mg,GLORIA network 2019
+18,10054,Dryas octopetala,26,Seed dry mass,0.3257,mg,Alpine trait survey CNRS 2021
+19,10054,Dryas octopetala,26,Seed dry mass,0.3512,mg,TRY contributor: Kattge et al. 2020
+20,10054,Dryas octopetala,26,Seed dry mass,0.4037,mg,LEFE Toulouse field campaign 2022
+21,43124,Carex firma,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",13.3261,mm2 mg-1,GLORIA network 2019
+22,43124,Carex firma,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",14.1137,mm2 mg-1,GLORIA network 2019
+23,43124,Carex firma,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",13.9688,mm2 mg-1,GLORIA network 2019
+24,43124,Carex firma,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",299.6296,mg g-1,LEFE Toulouse field campaign 2022
+25,43124,Carex firma,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",271.5967,mg g-1,LEFE Toulouse field campaign 2022
+26,43124,Carex firma,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",311.8124,mg g-1,LEFE Toulouse field campaign 2022
+27,43124,Carex firma,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",,mg g-1,GLORIA network 2019
+28,43124,Carex firma,14,Leaf nitrogen (N) content per leaf dry mass,23.4749,mg g-1,Alpine trait survey CNRS 2021
+29,43124,Carex firma,14,Leaf nitrogen (N) content per leaf dry mass,21.8135,mg g-1,TRY contributor: Kattge et al. 2020
+30,43124,Carex firma,14,Leaf nitrogen (N) content per leaf dry mass,20.6889,mg g-1,TRY contributor: Kattge et al. 2020
+31,43124,Carex firma,14,Leaf nitrogen (N) content per leaf dry mass,20.4662,mg g-1,LEFE Toulouse field campaign 2022
+32,43124,Carex firma,3106,Plant height vegetative,6.354,cm,TRY contributor: Kattge et al. 2020
+33,43124,Carex firma,3106,Plant height vegetative,5.9642,cm,GLORIA network 2019
+34,43124,Carex firma,3106,Plant height vegetative,6.2456,cm,TRY contributor: Kattge et al. 2020
+35,43124,Carex firma,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.3438,g g-1,LEFE Toulouse field campaign 2022
+36,43124,Carex firma,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.1941,g g-1,LEFE Toulouse field campaign 2022
+37,43124,Carex firma,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.451,g g-1,LEFE Toulouse field campaign 2022
+38,43124,Carex firma,26,Seed dry mass,0.6225,mg,GLORIA network 2019
+39,43124,Carex firma,26,Seed dry mass,0.6321,mg,LEFE Toulouse field campaign 2022
+40,43124,Carex firma,26,Seed dry mass,0.6065,mg,Alpine trait survey CNRS 2021
+41,1405,Sesleria caerulea,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",8.388,mm2 mg-1,LEFE Toulouse field campaign 2022
+42,1405,Sesleria caerulea,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",7.8825,mm2 mg-1,LEFE Toulouse field campaign 2022
+43,1405,Sesleria caerulea,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",8.3285,mm2 mg-1,Alpine trait survey CNRS 2021
+44,1405,Sesleria caerulea,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",361.9294,mg g-1,LEFE Toulouse field campaign 2022
+45,1405,Sesleria caerulea,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",336.0872,mg g-1,Alpine trait survey CNRS 2021
+46,1405,Sesleria caerulea,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",336.3825,mg g-1,TRY contributor: Kattge et al. 2020
+47,1405,Sesleria caerulea,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",308.8656,mg g-1,TRY contributor: Kattge et al. 2020
+48,1405,Sesleria caerulea,14,Leaf nitrogen (N) content per leaf dry mass,13.8555,mg g-1,TRY contributor: Kattge et al. 2020
+49,1405,Sesleria caerulea,14,Leaf nitrogen (N) content per leaf dry mass,,mg g-1,LEFE Toulouse field campaign 2022
+50,1405,Sesleria caerulea,3106,Plant height vegetative,5.1225,cm,TRY contributor: Kattge et al. 2020
+51,1405,Sesleria caerulea,3106,Plant height vegetative,4.9924,cm,LEFE Toulouse field campaign 2022
+52,1405,Sesleria caerulea,3106,Plant height vegetative,6.1305,cm,LEFE Toulouse field campaign 2022
+53,1405,Sesleria caerulea,3106,Plant height vegetative,5.2797,cm,TRY contributor: Kattge et al. 2020
+54,1405,Sesleria caerulea,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.0793,g g-1,GLORIA network 2019
+55,1405,Sesleria caerulea,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.1123,g g-1,Alpine trait survey CNRS 2021
+56,1405,Sesleria caerulea,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.316,g g-1,Alpine trait survey CNRS 2021
+57,1405,Sesleria caerulea,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.1856,g g-1,Alpine trait survey CNRS 2021
+58,1405,Sesleria caerulea,26,Seed dry mass,0.2113,mg,LEFE Toulouse field campaign 2022
+59,1405,Sesleria caerulea,26,Seed dry mass,0.1858,mg,LEFE Toulouse field campaign 2022
+60,84712,Aster alpinus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",9.5218,mm2 mg-1,LEFE Toulouse field campaign 2022
+61,84712,Aster alpinus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",9.3507,mm2 mg-1,TRY contributor: Kattge et al. 2020
+62,84712,Aster alpinus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",,mm2 mg-1,Alpine trait survey CNRS 2021
+63,84712,Aster alpinus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",348.1993,mg g-1,GLORIA network 2019
+64,84712,Aster alpinus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",330.7562,mg g-1,Alpine trait survey CNRS 2021
+65,84712,Aster alpinus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",306.8022,mg g-1,LEFE Toulouse field campaign 2022
+66,84712,Aster alpinus,14,Leaf nitrogen (N) content per leaf dry mass,15.0986,mg g-1,LEFE Toulouse field campaign 2022
+67,84712,Aster alpinus,14,Leaf nitrogen (N) content per leaf dry mass,15.1418,mg g-1,LEFE Toulouse field campaign 2022
+68,84712,Aster alpinus,3106,Plant height vegetative,7.2664,cm,LEFE Toulouse field campaign 2022
+69,84712,Aster alpinus,3106,Plant height vegetative,7.0174,cm,Alpine trait survey CNRS 2021
+70,84712,Aster alpinus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.8219,g g-1,GLORIA network 2019
+71,84712,Aster alpinus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.8081,g g-1,LEFE Toulouse field campaign 2022
+72,84712,Aster alpinus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.752,g g-1,Alpine trait survey CNRS 2021
+73,84712,Aster alpinus,26,Seed dry mass,0.4266,mg,GLORIA network 2019
+74,84712,Aster alpinus,26,Seed dry mass,0.4196,mg,LEFE Toulouse field campaign 2022
+75,84712,Aster alpinus,26,Seed dry mass,0.4314,mg,TRY contributor: Kattge et al. 2020
+76,4430,Androsace helvetica,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",,mm2 mg-1,TRY contributor: Kattge et al. 2020
+77,4430,Androsace helvetica,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",10.4535,mm2 mg-1,GLORIA network 2019
+78,4430,Androsace helvetica,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",9.6446,mm2 mg-1,TRY contributor: Kattge et al. 2020
+79,4430,Androsace helvetica,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",10.4823,mm2 mg-1,GLORIA network 2019
+80,4430,Androsace helvetica,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",326.9319,mg g-1,Alpine trait survey CNRS 2021
+81,4430,Androsace helvetica,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",342.0295,mg g-1,LEFE Toulouse field campaign 2022
+82,4430,Androsace helvetica,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",326.2867,mg g-1,Alpine trait survey CNRS 2021
+83,4430,Androsace helvetica,14,Leaf nitrogen (N) content per leaf dry mass,16.931,mg g-1,LEFE Toulouse field campaign 2022
+84,4430,Androsace helvetica,14,Leaf nitrogen (N) content per leaf dry mass,18.8524,mg g-1,GLORIA network 2019
+85,4430,Androsace helvetica,3106,Plant height vegetative,12.7641,cm,Alpine trait survey CNRS 2021
+86,4430,Androsace helvetica,3106,Plant height vegetative,13.3824,cm,LEFE Toulouse field campaign 2022
+87,4430,Androsace helvetica,3106,Plant height vegetative,12.5434,cm,LEFE Toulouse field campaign 2022
+88,4430,Androsace helvetica,3106,Plant height vegetative,13.3071,cm,TRY contributor: Kattge et al. 2020
+89,4430,Androsace helvetica,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.4259,g g-1,TRY contributor: Kattge et al. 2020
+90,4430,Androsace helvetica,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.6065,g g-1,Alpine trait survey CNRS 2021
+91,4430,Androsace helvetica,26,Seed dry mass,0.5226,mg,LEFE Toulouse field campaign 2022
+92,4430,Androsace helvetica,26,Seed dry mass,,mg,GLORIA network 2019
+93,4430,Androsace helvetica,26,Seed dry mass,0.5747,mg,GLORIA network 2019
+94,4430,Androsace helvetica,26,Seed dry mass,0.5763,mg,Alpine trait survey CNRS 2021
+95,92376,Saxifraga oppositifolia,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",12.3931,mm2 mg-1,GLORIA network 2019
+96,92376,Saxifraga oppositifolia,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",,mm2 mg-1,GLORIA network 2019
+97,92376,Saxifraga oppositifolia,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",12.238,mm2 mg-1,LEFE Toulouse field campaign 2022
+98,92376,Saxifraga oppositifolia,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",250.0395,mg g-1,LEFE Toulouse field campaign 2022
+99,92376,Saxifraga oppositifolia,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",291.1602,mg g-1,GLORIA network 2019
+100,92376,Saxifraga oppositifolia,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",292.1187,mg g-1,TRY contributor: Kattge et al. 2020
+101,92376,Saxifraga oppositifolia,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",258.2337,mg g-1,TRY contributor: Kattge et al. 2020
+102,92376,Saxifraga oppositifolia,14,Leaf nitrogen (N) content per leaf dry mass,19.1004,mg g-1,Alpine trait survey CNRS 2021
+103,92376,Saxifraga oppositifolia,14,Leaf nitrogen (N) content per leaf dry mass,18.0246,mg g-1,Alpine trait survey CNRS 2021
+104,92376,Saxifraga oppositifolia,3106,Plant height vegetative,3.2812,cm,TRY contributor: Kattge et al. 2020
+105,92376,Saxifraga oppositifolia,3106,Plant height vegetative,4.1424,cm,Alpine trait survey CNRS 2021
+106,92376,Saxifraga oppositifolia,3106,Plant height vegetative,3.8092,cm,TRY contributor: Kattge et al. 2020
+107,92376,Saxifraga oppositifolia,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.0038,g g-1,TRY contributor: Kattge et al. 2020
+108,92376,Saxifraga oppositifolia,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.0117,g g-1,LEFE Toulouse field campaign 2022
+109,92376,Saxifraga oppositifolia,26,Seed dry mass,0.4172,mg,LEFE Toulouse field campaign 2022
+110,92376,Saxifraga oppositifolia,26,Seed dry mass,0.4258,mg,LEFE Toulouse field campaign 2022
+111,92376,Saxifraga oppositifolia,26,Seed dry mass,0.4225,mg,LEFE Toulouse field campaign 2022
+112,97016,Festuca rubra,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",26.3294,mm2 mg-1,Alpine trait survey CNRS 2021
+113,97016,Festuca rubra,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",28.1883,mm2 mg-1,TRY contributor: Kattge et al. 2020
+114,97016,Festuca rubra,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",28.2306,mm2 mg-1,TRY contributor: Kattge et al. 2020
+115,97016,Festuca rubra,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",208.8476,mg g-1,GLORIA network 2019
+116,97016,Festuca rubra,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",190.3205,mg g-1,LEFE Toulouse field campaign 2022
+117,97016,Festuca rubra,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",202.6975,mg g-1,LEFE Toulouse field campaign 2022
+118,97016,Festuca rubra,14,Leaf nitrogen (N) content per leaf dry mass,26.1101,mg g-1,Alpine trait survey CNRS 2021
+119,97016,Festuca rubra,14,Leaf nitrogen (N) content per leaf dry mass,26.0765,mg g-1,TRY contributor: Kattge et al. 2020
+120,97016,Festuca rubra,14,Leaf nitrogen (N) content per leaf dry mass,27.2609,mg g-1,LEFE Toulouse field campaign 2022
+121,97016,Festuca rubra,3106,Plant height vegetative,38.2698,cm,GLORIA network 2019
+122,97016,Festuca rubra,3106,Plant height vegetative,41.6207,cm,GLORIA network 2019
+123,97016,Festuca rubra,3106,Plant height vegetative,39.0779,cm,GLORIA network 2019
+124,97016,Festuca rubra,3106,Plant height vegetative,39.9217,cm,LEFE Toulouse field campaign 2022
+125,97016,Festuca rubra,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.136,g g-1,TRY contributor: Kattge et al. 2020
+126,97016,Festuca rubra,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.6597,g g-1,Alpine trait survey CNRS 2021
+127,97016,Festuca rubra,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.9013,g g-1,GLORIA network 2019
+128,97016,Festuca rubra,26,Seed dry mass,0.7138,mg,Alpine trait survey CNRS 2021
+129,97016,Festuca rubra,26,Seed dry mass,0.6217,mg,GLORIA network 2019
+130,97016,Festuca rubra,26,Seed dry mass,0.7808,mg,TRY contributor: Kattge et al. 2020
+131,97016,Festuca rubra,26,Seed dry mass,0.7032,mg,Alpine trait survey CNRS 2021
+132,42970,Poa alpina,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",22.7627,mm2 mg-1,TRY contributor: Kattge et al. 2020
+133,42970,Poa alpina,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",28.7678,mm2 mg-1,Alpine trait survey CNRS 2021
+134,42970,Poa alpina,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",26.1019,mm2 mg-1,GLORIA network 2019
+135,42970,Poa alpina,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",28.2984,mm2 mg-1,Alpine trait survey CNRS 2021
+136,42970,Poa alpina,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",227.9692,mg g-1,Alpine trait survey CNRS 2021
+137,42970,Poa alpina,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",230.1559,mg g-1,TRY contributor: Kattge et al. 2020
+138,42970,Poa alpina,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",207.6421,mg g-1,LEFE Toulouse field campaign 2022
+139,42970,Poa alpina,14,Leaf nitrogen (N) content per leaf dry mass,26.8497,mg g-1,GLORIA network 2019
+140,42970,Poa alpina,14,Leaf nitrogen (N) content per leaf dry mass,25.5556,mg g-1,TRY contributor: Kattge et al. 2020
+141,42970,Poa alpina,14,Leaf nitrogen (N) content per leaf dry mass,23.7206,mg g-1,LEFE Toulouse field campaign 2022
+142,42970,Poa alpina,3106,Plant height vegetative,34.0774,cm,LEFE Toulouse field campaign 2022
+143,42970,Poa alpina,3106,Plant height vegetative,33.3848,cm,GLORIA network 2019
+144,42970,Poa alpina,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.7869,g g-1,Alpine trait survey CNRS 2021
+145,42970,Poa alpina,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.452,g g-1,LEFE Toulouse field campaign 2022
+146,42970,Poa alpina,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.2329,g g-1,LEFE Toulouse field campaign 2022
+147,42970,Poa alpina,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.4379,g g-1,LEFE Toulouse field campaign 2022
+148,42970,Poa alpina,26,Seed dry mass,0.7434,mg,Alpine trait survey CNRS 2021
+149,42970,Poa alpina,26,Seed dry mass,0.769,mg,Alpine trait survey CNRS 2021
+150,42970,Poa alpina,26,Seed dry mass,0.746,mg,LEFE Toulouse field campaign 2022
+151,42970,Poa alpina,26,Seed dry mass,0.7563,mg,LEFE Toulouse field campaign 2022
+152,17981,Deschampsia cespitosa,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",19.1758,mm2 mg-1,Alpine trait survey CNRS 2021
+153,17981,Deschampsia cespitosa,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",17.592,mm2 mg-1,Alpine trait survey CNRS 2021
+154,17981,Deschampsia cespitosa,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",22.2369,mm2 mg-1,Alpine trait survey CNRS 2021
+155,17981,Deschampsia cespitosa,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",,mm2 mg-1,Alpine trait survey CNRS 2021
+156,17981,Deschampsia cespitosa,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",226.8588,mg g-1,Alpine trait survey CNRS 2021
+157,17981,Deschampsia cespitosa,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",237.3347,mg g-1,Alpine trait survey CNRS 2021
+158,17981,Deschampsia cespitosa,14,Leaf nitrogen (N) content per leaf dry mass,22.582,mg g-1,GLORIA network 2019
+159,17981,Deschampsia cespitosa,14,Leaf nitrogen (N) content per leaf dry mass,25.1328,mg g-1,Alpine trait survey CNRS 2021
+160,17981,Deschampsia cespitosa,3106,Plant height vegetative,52.0226,cm,TRY contributor: Kattge et al. 2020
+161,17981,Deschampsia cespitosa,3106,Plant height vegetative,48.4312,cm,GLORIA network 2019
+162,17981,Deschampsia cespitosa,3106,Plant height vegetative,44.1108,cm,TRY contributor: Kattge et al. 2020
+163,17981,Deschampsia cespitosa,3106,Plant height vegetative,46.0708,cm,LEFE Toulouse field campaign 2022
+164,17981,Deschampsia cespitosa,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.2289,g g-1,Alpine trait survey CNRS 2021
+165,17981,Deschampsia cespitosa,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.3345,g g-1,LEFE Toulouse field campaign 2022
+166,17981,Deschampsia cespitosa,26,Seed dry mass,1.015,mg,LEFE Toulouse field campaign 2022
+167,17981,Deschampsia cespitosa,26,Seed dry mass,1.1654,mg,Alpine trait survey CNRS 2021
+168,38139,Nardus stricta,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",,mm2 mg-1,GLORIA network 2019
+169,38139,Nardus stricta,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",19.2773,mm2 mg-1,GLORIA network 2019
+170,38139,Nardus stricta,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",18.7443,mm2 mg-1,Alpine trait survey CNRS 2021
+171,38139,Nardus stricta,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",248.5754,mg g-1,LEFE Toulouse field campaign 2022
+172,38139,Nardus stricta,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",236.5295,mg g-1,TRY contributor: Kattge et al. 2020
+173,38139,Nardus stricta,14,Leaf nitrogen (N) content per leaf dry mass,29.416,mg g-1,LEFE Toulouse field campaign 2022
+174,38139,Nardus stricta,14,Leaf nitrogen (N) content per leaf dry mass,31.1032,mg g-1,GLORIA network 2019
+175,38139,Nardus stricta,14,Leaf nitrogen (N) content per leaf dry mass,29.6981,mg g-1,LEFE Toulouse field campaign 2022
+176,38139,Nardus stricta,14,Leaf nitrogen (N) content per leaf dry mass,30.0233,mg g-1,Alpine trait survey CNRS 2021
+177,38139,Nardus stricta,3106,Plant height vegetative,36.5792,cm,TRY contributor: Kattge et al. 2020
+178,38139,Nardus stricta,3106,Plant height vegetative,35.9059,cm,Alpine trait survey CNRS 2021
+179,38139,Nardus stricta,3106,Plant height vegetative,,cm,Alpine trait survey CNRS 2021
+180,38139,Nardus stricta,3106,Plant height vegetative,33.0178,cm,Alpine trait survey CNRS 2021
+181,38139,Nardus stricta,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.8924,g g-1,GLORIA network 2019
+182,38139,Nardus stricta,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.6883,g g-1,Alpine trait survey CNRS 2021
+183,38139,Nardus stricta,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.5757,g g-1,TRY contributor: Kattge et al. 2020
+184,38139,Nardus stricta,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.2476,g g-1,GLORIA network 2019
+185,38139,Nardus stricta,26,Seed dry mass,1.0586,mg,Alpine trait survey CNRS 2021
+186,38139,Nardus stricta,26,Seed dry mass,1.1486,mg,LEFE Toulouse field campaign 2022
+187,38139,Nardus stricta,26,Seed dry mass,,mg,LEFE Toulouse field campaign 2022
+188,38139,Nardus stricta,26,Seed dry mass,1.0204,mg,GLORIA network 2019
+189,5406,Agrostis capillaris,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",17.3995,mm2 mg-1,Alpine trait survey CNRS 2021
+190,5406,Agrostis capillaris,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",21.2536,mm2 mg-1,Alpine trait survey CNRS 2021
+191,5406,Agrostis capillaris,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",20.5188,mm2 mg-1,TRY contributor: Kattge et al. 2020
+192,5406,Agrostis capillaris,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",,mm2 mg-1,GLORIA network 2019
+193,5406,Agrostis capillaris,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",232.1366,mg g-1,Alpine trait survey CNRS 2021
+194,5406,Agrostis capillaris,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",,mg g-1,GLORIA network 2019
+195,5406,Agrostis capillaris,14,Leaf nitrogen (N) content per leaf dry mass,24.41,mg g-1,Alpine trait survey CNRS 2021
+196,5406,Agrostis capillaris,14,Leaf nitrogen (N) content per leaf dry mass,26.0575,mg g-1,LEFE Toulouse field campaign 2022
+197,5406,Agrostis capillaris,3106,Plant height vegetative,46.1561,cm,LEFE Toulouse field campaign 2022
+198,5406,Agrostis capillaris,3106,Plant height vegetative,45.9966,cm,TRY contributor: Kattge et al. 2020
+199,5406,Agrostis capillaris,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.0171,g g-1,TRY contributor: Kattge et al. 2020
+200,5406,Agrostis capillaris,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.633,g g-1,LEFE Toulouse field campaign 2022
+201,5406,Agrostis capillaris,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.6733,g g-1,GLORIA network 2019
+202,5406,Agrostis capillaris,26,Seed dry mass,1.0042,mg,Alpine trait survey CNRS 2021
+203,5406,Agrostis capillaris,26,Seed dry mass,0.9228,mg,Alpine trait survey CNRS 2021
+204,5406,Agrostis capillaris,26,Seed dry mass,0.8885,mg,TRY contributor: Kattge et al. 2020
+205,5406,Agrostis capillaris,26,Seed dry mass,0.8608,mg,TRY contributor: Kattge et al. 2020
+206,66903,Phleum alpinum,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",20.9881,mm2 mg-1,GLORIA network 2019
+207,66903,Phleum alpinum,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",20.9805,mm2 mg-1,Alpine trait survey CNRS 2021
+208,66903,Phleum alpinum,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",21.188,mm2 mg-1,GLORIA network 2019
+209,66903,Phleum alpinum,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",20.5601,mm2 mg-1,GLORIA network 2019
+210,66903,Phleum alpinum,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",233.7447,mg g-1,LEFE Toulouse field campaign 2022
+211,66903,Phleum alpinum,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",246.1463,mg g-1,GLORIA network 2019
+212,66903,Phleum alpinum,14,Leaf nitrogen (N) content per leaf dry mass,26.0735,mg g-1,Alpine trait survey CNRS 2021
+213,66903,Phleum alpinum,14,Leaf nitrogen (N) content per leaf dry mass,25.6182,mg g-1,GLORIA network 2019
+214,66903,Phleum alpinum,14,Leaf nitrogen (N) content per leaf dry mass,28.3524,mg g-1,TRY contributor: Kattge et al. 2020
+215,66903,Phleum alpinum,14,Leaf nitrogen (N) content per leaf dry mass,28.8433,mg g-1,TRY contributor: Kattge et al. 2020
+216,66903,Phleum alpinum,3106,Plant height vegetative,34.8341,cm,Alpine trait survey CNRS 2021
+217,66903,Phleum alpinum,3106,Plant height vegetative,,cm,GLORIA network 2019
+218,66903,Phleum alpinum,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.3192,g g-1,LEFE Toulouse field campaign 2022
+219,66903,Phleum alpinum,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.3179,g g-1,TRY contributor: Kattge et al. 2020
+220,66903,Phleum alpinum,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.5443,g g-1,TRY contributor: Kattge et al. 2020
+221,66903,Phleum alpinum,26,Seed dry mass,0.6215,mg,TRY contributor: Kattge et al. 2020
+222,66903,Phleum alpinum,26,Seed dry mass,0.6291,mg,GLORIA network 2019
+223,48294,Rumex alpinus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",26.0254,mm2 mg-1,LEFE Toulouse field campaign 2022
+224,48294,Rumex alpinus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",23.0622,mm2 mg-1,GLORIA network 2019
+225,48294,Rumex alpinus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",148.61,mg g-1,TRY contributor: Kattge et al. 2020
+226,48294,Rumex alpinus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",140.4855,mg g-1,TRY contributor: Kattge et al. 2020
+227,48294,Rumex alpinus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",163.5371,mg g-1,Alpine trait survey CNRS 2021
+228,48294,Rumex alpinus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",122.8574,mg g-1,LEFE Toulouse field campaign 2022
+229,48294,Rumex alpinus,14,Leaf nitrogen (N) content per leaf dry mass,35.4273,mg g-1,TRY contributor: Kattge et al. 2020
+230,48294,Rumex alpinus,14,Leaf nitrogen (N) content per leaf dry mass,34.3645,mg g-1,Alpine trait survey CNRS 2021
+231,48294,Rumex alpinus,14,Leaf nitrogen (N) content per leaf dry mass,35.9915,mg g-1,Alpine trait survey CNRS 2021
+232,48294,Rumex alpinus,3106,Plant height vegetative,50.0306,cm,TRY contributor: Kattge et al. 2020
+233,48294,Rumex alpinus,3106,Plant height vegetative,45.0403,cm,GLORIA network 2019
+234,48294,Rumex alpinus,3106,Plant height vegetative,45.8749,cm,GLORIA network 2019
+235,48294,Rumex alpinus,3106,Plant height vegetative,49.4151,cm,LEFE Toulouse field campaign 2022
+236,48294,Rumex alpinus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,6.3991,g g-1,LEFE Toulouse field campaign 2022
+237,48294,Rumex alpinus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,7.7136,g g-1,TRY contributor: Kattge et al. 2020
+238,48294,Rumex alpinus,26,Seed dry mass,1.203,mg,GLORIA network 2019
+239,48294,Rumex alpinus,26,Seed dry mass,,mg,TRY contributor: Kattge et al. 2020
+240,89512,Chenopodium bonus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",18.5227,mm2 mg-1,Alpine trait survey CNRS 2021
+241,89512,Chenopodium bonus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",20.4567,mm2 mg-1,Alpine trait survey CNRS 2021
+242,89512,Chenopodium bonus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",18.6819,mm2 mg-1,TRY contributor: Kattge et al. 2020
+243,89512,Chenopodium bonus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",18.9872,mm2 mg-1,Alpine trait survey CNRS 2021
+244,89512,Chenopodium bonus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",186.248,mg g-1,GLORIA network 2019
+245,89512,Chenopodium bonus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",169.7502,mg g-1,LEFE Toulouse field campaign 2022
+246,89512,Chenopodium bonus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",190.9623,mg g-1,TRY contributor: Kattge et al. 2020
+247,89512,Chenopodium bonus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",196.8632,mg g-1,TRY contributor: Kattge et al. 2020
+248,89512,Chenopodium bonus,14,Leaf nitrogen (N) content per leaf dry mass,27.8258,mg g-1,GLORIA network 2019
+249,89512,Chenopodium bonus,14,Leaf nitrogen (N) content per leaf dry mass,32.8281,mg g-1,LEFE Toulouse field campaign 2022
+250,89512,Chenopodium bonus,14,Leaf nitrogen (N) content per leaf dry mass,31.3352,mg g-1,LEFE Toulouse field campaign 2022
+251,89512,Chenopodium bonus,14,Leaf nitrogen (N) content per leaf dry mass,28.7668,mg g-1,GLORIA network 2019
+252,89512,Chenopodium bonus,3106,Plant height vegetative,21.9154,cm,TRY contributor: Kattge et al. 2020
+253,89512,Chenopodium bonus,3106,Plant height vegetative,24.4273,cm,TRY contributor: Kattge et al. 2020
+254,89512,Chenopodium bonus,3106,Plant height vegetative,19.7924,cm,GLORIA network 2019
+255,89512,Chenopodium bonus,3106,Plant height vegetative,26.1881,cm,TRY contributor: Kattge et al. 2020
+256,89512,Chenopodium bonus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,8.9512,g g-1,Alpine trait survey CNRS 2021
+257,89512,Chenopodium bonus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,8.23,g g-1,Alpine trait survey CNRS 2021
+258,89512,Chenopodium bonus,26,Seed dry mass,0.4877,mg,LEFE Toulouse field campaign 2022
+259,89512,Chenopodium bonus,26,Seed dry mass,0.3928,mg,GLORIA network 2019
+260,89512,Chenopodium bonus,26,Seed dry mass,0.4245,mg,LEFE Toulouse field campaign 2022
+261,89512,Chenopodium bonus,26,Seed dry mass,0.4527,mg,TRY contributor: Kattge et al. 2020
+262,86266,Stellaria media,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",35.8171,mm2 mg-1,TRY contributor: Kattge et al. 2020
+263,86266,Stellaria media,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",35.287,mm2 mg-1,Alpine trait survey CNRS 2021
+264,86266,Stellaria media,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",33.6977,mm2 mg-1,Alpine trait survey CNRS 2021
+265,86266,Stellaria media,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",34.7303,mm2 mg-1,GLORIA network 2019
+266,86266,Stellaria media,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",99.898,mg g-1,LEFE Toulouse field campaign 2022
+267,86266,Stellaria media,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",113.0482,mg g-1,Alpine trait survey CNRS 2021
+268,86266,Stellaria media,14,Leaf nitrogen (N) content per leaf dry mass,38.874,mg g-1,GLORIA network 2019
+269,86266,Stellaria media,14,Leaf nitrogen (N) content per leaf dry mass,38.3515,mg g-1,Alpine trait survey CNRS 2021
+270,86266,Stellaria media,14,Leaf nitrogen (N) content per leaf dry mass,35.2938,mg g-1,TRY contributor: Kattge et al. 2020
+271,86266,Stellaria media,14,Leaf nitrogen (N) content per leaf dry mass,33.6604,mg g-1,GLORIA network 2019
+272,86266,Stellaria media,3106,Plant height vegetative,15.9075,cm,Alpine trait survey CNRS 2021
+273,86266,Stellaria media,3106,Plant height vegetative,15.2357,cm,LEFE Toulouse field campaign 2022
+274,86266,Stellaria media,3106,Plant height vegetative,14.9597,cm,TRY contributor: Kattge et al. 2020
+275,86266,Stellaria media,3106,Plant height vegetative,14.957,cm,Alpine trait survey CNRS 2021
+276,86266,Stellaria media,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,,g g-1,Alpine trait survey CNRS 2021
+277,86266,Stellaria media,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,5.8209,g g-1,GLORIA network 2019
+278,86266,Stellaria media,26,Seed dry mass,1.2132,mg,TRY contributor: Kattge et al. 2020
+279,86266,Stellaria media,26,Seed dry mass,1.4239,mg,Alpine trait survey CNRS 2021
+280,86266,Stellaria media,26,Seed dry mass,1.2736,mg,GLORIA network 2019
+281,35069,Polygonum viviparum,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",29.5748,mm2 mg-1,Alpine trait survey CNRS 2021
+282,35069,Polygonum viviparum,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",33.5289,mm2 mg-1,GLORIA network 2019
+283,35069,Polygonum viviparum,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",151.5504,mg g-1,LEFE Toulouse field campaign 2022
+284,35069,Polygonum viviparum,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",136.0959,mg g-1,GLORIA network 2019
+285,35069,Polygonum viviparum,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",124.9299,mg g-1,Alpine trait survey CNRS 2021
+286,35069,Polygonum viviparum,14,Leaf nitrogen (N) content per leaf dry mass,34.3769,mg g-1,GLORIA network 2019
+287,35069,Polygonum viviparum,14,Leaf nitrogen (N) content per leaf dry mass,41.7759,mg g-1,LEFE Toulouse field campaign 2022
+288,35069,Polygonum viviparum,3106,Plant height vegetative,27.6285,cm,GLORIA network 2019
+289,35069,Polygonum viviparum,3106,Plant height vegetative,29.6476,cm,GLORIA network 2019
+290,35069,Polygonum viviparum,3106,Plant height vegetative,29.5889,cm,Alpine trait survey CNRS 2021
+291,35069,Polygonum viviparum,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.8489,g g-1,TRY contributor: Kattge et al. 2020
+292,35069,Polygonum viviparum,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.7789,g g-1,TRY contributor: Kattge et al. 2020
+293,35069,Polygonum viviparum,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.9612,g g-1,Alpine trait survey CNRS 2021
+294,35069,Polygonum viviparum,26,Seed dry mass,0.8158,mg,Alpine trait survey CNRS 2021
+295,35069,Polygonum viviparum,26,Seed dry mass,0.9063,mg,Alpine trait survey CNRS 2021
+296,35069,Polygonum viviparum,26,Seed dry mass,0.8685,mg,TRY contributor: Kattge et al. 2020
+297,35069,Polygonum viviparum,26,Seed dry mass,0.9319,mg,LEFE Toulouse field campaign 2022
+298,3613,Ranunculus acris,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",24.1303,mm2 mg-1,TRY contributor: Kattge et al. 2020
+299,3613,Ranunculus acris,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",28.628,mm2 mg-1,LEFE Toulouse field campaign 2022
+300,3613,Ranunculus acris,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",164.1605,mg g-1,GLORIA network 2019
+301,3613,Ranunculus acris,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",166.2605,mg g-1,GLORIA network 2019
+302,3613,Ranunculus acris,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",154.3684,mg g-1,TRY contributor: Kattge et al. 2020
+303,3613,Ranunculus acris,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",160.7835,mg g-1,GLORIA network 2019
+304,3613,Ranunculus acris,14,Leaf nitrogen (N) content per leaf dry mass,34.8042,mg g-1,GLORIA network 2019
+305,3613,Ranunculus acris,14,Leaf nitrogen (N) content per leaf dry mass,,mg g-1,Alpine trait survey CNRS 2021
+306,3613,Ranunculus acris,3106,Plant height vegetative,37.3884,cm,Alpine trait survey CNRS 2021
+307,3613,Ranunculus acris,3106,Plant height vegetative,34.7822,cm,GLORIA network 2019
+308,3613,Ranunculus acris,3106,Plant height vegetative,33.9765,cm,Alpine trait survey CNRS 2021
+309,3613,Ranunculus acris,3106,Plant height vegetative,36.4139,cm,Alpine trait survey CNRS 2021
+310,3613,Ranunculus acris,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,7.1407,g g-1,TRY contributor: Kattge et al. 2020
+311,3613,Ranunculus acris,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,7.4394,g g-1,TRY contributor: Kattge et al. 2020
+312,3613,Ranunculus acris,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,7.2811,g g-1,LEFE Toulouse field campaign 2022
+313,3613,Ranunculus acris,26,Seed dry mass,0.912,mg,LEFE Toulouse field campaign 2022
+314,3613,Ranunculus acris,26,Seed dry mass,1.124,mg,LEFE Toulouse field campaign 2022
+315,3613,Ranunculus acris,26,Seed dry mass,1.0164,mg,Alpine trait survey CNRS 2021
+316,3613,Ranunculus acris,26,Seed dry mass,0.9658,mg,TRY contributor: Kattge et al. 2020
+317,37255,Veronica alpina,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",27.5473,mm2 mg-1,GLORIA network 2019
+318,37255,Veronica alpina,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",28.443,mm2 mg-1,TRY contributor: Kattge et al. 2020
+319,37255,Veronica alpina,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",172.078,mg g-1,Alpine trait survey CNRS 2021
+320,37255,Veronica alpina,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",147.0242,mg g-1,GLORIA network 2019
+321,37255,Veronica alpina,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",,mg g-1,LEFE Toulouse field campaign 2022
+322,37255,Veronica alpina,14,Leaf nitrogen (N) content per leaf dry mass,27.661,mg g-1,TRY contributor: Kattge et al. 2020
+323,37255,Veronica alpina,14,Leaf nitrogen (N) content per leaf dry mass,,mg g-1,Alpine trait survey CNRS 2021
+324,37255,Veronica alpina,14,Leaf nitrogen (N) content per leaf dry mass,29.1661,mg g-1,TRY contributor: Kattge et al. 2020
+325,37255,Veronica alpina,3106,Plant height vegetative,24.9859,cm,GLORIA network 2019
+326,37255,Veronica alpina,3106,Plant height vegetative,25.7608,cm,LEFE Toulouse field campaign 2022
+327,37255,Veronica alpina,3106,Plant height vegetative,25.4603,cm,TRY contributor: Kattge et al. 2020
+328,37255,Veronica alpina,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,6.6592,g g-1,Alpine trait survey CNRS 2021
+329,37255,Veronica alpina,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,6.0343,g g-1,Alpine trait survey CNRS 2021
+330,37255,Veronica alpina,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,6.5637,g g-1,Alpine trait survey CNRS 2021
+331,37255,Veronica alpina,26,Seed dry mass,1.8387,mg,LEFE Toulouse field campaign 2022
+332,37255,Veronica alpina,26,Seed dry mass,1.7867,mg,LEFE Toulouse field campaign 2022
+333,37255,Veronica alpina,26,Seed dry mass,1.7452,mg,LEFE Toulouse field campaign 2022
+334,37255,Veronica alpina,26,Seed dry mass,,mg,LEFE Toulouse field campaign 2022
+335,96011,Vaccinium myrtillus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",17.9482,mm2 mg-1,Alpine trait survey CNRS 2021
+336,96011,Vaccinium myrtillus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",,mm2 mg-1,TRY contributor: Kattge et al. 2020
+337,96011,Vaccinium myrtillus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",201.6718,mg g-1,LEFE Toulouse field campaign 2022
+338,96011,Vaccinium myrtillus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",200.224,mg g-1,Alpine trait survey CNRS 2021
+339,96011,Vaccinium myrtillus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",201.3234,mg g-1,TRY contributor: Kattge et al. 2020
+340,96011,Vaccinium myrtillus,14,Leaf nitrogen (N) content per leaf dry mass,23.7905,mg g-1,Alpine trait survey CNRS 2021
+341,96011,Vaccinium myrtillus,14,Leaf nitrogen (N) content per leaf dry mass,22.3305,mg g-1,Alpine trait survey CNRS 2021
+342,96011,Vaccinium myrtillus,3106,Plant height vegetative,,cm,TRY contributor: Kattge et al. 2020
+343,96011,Vaccinium myrtillus,3106,Plant height vegetative,20.9306,cm,Alpine trait survey CNRS 2021
+344,96011,Vaccinium myrtillus,3106,Plant height vegetative,19.6593,cm,GLORIA network 2019
+345,96011,Vaccinium myrtillus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.3834,g g-1,Alpine trait survey CNRS 2021
+346,96011,Vaccinium myrtillus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.0439,g g-1,LEFE Toulouse field campaign 2022
+347,96011,Vaccinium myrtillus,26,Seed dry mass,0.4823,mg,TRY contributor: Kattge et al. 2020
+348,96011,Vaccinium myrtillus,26,Seed dry mass,0.3914,mg,LEFE Toulouse field campaign 2022
+349,96011,Vaccinium myrtillus,26,Seed dry mass,0.457,mg,TRY contributor: Kattge et al. 2020
+350,96011,Vaccinium myrtillus,26,Seed dry mass,,mg,GLORIA network 2019
+351,39998,Rhododendron ferrugineum,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",10.1626,mm2 mg-1,LEFE Toulouse field campaign 2022
+352,39998,Rhododendron ferrugineum,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",10.4686,mm2 mg-1,Alpine trait survey CNRS 2021
+353,39998,Rhododendron ferrugineum,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",364.2151,mg g-1,GLORIA network 2019
+354,39998,Rhododendron ferrugineum,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",369.915,mg g-1,LEFE Toulouse field campaign 2022
+355,39998,Rhododendron ferrugineum,14,Leaf nitrogen (N) content per leaf dry mass,14.7589,mg g-1,Alpine trait survey CNRS 2021
+356,39998,Rhododendron ferrugineum,14,Leaf nitrogen (N) content per leaf dry mass,14.5303,mg g-1,GLORIA network 2019
+357,39998,Rhododendron ferrugineum,14,Leaf nitrogen (N) content per leaf dry mass,15.2851,mg g-1,GLORIA network 2019
+358,39998,Rhododendron ferrugineum,3106,Plant height vegetative,30.9751,cm,TRY contributor: Kattge et al. 2020
+359,39998,Rhododendron ferrugineum,3106,Plant height vegetative,,cm,TRY contributor: Kattge et al. 2020
+360,39998,Rhododendron ferrugineum,3106,Plant height vegetative,28.7695,cm,Alpine trait survey CNRS 2021
+361,39998,Rhododendron ferrugineum,3106,Plant height vegetative,29.6365,cm,Alpine trait survey CNRS 2021
+362,39998,Rhododendron ferrugineum,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.3959,g g-1,LEFE Toulouse field campaign 2022
+363,39998,Rhododendron ferrugineum,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.0718,g g-1,Alpine trait survey CNRS 2021
+364,39998,Rhododendron ferrugineum,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.338,g g-1,LEFE Toulouse field campaign 2022
+365,39998,Rhododendron ferrugineum,26,Seed dry mass,0.5978,mg,GLORIA network 2019
+366,39998,Rhododendron ferrugineum,26,Seed dry mass,0.5639,mg,TRY contributor: Kattge et al. 2020
+367,19392,Calluna vulgaris,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",14.9753,mm2 mg-1,TRY contributor: Kattge et al. 2020
+368,19392,Calluna vulgaris,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",,mm2 mg-1,GLORIA network 2019
+369,19392,Calluna vulgaris,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",15.3492,mm2 mg-1,TRY contributor: Kattge et al. 2020
+370,19392,Calluna vulgaris,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",294.1913,mg g-1,Alpine trait survey CNRS 2021
+371,19392,Calluna vulgaris,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",299.7742,mg g-1,Alpine trait survey CNRS 2021
+372,19392,Calluna vulgaris,14,Leaf nitrogen (N) content per leaf dry mass,23.5662,mg g-1,TRY contributor: Kattge et al. 2020
+373,19392,Calluna vulgaris,14,Leaf nitrogen (N) content per leaf dry mass,26.3306,mg g-1,TRY contributor: Kattge et al. 2020
+374,19392,Calluna vulgaris,14,Leaf nitrogen (N) content per leaf dry mass,25.3202,mg g-1,Alpine trait survey CNRS 2021
+375,19392,Calluna vulgaris,3106,Plant height vegetative,,cm,GLORIA network 2019
+376,19392,Calluna vulgaris,3106,Plant height vegetative,38.2336,cm,LEFE Toulouse field campaign 2022
+377,19392,Calluna vulgaris,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.7109,g g-1,GLORIA network 2019
+378,19392,Calluna vulgaris,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.6089,g g-1,Alpine trait survey CNRS 2021
+379,19392,Calluna vulgaris,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.4386,g g-1,TRY contributor: Kattge et al. 2020
+380,19392,Calluna vulgaris,26,Seed dry mass,0.7,mg,TRY contributor: Kattge et al. 2020
+381,19392,Calluna vulgaris,26,Seed dry mass,0.676,mg,TRY contributor: Kattge et al. 2020
+382,19392,Calluna vulgaris,26,Seed dry mass,0.6604,mg,Alpine trait survey CNRS 2021
+383,10290,Empetrum nigrum,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",10.649,mm2 mg-1,LEFE Toulouse field campaign 2022
+384,10290,Empetrum nigrum,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",10.0171,mm2 mg-1,TRY contributor: Kattge et al. 2020
+385,10290,Empetrum nigrum,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",353.0693,mg g-1,Alpine trait survey CNRS 2021
+386,10290,Empetrum nigrum,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",340.2713,mg g-1,Alpine trait survey CNRS 2021
+387,10290,Empetrum nigrum,14,Leaf nitrogen (N) content per leaf dry mass,17.1837,mg g-1,LEFE Toulouse field campaign 2022
+388,10290,Empetrum nigrum,14,Leaf nitrogen (N) content per leaf dry mass,19.5716,mg g-1,TRY contributor: Kattge et al. 2020
+389,10290,Empetrum nigrum,14,Leaf nitrogen (N) content per leaf dry mass,15.554,mg g-1,Alpine trait survey CNRS 2021
+390,10290,Empetrum nigrum,14,Leaf nitrogen (N) content per leaf dry mass,17.2673,mg g-1,TRY contributor: Kattge et al. 2020
+391,10290,Empetrum nigrum,3106,Plant height vegetative,11.8637,cm,LEFE Toulouse field campaign 2022
+392,10290,Empetrum nigrum,3106,Plant height vegetative,,cm,LEFE Toulouse field campaign 2022
+393,10290,Empetrum nigrum,3106,Plant height vegetative,11.5153,cm,LEFE Toulouse field campaign 2022
+394,10290,Empetrum nigrum,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.7486,g g-1,LEFE Toulouse field campaign 2022
+395,10290,Empetrum nigrum,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.7379,g g-1,GLORIA network 2019
+396,10290,Empetrum nigrum,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,,g g-1,LEFE Toulouse field campaign 2022
+397,10290,Empetrum nigrum,26,Seed dry mass,0.5641,mg,LEFE Toulouse field campaign 2022
+398,10290,Empetrum nigrum,26,Seed dry mass,0.5032,mg,Alpine trait survey CNRS 2021
+399,10290,Empetrum nigrum,26,Seed dry mass,0.5417,mg,GLORIA network 2019
+400,97397,Loiseleuria procumbens,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",14.1711,mm2 mg-1,LEFE Toulouse field campaign 2022
+401,97397,Loiseleuria procumbens,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",14.0072,mm2 mg-1,GLORIA network 2019
+402,97397,Loiseleuria procumbens,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",258.2955,mg g-1,Alpine trait survey CNRS 2021
+403,97397,Loiseleuria procumbens,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",216.671,mg g-1,TRY contributor: Kattge et al. 2020
+404,97397,Loiseleuria procumbens,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",,mg g-1,LEFE Toulouse field campaign 2022
+405,97397,Loiseleuria procumbens,14,Leaf nitrogen (N) content per leaf dry mass,20.2567,mg g-1,GLORIA network 2019
+406,97397,Loiseleuria procumbens,14,Leaf nitrogen (N) content per leaf dry mass,20.8339,mg g-1,TRY contributor: Kattge et al. 2020
+407,97397,Loiseleuria procumbens,14,Leaf nitrogen (N) content per leaf dry mass,20.9749,mg g-1,GLORIA network 2019
+408,97397,Loiseleuria procumbens,14,Leaf nitrogen (N) content per leaf dry mass,22.0897,mg g-1,TRY contributor: Kattge et al. 2020
+409,97397,Loiseleuria procumbens,3106,Plant height vegetative,22.8804,cm,LEFE Toulouse field campaign 2022
+410,97397,Loiseleuria procumbens,3106,Plant height vegetative,21.6694,cm,Alpine trait survey CNRS 2021
+411,97397,Loiseleuria procumbens,3106,Plant height vegetative,20.0857,cm,GLORIA network 2019
+412,97397,Loiseleuria procumbens,3106,Plant height vegetative,20.5913,cm,TRY contributor: Kattge et al. 2020
+413,97397,Loiseleuria procumbens,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.0523,g g-1,LEFE Toulouse field campaign 2022
+414,97397,Loiseleuria procumbens,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.3423,g g-1,LEFE Toulouse field campaign 2022
+415,97397,Loiseleuria procumbens,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.1529,g g-1,TRY contributor: Kattge et al. 2020
+416,97397,Loiseleuria procumbens,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,2.4409,g g-1,Alpine trait survey CNRS 2021
+417,97397,Loiseleuria procumbens,26,Seed dry mass,0.2496,mg,GLORIA network 2019
+418,97397,Loiseleuria procumbens,26,Seed dry mass,0.2416,mg,Alpine trait survey CNRS 2021
+419,54696,Arctostaphylos uva ursi,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",12.4199,mm2 mg-1,LEFE Toulouse field campaign 2022
+420,54696,Arctostaphylos uva ursi,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",10.9681,mm2 mg-1,GLORIA network 2019
+421,54696,Arctostaphylos uva ursi,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",334.8587,mg g-1,Alpine trait survey CNRS 2021
+422,54696,Arctostaphylos uva ursi,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",311.9558,mg g-1,GLORIA network 2019
+423,54696,Arctostaphylos uva ursi,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",303.3268,mg g-1,Alpine trait survey CNRS 2021
+424,54696,Arctostaphylos uva ursi,14,Leaf nitrogen (N) content per leaf dry mass,17.8949,mg g-1,TRY contributor: Kattge et al. 2020
+425,54696,Arctostaphylos uva ursi,14,Leaf nitrogen (N) content per leaf dry mass,17.9732,mg g-1,GLORIA network 2019
+426,54696,Arctostaphylos uva ursi,14,Leaf nitrogen (N) content per leaf dry mass,17.8112,mg g-1,GLORIA network 2019
+427,54696,Arctostaphylos uva ursi,3106,Plant height vegetative,23.1152,cm,GLORIA network 2019
+428,54696,Arctostaphylos uva ursi,3106,Plant height vegetative,23.4682,cm,Alpine trait survey CNRS 2021
+429,54696,Arctostaphylos uva ursi,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.7273,g g-1,LEFE Toulouse field campaign 2022
+430,54696,Arctostaphylos uva ursi,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.5357,g g-1,TRY contributor: Kattge et al. 2020
+431,54696,Arctostaphylos uva ursi,26,Seed dry mass,0.7297,mg,TRY contributor: Kattge et al. 2020
+432,54696,Arctostaphylos uva ursi,26,Seed dry mass,0.7683,mg,TRY contributor: Kattge et al. 2020
+433,54696,Arctostaphylos uva ursi,26,Seed dry mass,0.7092,mg,GLORIA network 2019
+434,53527,Crocus albiflorus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",18.543,mm2 mg-1,TRY contributor: Kattge et al. 2020
+435,53527,Crocus albiflorus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",20.439,mm2 mg-1,LEFE Toulouse field campaign 2022
+436,53527,Crocus albiflorus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",18.6598,mm2 mg-1,TRY contributor: Kattge et al. 2020
+437,53527,Crocus albiflorus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",19.5342,mm2 mg-1,LEFE Toulouse field campaign 2022
+438,53527,Crocus albiflorus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",141.1822,mg g-1,LEFE Toulouse field campaign 2022
+439,53527,Crocus albiflorus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",154.5714,mg g-1,LEFE Toulouse field campaign 2022
+440,53527,Crocus albiflorus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",151.0096,mg g-1,TRY contributor: Kattge et al. 2020
+441,53527,Crocus albiflorus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",138.3146,mg g-1,Alpine trait survey CNRS 2021
+442,53527,Crocus albiflorus,14,Leaf nitrogen (N) content per leaf dry mass,,mg g-1,GLORIA network 2019
+443,53527,Crocus albiflorus,14,Leaf nitrogen (N) content per leaf dry mass,30.6781,mg g-1,LEFE Toulouse field campaign 2022
+444,53527,Crocus albiflorus,14,Leaf nitrogen (N) content per leaf dry mass,27.9579,mg g-1,Alpine trait survey CNRS 2021
+445,53527,Crocus albiflorus,3106,Plant height vegetative,11.3005,cm,Alpine trait survey CNRS 2021
+446,53527,Crocus albiflorus,3106,Plant height vegetative,11.2214,cm,GLORIA network 2019
+447,53527,Crocus albiflorus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,,g g-1,GLORIA network 2019
+448,53527,Crocus albiflorus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,5.8711,g g-1,TRY contributor: Kattge et al. 2020
+449,53527,Crocus albiflorus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,6.282,g g-1,LEFE Toulouse field campaign 2022
+450,53527,Crocus albiflorus,26,Seed dry mass,1.4504,mg,GLORIA network 2019
+451,53527,Crocus albiflorus,26,Seed dry mass,1.4195,mg,LEFE Toulouse field campaign 2022
+452,53527,Crocus albiflorus,26,Seed dry mass,1.532,mg,LEFE Toulouse field campaign 2022
+453,53527,Crocus albiflorus,26,Seed dry mass,1.527,mg,LEFE Toulouse field campaign 2022
+454,66958,Narcissus poeticus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",15.5191,mm2 mg-1,LEFE Toulouse field campaign 2022
+455,66958,Narcissus poeticus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",15.1804,mm2 mg-1,LEFE Toulouse field campaign 2022
+456,66958,Narcissus poeticus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",14.571,mm2 mg-1,TRY contributor: Kattge et al. 2020
+457,66958,Narcissus poeticus,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",14.2181,mm2 mg-1,TRY contributor: Kattge et al. 2020
+458,66958,Narcissus poeticus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",221.6184,mg g-1,Alpine trait survey CNRS 2021
+459,66958,Narcissus poeticus,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",205.1011,mg g-1,LEFE Toulouse field campaign 2022
+460,66958,Narcissus poeticus,14,Leaf nitrogen (N) content per leaf dry mass,28.0161,mg g-1,LEFE Toulouse field campaign 2022
+461,66958,Narcissus poeticus,14,Leaf nitrogen (N) content per leaf dry mass,29.5345,mg g-1,TRY contributor: Kattge et al. 2020
+462,66958,Narcissus poeticus,14,Leaf nitrogen (N) content per leaf dry mass,27.2976,mg g-1,Alpine trait survey CNRS 2021
+463,66958,Narcissus poeticus,3106,Plant height vegetative,12.9066,cm,GLORIA network 2019
+464,66958,Narcissus poeticus,3106,Plant height vegetative,12.1564,cm,GLORIA network 2019
+465,66958,Narcissus poeticus,3106,Plant height vegetative,11.4207,cm,GLORIA network 2019
+466,66958,Narcissus poeticus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.8781,g g-1,LEFE Toulouse field campaign 2022
+467,66958,Narcissus poeticus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,3.8024,g g-1,Alpine trait survey CNRS 2021
+468,66958,Narcissus poeticus,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,,g g-1,Alpine trait survey CNRS 2021
+469,66958,Narcissus poeticus,26,Seed dry mass,2.1061,mg,TRY contributor: Kattge et al. 2020
+470,66958,Narcissus poeticus,26,Seed dry mass,,mg,Alpine trait survey CNRS 2021
+471,66958,Narcissus poeticus,26,Seed dry mass,2.0108,mg,TRY contributor: Kattge et al. 2020
+472,83891,Lilium martagon,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",14.4686,mm2 mg-1,LEFE Toulouse field campaign 2022
+473,83891,Lilium martagon,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",17.7078,mm2 mg-1,Alpine trait survey CNRS 2021
+474,83891,Lilium martagon,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",16.1676,mm2 mg-1,Alpine trait survey CNRS 2021
+475,83891,Lilium martagon,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",216.0714,mg g-1,TRY contributor: Kattge et al. 2020
+476,83891,Lilium martagon,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",217.2676,mg g-1,TRY contributor: Kattge et al. 2020
+477,83891,Lilium martagon,14,Leaf nitrogen (N) content per leaf dry mass,32.2488,mg g-1,GLORIA network 2019
+478,83891,Lilium martagon,14,Leaf nitrogen (N) content per leaf dry mass,,mg g-1,LEFE Toulouse field campaign 2022
+479,83891,Lilium martagon,3106,Plant height vegetative,11.4111,cm,TRY contributor: Kattge et al. 2020
+480,83891,Lilium martagon,3106,Plant height vegetative,10.2952,cm,LEFE Toulouse field campaign 2022
+481,83891,Lilium martagon,3106,Plant height vegetative,11.4116,cm,Alpine trait survey CNRS 2021
+482,83891,Lilium martagon,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,5.2201,g g-1,GLORIA network 2019
+483,83891,Lilium martagon,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,5.1807,g g-1,TRY contributor: Kattge et al. 2020
+484,83891,Lilium martagon,26,Seed dry mass,,mg,Alpine trait survey CNRS 2021
+485,83891,Lilium martagon,26,Seed dry mass,2.1663,mg,TRY contributor: Kattge et al. 2020
+486,83891,Lilium martagon,26,Seed dry mass,2.3789,mg,Alpine trait survey CNRS 2021
+487,83891,Lilium martagon,26,Seed dry mass,2.0756,mg,GLORIA network 2019
+488,61545,Gentiana nivalis,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",24.2785,mm2 mg-1,TRY contributor: Kattge et al. 2020
+489,61545,Gentiana nivalis,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",22.0889,mm2 mg-1,Alpine trait survey CNRS 2021
+490,61545,Gentiana nivalis,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",21.7589,mm2 mg-1,Alpine trait survey CNRS 2021
+491,61545,Gentiana nivalis,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",20.7891,mm2 mg-1,Alpine trait survey CNRS 2021
+492,61545,Gentiana nivalis,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",235.5045,mg g-1,Alpine trait survey CNRS 2021
+493,61545,Gentiana nivalis,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",,mg g-1,LEFE Toulouse field campaign 2022
+494,61545,Gentiana nivalis,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",240.1258,mg g-1,GLORIA network 2019
+495,61545,Gentiana nivalis,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",230.8845,mg g-1,GLORIA network 2019
+496,61545,Gentiana nivalis,14,Leaf nitrogen (N) content per leaf dry mass,25.2048,mg g-1,Alpine trait survey CNRS 2021
+497,61545,Gentiana nivalis,14,Leaf nitrogen (N) content per leaf dry mass,31.1298,mg g-1,LEFE Toulouse field campaign 2022
+498,61545,Gentiana nivalis,3106,Plant height vegetative,23.2001,cm,TRY contributor: Kattge et al. 2020
+499,61545,Gentiana nivalis,3106,Plant height vegetative,22.3909,cm,GLORIA network 2019
+500,61545,Gentiana nivalis,3106,Plant height vegetative,26.1677,cm,Alpine trait survey CNRS 2021
+501,61545,Gentiana nivalis,3106,Plant height vegetative,24.8448,cm,LEFE Toulouse field campaign 2022
+502,61545,Gentiana nivalis,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,6.0572,g g-1,TRY contributor: Kattge et al. 2020
+503,61545,Gentiana nivalis,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,5.5903,g g-1,LEFE Toulouse field campaign 2022
+504,61545,Gentiana nivalis,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,6.4487,g g-1,Alpine trait survey CNRS 2021
+505,61545,Gentiana nivalis,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,5.6893,g g-1,TRY contributor: Kattge et al. 2020
+506,61545,Gentiana nivalis,26,Seed dry mass,4.0915,mg,TRY contributor: Kattge et al. 2020
+507,61545,Gentiana nivalis,26,Seed dry mass,,mg,GLORIA network 2019
+508,61545,Gentiana nivalis,26,Seed dry mass,4.2423,mg,LEFE Toulouse field campaign 2022
+509,61545,Gentiana nivalis,26,Seed dry mass,3.9508,mg,Alpine trait survey CNRS 2021
+510,98422,Soldanella alpina,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",17.4427,mm2 mg-1,LEFE Toulouse field campaign 2022
+511,98422,Soldanella alpina,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",16.5034,mm2 mg-1,Alpine trait survey CNRS 2021
+512,98422,Soldanella alpina,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",15.5896,mm2 mg-1,LEFE Toulouse field campaign 2022
+513,98422,Soldanella alpina,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",15.4298,mm2 mg-1,TRY contributor: Kattge et al. 2020
+514,98422,Soldanella alpina,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",227.5326,mg g-1,GLORIA network 2019
+515,98422,Soldanella alpina,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",242.6866,mg g-1,GLORIA network 2019
+516,98422,Soldanella alpina,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",235.8585,mg g-1,TRY contributor: Kattge et al. 2020
+517,98422,Soldanella alpina,14,Leaf nitrogen (N) content per leaf dry mass,29.7621,mg g-1,TRY contributor: Kattge et al. 2020
+518,98422,Soldanella alpina,14,Leaf nitrogen (N) content per leaf dry mass,30.9073,mg g-1,TRY contributor: Kattge et al. 2020
+519,98422,Soldanella alpina,3106,Plant height vegetative,17.0512,cm,TRY contributor: Kattge et al. 2020
+520,98422,Soldanella alpina,3106,Plant height vegetative,15.9498,cm,LEFE Toulouse field campaign 2022
+521,98422,Soldanella alpina,3106,Plant height vegetative,16.918,cm,GLORIA network 2019
+522,98422,Soldanella alpina,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,5.3019,g g-1,Alpine trait survey CNRS 2021
+523,98422,Soldanella alpina,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,5.0092,g g-1,GLORIA network 2019
+524,98422,Soldanella alpina,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,,g g-1,LEFE Toulouse field campaign 2022
+525,98422,Soldanella alpina,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,4.9903,g g-1,TRY contributor: Kattge et al. 2020
+526,98422,Soldanella alpina,26,Seed dry mass,3.3474,mg,Alpine trait survey CNRS 2021
+527,98422,Soldanella alpina,26,Seed dry mass,3.339,mg,GLORIA network 2019
+528,98422,Soldanella alpina,26,Seed dry mass,3.2328,mg,LEFE Toulouse field campaign 2022
+529,69986,Anemone narcissiflora,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",22.9699,mm2 mg-1,GLORIA network 2019
+530,69986,Anemone narcissiflora,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",21.088,mm2 mg-1,LEFE Toulouse field campaign 2022
+531,69986,Anemone narcissiflora,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",21.3695,mm2 mg-1,Alpine trait survey CNRS 2021
+532,69986,Anemone narcissiflora,3117,"Leaf area per leaf dry mass (specific leaf area, SLA or 1/LMA): petiole excluded",22.8433,mm2 mg-1,TRY contributor: Kattge et al. 2020
+533,69986,Anemone narcissiflora,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",171.5669,mg g-1,GLORIA network 2019
+534,69986,Anemone narcissiflora,47,"Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)",164.9684,mg g-1,TRY contributor: Kattge et al. 2020
+535,69986,Anemone narcissiflora,14,Leaf nitrogen (N) content per leaf dry mass,28.8543,mg g-1,GLORIA network 2019
+536,69986,Anemone narcissiflora,14,Leaf nitrogen (N) content per leaf dry mass,33.0635,mg g-1,LEFE Toulouse field campaign 2022
+537,69986,Anemone narcissiflora,14,Leaf nitrogen (N) content per leaf dry mass,,mg g-1,GLORIA network 2019
+538,69986,Anemone narcissiflora,3106,Plant height vegetative,18.0689,cm,TRY contributor: Kattge et al. 2020
+539,69986,Anemone narcissiflora,3106,Plant height vegetative,16.1336,cm,LEFE Toulouse field campaign 2022
+540,69986,Anemone narcissiflora,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,5.3281,g g-1,Alpine trait survey CNRS 2021
+541,69986,Anemone narcissiflora,6,Leaf water content per leaf fresh mass (LSWC): leaf water content,5.459,g g-1,TRY contributor: Kattge et al. 2020
+542,69986,Anemone narcissiflora,26,Seed dry mass,3.8409,mg,Alpine trait survey CNRS 2021
+543,69986,Anemone narcissiflora,26,Seed dry mass,3.244,mg,Alpine trait survey CNRS 2021

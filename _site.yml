@@ -17,6 +17,8 @@ navbar:
       href: Rscripts.html      
     - text: "Fish'in-trait"
       href: PicTheFish.html
+    - text: "R Course"
+      href: Rcourse.html
   right:
     - icon: fa-envelope fa-lg
       href: contact.html

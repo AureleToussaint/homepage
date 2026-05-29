@@ -1,0 +1,33 @@
+file,variable,type,description
+01_species_traits.csv,species,Character,Species name (Genus_species)
+01_species_traits.csv,PFT,Character,Plant functional type (PFT_stress / PFT_grass / PFT_ruderal / PFT_shrub / PFT_geophyte)
+01_species_traits.csv,SLA,Numeric,Specific leaf area (mm2 mg-1)
+01_species_traits.csv,LDMC,Numeric,Leaf dry matter content (mg g-1)
+01_species_traits.csv,LeafN,Numeric,Leaf nitrogen content per dry mass (mg g-1)
+01_species_traits.csv,Height,Numeric,Vegetative plant height (cm)
+01_species_traits.csv,LSWC,Numeric,Leaf saturated water content (g g-1)
+01_species_traits.csv,SeedMass,Numeric,Seed dry mass (mg)
+01_species_traits.csv,IUCN_status,Character,IUCN Red List category (LC/NT/VU/EN/CR)
+01b_TRY_format_long.csv,ObsDataID,Integer,Unique observation identifier
+01b_TRY_format_long.csv,AccSpeciesName,Character,Accepted species name
+01b_TRY_format_long.csv,TraitID,Integer,TRY trait identifier
+01b_TRY_format_long.csv,TraitName,Character,Full TRY trait name
+01b_TRY_format_long.csv,StdValue,Numeric,Standardised trait value (may be NA)
+01b_TRY_format_long.csv,UnitName,Character,Measurement unit
+02_environment.csv,plot_id,Character,Unique plot identifier (P01–P40)
+02_environment.csv,elevation,Integer,Elevation above sea level (m)
+02_environment.csv,MAT,Numeric,Mean annual temperature (deg C)
+02_environment.csv,MAP,Integer,Mean annual precipitation (mm yr-1)
+02_environment.csv,soil_pH,Numeric,Topsoil pH (0–10 cm)
+02_environment.csv,soil_N,Numeric,Topsoil total nitrogen (mg g-1)
+02_environment.csv,disturbance,Numeric,Disturbance index 0–1 (grazing + trampling)
+03_community_composition.csv,plot_id,Character,Unique plot identifier
+03_community_composition.csv,[species columns],Numeric,"Relative cover (0–1, proportional)"
+05_intraspecific_traits.csv,species,Character,Species name
+05_intraspecific_traits.csv,population_id,Character,Population identifier (Spe_N)
+05_intraspecific_traits.csv,population_elevation,Numeric,Elevation of the population (m)
+05_intraspecific_traits.csv,individual_id,Character,Individual plant identifier
+05_intraspecific_traits.csv,SLA,Numeric,Individual SLA (mm2 mg-1)
+05_intraspecific_traits.csv,LDMC,Numeric,Individual LDMC (mg g-1)
+05_intraspecific_traits.csv,LeafN,Numeric,Individual leaf N (mg g-1)
+05_intraspecific_traits.csv,Height,Numeric,Individual height (cm)
