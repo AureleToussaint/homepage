@@ -274,7 +274,7 @@ output:
     <!-- ⚙️ SETUP: replace YOUR_FORM_ID with your Formspree form ID (different from Belém course).
          Create a free form at https://formspree.io → "New Form" → copy the ID from the endpoint URL. -->
     <form id="upload-form"
-          action="https://formspree.io/f/YOUR_FORM_ID"
+          action="https://formspree.io/f/xvzyyzlo"
           method="POST"
           enctype="multipart/form-data">
 
