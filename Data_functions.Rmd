@@ -1,0 +1,80 @@
+---
+title: ""
+pagetitle: "R Functions — Aurèle Toussaint"
+output:
+  html_document:
+    self_contained: false
+    toc: false
+    includes:
+      in_header: header.html
+---
+
+```{=html}
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+<style>
+.back-link { font-size:0.9em; margin: 20px 0 4px 0; }
+.back-link a { color:#27ae60; text-decoration:none; }
+.back-link a:hover { text-decoration:underline; }
+.page-header { margin: 20px 0 28px 0; border-bottom:1px solid #e5e5e5; padding-bottom:12px; }
+.page-header h1 { font-size:1.9em; font-weight:bold; color:#2c3e50; margin:0; }
+.data-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 0; border-bottom: 1px solid #f0f0f0;
+}
+.data-item:last-child { border-bottom: none; }
+.data-icon {
+  width:40px; height:40px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1em; color:#fff; flex-shrink:0; background:#27ae60;
+}
+.data-text h3 { margin:0 0 4px 0; font-size:1em; font-weight:600; color:#2c3e50; }
+.data-text p  { margin:0; font-size:0.9em; color:#666; line-height:1.5; }
+</style>
+<div class="back-link">← <a href="RData.html">Back to Data &amp; Code</a></div>
+<div class="page-header"><h1>R Functions</h1></div>
+
+<div class="data-item">
+  <div class="data-icon"><i class="fa fa-file-code-o"></i></div>
+  <div class="data-text">
+    <h3><a href="data/FunctionR_FDnull.R" target="_blank">FDnull</a></h3>
+    <p>R function to compare the functional volume of a community based on functional traits
+    to a random pool assemblage.</p>
+  </div>
+</div>
+
+<div class="data-item">
+  <div class="data-icon"><i class="fa fa-file-code-o"></i></div>
+  <div class="data-text">
+    <h3><a href="data/FunctionR_FDnullChge.R" target="_blank">FDnullChge</a></h3>
+    <p>R function to compare the functional volume of a community based on functional traits
+    to a random pool assemblage (change variant).</p>
+  </div>
+</div>
+
+<div class="data-item">
+  <div class="data-icon"><i class="fa fa-file-code-o"></i></div>
+  <div class="data-text">
+    <h3><a href="data/FunctionR_Funiq.R" target="_blank">Funiq</a></h3>
+    <p>R function to compute and illustrate the proportion of the area (2D) or volume
+    of a taxonomic group not filled by any other species of the community.</p>
+  </div>
+</div>
+
+<div class="data-item">
+  <div class="data-icon"><i class="fa fa-file-code-o"></i></div>
+  <div class="data-text">
+    <h3><a href="data/FunctionR_Fvulne.R" target="_blank">Fvulne</a></h3>
+    <p>R function to compute and illustrate the proportion of the area (2D) or volume
+    lost if all vulnerable species disappeared.</p>
+  </div>
+</div>
+
+<div class="data-item">
+  <div class="data-icon"><i class="fa fa-graduation-cap"></i></div>
+  <div class="data-text">
+    <h3><a href="https://rpubs.com/aurele/1342664" target="_blank">Course data (RPubs)</a></h3>
+    <p>R data and materials for ecology courses, hosted on RPubs.</p>
+  </div>
+</div>
+```

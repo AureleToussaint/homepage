@@ -1,0 +1,113 @@
+---
+title: ""
+pagetitle: "Communication & Awards — Aurèle Toussaint"
+output:
+  html_document:
+    self_contained: false
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    includes:
+      in_header: header.html
+---
+
+```{=html}
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<style>
+.page-header {
+  margin: 32px 0 28px 0;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 14px;
+}
+.page-header h1 {
+  font-size: 1.9em; font-weight: bold; color: #2c3e50; margin: 0 0 4px 0;
+}
+.back-link {
+  font-size: 0.9em; margin-bottom: 8px;
+}
+.back-link a { color: #e67e22; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+
+/* Reuse styles from index */
+.section-title {
+  font-size: 1.3em; font-weight: bold; margin: 36px 0 14px 0;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px; color: #2c3e50;
+}
+.pub-list {
+  counter-reset: pub-counter 30;
+  list-style: none; padding: 0;
+}
+.pub-list li {
+  counter-increment: pub-counter -1;
+  padding: 6px 0 6px 48px; position: relative;
+  line-height: 1.5; border-bottom: 1px solid #f0f0f0;
+}
+.pub-list li::before {
+  content: counter(pub-counter) "/";
+  position: absolute; left: 0; font-weight: bold;
+  color: #555; width: 40px; text-align: right;
+}
+.pub-list li.pub-year-label {
+  counter-increment: none; font-size: 1.15em; font-weight: bold;
+  color: #333; padding: 20px 0 4px 0; border-bottom: none;
+}
+.pub-list li.pub-year-label::before { content: none; }
+.pub-year { font-size: 1.1em; font-weight: bold; margin: 24px 0 8px 0; color: #333; }
+.grant-item {
+  margin: 10px 0; padding: 10px 14px;
+  border-left: 3px solid #e67e22; background: #fafafa; line-height: 1.6;
+}
+.student-list { list-style: none; padding: 0; }
+.student-list li {
+  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+}
+.conf-list { list-style: none; padding: 0; }
+.conf-list li {
+  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+}
+</style>
+
+<div class="back-link">← <a href="index.html">← Home</a></div>
+
+<div class="page-header">
+  <h1>Communication, Awards &amp; Conferences</h1>
+</div>
+
+<h2 class="section-title">Communication</h2>
+
+<p class="pub-year">2025</p>
+<ul class="conf-list">
+  <li>
+    <strong>France 3 Occitanie.</strong> Article sur la 'diversité fantôme'.
+    <a href="https://france3-regions.francetvinfo.fr/occitanie/haute-garonne/toulouse/nous-avons-ete-surpris-par-l-ampleur-du-resultat-une-nouvelle-etude-pointe-l-impact-majeur-de-l-homme-sur-la-baisse-de-la-biodiversite-3139076.html" target="_blank">Link</a>
+  </li>
+</ul>
+
+<h2 class="section-title">Awards</h2>
+
+<p class="pub-year">2024</p>
+<div class="grant-item">
+  <strong>Estonian Research Award</strong> for research on the functional diversity of plants and vertebrates at global scale.
+  Key publications:
+  <a href="https://www.science.org/doi/full/10.1126/sciadv.abf2675" target="_blank">Science Advances</a> and
+  <a href="https://www.nature.com/articles/s41467-021-25293-0" target="_blank">Nature Communications</a>.
+</div>
+
+<h2 class="section-title">Conferences</h2>
+
+<ul class="conf-list">
+  <li><em>2024</em> — Annual meeting for macroecology of the Ecological Society of Germany, Austria and Switzerland, Marburg, Germany. <em>Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in bird assemblages.</em></li>
+  <li><em>2023</em> — 19th International Symposium on River and Lake Environment (ISRLE 19), China. <em>Mapping extinction risk in the global functional spectra across the tree of life.</em></li>
+  <li><em>2020</em> — Annual meeting for macroecology of the Ecological Society of Germany, Austria and Switzerland, Konstanz, Germany. <em>Mapping extinction risk in the global functional spectra across the tree of life.</em></li>
+  <li><em>2018</em> — Annual meeting for macroecology of the Ecological Society of Germany, Austria and Switzerland, Birmendorf, Switzerland. <em>Global mismatch between the species richness of vascular plants and symbiosis fungi.</em></li>
+  <li><em>2017</em> — 60th IAVS Annual Symposium, Palermo, Italy. <em>Global mismatch between the species richness of vascular plants and symbiosis fungi across biogeographic realms.</em></li>
+  <li><em>2016</em> — 7th EAFES International Congress, Daegu, South Korea. <em>Functional diversity and vulnerability of freshwater fish at the global scale.</em></li>
+  <li><em>2015</em> — 9th Symposium for European Freshwater Sciences, Geneva, Switzerland. <em>Introductions of non-native freshwater fish affected differently the taxonomic and functional biodiversity facets.</em></li>
+  <li><em>2015</em> — 7th Biennial Conference of the International Biogeography Society, Bayreuth, Germany. <em>Functional diversity of the freshwater fish fauna.</em> (poster)</li>
+  <li><em>2013</em> — 8th Symposium for European Freshwater Sciences, Münster, Germany. <em>Historical assemblage distinctiveness and the introduction of widespread non-native species explain worldwide changes in freshwater fish taxonomic dissimilarity.</em></li>
+</ul>
+```

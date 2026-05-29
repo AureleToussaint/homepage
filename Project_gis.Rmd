@@ -1,0 +1,36 @@
+---
+title: ""
+pagetitle: "GIS Application for Conservation — Projects"
+output:
+  html_document:
+    self_contained: false
+    toc: false
+    includes:
+      in_header: header.html
+---
+
+```{=html}
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+<style>
+.back-link { font-size:0.9em; margin:20px 0 4px 0; }
+.back-link a { color:#8e44ad; text-decoration:none; }
+.back-link a:hover { text-decoration:underline; }
+.proj-header { margin:20px 0 28px 0; }
+.proj-header h1 { font-size:1.9em; font-weight:bold; color:#2c3e50; margin:0 0 16px 0; }
+.proj-img {
+  width:100%; max-height:320px; object-fit:cover;
+  border:1px solid #ddd; border-radius:8px; margin-bottom:24px;
+}
+.proj-body p { font-size:1.05em; line-height:1.7; color:#444; }
+</style>
+<div class="back-link">← <a href="Projects.html">Back to Projects</a></div>
+<div class="proj-header">
+  <h1>GIS application for conservation</h1>
+</div>
+<img class="proj-img" src="data/GIS.png" alt="GIS for conservation"/>
+<div class="proj-body">
+<p>The objective of this project was to evaluate the conservation status of grasslands in Estonia and to develop spatially explicit prioritisation approaches for their protection.</p>
+<p>This project was conducted under the supervision of <a href="https://landscape.ut.ee/people/aveliina-helm/?lang=en" target="_blank">Dr. Aveliina Helm</a>. Main contributions included the development of GIS and R algorithms for conservation prioritization mapping, as well as algorithms for the <a href="https://www.syke.fi/en-US/Research__Development/Nature/Specialist_work/Zonation_in_Finland/Zonation_software" target="_blank">Zonation software</a>.</p>
+</div>
+```

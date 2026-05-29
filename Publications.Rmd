@@ -1,0 +1,326 @@
+---
+title: ""
+pagetitle: "Publications — Aurèle Toussaint"
+output:
+  html_document:
+    self_contained: false
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    includes:
+      in_header: header.html
+---
+
+```{=html}
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<style>
+.page-header {
+  margin: 32px 0 28px 0;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 14px;
+}
+.page-header h1 {
+  font-size: 1.9em; font-weight: bold; color: #2c3e50; margin: 0 0 4px 0;
+}
+.back-link {
+  font-size: 0.9em; margin-bottom: 8px;
+}
+.back-link a { color: #2980b9; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+
+/* Reuse styles from index */
+.section-title {
+  font-size: 1.3em; font-weight: bold; margin: 36px 0 14px 0;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px; color: #2c3e50;
+}
+.pub-list {
+  counter-reset: pub-counter 30;
+  list-style: none; padding: 0;
+}
+.pub-list li {
+  counter-increment: pub-counter -1;
+  padding: 6px 0 6px 48px; position: relative;
+  line-height: 1.5; border-bottom: 1px solid #f0f0f0;
+}
+.pub-list li::before {
+  content: counter(pub-counter) "/";
+  position: absolute; left: 0; font-weight: bold;
+  color: #555; width: 40px; text-align: right;
+}
+.pub-list li.pub-year-label {
+  counter-increment: none; font-size: 1.15em; font-weight: bold;
+  color: #333; padding: 20px 0 4px 0; border-bottom: none;
+}
+.pub-list li.pub-year-label::before { content: none; }
+.pub-year { font-size: 1.1em; font-weight: bold; margin: 24px 0 8px 0; color: #333; }
+.grant-item {
+  margin: 10px 0; padding: 10px 14px;
+  border-left: 3px solid #2980b9; background: #fafafa; line-height: 1.6;
+}
+.student-list { list-style: none; padding: 0; }
+.student-list li {
+  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+}
+.conf-list { list-style: none; padding: 0; }
+.conf-list li {
+  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+}
+</style>
+
+<div class="back-link">← <a href="index.html">← Home</a></div>
+
+<div class="page-header">
+  <h1>Publications</h1>
+</div>
+
+<p>A full list is available on
+<a href="https://scholar.google.fr/citations?user=oTxWHKgAAAAJ&hl=fr" target="_blank">Google Scholar</a> and
+<a href="https://www.researchgate.net/profile/Aurele_Toussaint" target="_blank">ResearchGate</a>.
+Data repository available <a href="RData.html">here</a>.</p>
+
+<ol class="pub-list">
+
+  <li class="pub-year-label">2025</li>
+
+  <li>
+    Partel M., Tamme R., …, <strong>Toussaint A.</strong>, …, Zobel M.
+    Global impoverishment of natural vegetation revealed by dark diversity.
+    <em>Nature</em>, 641, 917–924.
+    <a href="data/2025_Partel_Nature.pdf" target="_blank">PDF</a> ·
+    <a href="https://www.inee.cnrs.fr/fr/cnrsinfo/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur" target="_blank">Press release CNRS</a> ·
+    <a href="https://crbe.cnrs.fr/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur-la-biodiversite" target="_blank">Actualité CRBE</a> ·
+    <a href="https://www.eurekalert.org/news-releases/1078990" target="_blank">EurekAlert</a>
+  </li>
+
+  <li>
+    Chen Z., Xu C., Brosse S., <strong>Toussaint A.</strong>, Xu J., Su G.
+    Global Patterns and Determinants of Multiple Facets of Freshwater Fishes Beta Diversity.
+    <em>Global Ecology and Biogeography</em>.
+    <a href="data/2025_Chen_GEB.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li class="pub-year-label">2024</li>
+
+  <li>
+    <strong>Toussaint A.</strong>, Pärtel M., Carmona C.P.
+    Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in bird assemblages.
+    <em>Ecology Letters</em>, 27, e14373.
+    <a href="data/2024_Toussaint_EcolLett.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Tordoni E., Carmona C.P., <strong>Toussaint A.</strong>, Tamme R., Pärtel M.
+    Global patterns and determinants of multiple facets of plant diversity.
+    <em>Global Ecology and Biogeography</em>, e13823.
+    <a href="data/2024_Tordoni_GEB.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Carmona C.P., Pärtel M., Tamme R., <strong>Toussaint A.</strong>
+    OTSIMAS ELURIKKUSE MÕÕTMEID LOOMADE JA TAIMEDE SEAST, MAA ALT JA MAA PEALT.
+    <em>EESTI VABARIIGI PREEMIAD</em>.
+    <a href="data/2024_Carmona_EESTI.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Coulon N., Pilet S., Lizé A., Lacoue-Labarthe T., Sturbois A., <strong>Toussaint A.</strong>, Feunteun E., Carpentier A.
+    Shark critical life stage vulnerability to monthly temperature variations under climate change.
+    <em>Marine Environmental Research</em>, 198, 106531.
+    <a href="data/2024_Coulon_MER.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li class="pub-year-label">2023</li>
+
+  <li>
+    <strong>Toussaint A.</strong>, Pärtel M., Carmona C.P.
+    Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in birds' assemblages.
+    <em>Authorea</em>.
+    <a href="data/2023_Toussaint_Authorea_2.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Coulon N., Lindegren M., Goberville E., <strong>Toussaint A.</strong>, Receveur A., Auber A.
+    Threatened fish species in the Northeast Atlantic are functionally rare.
+    <em>Global Ecology and Biogeography</em>, 1–19.
+    <a href="data/2023_Coulon_GEB.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Bueno C.G., <strong>Toussaint A.</strong>, Träger S. et al.
+    Reply to: The importance of trait selection in ecology.
+    <em>Nature</em>, 618, E31–E34.
+    <a href="data/2023_Bueno_nature.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    <strong>Toussaint A.</strong>, Pärtel M., Carmona C.P.
+    Non-native bird species will not compensate for the loss of phylogenetic and functional diversity after the extinction of threatened species.
+    <em>Authorea</em>.
+    <a href="data/2023_Toussaint_Authorea.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    de Tombeur F., Raven J.A., <strong>Toussaint A.</strong>, Lambers H., Cooke J., Hartley S.E., Johnson S.N., Coq S., Katz O., Schaller J., Violle C.
+    Why do plants silicify?
+    <em>Trends in Ecology and Evolution</em>, 38(3), 275–288.
+    <a href="data/2023_deTombeur.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li class="pub-year-label">2022</li>
+
+  <li>
+    Auber A., Waldock C., Maire A., Goberville E., Albouy C., Algar A.C., McLean M., Brind'Amour A., Green A.L., Tupper M., Vigliola L., Kaschner K., Kesner-Reyes K., Beger M., Tjiputra J., <strong>Toussaint A.</strong>, Violle C., Mouquet N., Thuiller W., Mouillot D.
+    A functional vulnerability framework for biodiversity conservation.
+    <em>Nature Communications</em>, 13, 4774.
+    <a href="data/2022_Auber_NatComms.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Paganeli B., <strong>Toussaint A.</strong>, Bueno C.G., Fujinuma J., Reier Ü., Pärtel M.
+    Dark diversity at home describes the success of cross-continent tree invasions.
+    <em>Diversity and Distributions</em>, 28(6), 1202–1213.
+    <a href="data/2022_Paganeli_DDI.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Su G., Tedesco P.A., <strong>Toussaint A.</strong>, Villeger S., Brosse S.
+    Contemporary environment and historical legacy explain functional diversity of freshwater fishes in the world rivers.
+    <em>Global Ecology and Biogeography</em>, 31, 700–713.
+    <a href="data/2022_Su_GEB.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li class="pub-year-label">2021</li>
+
+  <li>
+    Carmona C.P., Tamme R., Pärtel M., de Bello F., Brosse S., Capdevila P., Gonzalez-M R., Gonzalez-Suarez M., Salguero-Gomez R., Vasquez-Valderrama M., <strong>Toussaint A.</strong>
+    Erosion of global functional diversity across the tree of life.
+    <em>Science Advances</em>, 7(13), eabf2675.
+    <a href="data/2021_Carmona_SciAdv.pdf" target="_blank">PDF</a> ·
+    <a href="https://inee.cnrs.fr/fr/cnrsinfo/lextinction-des-especes-en-danger-entrainera-une-reorganisation-globale-du-role-des-autres" target="_blank">Press release CNRS</a> ·
+    <a href="https://www.eurekalert.org/news-releases/546861" target="_blank">EurekAlert!</a>
+  </li>
+
+  <li>
+    Tordoni E., <strong>Toussaint A.</strong>, Pärtel M., Nogues-Bravo D., Carmona C.P.
+    Combining taxonomic, phylogenetic and functional diversity reveals new global priority areas for tetrapod conservation.
+    <em>bioRxiv</em>.
+    <a href="https://doi.org/10.1101/2021.07.01.450689" target="_blank">doi: 10.1101/2021.07.01.450689</a>
+  </li>
+
+  <li>
+    <strong>Toussaint A.</strong>, Brosse S., Bueno C.G., Pärtel M., Tamme S., Carmona C.P.
+    Extinction of threatened vertebrates will lead to idiosyncratic changes in functional diversity across the world.
+    <em>Nature Communications</em>, 12(1), 1–12.
+    <a href="data/2021_Toussaint_NatCom.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Carmona C.P., Bueno C.G., <strong>Toussaint A.</strong>, Träger S., Diaz S., Moora M., Munson D.A., Pärtel M., Zobel M., Tamme R.
+    Fine-root traits in the global spectrum of plant form and function.
+    <em>Nature</em>, 597(7878), 683–687.
+    <a href="data/2021_Carmona_Nature.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Brosse S., Charpin N., Su G., <strong>Toussaint A.</strong>, Herrera-R. G.A., Tedesco P.A., Villeger S.
+    FISHMORPH: A global database on morphological traits of freshwater fishes.
+    <em>Global Ecology and Biogeography</em>, 30(12), 2330–2336.
+    <a href="data/2021_Brosse_GEB.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li class="pub-year-label">2020</li>
+
+  <li>
+    <strong>Toussaint A.</strong>, Bueno C.G., Davison J., Moora M., Tedersoo L., Zobel M., Opik M., Partel M.
+    Asymmetric patterns of global diversity among plants and mycorrhizal fungi.
+    <em>Journal of Vegetation Science</em>, 31(2), 355–366.
+    <a href="data/2019_Toussaint_JVS.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Derezal O., Mondy P.C., Dembski S., Kreutzenberger K., Reyjol Y., Chanderis A., Valette L., Brosse S., <strong>Toussaint A.</strong>, Beillard J., Merg M.L., Usseglio-Polatera P.
+    A diagnostic-based approach to assess specific risks of river degradation in a multiple pressure context: Insights from fish communities.
+    <em>Science of The Total Environment</em>, 734, 139467.
+    <a href="data/2020_Derezal_et_al_STOTEN.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Carmona C.P., Tamme R., Partel M., de Bello F., Brosse S., Capdevila P., Gonzalez-M R., Gonzalez-Suarez M., Salguero-Gomez R., Vasquez-Valderrama M., <strong>Toussaint A.</strong>
+    Mapping extinction risk in the global functional spectra across the tree of life.
+    <em>bioRxiv</em>.
+    <a href="https://doi.org/10.1101/2020.06.29.179143" target="_blank">doi: 10.1101/2020.06.29.179143</a>
+  </li>
+
+  <li class="pub-year-label">2018</li>
+
+  <li>
+    Tedersoo L., Laanisto L., Rahimlou S., <strong>Toussaint A.</strong>, Hallikma T., Pärtel M.
+    Global database of plants with root-symbiotic nitrogen fixation: Nod DB.
+    <em>Journal of Vegetation Science</em>, 29(3), 560–568.
+    <a href="data/2018_Tedersoo_JVS.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    Kuczynski L., Côte J., <strong>Toussaint A.</strong>, Brosse S., Buisson L., Grenouillet G.
+    Spatial mismatch in morphological, ecological and phylogenetic diversity in historical and contemporary European freshwater fish faunas.
+    <em>Ecography</em>, 41, 1665–1674.
+    <a href="data/2018_Kuczinski_et_al_Ecography.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    <strong>Toussaint A.</strong>, Charpin N., Beauchard O., Grenouillet G., Oberdorff T., Tedesco P.A., Villéger S., Brosse S.
+    Non-native species led to marked shifts in functional diversity of the world freshwater fish faunas.
+    <em>Ecology Letters</em>, 21(11), 1649–1659.
+    <a href="data/2018_Toussaint_Ecolet.pdf" target="_blank">PDF</a> ·
+    <a href="http://www.cnrs.fr/inee/communication/breves/b405.html" target="_blank">Press release CNRS</a> ·
+    <a href="http://www.ird.fr/toute-l-actualite/actualites-scientifiques/la-biodiversite-des-poissons-d-eau-douce-bouleverse" target="_blank">Press release IRD</a> ·
+    <a href="https://ecolchange.wordpress.com/2018/10/11/new-publication-non-native-species-led-to-marked-shifts-in-functional-diversity-of-the-world-freshwater-fish-faunas" target="_blank">Blog post</a> ·
+    <a href="data/ele13141-sup-0001-suppinfo.docx" target="_blank">Supplementary</a>
+  </li>
+
+  <li class="pub-year-label">2016</li>
+
+  <li>
+    <strong>Toussaint A.</strong>, Beauchard O., Oberdorff T., Brosse S., Villeger S.
+    Worldwide freshwater fish homogenization is driven by a few widespread non-native species.
+    <em>Biological Invasions</em>, 18, 1295–1304.
+    <a href="data/2016_Toussaint_BiologicalInvasions.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li>
+    <strong>Toussaint A.</strong>, Charpin N., Brosse S., Villéger S.
+    Global functional diversity of freshwater fish is concentrated in the Neotropics.
+    <em>Scientific Reports</em>, 6, 22125.
+    <a href="data/2016_Toussaint_SciRep.pdf" target="_blank">PDF</a> ·
+    <a href="http://www.cnrs.fr/inee/communication/breves/b178.html" target="_blank">Press release CNRS</a> ·
+    <a href="https://www.franceinter.fr/emissions/la-tete-au-carre/la-tete-au-carre-11-avril-2016" target="_blank">Radio (France Inter, 11/04/2016)</a> ·
+    <a href="data/srep22125-s1.docx" target="_blank">Supplementary</a>
+  </li>
+
+  <li class="pub-year-label">2015</li>
+
+  <li>
+    Allard L., <strong>Toussaint A.</strong>, Vigouroux R., Brosse S.
+    Length-weight relationship of 58 fish species in streams of French Guiana.
+    <em>Journal of Applied Ichthyology</em>, 31, 567–570.
+    <a href="data/2016_Toussaint_BiologicalInvasions.pdf" target="_blank">PDF</a>
+  </li>
+
+  <li class="pub-year-label">2014</li>
+
+  <li>
+    <strong>Toussaint A.</strong>, Beauchard O., Oberdorff T., Brosse S., Villéger S.
+    Historical assemblage distinctiveness and the introduction of widespread non-native species explain worldwide changes in freshwater fish taxonomic dissimilarity.
+    <em>Global Ecology and Biogeography</em>, 23, 574–584.
+    <a href="data/2014_Toussaint%20et%20al._GEB.pdf" target="_blank">PDF</a> ·
+    <a href="https://www.cnrs.fr/occitanie-ouest/CNRS-Hebdo/Actualites/18686/Suite.aspx" target="_blank">Press release CNRS</a> ·
+    <a href="data/geb12141-sup-0001-si.doc" target="_blank">Supplementary 1</a> ·
+    <a href="data/geb12141-sup-0002-si.doc" target="_blank">Supplementary 2</a>
+  </li>
+
+</ol>
+```

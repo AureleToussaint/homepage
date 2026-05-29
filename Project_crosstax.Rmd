@@ -1,0 +1,36 @@
+---
+title: ""
+pagetitle: "Cross-taxonomic Diversity — Projects"
+output:
+  html_document:
+    self_contained: false
+    toc: false
+    includes:
+      in_header: header.html
+---
+
+```{=html}
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+<style>
+.back-link { font-size:0.9em; margin:20px 0 4px 0; }
+.back-link a { color:#8e44ad; text-decoration:none; }
+.back-link a:hover { text-decoration:underline; }
+.proj-header { margin:20px 0 28px 0; }
+.proj-header h1 { font-size:1.9em; font-weight:bold; color:#2c3e50; margin:0 0 16px 0; }
+.proj-img {
+  width:100%; max-height:320px; object-fit:cover;
+  border:1px solid #ddd; border-radius:8px; margin-bottom:24px;
+}
+.proj-body p { font-size:1.05em; line-height:1.7; color:#444; }
+</style>
+<div class="back-link">← <a href="Projects.html">Back to Projects</a></div>
+<div class="proj-header">
+  <h1>Cross-taxonomic diversity</h1>
+</div>
+<img class="proj-img" src="data/crossTaxa.png" alt="Cross-taxonomic diversity"/>
+<div class="proj-body">
+<p>The objective of this project is to study the taxonomic and functional diversity patterns of taxonomic groups representing contrasting ecosystem types and to determine their congruence at global and biogeographical realm scales.</p>
+<p>This line of research investigates whether the same areas of the globe harbour high diversity simultaneously across different groups — plants, birds, mammals, freshwater fishes — and what this implies for conservation planning.</p>
+</div>
+```

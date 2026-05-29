@@ -1,0 +1,90 @@
+---
+title: ""
+pagetitle: "Student Supervision — Aurèle Toussaint"
+output:
+  html_document:
+    self_contained: false
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    includes:
+      in_header: header.html
+---
+
+```{=html}
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<style>
+.page-header {
+  margin: 32px 0 28px 0;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 14px;
+}
+.page-header h1 {
+  font-size: 1.9em; font-weight: bold; color: #2c3e50; margin: 0 0 4px 0;
+}
+.back-link {
+  font-size: 0.9em; margin-bottom: 8px;
+}
+.back-link a { color: #8e44ad; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+
+/* Reuse styles from index */
+.section-title {
+  font-size: 1.3em; font-weight: bold; margin: 36px 0 14px 0;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px; color: #2c3e50;
+}
+.pub-list {
+  counter-reset: pub-counter 30;
+  list-style: none; padding: 0;
+}
+.pub-list li {
+  counter-increment: pub-counter -1;
+  padding: 6px 0 6px 48px; position: relative;
+  line-height: 1.5; border-bottom: 1px solid #f0f0f0;
+}
+.pub-list li::before {
+  content: counter(pub-counter) "/";
+  position: absolute; left: 0; font-weight: bold;
+  color: #555; width: 40px; text-align: right;
+}
+.pub-list li.pub-year-label {
+  counter-increment: none; font-size: 1.15em; font-weight: bold;
+  color: #333; padding: 20px 0 4px 0; border-bottom: none;
+}
+.pub-list li.pub-year-label::before { content: none; }
+.pub-year { font-size: 1.1em; font-weight: bold; margin: 24px 0 8px 0; color: #333; }
+.grant-item {
+  margin: 10px 0; padding: 10px 14px;
+  border-left: 3px solid #8e44ad; background: #fafafa; line-height: 1.6;
+}
+.student-list { list-style: none; padding: 0; }
+.student-list li {
+  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+}
+.conf-list { list-style: none; padding: 0; }
+.conf-list li {
+  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+}
+</style>
+
+<div class="back-link">← <a href="index.html">← Home</a></div>
+
+<div class="page-header">
+  <h1>Student Supervision</h1>
+</div>
+
+<ul class="student-list">
+  <li><strong>Adrien Lagalle.</strong> <em>Master.</em> 2026. Comparaison des méthodes de mesure des traits fonctionnels des poissons d'eau douce.</li>
+  <li><strong>Anouk Schneider.</strong> <em>Master.</em> 2026. Quantification du biais utilisateur dans la mesure des traits morphologiques des poissons d'eau douce.</li>
+  <li><strong>Laura Boutic.</strong> <em>Bachelor.</em> 2026. Quantification du biais utilisateur dans la mesure des traits morphologiques des poissons d'eau douce.</li>
+  <li><strong>Joseph Crochez.</strong> <em>Bachelor.</em> 2026. Quantification du biais utilisateur dans la mesure des traits morphologiques des poissons d'eau douce.</li>
+  <li><strong>Pierre Bertrand.</strong> <em>Master.</em> 2026. Quantification de la diversité intraspécifique des poissons d'eau douce de Guyane française et impact sur les mesures de diversité fonctionnelle.</li>
+  <li><strong>Nell Pause.</strong> <em>Master.</em> 2025. Disentangling morphological, life-history, and dietary predictors of extinction risk and population trends in birds.</li>
+  <li><strong>Pierre Bouchet.</strong> <em>PhD Student.</em> 2024–2027. Diversité fonctionnelle des vertébrés et utilisation par l'homme : liens entre traits fonctionnels, utilisation anthropique et crise de biodiversité.</li>
+  <li><strong>Adrien Solacroup.</strong> <em>Master.</em> 2014. Characterization of the morphological intra-specific variability in the French Guyana and European freshwater fish community.</li>
+</ul>
+```

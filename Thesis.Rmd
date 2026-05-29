@@ -1,0 +1,106 @@
+---
+title: ""
+pagetitle: "PhD Thesis — Aurèle Toussaint"
+output:
+  html_document:
+    self_contained: false
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    includes:
+      in_header: header.html
+---
+
+```{=html}
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<style>
+.page-header {
+  margin: 32px 0 28px 0;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 14px;
+}
+.page-header h1 {
+  font-size: 1.9em; font-weight: bold; color: #2c3e50; margin: 0 0 4px 0;
+}
+.back-link {
+  font-size: 0.9em; margin-bottom: 8px;
+}
+.back-link a { color: #16a085; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+
+/* Reuse styles from index */
+.section-title {
+  font-size: 1.3em; font-weight: bold; margin: 36px 0 14px 0;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px; color: #2c3e50;
+}
+.pub-list {
+  counter-reset: pub-counter 30;
+  list-style: none; padding: 0;
+}
+.pub-list li {
+  counter-increment: pub-counter -1;
+  padding: 6px 0 6px 48px; position: relative;
+  line-height: 1.5; border-bottom: 1px solid #f0f0f0;
+}
+.pub-list li::before {
+  content: counter(pub-counter) "/";
+  position: absolute; left: 0; font-weight: bold;
+  color: #555; width: 40px; text-align: right;
+}
+.pub-list li.pub-year-label {
+  counter-increment: none; font-size: 1.15em; font-weight: bold;
+  color: #333; padding: 20px 0 4px 0; border-bottom: none;
+}
+.pub-list li.pub-year-label::before { content: none; }
+.pub-year { font-size: 1.1em; font-weight: bold; margin: 24px 0 8px 0; color: #333; }
+.grant-item {
+  margin: 10px 0; padding: 10px 14px;
+  border-left: 3px solid #16a085; background: #fafafa; line-height: 1.6;
+}
+.student-list { list-style: none; padding: 0; }
+.student-list li {
+  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+}
+.conf-list { list-style: none; padding: 0; }
+.conf-list li {
+  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+}
+</style>
+
+<div class="back-link">← <a href="index.html">← Home</a></div>
+
+<div class="page-header">
+  <h1>PhD Thesis</h1>
+</div>
+
+<p>
+  During my PhD, I investigated the functional diversity of freshwater fishes at the world scale under the advisement of
+  <a href="http://brosse.sebastien.free.fr" target="_blank">Pr. Sébastien Brosse</a> and
+  <a href="https://scholar.google.fr/citations?hl=fr&user=vLK2CbwAAAAJ&view_op=list_works&sortby=pubdate" target="_blank">Dr. Sébastien Villéger</a>.
+</p>
+
+<p>
+  <strong>Toussaint A.</strong> 2016. <em>Diversité fonctionnelle des poissons d'eau douce à l'échelle mondiale : patrons, déterminants et impacts des activités humaines.</em>
+  Université de Toulouse. 223p.
+  <a href="data/Toussaint_2016_These.pdf" target="_blank">PDF</a> (in French only)
+</p>
+
+<h2>Detailed abstract</h2>
+
+<p>
+  Biodiversity is often characterized only through its taxonomic facet, i.e. the number and list of species present in assemblages. However, recent studies show that biodiversity cannot be summarized by this facet alone, as it does not reflect the ecological characteristics of species. Several facets can describe biodiversity, including functional diversity, which considers the ecological traits of species and thus their role in ecosystem functioning. Yet, few studies have described this facet at large scales, its links with taxonomic diversity, or its responses to global change.
+</p>
+<p>
+  The objectives of this thesis were to (1) describe and understand the distribution of the functional diversity of freshwater fish assemblages at the global scale and (2) quantify the consequences of human activities on both taxonomic and functional biodiversity facets. To these ends, a morphological traits database was built for more than 9,000 freshwater fish species occurring in more than 1,000 river basins worldwide.
+</p>
+<p>
+  Results demonstrate that functional diversity is unequally distributed across the world and weakly related to taxonomic diversity at global scale. Species-rich Neotropical rivers host more than 75% of global functional diversity, whereas African or Asian rivers — also rich in species — host less than a quarter of world functional diversity. This pattern is explained by the functional uniqueness of certain Neotropical fish orders. The functional diversity of different biogeographic realms is also unequally vulnerable to extinction: Europe and North America could lose between 35% and 45% of their functional diversity, while the Neotropical realm appears less sensitive, with only 10% of its functional diversity supported by vulnerable species.
+</p>
+<p>
+  The introduction of non-native species has contributed to profoundly changing historical patterns of biodiversity, promoting taxonomic homogenization accompanied by a decrease in unique species in the poorest assemblages — largely driven by a few widely introduced non-native species. Non-native species have also contributed to increasing functional diversity of assemblages by 150% on average, up to seven times greater than the increase reported for taxonomic diversity (~20% on average). These results underscore the high sensitivity of functional diversity to changes in species composition and the need to account for it when assessing the impact of current and future human activities on freshwater biodiversity.
+</p>
+```

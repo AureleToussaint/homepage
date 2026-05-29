@@ -1,0 +1,109 @@
+---
+title: ""
+pagetitle: "Grants — Aurèle Toussaint"
+output:
+  html_document:
+    self_contained: false
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    includes:
+      in_header: header.html
+---
+
+```{=html}
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<style>
+.page-header {
+  margin: 32px 0 28px 0;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 14px;
+}
+.page-header h1 {
+  font-size: 1.9em; font-weight: bold; color: #2c3e50; margin: 0 0 4px 0;
+}
+.back-link {
+  font-size: 0.9em; margin-bottom: 8px;
+}
+.back-link a { color: #27ae60; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+
+/* Reuse styles from index */
+.section-title {
+  font-size: 1.3em; font-weight: bold; margin: 36px 0 14px 0;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px; color: #2c3e50;
+}
+.pub-list {
+  counter-reset: pub-counter 30;
+  list-style: none; padding: 0;
+}
+.pub-list li {
+  counter-increment: pub-counter -1;
+  padding: 6px 0 6px 48px; position: relative;
+  line-height: 1.5; border-bottom: 1px solid #f0f0f0;
+}
+.pub-list li::before {
+  content: counter(pub-counter) "/";
+  position: absolute; left: 0; font-weight: bold;
+  color: #555; width: 40px; text-align: right;
+}
+.pub-list li.pub-year-label {
+  counter-increment: none; font-size: 1.15em; font-weight: bold;
+  color: #333; padding: 20px 0 4px 0; border-bottom: none;
+}
+.pub-list li.pub-year-label::before { content: none; }
+.pub-year { font-size: 1.1em; font-weight: bold; margin: 24px 0 8px 0; color: #333; }
+.grant-item {
+  margin: 10px 0; padding: 10px 14px;
+  border-left: 3px solid #27ae60; background: #fafafa; line-height: 1.6;
+}
+.student-list { list-style: none; padding: 0; }
+.student-list li {
+  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+}
+.conf-list { list-style: none; padding: 0; }
+.conf-list li {
+  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+}
+</style>
+
+<div class="back-link">← <a href="index.html">← Home</a></div>
+
+<div class="page-header">
+  <h1>Grants &amp; Funding</h1>
+</div>
+
+<h2 class="section-title">Current grants</h2>
+
+<div class="grant-item">
+  <em>2025–2026</em> &nbsp;|&nbsp; <strong>INTRAIT</strong> — Influence of Intraspecific trait variability on the functional diversity of fish communities in French Guiana.<br>
+  Supported by <em>CEBA</em> <a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">here</a>
+  and <em>TREMPLIN</em> <a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">here</a>.
+</div>
+
+<h2 class="section-title">Previous grants</h2>
+
+<div class="grant-item">
+  <em>2026</em> &nbsp;|&nbsp; <strong>Lauréat du réseau de chaires du CFBBA</strong> — Building an Intraspecific Trait Database for Amazonian Freshwater Fishes.<br>
+  Supported by <em>CFBBA</em> <a href="https://cfbbamazonia.org/fr/" target="_blank">here</a>.
+</div>
+
+<div class="grant-item">
+  <em>2020–2023</em> &nbsp;|&nbsp; <strong>Research Fellow</strong> — Estonian Research Council (PSG-505).
+  <a href="https://app.dimensions.ai/details/grant/grant.8855456" target="_blank">Details</a>
+</div>
+
+<div class="grant-item">
+  <em>2017–2019</em> &nbsp;|&nbsp; <strong>Post-doctoral Fellow</strong> — Estonian Research Council (MOBJD-276).
+  <a href="https://app.dimensions.ai/details/grant/grant.7070239" target="_blank">Details</a>
+</div>
+
+<div class="grant-item">
+  <em>2016</em> &nbsp;|&nbsp; <strong>Erasmus MUNDUS</strong> —
+  <a href="https://www.khu.ac.kr/eng/main/index.do" target="_blank">Kyung Hee University</a>, Seoul, Korea.
+</div>
+```

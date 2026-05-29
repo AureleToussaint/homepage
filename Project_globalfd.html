@@ -11,7 +11,7 @@
 
 
 
-<title>Projects — Aurèle Toussaint</title>
+<title>Global Functional Diversity — Projects</title>
 
 <script src="site_libs/header-attrs-2.31/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -309,101 +309,26 @@ $(document).ready(function () {
 
 <link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
 <link rel="stylesheet" href="styles.css" type="text/css">
-
 <style>
-.page-header { text-align: center; margin: 40px 0 32px 0; }
-.page-header h1 { font-size: 2em; font-weight: bold; color: #2c3e50; margin-bottom: 8px; }
-.page-header p  { color: #777; font-size: 1.05em; }
-
-.courses-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 22px;
-  margin: 0 0 60px 0;
+.back-link { font-size:0.9em; margin:20px 0 4px 0; }
+.back-link a { color:#8e44ad; text-decoration:none; }
+.back-link a:hover { text-decoration:underline; }
+.proj-header { margin:20px 0 28px 0; }
+.proj-header h1 { font-size:1.9em; font-weight:bold; color:#2c3e50; margin:0 0 16px 0; }
+.proj-img {
+  width:100%; max-height:320px; object-fit:cover;
+  border:1px solid #ddd; border-radius:8px; margin-bottom:24px;
 }
-
-.course-card {
-  background: #fff; border: 1px solid #dde3ea; border-radius: 12px;
-  overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  transition: box-shadow .2s, transform .15s;
-  display: flex; flex-direction: column;
-  text-decoration: none !important; color: inherit !important;
-}
-.course-card:hover {
-  box-shadow: 0 6px 24px rgba(0,0,0,0.12); transform: translateY(-3px);
-  text-decoration: none !important;
-}
-.card-thumb {
-  width: 100%; height: 150px; object-fit: cover;
-  border-bottom: 1px solid #eee; display: block;
-}
-.card-body { padding: 18px 18px 14px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-.card-body h3 { font-size: 1.02em; font-weight: 600; color: #2c3e50; margin: 0; }
-.card-body p  { font-size: 0.87em; color: #777; margin: 0; line-height: 1.5; }
-.card-arrow { text-align: right; color: #ccc; margin-top: auto; padding: 0 18px 12px 0; }
+.proj-body p { font-size:1.05em; line-height:1.7; color:#444; }
 </style>
-
-<div class="page-header">
-  <h1>Research Projects</h1>
-  <p>Active and past research projects. Click a card for details.</p>
+<div class="back-link">← <a href="Projects.html">Back to Projects</a></div>
+<div class="proj-header">
+  <h1>Global Functional Diversity</h1>
 </div>
-
-<div class="courses-grid">
-
-  <a class="course-card" href="Project_intra.html">
-    <img class="card-thumb" src="data/FishPic.png" alt="Intra-specific morphological variation"/>
-    <div class="card-body">
-      <h3>Intra-specific morphological variation</h3>
-      <p>Measuring morphological trait variation within freshwater fish species and understanding its drivers.</p>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
-
-  <a class="course-card" href="Project_humanuse.html">
-    <img class="card-thumb" src="data/FishUse.jpg" alt="Functional traits of species used by humans"/>
-    <div class="card-body">
-      <h3>Functional traits of species used by humans</h3>
-      <p>Assessing the functional traits of exploited species to better inform conservation policies.</p>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
-
-  <a class="course-card" href="Project_methods.html">
-    <img class="card-thumb" src="data/world.png" alt="Method comparison"/>
-    <div class="card-body">
-      <h3>Method comparison</h3>
-      <p>Comparing approaches to functional diversity measurement and their consequences for global assessments.</p>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
-
-  <a class="course-card" href="Project_globalfd.html">
-    <img class="card-thumb" src="data/glob.jpg" alt="Global Functional Diversity"/>
-    <div class="card-body">
-      <h3>Global Functional Diversity</h3>
-      <p>Macroecology of functional diversity across vertebrates and plants in the context of global change.</p>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
-
-  <a class="course-card" href="Project_crosstax.html">
-    <img class="card-thumb" src="data/crossTaxa.png" alt="Cross-taxonomic diversity"/>
-    <div class="card-body">
-      <h3>Cross-taxonomic diversity</h3>
-      <p>Congruence of taxonomic and functional diversity patterns across contrasting ecosystem types.</p>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
-
-  <a class="course-card" href="Project_gis.html">
-    <img class="card-thumb" src="data/GIS.png" alt="GIS for conservation"/>
-    <div class="card-body">
-      <h3>GIS application for conservation</h3>
-      <p>GIS and R algorithms for conservation prioritization of Estonian grasslands.</p>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
-
+<img class="proj-img" src="data/glob.jpg" alt="Global Functional Diversity"/>
+<div class="proj-body">
+<p>This project aims to compile different databases of functional traits for plants and vertebrates and to explore the macroecology of functional diversity among taxonomic groups in the context of global change.</p>
+<p>Key outputs include work published in <em>Nature</em>, <em>Nature Communications</em>, <em>Science Advances</em>, and <em>Ecology Letters</em> characterising the global distribution of functional diversity and its vulnerability to extinction and biological invasions.</p>
 </div>
 
 

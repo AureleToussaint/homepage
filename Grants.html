@@ -11,7 +11,7 @@
 
 
 
-<title>Projects — Aurèle Toussaint</title>
+<title>Grants — Aurèle Toussaint</title>
 
 <script src="site_libs/header-attrs-2.31/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -223,6 +226,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -230,6 +296,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -311,103 +387,99 @@ $(document).ready(function () {
 <link rel="stylesheet" href="styles.css" type="text/css">
 
 <style>
-.page-header { text-align: center; margin: 40px 0 32px 0; }
-.page-header h1 { font-size: 2em; font-weight: bold; color: #2c3e50; margin-bottom: 8px; }
-.page-header p  { color: #777; font-size: 1.05em; }
+.page-header {
+  margin: 32px 0 28px 0;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 14px;
+}
+.page-header h1 {
+  font-size: 1.9em; font-weight: bold; color: #2c3e50; margin: 0 0 4px 0;
+}
+.back-link {
+  font-size: 0.9em; margin-bottom: 8px;
+}
+.back-link a { color: #27ae60; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
 
-.courses-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 22px;
-  margin: 0 0 60px 0;
+/* Reuse styles from index */
+.section-title {
+  font-size: 1.3em; font-weight: bold; margin: 36px 0 14px 0;
+  border-bottom: 1px solid #ddd; padding-bottom: 6px; color: #2c3e50;
 }
-
-.course-card {
-  background: #fff; border: 1px solid #dde3ea; border-radius: 12px;
-  overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  transition: box-shadow .2s, transform .15s;
-  display: flex; flex-direction: column;
-  text-decoration: none !important; color: inherit !important;
+.pub-list {
+  counter-reset: pub-counter 30;
+  list-style: none; padding: 0;
 }
-.course-card:hover {
-  box-shadow: 0 6px 24px rgba(0,0,0,0.12); transform: translateY(-3px);
-  text-decoration: none !important;
+.pub-list li {
+  counter-increment: pub-counter -1;
+  padding: 6px 0 6px 48px; position: relative;
+  line-height: 1.5; border-bottom: 1px solid #f0f0f0;
 }
-.card-thumb {
-  width: 100%; height: 150px; object-fit: cover;
-  border-bottom: 1px solid #eee; display: block;
+.pub-list li::before {
+  content: counter(pub-counter) "/";
+  position: absolute; left: 0; font-weight: bold;
+  color: #555; width: 40px; text-align: right;
 }
-.card-body { padding: 18px 18px 14px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-.card-body h3 { font-size: 1.02em; font-weight: 600; color: #2c3e50; margin: 0; }
-.card-body p  { font-size: 0.87em; color: #777; margin: 0; line-height: 1.5; }
-.card-arrow { text-align: right; color: #ccc; margin-top: auto; padding: 0 18px 12px 0; }
+.pub-list li.pub-year-label {
+  counter-increment: none; font-size: 1.15em; font-weight: bold;
+  color: #333; padding: 20px 0 4px 0; border-bottom: none;
+}
+.pub-list li.pub-year-label::before { content: none; }
+.pub-year { font-size: 1.1em; font-weight: bold; margin: 24px 0 8px 0; color: #333; }
+.grant-item {
+  margin: 10px 0; padding: 10px 14px;
+  border-left: 3px solid #27ae60; background: #fafafa; line-height: 1.6;
+}
+.student-list { list-style: none; padding: 0; }
+.student-list li {
+  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+}
+.conf-list { list-style: none; padding: 0; }
+.conf-list li {
+  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+}
 </style>
 
+<div class="back-link">← <a href="index.html">← Home</a></div>
+
 <div class="page-header">
-  <h1>Research Projects</h1>
-  <p>Active and past research projects. Click a card for details.</p>
+  <h1>Grants &amp; Funding</h1>
 </div>
 
-<div class="courses-grid">
+<h2 class="section-title">Current grants</h2>
 
-  <a class="course-card" href="Project_intra.html">
-    <img class="card-thumb" src="data/FishPic.png" alt="Intra-specific morphological variation"/>
-    <div class="card-body">
-      <h3>Intra-specific morphological variation</h3>
-      <p>Measuring morphological trait variation within freshwater fish species and understanding its drivers.</p>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
+<div class="grant-item">
+  <em>2025–2026</em> &nbsp;|&nbsp; <strong>INTRAIT</strong> — Influence of Intraspecific trait variability on the functional diversity of fish communities in French Guiana.<br>
+  Supported by <em>CEBA</em> <a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">here</a>
+  and <em>TREMPLIN</em> <a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">here</a>.
+</div>
 
-  <a class="course-card" href="Project_humanuse.html">
-    <img class="card-thumb" src="data/FishUse.jpg" alt="Functional traits of species used by humans"/>
-    <div class="card-body">
-      <h3>Functional traits of species used by humans</h3>
-      <p>Assessing the functional traits of exploited species to better inform conservation policies.</p>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
+<h2 class="section-title">Previous grants</h2>
 
-  <a class="course-card" href="Project_methods.html">
-    <img class="card-thumb" src="data/world.png" alt="Method comparison"/>
-    <div class="card-body">
-      <h3>Method comparison</h3>
-      <p>Comparing approaches to functional diversity measurement and their consequences for global assessments.</p>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
+<div class="grant-item">
+  <em>2026</em> &nbsp;|&nbsp; <strong>Lauréat du réseau de chaires du CFBBA</strong> — Building an Intraspecific Trait Database for Amazonian Freshwater Fishes.<br>
+  Supported by <em>CFBBA</em> <a href="https://cfbbamazonia.org/fr/" target="_blank">here</a>.
+</div>
 
-  <a class="course-card" href="Project_globalfd.html">
-    <img class="card-thumb" src="data/glob.jpg" alt="Global Functional Diversity"/>
-    <div class="card-body">
-      <h3>Global Functional Diversity</h3>
-      <p>Macroecology of functional diversity across vertebrates and plants in the context of global change.</p>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
+<div class="grant-item">
+  <em>2020–2023</em> &nbsp;|&nbsp; <strong>Research Fellow</strong> — Estonian Research Council (PSG-505).
+  <a href="https://app.dimensions.ai/details/grant/grant.8855456" target="_blank">Details</a>
+</div>
 
-  <a class="course-card" href="Project_crosstax.html">
-    <img class="card-thumb" src="data/crossTaxa.png" alt="Cross-taxonomic diversity"/>
-    <div class="card-body">
-      <h3>Cross-taxonomic diversity</h3>
-      <p>Congruence of taxonomic and functional diversity patterns across contrasting ecosystem types.</p>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
+<div class="grant-item">
+  <em>2017–2019</em> &nbsp;|&nbsp; <strong>Post-doctoral Fellow</strong> — Estonian Research Council (MOBJD-276).
+  <a href="https://app.dimensions.ai/details/grant/grant.7070239" target="_blank">Details</a>
+</div>
 
-  <a class="course-card" href="Project_gis.html">
-    <img class="card-thumb" src="data/GIS.png" alt="GIS for conservation"/>
-    <div class="card-body">
-      <h3>GIS application for conservation</h3>
-      <p>GIS and R algorithms for conservation prioritization of Estonian grasslands.</p>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
-
+<div class="grant-item">
+  <em>2016</em> &nbsp;|&nbsp; <strong>Erasmus MUNDUS</strong> —
+  <a href="https://www.khu.ac.kr/eng/main/index.do" target="_blank">Kyung Hee University</a>, Seoul, Korea.
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -440,6 +512,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
