@@ -521,6 +521,124 @@ $(document).ready(function () {
       </div>
     </div>
 
+    <!-- Live citation metrics via OpenAlex -->
+    <div class="metrics-card" id="scholar-widget">
+      <h4>Citation metrics <span id="scholar-src" style="font-weight:400; font-size:0.9em; color:#bbb; text-transform:none; letter-spacing:0;"></span></h4>
+      <div id="scholar-stats" style="display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
+        <div class="stat-box" id="stat-cit"><div class="stat-val">—</div><div class="stat-lbl">Citations</div></div>
+        <div class="stat-box" id="stat-h">  <div class="stat-val">—</div><div class="stat-lbl">h-index</div></div>
+        <div class="stat-box" id="stat-i10"><div class="stat-val">—</div><div class="stat-lbl">i10-index</div></div>
+      </div>
+      <div id="scholar-chart" style="margin-top:8px;"></div>
+    </div>
+
+    <style>
+    .stat-box {
+      flex: 1; min-width: 70px;
+      background: #f7f9fc; border: 1px solid #e4e9f0;
+      border-radius: 10px; padding: 10px 12px; text-align: center;
+    }
+    .stat-val { font-size: 1.35em; font-weight: 700; color: #2c3e50; }
+    .stat-lbl { font-size: 0.7em; color: #999; margin-top: 2px; text-transform: uppercase; letter-spacing: .06em; }
+    #scholar-chart svg { display: block; }
+    </style>
+
+    <script>
+    (function() {
+      var ORCID = "0000-0002-5738-4637";
+      var API   = "https://api.openalex.org/authors/https://orcid.org/" + ORCID;
+
+      function setVal(id, v) {
+        var el = document.querySelector("#" + id + " .stat-val");
+        if (el) el.textContent = v.toLocaleString();
+      }
+
+      function drawChart(counts) {
+        var el = document.getElementById("scholar-chart");
+        if (!el || !counts || !counts.length) return;
+
+        var cutoff = new Date().getFullYear() - 9;
+        counts = counts.filter(function(c){ return c.year >= cutoff; })
+                       .sort(function(a,b){ return a.year - b.year; });
+        if (counts.length < 2) return;
+
+        var W = 320, H = 80, PAD = { t:8, r:8, b:24, l:36 };
+        var cw = W - PAD.l - PAD.r;
+        var ch = H - PAD.t - PAD.b;
+        var vals = counts.map(function(c){ return c.cited_by_count; });
+        var maxV = Math.max.apply(null, vals);
+        var n = counts.length;
+
+        function px(i){ return PAD.l + (i / (n-1)) * cw; }
+        function py(v){ return PAD.t + ch - (v / maxV) * ch; }
+
+        // smooth line points
+        var pts = counts.map(function(c,i){ return [px(i), py(c.cited_by_count)]; });
+
+        // area path (filled under the curve)
+        var area = "M " + PAD.l + "," + (PAD.t + ch);
+        pts.forEach(function(p){ area += " L " + p[0] + "," + p[1]; });
+        area += " L " + (PAD.l + cw) + "," + (PAD.t + ch) + " Z";
+
+        // line path
+        var line = "M " + pts[0][0] + "," + pts[0][1];
+        pts.slice(1).forEach(function(p){ line += " L " + p[0] + "," + p[1]; });
+
+        // y-axis ticks (0 and max)
+        var yTicks = [0, Math.round(maxV/2), maxV].map(function(v){
+          return '<text x="' + (PAD.l - 5) + '" y="' + (py(v) + 4) + '" text-anchor="end" ' +
+                 'font-size="9" fill="#bbb">' + (v >= 1000 ? (v/1000).toFixed(1)+'k' : v) + '</text>';
+        }).join("");
+
+        // x-axis labels
+        var xLabels = counts.map(function(c,i){
+          return '<text x="' + px(i) + '" y="' + (H - 4) + '" text-anchor="middle" ' +
+                 'font-size="9" fill="#bbb">\'' + String(c.year).slice(2) + '</text>';
+        }).join("");
+
+        // dot + tooltip on each point
+        var dots = pts.map(function(p, i){
+          return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3" fill="#2980b9" stroke="#fff" stroke-width="1.5">' +
+                 '<title>' + counts[i].year + ': ' + counts[i].cited_by_count + ' citations</title></circle>';
+        }).join("");
+
+        el.innerHTML =
+          '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" style="overflow:visible;">' +
+          // grid lines
+          [0, Math.round(maxV/2), maxV].map(function(v){
+            return '<line x1="' + PAD.l + '" x2="' + (PAD.l+cw) + '" y1="' + py(v) + '" y2="' + py(v) + '" stroke="#f0f0f0" stroke-width="1"/>';
+          }).join("") +
+          // area fill
+          '<defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">' +
+          '<stop offset="0%" stop-color="#2980b9" stop-opacity="0.18"/>' +
+          '<stop offset="100%" stop-color="#2980b9" stop-opacity="0.02"/>' +
+          '</linearGradient></defs>' +
+          '<path d="' + area + '" fill="url(#cg)"/>' +
+          // line
+          '<path d="' + line + '" fill="none" stroke="#2980b9" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' +
+          // axes labels
+          yTicks + xLabels +
+          // dots
+          dots +
+          '</svg>';
+      }
+
+      fetch(API + "?mailto=aurele.toussaint@cnrs.fr")
+        .then(function(r){ return r.json(); })
+        .then(function(d) {
+          setVal("stat-cit", d.cited_by_count || 0);
+          setVal("stat-h",   (d.summary_stats && d.summary_stats.h_index)   || 0);
+          setVal("stat-i10", (d.summary_stats && d.summary_stats.i10_index) || 0);
+          drawChart(d.counts_by_year || []);
+          var src = document.getElementById("scholar-src");
+          if (src) src.textContent = "· via OpenAlex";
+        })
+        .catch(function(){
+          /* silently fail — values stay as — */
+        });
+    })();
+    </script>
+
     <div class="contact-card">
       <h4>Contact</h4>
       <div class="contact-row">
