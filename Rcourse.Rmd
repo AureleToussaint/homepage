@@ -414,7 +414,7 @@ output:
       <div class="card-links">
         <div class="section-label">Datasets</div>
         <!-- Replace href="#" with e.g. data/courses/Data.zip -->
-        <a class="card-btn btn-data" href="data/courses/session1_data.zip" target="_blank">
+        <a class="card-btn btn-data" href="data/courses/data.zip" target="_blank">
           <i class="fa fa-archive"></i> &nbsp;Dataset (.zip)
         </a>
         <a class="card-btn btn-data" href="data/courses/session1.zip" target="_blank">
