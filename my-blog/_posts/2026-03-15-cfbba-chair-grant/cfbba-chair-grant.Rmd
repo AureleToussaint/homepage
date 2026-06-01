@@ -1,0 +1,95 @@
+---
+title: "CFBBA Chair Grant — Building an Intraspecific Trait Database for Amazonian Freshwater Fishes"
+description: |
+  Our project has been selected for the inaugural call of the Franco-Brazilian Chair Network (CFBBA), supporting reciprocal mobility between CNRS/CRBE Toulouse and the Universidade Federal do Pará. The project will build the first intraspecific trait database for Amazonian freshwater fishes — a direct extension of the INTRAIT fieldwork conducted in French Guiana.
+base_url: https://beta.rstudioconnect.com/content/11424/
+date: 2026-03-15
+categories:
+  - grants
+  - INTRAIT
+collections:
+  posts:
+    share: [twitter, linkedin]
+    citations: false
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{=html}
+<div style="
+  background: linear-gradient(135deg, #1a3a5c 0%, #1565c0 60%, #0288d1 100%);
+  border-radius: 14px;
+  padding: 26px 28px;
+  margin: 0 0 32px 0;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-shadow: 0 4px 20px rgba(21,101,192,0.25);
+">
+  <div style="font-size:0.7em; font-weight:800; letter-spacing:.12em; text-transform:uppercase; opacity:0.75; margin-bottom:8px;">CFBBA · Réseau de Chaires Franco-Brésiliennes · 2026</div>
+  <div style="font-size:1.2em; font-weight:700; line-height:1.4; margin-bottom:10px;">
+    Building an Intraspecific Trait Database<br>for Amazonian Freshwater Fishes
+  </div>
+  <div style="font-size:0.88em; opacity:0.88; margin-bottom:16px;">
+    🇫🇷 Aurèle Toussaint — CNRS / CRBE Toulouse &nbsp;·&nbsp; 🇧🇷 Luciano Montag — UFPA
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px;">
+    <span style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.35); border-radius:20px; padding:3px 12px; font-size:0.75em; font-weight:600;">Intraspecific variability</span>
+    <span style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.35); border-radius:20px; padding:3px 12px; font-size:0.75em; font-weight:600;">Freshwater fishes</span>
+    <span style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.35); border-radius:20px; padding:3px 12px; font-size:0.75em; font-weight:600;">Amazon</span>
+    <span style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.35); border-radius:20px; padding:3px 12px; font-size:0.75em; font-weight:600;">Functional diversity</span>
+  </div>
+</div>
+```
+
+I am delighted to announce that our project **"Building an Intraspecific Trait Database for Amazonian Freshwater Fishes"** has been selected for the inaugural call of the [CFBBA Franco-Brazilian Chair Network](https://cfbbamazonia.org/wp-content/uploads/2026/03/resultats-definitifs-1.pdf).
+
+The project is a collaboration between **Luciano Montag** (Universidade Federal do Pará, Belém) and myself (CNRS / CRBE, Toulouse), supported by the **Centre Franco-Brésilien pour la Biodiversité Amazonienne (CFBBA)** and the French Embassy in Brazil.
+
+## The CFBBA Chair Network
+
+The CFBBA — Centre Franco-Brésilien pour la Biodiversité Amazonienne — is a bilateral research centre bringing together French and Brazilian institutions around the science and conservation of Amazonian biodiversity. Its chair programme supports short-term reciprocal mobility between French researchers and their counterparts at four Amazonian federal universities: UFPA (Pará), UFAM (Amazonas), UNIFAP (Amapá), and UFRR (Roraima).
+
+In this inaugural 2026 call, four projects were selected — all submitted proposals, each evaluated positively — including two at UFPA, one at UNIFAP, and one at UFRR. Ours is one of the two UFPA-based projects.
+
+## The project
+
+The project directly builds on two years of work initiated under the [INTRAIT project](../2025-12-01-intrait-french-guiana/intrait-french-guiana.html) and the [November 2025 fieldwork mission](../2025-12-01-intrait-french-guiana/intrait-french-guiana.html) along the Maroni river in French Guiana.
+
+The central scientific problem is well-known within functional ecology: the global FishMORPH database — and virtually all community-level analyses of functional diversity in freshwater fish — treat each species as a single point in morphological space, defined by a mean trait value estimated from a handful of museum specimens. This ignores intraspecific morphological variation, which in tropical fish assemblages can be substantial and ecologically structured.
+
+**Our objective** is to build the first standardised intraspecific morphological trait dataset for Amazonian freshwater fishes, combining:
+
+- Morphometric measurements from **multiple individuals per species** across several river basins in the Amazon
+- Sampling designed to capture **environmental gradients** — from pristine headwaters to human-impacted lowland rivers
+- Integration with the **FishMORPH protocol**, ensuring compatibility with the global database
+
+The dataset will allow us to answer three questions that current databases cannot address:
+
+1. How large is within-species morphological variation relative to between-species variation in Amazonian fish assemblages?
+2. Is intraspecific variation structured by environment — particularly by anthropogenic pressure along river gradients?
+3. How much do community-level estimates of functional diversity change when intraspecific variability is properly accounted for?
+
+## Why Pará, and why Luciano Montag
+
+The Universidade Federal do Pará (UFPA) in Belém is home to one of the strongest freshwater ichthyology research groups in Brazil. Luciano Montag leads research on the ecology and conservation of Amazonian fish communities, with extensive field networks across Pará state and long-standing expertise in the kind of multi-site, standardised sampling that this project requires.
+
+The collaboration is also a natural continuation of the [teaching visit to Belém in May 2026](../2026-06-01-belem-brazil/belem-brazil.html), which reinforced connections with graduate students and researchers working on local fish biodiversity — and sharpened, for me, the urgency of building data infrastructure that is grounded in the actual diversity of Amazonian systems rather than imported from temperate-zone assumptions.
+
+## What comes next
+
+The chair grant funds reciprocal mobility: visits from Toulouse to Belém for joint fieldwork and data collection, and visits from UFPA researchers to Toulouse for analysis, database construction, and training in the TPD-based functional diversity framework.
+
+The first joint fieldwork session is planned for **late 2026**, targeting sites along the Tapajós and Xingu river basins — two of the most diverse and, in different ways, most threatened river systems in the Neotropics.
+
+All data produced under this project will be made publicly available and integrated into the FishMORPH database.
+
+🔗 Full results of the CFBBA Chair call: [résultats définitifs](https://cfbbamazonia.org/wp-content/uploads/2026/03/resultats-definitifs-1.pdf)
+
+---
+
+*Toulouse, March 2026*

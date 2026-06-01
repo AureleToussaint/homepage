@@ -19,6 +19,24 @@
       <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2026-06-01-belem-brazil/picBelem.jpeg" medium="image" type="image/jpeg"/>
     </item>
     <item>
+      <title>Field practicals on the Touch river — fish sampling with UPS students</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2026-04-21-fish-sampling-touch-ups</link>
+      <description>On 21 April 2026, students from Université Paul Sabatier joined us for a full day of fish electrofishing and morphometric data collection on the Touch river, south-west of Toulouse. A first encounter with freshwater fish ecology in the field — mud included.</description>
+      <category>teaching</category>
+      <category>fieldwork</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2026-04-21-fish-sampling-touch-ups</guid>
+      <pubDate>Tue, 21 Apr 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>CFBBA Chair Grant — Building an Intraspecific Trait Database for Amazonian Freshwater Fishes</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2026-03-15-cfbba-chair-grant</link>
+      <description>Our project has been selected for the inaugural call of the Franco-Brazilian Chair Network (CFBBA), supporting reciprocal mobility between CNRS/CRBE Toulouse and the Universidade Federal do Pará. The project will build the first intraspecific trait database for Amazonian freshwater fishes — a direct extension of the INTRAIT fieldwork conducted in French Guiana.</description>
+      <category>grants</category>
+      <category>INTRAIT</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2026-03-15-cfbba-chair-grant</guid>
+      <pubDate>Sun, 15 Mar 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
       <title>What Shapes the Differences Between Freshwater Fish Communities Worldwide?</title>
       <link>https://beta.rstudioconnect.com/content/3776/posts/2025-12-20-global-patterns-of-freshwater-fish-beta-diversity</link>
       <description>Freshwater ecosystems host a disproportionate share of global biodiversity, yet they are among the most fragmented and threatened systems on Earth. While global patterns of freshwater fish species richness are now relatively well documented, much less is known about what drives differences in community composition between river basins—that is, beta diversity. In a recent study published in Global Ecology and Biogeography, we provide the first global, integrative analysis of taxonomic, functional, and phylogenetic beta diversity in freshwater fishes, and disentangle the ecological and historical processes shaping these patterns across the world’s river basins</description>
@@ -36,6 +54,14 @@
       <guid>https://beta.rstudioconnect.com/content/3776/posts/2025-12-01-intrait-french-guiana</guid>
       <pubDate>Mon, 01 Dec 2025 00:00:00 +0000</pubDate>
       <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2025-12-01-intrait-french-guiana/fish_guiana.jpg" medium="image" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>Teaching functional ecology in R — Master FBE, EUR TULIP-GS</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2025-09-15-master-fbe-tulip</link>
+      <description>In September 2025, I taught a course on functional ecology and R to Master FBE students at the EUR TULIP Graduate School in Toulouse. An overview of the course content, audience, and the pedagogical choices behind it.</description>
+      <category>teaching</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2025-09-15-master-fbe-tulip</guid>
+      <pubDate>Mon, 15 Sep 2025 00:00:00 +0000</pubDate>
     </item>
     <item>
       <title>New paper accepted in Nature on global patterns of 'dark diversity' in plants</title>

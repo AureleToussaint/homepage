@@ -1,0 +1,88 @@
+---
+title: "Teaching functional ecology in R — Master FBE, EUR TULIP-GS"
+description: |
+  In September 2025, I taught a course on functional ecology and R to Master FBE students at the EUR TULIP Graduate School in Toulouse. An overview of the course content, audience, and the pedagogical choices behind it.
+base_url: https://beta.rstudioconnect.com/content/11424/
+date: 2025-09-15
+categories:
+  - teaching
+collections:
+  posts:
+    share: [twitter, linkedin]
+    citations: false
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{=html}
+<div style="
+  background: #fff;
+  border: 1px solid #dde3ea;
+  border-radius: 14px;
+  padding: 22px 24px 18px 24px;
+  max-width: 380px;
+  margin: 0 auto 32px auto;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+">
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+    <span style="font-size:2em;">🇫🇷</span>
+    <div>
+      <div style="font-weight:700; font-size:1.08em; color:#1a202c;">Master FBE — Toulouse</div>
+      <div style="font-size:0.83em; color:#888; margin-top:2px;">Université de Toulouse · France</div>
+    </div>
+  </div>
+  <p style="font-size:0.9em; color:#4a5568; line-height:1.6; margin:0 0 14px 0;">
+    Introduction to functional ecology in R: trait data handling, functional diversity indices, and community-level analyses for master students.
+  </p>
+  <div style="display:flex; flex-wrap:wrap; gap:7px;">
+    <span style="background:#e8f5e9; color:#2e7d32; border-radius:20px; padding:3px 12px; font-size:0.75em; font-weight:600;">R</span>
+    <span style="background:#e3f2fd; color:#1565c0; border-radius:20px; padding:3px 12px; font-size:0.75em; font-weight:600;">Ecology</span>
+    <span style="background:#f3e5f5; color:#6a1b9a; border-radius:20px; padding:3px 12px; font-size:0.75em; font-weight:600;">Functional diversity</span>
+    <span style="background:#fff3e0; color:#e65100; border-radius:20px; padding:3px 12px; font-size:0.75em; font-weight:600;">Traits</span>
+  </div>
+</div>
+```
+
+## The Master FBE and EUR TULIP-GS
+
+The **Master Fonctionnement et Biodiversité des Écosystèmes (FBE)** is part of the [EUR TULIP Graduate School](https://www.labex-tulip.fr/la-graduate-school/le-master-tulip-gs) — a two-year research master programme at the interface between functional biology and evolutionary ecology, based in Toulouse. The programme trains students for careers in fundamental and applied research in ecology, conservation, agronomy and environmental management, and is backed by the LabEx TULIP, INRAE, the Université de Toulouse, and several major research institutes.
+
+Students are recruited competitively, with a maximum of 30 per year, and benefit from stipends to facilitate their training — including mobility packages and international grants for non-French students.
+
+## The course
+
+In September 2025, I contributed a module on **functional ecology and R** to the Master FBE curriculum. The course was aimed at M2 students — most of them already comfortable with basic R — and focused on the practical application of trait-based methods to real datasets.
+
+The sessions covered:
+
+- **Trait data handling in R** — cleaning, standardising and exploring large trait matrices; dealing with missing data; taxonomic standardisation
+- **Functional space construction** — PCA and PCoA for mixed trait types (quantitative, categorical, fuzzy); interpretation of axes in ecological terms
+- **Functional diversity indices** — FRic, FEve, FDiv, FDis; their mathematical properties and ecological meaning; the CWM–RDA framework
+- **Trait Probability Densities (TPDs)** — a more recent approach to functional diversity that accounts for intraspecific variability; estimation and visualisation of TPDs in 2D
+- **Community-level analysis** — linking functional diversity to environmental gradients; null models and standardised effect sizes
+
+The goal was not to produce competent R users in a generic sense, but to give students a working understanding of the methods they are most likely to encounter — and need to critically evaluate — in the primary literature on community ecology and macroecology.
+
+## Pedagogical notes
+
+Teaching graduate students is a different exercise from teaching in a field school or a short course. The FBE students arrive with a strong theoretical background and — importantly — with their own research questions already forming. The challenge is to make the methods feel useful rather than obligatory: not "here is a function you need to know" but "here is how this connects to the question your thesis chapter is trying to answer."
+
+A few things that worked well:
+
+- **Starting from the data, not the formula.** Most trait-based indices become intuitive once you can see what the functional space looks like. Spending time on visualisation before introducing metrics pays off.
+- **Showing the limitations honestly.** FRic depends heavily on sample size; CWM is sensitive to trait coverage; TPDs require enough individuals per species to be meaningful. Students who understand the failure modes of a method are better at choosing and interpreting it.
+- **Using Neotropical examples.** Not every student works on temperate systems, and the standard teaching datasets (Rao, Villeger *et al.*) can feel remote. Bringing in freshwater fish data from French Guiana and South American river basins — systems some students actually work on — sharpened the attention immediately.
+
+## Course materials
+
+The full course materials — slides, R scripts, and datasets — are available on my website under [Teaching → Trait-based courses](https://aureletoussaint.github.io/homepage/RcourseFBE.html) (password required; contact me for access).
+
+---
+
+*Toulouse, September 2025*

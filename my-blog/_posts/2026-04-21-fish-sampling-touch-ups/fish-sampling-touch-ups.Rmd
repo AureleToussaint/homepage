@@ -1,0 +1,82 @@
+---
+title: "Field practicals on the Touch river — fish sampling with UPS students"
+description: |
+  On 21 April 2026, students from Université Paul Sabatier joined us for a full day of fish electrofishing and morphometric data collection on the Touch river, south-west of Toulouse. A first encounter with freshwater fish ecology in the field — mud included.
+base_url: https://beta.rstudioconnect.com/content/11424/
+date: 2026-04-21
+categories:
+  - teaching
+  - fieldwork
+collections:
+  posts:
+    share: [twitter, linkedin]
+    citations: false
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{=html}
+<div style="
+  background: #f0f7f0;
+  border-left: 4px solid #2e7d32;
+  border-radius: 0 10px 10px 0;
+  padding: 16px 20px;
+  margin: 0 0 28px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.9em;
+  color: #2d4a2d;
+">
+  <div style="font-weight:700; margin-bottom:6px;">📍 Practical field day — Poissons</div>
+  <div><strong>Date :</strong> Tuesday 21 April 2026 · 8h–18h</div>
+  <div><strong>Site :</strong> Rivière Touch, D19 entre Lamasquère et Saint-Lys</div>
+  <div><strong>Coordinates :</strong> 43°29'34" N · 1°13'50" E</div>
+  <div><strong>Students :</strong> Université Paul Sabatier (Toulouse III)</div>
+</div>
+```
+
+Every year I look forward to this day more than almost any other on the academic calendar. Getting students out of the classroom and into waders — standing in a cold river at eight in the morning, watching a fish materialise from a net they just threw — is simply irreplaceable as a pedagogical experience. No dataset, no simulation, no lecture on trophic guilds quite prepares you for the moment you hold a *Leuciscus leuciscus* and realise you can read its ecology from its body.
+
+## The site: la Touch
+
+The Touch is a Garonne tributary rising in the Pyrenean foothills and flowing north through the agricultural plains south-west of Toulouse. The sampling site — accessible via the D19 between Lamasquère and Saint-Lys — is a reach of moderate gradient with a mix of gravel riffles, sandy pools, and macrophyte beds. It is precisely the kind of multi-habitat stretch that makes for an instructive sampling session: different techniques yield different species, and the habitat associations become visible quickly.
+
+The fish community here is typical of Pyrenean foothill rivers: dominated by cyprinids (*Gobio gobio*, *Leuciscus* spp., *Phoxinus phoxinus*), with occasional salmonids in cooler runs and bottom-dwelling species — *Barbatula barbatula*, *Cottus perifretum* — tucked under rocks. Not spectacular by Neotropical standards, but ecologically rich and methodologically ideal for a teaching day.
+
+## The morning: sampling on the river
+
+From 8h to 12h, students worked in rotating groups across three sampling stations, each using a different technique:
+
+- **Electrofishing** — the backbone of the day. A backpack electrofishing unit passes a pulsed current through the water, temporarily stunning fish within a 1–2 m radius. Students positioned downstream with hand nets and a keep-net. Requires coordination, patience, and comfort with cold water.
+- **Seine net** — drag-netting across a shallow riffle, with students forming a line and walking the net to the bank. Effective for small-bodied schooling species and juveniles invisible to electrofishing.
+- **Cast net** (*épervier*) — thrown over pools and deeper runs. Good for mid-water species and a skill that requires some practice to deploy correctly.
+
+All fish captured were immediately transferred to aerated buckets, identified to species if possible (to genus otherwise), measured (total length, fork length), weighed, and released alive. Students worked in pairs at the identification table — field guides in hand, uncertainty acknowledged openly.
+
+```{=html}
+<div style="
+  background: #fff8e1;
+  border-left: 4px solid #f9a825;
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px;
+  margin: 24px 0;
+  font-size: 0.88em;
+  color: #4a3800;
+">
+  <strong>Practical note for students:</strong> Waders were provided but fit and waterproofing were not guaranteed — a good argument for owning your own if you plan to do fieldwork. Waterproof notebooks and pencils outperformed phones within the first hour. Laptops were left in the car.
+</div>
+```
+
+## Why this matters
+
+The Touch river, on a Tuesday morning in April, is not French Guiana. The diversity is lower, the fish are smaller, the stakes are more modest. But the logic is identical: morphology encodes ecology, species assemblages reflect habitat conditions, and functional diversity is something you can measure and interpret.
+
+For students who will spend the next years working with large trait databases and multivariate statistics, the memory of actually catching a bullhead (*Cottus perifretum*) from under a rock and looking at the position of its pectoral fins before releasing it — that is worth more than any number of well-formatted data frames.
+
+---
+
+*Touch river, Lamasquère — April 2026*

@@ -52,7 +52,7 @@ The students I worked with are producing first-rate science under resource const
 
 ## What's next
 
-The course materials are available on my website under [Teaching → Trait-based courses](../../Courses.html). I'm also working on a more complete version of the R tutorial tailored to Neotropical fish assemblages, which I hope to release before the end of the year.
+The course materials are available on my website under [Teaching → Belém 2026](https://aureletoussaint.github.io/homepage/Rcourse.html). I'm also working on a more complete version of the R tutorial tailored to Neotropical fish assemblages, which I hope to release before the end of the year.
 
 Thanks to the local organisers for the invitation and the extraordinarily patient logistics. And to the student who brought homemade tucupi sauce on the last day — that was the highlight of the trip.
 
