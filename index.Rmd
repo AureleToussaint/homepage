@@ -422,8 +422,8 @@ editor_options:
 
   <div class="blog-banner-left">
     <div class="blog-banner-label">🐟 &nbsp;FROM THE BLOG</div>
-    <div class="blog-banner-title">Field notes, fish & functional ecology</div>
-    <div class="blog-banner-sub">Fieldwork dispatches · R tutorials · paper discussions · wader malfunctions</div>
+    <div class="blog-banner-title">News from papers and fieldwork campaign</div>
+    <div class="blog-banner-sub">Beyond the papers and the projects</div>
     <div class="blog-banner-cta">Dive in →</div>
   </div>
   <div class="blog-banner-right" aria-hidden="true">
