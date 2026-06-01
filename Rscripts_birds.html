@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Bird trait analysis — R Scripts</title>
+
+<script src="site_libs/header-attrs-2.31/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel="shortcut icon" href="data/ATc.jpg" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    
+  </a>
+</li>
+<li>
+  <a href="Projects.html">Projects</a>
+</li>
+<li>
+  <a href="RData.html">Data</a>
+</li>
+<li>
+  <a href="Rscripts.html">R scripts</a>
+</li>
+<li>
+  <a href="Courses.html">Courses</a>
+</li>
+<li>
+  <a href="my-blog/site">My blog</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="contact.html">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/AureleToussaint">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://twitter.com/ToussaintAurele">
+    <span class="fa fa-twitter fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/atoussaint/">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<style>
+#pw-overlay {
+  position: fixed; inset: 0; background: rgba(255,255,255,0.97);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+}
+.pw-box {
+  background: #fff; border: 1px solid #dde3ea; border-radius: 12px;
+  padding: 40px 48px; text-align: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-width: 400px; width: 90%;
+}
+.pw-box h2 { margin: 0 0 6px 0; font-size: 1.5em; color: #2c3e50; }
+.pw-box p  { color: #666; font-size: 0.95em; margin: 0 0 22px 0; }
+.pw-lock   { font-size: 3em; margin-bottom: 8px; }
+.pw-row    { display: flex; gap: 8px; }
+.pw-row input {
+  flex:1; padding: 10px 14px; border: 1px solid #ccc;
+  border-radius: 8px; font-size: 1em; outline: none;
+}
+.pw-row input:focus { border-color: #c0392b; }
+.pw-row button {
+  padding: 10px 18px; background: #c0392b; color: #fff;
+  border: none; border-radius: 8px; font-size: 1em; cursor: pointer;
+}
+.pw-row button:hover { opacity: 0.85; }
+.pw-err { color: #c0392b; font-size: 0.9em; margin: 8px 0 0 0; min-height: 20px; }
+.back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
+.back-link a { color: #c0392b; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+
+/* ── Custom sidebar nav ───────────────────────────── */
+#TOC,
+.tocify-wrapper,
+div[data-spy="affix"] {
+  display: none !important;
+  width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+body { margin-left: 0 !important; padding-left: 0 !important; }
+.main-container {
+  margin-left: 210px !important;
+  max-width: calc(100vw - 230px) !important;
+  width: calc(100vw - 230px) !important;
+  padding-right: 30px !important;
+}
+.col-xs-12.col-sm-4.col-md-3,
+.tocify-wrapper,
+div.tocify,
+#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
+.col-xs-12.col-sm-8.col-md-9 {
+  width: 100% !important;
+  -webkit-flex: none !important;
+  flex: none !important;
+}
+.row { margin-left: 0 !important; margin-right: 0 !important; }
+
+.fn-nav {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 205px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: 14px 10px 20px 14px;
+  border-right: 1px solid #e8e8e8;
+  background: #fafafa;
+  font-size: 0.82em;
+  z-index: 100;
+}
+.fn-nav .fn-nav-title {
+  font-size: 0.7em; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: #bbb;
+  margin-bottom: 10px; padding-left: 4px;
+}
+.fn-nav ul { list-style: none; margin: 0; padding: 0; }
+.fn-nav li a {
+  display: block; padding: 3px 6px; border-radius: 4px;
+  color: #444; text-decoration: none;
+  font-size: 0.9em; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.fn-nav li a:hover { background: #eef2f7; color: #2c3e50; }
+.fn-nav li a.active { background: #fce8e8; color: #c0392b; font-weight: 600; }
+
+/* ── Page intro ───────────────────────────────────── */
+.page-intro {
+  display:flex; align-items:center; gap:14px;
+  padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
+}
+.page-intro-icon {
+  width:48px; height:48px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5em; color:#fff; flex-shrink:0;
+}
+.page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
+.page-intro p  { font-size:0.92em; color:#777; margin:0; }
+
+/* ── Step cards (pipeline workflow) ──────────────── */
+.step-divider {
+  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+}
+.step-divider span {
+  font-size:0.75em; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:#aaa; white-space:nowrap;
+}
+.step-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
+
+.fn-card {
+  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+}
+.fn-header {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
+}
+.fn-name {
+  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
+  margin:0; padding:0; line-height:1.4;
+}
+.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
+.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+.fn-tag  { font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600; }
+.tag-data  { background:#fce4ec; color:#880e4f; }
+.tag-stat  { background:#e8f5e9; color:#1b6b2f; }
+.tag-ml    { background:#e8eaf6; color:#283593; }
+.tag-morph { background:#e0f2f1; color:#00574e; }
+.tag-fd    { background:#fff3e0; color:#b25000; }
+.tag-util  { background:#e3f2fd; color:#1557a0; }
+.tag-geo   { background:#f3e5f5; color:#6a1b9a; }
+
+.fn-args { display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
+           background:#fff; border-bottom:1px solid #f0f0f0; align-items:center; }
+.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
+.fn-arg { font-family:monospace; font-size:0.78em; padding:2px 8px;
+          background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555; }
+</style>
+
+<!-- Static sidebar nav -->
+<div class="fn-nav" id="fn-nav">
+  <div class="fn-nav-title">Pipeline steps</div>
+  <ul>
+    <li><a href="#fn-step1">01 — Load &amp; IUCN</a></li>
+    <li><a href="#fn-step2">02 — Imputation</a></li>
+    <li><a href="#fn-step3">03 — PhenoBird</a></li>
+    <li><a href="#fn-step4">04 — PCoA</a></li>
+    <li><a href="#fn-step5">05 — Spatial</a></li>
+    <li><a href="#fn-step6">06 — TPD</a></li>
+    <li><a href="#fn-step7">07 — Save outputs</a></li>
+  </ul>
+</div>
+
+<!-- Password overlay -->
+<div id="pw-overlay">
+  <div class="pw-box">
+    <div class="pw-lock">🔒</div>
+    <h2>R Scripts — Birds</h2>
+    <p>Enter the password to access this page.</p>
+    <div class="pw-row">
+      <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+      <button onclick="checkPw()">OK</button>
+    </div>
+    <p class="pw-err" id="pw-err"></p>
+  </div>
+</div>
+
+<script>
+(function(){
+  if(sessionStorage.getItem('rscripts_unlocked')==='1'){
+    document.getElementById('pw-overlay').style.display='none';
+  }
+})();
+async function checkPw(){
+  var val=document.getElementById('pw-input').value;
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+  var hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hex==='ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5'){
+    sessionStorage.setItem('rscripts_unlocked','1');
+    document.getElementById('pw-overlay').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='Incorrect password.';
+  }
+}
+</script>
+
+<div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
+
+<div class="page-intro">
+  <div class="page-intro-icon" style="background:#c0392b;">🐦</div>
+  <div>
+    <h1>Bird trait analysis</h1>
+    <p>Pipeline for avian trait data loading, imputation, PCoA and spatial assignment — FuSE_FuS project.</p>
+  </div>
+</div>
+
+<script>
+window.addEventListener("scroll", function() {
+  var links = document.querySelectorAll(".fn-nav li a");
+  var current = "";
+  links.forEach(function(a) {
+    var id = a.getAttribute("href").slice(1);
+    var el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 120) current = id;
+  });
+  links.forEach(function(a) {
+    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
+  });
+});
+</script>
+<div id="step1" class="section level2">
+<h2>Step 1 — Data loading &amp; taxonomic standardization</h2>
+<h3 class="step-divider"><span>AVONET + IUCN inline</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step1">01_DATA_load_and_clean — Step 1</h4>
+      <div class="fn-desc">Load AVONET BirdLife morphological traits, fetch IUCN Red List categories via API v4 (<code>rredlist</code>), merge into a single species × traits table, and resolve taxonomic duplicates. Results cached to <code>data/processed/BirdTraitCombined.csv</code>.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-data">data loading</span>
+        <span class="fn-tag tag-util">taxonomy</span>
+        <span class="fn-tag tag-stat">IUCN API</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Inputs:</span>
+    <span class="fn-arg">data/raw/AVONET.xlsx</span>
+    <span class="fn-arg">IUCN_REDLIST_KEY (.Renviron)</span>
+    <span class="fn-arg">traitdata::amniota</span>
+    <span class="fn-arg">traitdata::elton_birds</span>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/processed/BirdTraitCombined.csv</span>
+    <span class="fn-arg">data/processed/iucn_cache.rds</span>
+  </div>
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># ---- Reproducibility -------------------------------------------------------</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>GLOBAL_SEED <span class="ot">&lt;-</span> <span class="dv">20251029</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">set.seed</span>(GLOBAL_SEED)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;scripts/00_GeneralScript.R&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="do">########################################################################</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="do">### 1. Loading original trait and taxonomic standardization</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="do">########################################################################</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span>(<span class="st">&quot;BirdTraitCombined.csv&quot;</span> <span class="sc">%in%</span> <span class="fu">list.files</span>(<span class="st">&quot;data/raw&quot;</span>))){</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  <span class="do">### 1.a. AVONET morphological traits</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  avonet_raw <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>    <span class="at">path =</span> <span class="st">&quot;data/raw/AVONET.xlsx&quot;</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>    <span class="at">sheet =</span> <span class="st">&quot;AVONET1_BirdLife&quot;</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>    <span class="at">col_types =</span> <span class="fu">c</span>(</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>      <span class="st">&quot;skip&quot;</span>, <span class="st">&quot;text&quot;</span>, <span class="st">&quot;text&quot;</span>, <span class="st">&quot;text&quot;</span>, <span class="st">&quot;skip&quot;</span>, <span class="st">&quot;skip&quot;</span>, <span class="st">&quot;skip&quot;</span>, <span class="st">&quot;skip&quot;</span>, <span class="st">&quot;skip&quot;</span>, <span class="st">&quot;skip&quot;</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>      <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>,</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>      <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="st">&quot;skip&quot;</span>, <span class="dv">16</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>    )</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>  )</span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>  avonet_raw <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(avonet_raw)</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>  avonet_raw <span class="ot">&lt;-</span> <span class="fu">subset</span>(avonet_raw, Family1 <span class="sc">!=</span> <span class="st">&quot;Apterygidae&quot;</span>)  <span class="co"># remove flightless</span></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>  <span class="do">### 1.b. IUCN categories via API v4 (rredlist &gt;= 1.0.0)</span></span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;rredlist&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;rredlist&quot;</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a>  <span class="fu">library</span>(rredlist)</span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>  <span class="cf">if</span> (utils<span class="sc">::</span><span class="fu">packageVersion</span>(<span class="st">&quot;rredlist&quot;</span>) <span class="sc">&lt;</span> <span class="st">&quot;1.0.0&quot;</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;rredlist &gt;= 1.0.0 required (API v4). install.packages(&#39;rredlist&#39;)&quot;</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a>  <span class="st">`</span><span class="at">%||%</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) <span class="cf">if</span> (<span class="fu">is.null</span>(a) <span class="sc">||</span> <span class="fu">length</span>(a) <span class="sc">==</span> <span class="dv">0</span><span class="dt">L</span>) b <span class="cf">else</span> a</span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a>  parse_binomial <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">sep =</span> <span class="st">&quot;[_ ]+&quot;</span>) {</span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a>    parts <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(<span class="fu">as.character</span>(x), sep)</span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a>      <span class="at">genus   =</span> <span class="fu">sapply</span>(parts, <span class="cf">function</span>(p) <span class="cf">if</span> (<span class="fu">length</span>(p) <span class="sc">&gt;=</span> <span class="dv">1</span><span class="dt">L</span>) p[<span class="dv">1</span>] <span class="cf">else</span> <span class="cn">NA_character_</span>),</span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a>      <span class="at">species =</span> <span class="fu">sapply</span>(parts, <span class="cf">function</span>(p) <span class="cf">if</span> (<span class="fu">length</span>(p) <span class="sc">&gt;=</span> <span class="dv">2</span><span class="dt">L</span>) p[<span class="dv">2</span>] <span class="cf">else</span> <span class="cn">NA_character_</span>),</span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a>      <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a>    )</span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a>  }</span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a>  query_iucn <span class="ot">&lt;-</span> <span class="cf">function</span>(genus, species, key) {</span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(genus) <span class="sc">||</span> <span class="fu">is.na</span>(species) <span class="sc">||</span> genus <span class="sc">==</span> <span class="st">&quot;&quot;</span> <span class="sc">||</span> species <span class="sc">==</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a>      <span class="fu">return</span>(<span class="cn">NA_character_</span>)</span>
+<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a>    <span class="fu">tryCatch</span>({</span>
+<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a>      res <span class="ot">&lt;-</span> rredlist<span class="sc">::</span><span class="fu">rl_species</span>(<span class="at">genus =</span> genus, <span class="at">species =</span> species, <span class="at">key =</span> key)</span>
+<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.null</span>(res) <span class="sc">||</span> <span class="fu">is.null</span>(res<span class="sc">$</span>assessments)) <span class="fu">return</span>(<span class="cn">NA_character_</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a>      asm <span class="ot">&lt;-</span> res<span class="sc">$</span>assessments</span>
+<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.data.frame</span>(asm)) {</span>
+<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">nrow</span>(asm) <span class="sc">==</span> <span class="dv">0</span><span class="dt">L</span>) <span class="fu">return</span>(<span class="cn">NA_character_</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a>        latest_idx <span class="ot">&lt;-</span> <span class="fu">which</span>(asm<span class="sc">$</span>latest <span class="sc">==</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">length</span>(latest_idx) <span class="sc">==</span> <span class="dv">0</span><span class="dt">L</span>) latest_idx <span class="ot">&lt;-</span> <span class="dv">1</span><span class="dt">L</span></span>
+<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a>        <span class="fu">return</span>(asm<span class="sc">$</span>red_list_category_code[latest_idx[<span class="dv">1</span>]])</span>
+<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a>      }</span>
+<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.list</span>(asm) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(asm) <span class="sc">&gt;</span> <span class="dv">0</span><span class="dt">L</span>) {</span>
+<span id="cb1-57"><a href="#cb1-57" tabindex="-1"></a>        latest_idx <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">vapply</span>(asm, <span class="cf">function</span>(a) <span class="fu">isTRUE</span>(a<span class="sc">$</span>latest), <span class="fu">logical</span>(<span class="dv">1</span><span class="dt">L</span>)))</span>
+<span id="cb1-58"><a href="#cb1-58" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">length</span>(latest_idx) <span class="sc">==</span> <span class="dv">0</span><span class="dt">L</span>) latest_idx <span class="ot">&lt;-</span> <span class="dv">1</span><span class="dt">L</span></span>
+<span id="cb1-59"><a href="#cb1-59" tabindex="-1"></a>        <span class="fu">return</span>(asm[[latest_idx[<span class="dv">1</span>]]]<span class="sc">$</span>red_list_category_code <span class="sc">%||%</span> <span class="cn">NA_character_</span>)</span>
+<span id="cb1-60"><a href="#cb1-60" tabindex="-1"></a>      }</span>
+<span id="cb1-61"><a href="#cb1-61" tabindex="-1"></a>      <span class="cn">NA_character_</span></span>
+<span id="cb1-62"><a href="#cb1-62" tabindex="-1"></a>    }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb1-63"><a href="#cb1-63" tabindex="-1"></a>      <span class="cf">if</span> (<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;404|not found&quot;</span>, <span class="fu">conditionMessage</span>(e), <span class="at">ignore.case =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-64"><a href="#cb1-64" tabindex="-1"></a>        <span class="fu">message</span>(<span class="fu">sprintf</span>(<span class="st">&quot;  [ERROR] %s %s — %s&quot;</span>, genus, species, <span class="fu">conditionMessage</span>(e)))</span>
+<span id="cb1-65"><a href="#cb1-65" tabindex="-1"></a>      <span class="cn">NA_character_</span></span>
+<span id="cb1-66"><a href="#cb1-66" tabindex="-1"></a>    })</span>
+<span id="cb1-67"><a href="#cb1-67" tabindex="-1"></a>  }</span>
+<span id="cb1-68"><a href="#cb1-68" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" tabindex="-1"></a>  fetch_iucn_categories <span class="ot">&lt;-</span> <span class="cf">function</span>(binomials, key,</span>
+<span id="cb1-70"><a href="#cb1-70" tabindex="-1"></a>                                    <span class="at">cache_path =</span> <span class="st">&quot;data/processed/iucn_cache.rds&quot;</span>,</span>
+<span id="cb1-71"><a href="#cb1-71" tabindex="-1"></a>                                    <span class="at">rate_limit_s =</span> <span class="fl">0.6</span>,</span>
+<span id="cb1-72"><a href="#cb1-72" tabindex="-1"></a>                                    <span class="at">retry_failed =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb1-73"><a href="#cb1-73" tabindex="-1"></a>    binomials <span class="ot">&lt;-</span> <span class="fu">unique</span>(binomials[<span class="sc">!</span><span class="fu">is.na</span>(binomials) <span class="sc">&amp;</span> binomials <span class="sc">!=</span> <span class="st">&quot;&quot;</span>])</span>
+<span id="cb1-74"><a href="#cb1-74" tabindex="-1"></a>    cache <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">file.exists</span>(cache_path)) <span class="fu">readRDS</span>(cache_path) <span class="cf">else</span> <span class="fu">list</span>()</span>
+<span id="cb1-75"><a href="#cb1-75" tabindex="-1"></a>    to_query <span class="ot">&lt;-</span> <span class="cf">if</span> (retry_failed) {</span>
+<span id="cb1-76"><a href="#cb1-76" tabindex="-1"></a>      binomials[<span class="sc">!</span>binomials <span class="sc">%in%</span> <span class="fu">names</span>(cache) <span class="sc">|</span></span>
+<span id="cb1-77"><a href="#cb1-77" tabindex="-1"></a>                  <span class="fu">vapply</span>(binomials, <span class="cf">function</span>(sp) <span class="fu">is.null</span>(cache[[sp]]) <span class="sc">||</span> <span class="fu">is.na</span>(cache[[sp]]), <span class="fu">logical</span>(<span class="dv">1</span><span class="dt">L</span>))]</span>
+<span id="cb1-78"><a href="#cb1-78" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb1-79"><a href="#cb1-79" tabindex="-1"></a>      binomials[<span class="sc">!</span>binomials <span class="sc">%in%</span> <span class="fu">names</span>(cache)]</span>
+<span id="cb1-80"><a href="#cb1-80" tabindex="-1"></a>    }</span>
+<span id="cb1-81"><a href="#cb1-81" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(to_query) <span class="sc">&gt;</span> <span class="dv">0</span><span class="dt">L</span>) {</span>
+<span id="cb1-82"><a href="#cb1-82" tabindex="-1"></a>      parsed <span class="ot">&lt;-</span> <span class="fu">parse_binomial</span>(to_query)</span>
+<span id="cb1-83"><a href="#cb1-83" tabindex="-1"></a>      <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(to_query)) {</span>
+<span id="cb1-84"><a href="#cb1-84" tabindex="-1"></a>        cache[[to_query[i]]] <span class="ot">&lt;-</span> <span class="fu">query_iucn</span>(parsed<span class="sc">$</span>genus[i], parsed<span class="sc">$</span>species[i], <span class="at">key =</span> key)</span>
+<span id="cb1-85"><a href="#cb1-85" tabindex="-1"></a>        <span class="cf">if</span> (i <span class="sc">%%</span> <span class="dv">100</span><span class="dt">L</span> <span class="sc">==</span> <span class="dv">0</span><span class="dt">L</span>) {</span>
+<span id="cb1-86"><a href="#cb1-86" tabindex="-1"></a>          <span class="fu">dir.create</span>(<span class="fu">dirname</span>(cache_path), <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-87"><a href="#cb1-87" tabindex="-1"></a>          <span class="fu">saveRDS</span>(cache, cache_path)</span>
+<span id="cb1-88"><a href="#cb1-88" tabindex="-1"></a>        }</span>
+<span id="cb1-89"><a href="#cb1-89" tabindex="-1"></a>        <span class="cf">if</span> (i <span class="sc">&lt;</span> <span class="fu">length</span>(to_query)) <span class="fu">Sys.sleep</span>(rate_limit_s)</span>
+<span id="cb1-90"><a href="#cb1-90" tabindex="-1"></a>      }</span>
+<span id="cb1-91"><a href="#cb1-91" tabindex="-1"></a>      <span class="fu">dir.create</span>(<span class="fu">dirname</span>(cache_path), <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-92"><a href="#cb1-92" tabindex="-1"></a>      <span class="fu">saveRDS</span>(cache, cache_path)</span>
+<span id="cb1-93"><a href="#cb1-93" tabindex="-1"></a>    }</span>
+<span id="cb1-94"><a href="#cb1-94" tabindex="-1"></a>    out <span class="ot">&lt;-</span> <span class="fu">unlist</span>(cache[binomials]); <span class="fu">names</span>(out) <span class="ot">&lt;-</span> binomials; out</span>
+<span id="cb1-95"><a href="#cb1-95" tabindex="-1"></a>  }</span>
+<span id="cb1-96"><a href="#cb1-96" tabindex="-1"></a></span>
+<span id="cb1-97"><a href="#cb1-97" tabindex="-1"></a>  API_KEY <span class="ot">&lt;-</span> <span class="fu">Sys.getenv</span>(<span class="st">&quot;IUCN_REDLIST_KEY&quot;</span>)</span>
+<span id="cb1-98"><a href="#cb1-98" tabindex="-1"></a>  <span class="cf">if</span> (API_KEY <span class="sc">==</span> <span class="st">&quot;&quot;</span>) <span class="fu">stop</span>(<span class="st">&quot;Set IUCN_REDLIST_KEY in .Renviron (https://api.iucnredlist.org)&quot;</span>)</span>
+<span id="cb1-99"><a href="#cb1-99" tabindex="-1"></a></span>
+<span id="cb1-100"><a href="#cb1-100" tabindex="-1"></a>  iucn_categories <span class="ot">&lt;-</span> <span class="fu">fetch_iucn_categories</span>(</span>
+<span id="cb1-101"><a href="#cb1-101" tabindex="-1"></a>    <span class="at">binomials =</span> <span class="fu">unique</span>(avonet_raw<span class="sc">$</span>Species1), <span class="at">key =</span> API_KEY,</span>
+<span id="cb1-102"><a href="#cb1-102" tabindex="-1"></a>    <span class="at">cache_path =</span> <span class="st">&quot;data/processed/iucn_cache.rds&quot;</span>, <span class="at">rate_limit_s =</span> <span class="fl">0.6</span></span>
+<span id="cb1-103"><a href="#cb1-103" tabindex="-1"></a>  )</span>
+<span id="cb1-104"><a href="#cb1-104" tabindex="-1"></a>  avonet_raw<span class="sc">$</span>iucn_category <span class="ot">&lt;-</span> iucn_categories[avonet_raw<span class="sc">$</span>Species1]</span>
+<span id="cb1-105"><a href="#cb1-105" tabindex="-1"></a></span>
+<span id="cb1-106"><a href="#cb1-106" tabindex="-1"></a>  <span class="do">### 1.c. Taxonomic fix + merge AMNIOTE + EltonTraits</span></span>
+<span id="cb1-107"><a href="#cb1-107" tabindex="-1"></a>  avonet_merged <span class="ot">&lt;-</span> avonet_raw</span>
+<span id="cb1-108"><a href="#cb1-108" tabindex="-1"></a>  avonet_merged<span class="sc">$</span>scientificNameStd <span class="ot">&lt;-</span> avonet_merged<span class="sc">$</span>Species1</span>
+<span id="cb1-109"><a href="#cb1-109" tabindex="-1"></a>  avonet_merged<span class="sc">$</span>GenusSpecies      <span class="ot">&lt;-</span> avonet_merged<span class="sc">$</span>Species1</span>
+<span id="cb1-110"><a href="#cb1-110" tabindex="-1"></a></span>
+<span id="cb1-111"><a href="#cb1-111" tabindex="-1"></a>  avonet_traitdata_map <span class="ot">&lt;-</span> traitdata<span class="sc">::</span>avonet</span>
+<span id="cb1-112"><a href="#cb1-112" tabindex="-1"></a>  avonet_traitdata_map<span class="sc">$</span>GenusSpecies <span class="ot">&lt;-</span> <span class="fu">paste</span>(avonet_traitdata_map<span class="sc">$</span>Genus, avonet_traitdata_map<span class="sc">$</span>Species)</span>
+<span id="cb1-113"><a href="#cb1-113" tabindex="-1"></a>  avonet_traitdata_map <span class="ot">&lt;-</span> <span class="fu">unique</span>(avonet_traitdata_map[, <span class="fu">c</span>(<span class="st">&quot;GenusSpecies&quot;</span>, <span class="st">&quot;scientificNameStd&quot;</span>)])</span>
+<span id="cb1-114"><a href="#cb1-114" tabindex="-1"></a>  <span class="fu">colnames</span>(avonet_traitdata_map) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Species1&quot;</span>, <span class="st">&quot;scientificNameStd_traitdata&quot;</span>)</span>
+<span id="cb1-115"><a href="#cb1-115" tabindex="-1"></a>  avonet_merged <span class="ot">&lt;-</span> <span class="fu">merge</span>(avonet_merged, avonet_traitdata_map, <span class="at">by =</span> <span class="st">&quot;Species1&quot;</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-116"><a href="#cb1-116" tabindex="-1"></a>  avonet_merged <span class="ot">&lt;-</span> avonet_merged[<span class="sc">!</span><span class="fu">is.na</span>(avonet_merged<span class="sc">$</span>scientificNameStd), ]</span>
+<span id="cb1-117"><a href="#cb1-117" tabindex="-1"></a>  avonet_merged <span class="ot">&lt;-</span> avonet_merged[<span class="fu">order</span>(avonet_merged<span class="sc">$</span>scientificNameStd), ]</span>
+<span id="cb1-118"><a href="#cb1-118" tabindex="-1"></a></span>
+<span id="cb1-119"><a href="#cb1-119" tabindex="-1"></a>  species_to_remove <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb1-120"><a href="#cb1-120" tabindex="-1"></a>    <span class="st">&#39;Atlantisia rogersi&#39;</span>, <span class="st">&#39;Casuarius bennetti&#39;</span>, <span class="st">&#39;Casuarius casuarius&#39;</span>,</span>
+<span id="cb1-121"><a href="#cb1-121" tabindex="-1"></a>    <span class="st">&#39;Casuarius unappendiculatus&#39;</span>, <span class="st">&#39;Dromaius novaehollandiae&#39;</span>,</span>
+<span id="cb1-122"><a href="#cb1-122" tabindex="-1"></a>    <span class="st">&#39;Rhea americana&#39;</span>, <span class="st">&#39;Rhea pennata&#39;</span>, <span class="st">&#39;Struthio camelus&#39;</span></span>
+<span id="cb1-123"><a href="#cb1-123" tabindex="-1"></a>  )</span>
+<span id="cb1-124"><a href="#cb1-124" tabindex="-1"></a>  avonet_filtered <span class="ot">&lt;-</span> <span class="fu">subset</span>(avonet_merged, <span class="sc">!</span>(scientificNameStd <span class="sc">%in%</span> species_to_remove))</span>
+<span id="cb1-125"><a href="#cb1-125" tabindex="-1"></a></span>
+<span id="cb1-126"><a href="#cb1-126" tabindex="-1"></a>  <span class="co"># Deduplicate: keep row matching GenusSpecies, else row with fewest NAs</span></span>
+<span id="cb1-127"><a href="#cb1-127" tabindex="-1"></a>  duplicated_species <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">which</span>(<span class="fu">table</span>(avonet_filtered<span class="sc">$</span>scientificNameStd) <span class="sc">&gt;</span> <span class="dv">1</span>))</span>
+<span id="cb1-128"><a href="#cb1-128" tabindex="-1"></a>  avonet_final <span class="ot">&lt;-</span> <span class="fu">subset</span>(avonet_filtered, <span class="sc">!</span>(scientificNameStd <span class="sc">%in%</span> duplicated_species))</span>
+<span id="cb1-129"><a href="#cb1-129" tabindex="-1"></a>  <span class="cf">for</span> (sp <span class="cf">in</span> duplicated_species) {</span>
+<span id="cb1-130"><a href="#cb1-130" tabindex="-1"></a>    entries <span class="ot">&lt;-</span> avonet_filtered[avonet_filtered<span class="sc">$</span>scientificNameStd <span class="sc">==</span> sp, ]</span>
+<span id="cb1-131"><a href="#cb1-131" tabindex="-1"></a>    <span class="cf">if</span> (sp <span class="sc">%in%</span> entries<span class="sc">$</span>GenusSpecies) {</span>
+<span id="cb1-132"><a href="#cb1-132" tabindex="-1"></a>      avonet_final <span class="ot">&lt;-</span> <span class="fu">rbind</span>(avonet_final, entries[entries<span class="sc">$</span>GenusSpecies <span class="sc">==</span> sp, ])</span>
+<span id="cb1-133"><a href="#cb1-133" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb1-134"><a href="#cb1-134" tabindex="-1"></a>      na_counts <span class="ot">&lt;-</span> <span class="fu">apply</span>(entries, <span class="dv">1</span>, <span class="cf">function</span>(row) <span class="fu">sum</span>(<span class="fu">is.na</span>(row)))</span>
+<span id="cb1-135"><a href="#cb1-135" tabindex="-1"></a>      avonet_final <span class="ot">&lt;-</span> <span class="fu">rbind</span>(avonet_final, entries[<span class="fu">which.min</span>(na_counts), , <span class="at">drop =</span> <span class="cn">FALSE</span>])</span>
+<span id="cb1-136"><a href="#cb1-136" tabindex="-1"></a>    }</span>
+<span id="cb1-137"><a href="#cb1-137" tabindex="-1"></a>  }</span>
+<span id="cb1-138"><a href="#cb1-138" tabindex="-1"></a></span>
+<span id="cb1-139"><a href="#cb1-139" tabindex="-1"></a>  resolve_duplicates <span class="ot">&lt;-</span> <span class="cf">function</span>(df_grouped) {</span>
+<span id="cb1-140"><a href="#cb1-140" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">any</span>(df_grouped<span class="sc">$</span>GenusSpecies <span class="sc">==</span> df_grouped<span class="sc">$</span>scientificNameStd[<span class="dv">1</span>])) {</span>
+<span id="cb1-141"><a href="#cb1-141" tabindex="-1"></a>      <span class="fu">return</span>(df_grouped <span class="sc">%&gt;%</span> <span class="fu">filter</span>(GenusSpecies <span class="sc">==</span> scientificNameStd[<span class="dv">1</span>]) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span>))</span>
+<span id="cb1-142"><a href="#cb1-142" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb1-143"><a href="#cb1-143" tabindex="-1"></a>      <span class="fu">return</span>(df_grouped <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">n_NA =</span> <span class="fu">rowSums</span>(<span class="fu">is.na</span>(.))) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(n_NA) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>n_NA))</span>
+<span id="cb1-144"><a href="#cb1-144" tabindex="-1"></a>    }</span>
+<span id="cb1-145"><a href="#cb1-145" tabindex="-1"></a>  }</span>
+<span id="cb1-146"><a href="#cb1-146" tabindex="-1"></a></span>
+<span id="cb1-147"><a href="#cb1-147" tabindex="-1"></a>  clean_amniote_aves <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">data =</span> traitdata<span class="sc">::</span>amniota) {</span>
+<span id="cb1-148"><a href="#cb1-148" tabindex="-1"></a>    aves_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Class <span class="sc">==</span> <span class="st">&quot;Aves&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-149"><a href="#cb1-149" tabindex="-1"></a>      <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(scientificNameStd)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">GenusSpecies =</span> <span class="fu">paste</span>(Genus, Species))</span>
+<span id="cb1-150"><a href="#cb1-150" tabindex="-1"></a>    dup_names <span class="ot">&lt;-</span> aves_data <span class="sc">%&gt;%</span> <span class="fu">count</span>(scientificNameStd) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(scientificNameStd)</span>
+<span id="cb1-151"><a href="#cb1-151" tabindex="-1"></a>    aves_clean    <span class="ot">&lt;-</span> aves_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span>scientificNameStd <span class="sc">%in%</span> dup_names)</span>
+<span id="cb1-152"><a href="#cb1-152" tabindex="-1"></a>    aves_resolved <span class="ot">&lt;-</span> aves_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(scientificNameStd <span class="sc">%in%</span> dup_names) <span class="sc">%&gt;%</span></span>
+<span id="cb1-153"><a href="#cb1-153" tabindex="-1"></a>      <span class="fu">group_by</span>(scientificNameStd) <span class="sc">%&gt;%</span> <span class="fu">group_modify</span>(<span class="sc">~</span> <span class="fu">resolve_duplicates</span>(.x)) <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>()</span>
+<span id="cb1-154"><a href="#cb1-154" tabindex="-1"></a>    final_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(aves_clean, aves_resolved)</span>
+<span id="cb1-155"><a href="#cb1-155" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">any</span>(<span class="fu">duplicated</span>(final_data<span class="sc">$</span>scientificNameStd)))</span>
+<span id="cb1-156"><a href="#cb1-156" tabindex="-1"></a>    <span class="fu">return</span>(final_data)</span>
+<span id="cb1-157"><a href="#cb1-157" tabindex="-1"></a>  }</span>
+<span id="cb1-158"><a href="#cb1-158" tabindex="-1"></a>  aveTraitsFinal <span class="ot">&lt;-</span> <span class="fu">clean_amniote_aves</span>()</span>
+<span id="cb1-159"><a href="#cb1-159" tabindex="-1"></a></span>
+<span id="cb1-160"><a href="#cb1-160" tabindex="-1"></a>  clean_elton_diet_aves <span class="ot">&lt;-</span> <span class="cf">function</span>(elton_birds_data) {</span>
+<span id="cb1-161"><a href="#cb1-161" tabindex="-1"></a>    elton_clean <span class="ot">&lt;-</span> elton_birds_data <span class="sc">%&gt;%</span></span>
+<span id="cb1-162"><a href="#cb1-162" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">Genus =</span> <span class="fu">trimws</span>(Genus), <span class="at">Species =</span> <span class="fu">trimws</span>(Species),</span>
+<span id="cb1-163"><a href="#cb1-163" tabindex="-1"></a>             <span class="at">scientificNameStd =</span> <span class="fu">paste</span>(Genus, Species), <span class="at">GenusSpecies =</span> <span class="fu">paste</span>(Genus, Species)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-164"><a href="#cb1-164" tabindex="-1"></a>      <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">36</span><span class="sc">:</span><span class="dv">42</span>)) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(scientificNameStd))</span>
+<span id="cb1-165"><a href="#cb1-165" tabindex="-1"></a>    dup_names <span class="ot">&lt;-</span> elton_clean <span class="sc">%&gt;%</span> <span class="fu">count</span>(scientificNameStd) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(scientificNameStd)</span>
+<span id="cb1-166"><a href="#cb1-166" tabindex="-1"></a>    elton_ok <span class="ot">&lt;-</span> elton_clean <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span>scientificNameStd <span class="sc">%in%</span> dup_names)</span>
+<span id="cb1-167"><a href="#cb1-167" tabindex="-1"></a>    dup_resolved <span class="ot">&lt;-</span> elton_clean <span class="sc">%&gt;%</span> <span class="fu">filter</span>(scientificNameStd <span class="sc">%in%</span> dup_names) <span class="sc">%&gt;%</span></span>
+<span id="cb1-168"><a href="#cb1-168" tabindex="-1"></a>      <span class="fu">group_by</span>(scientificNameStd) <span class="sc">%&gt;%</span></span>
+<span id="cb1-169"><a href="#cb1-169" tabindex="-1"></a>      <span class="fu">group_modify</span>(<span class="sc">~</span> {</span>
+<span id="cb1-170"><a href="#cb1-170" tabindex="-1"></a>        match_gs <span class="ot">&lt;-</span> .x <span class="sc">%&gt;%</span> <span class="fu">filter</span>(GenusSpecies <span class="sc">==</span> .x<span class="sc">$</span>scientificNameStd[<span class="dv">1</span>])</span>
+<span id="cb1-171"><a href="#cb1-171" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">nrow</span>(match_gs) <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="fu">return</span>(<span class="fu">slice</span>(match_gs, <span class="dv">1</span>))</span>
+<span id="cb1-172"><a href="#cb1-172" tabindex="-1"></a>        .x <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">n_NA =</span> <span class="fu">rowSums</span>(<span class="fu">is.na</span>(.))) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(n_NA) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>n_NA)</span>
+<span id="cb1-173"><a href="#cb1-173" tabindex="-1"></a>      }) <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>()</span>
+<span id="cb1-174"><a href="#cb1-174" tabindex="-1"></a>    elton_final <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(elton_ok, dup_resolved)</span>
+<span id="cb1-175"><a href="#cb1-175" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">any</span>(<span class="fu">duplicated</span>(elton_final<span class="sc">$</span>scientificNameStd)))</span>
+<span id="cb1-176"><a href="#cb1-176" tabindex="-1"></a>    <span class="fu">return</span>(elton_final)</span>
+<span id="cb1-177"><a href="#cb1-177" tabindex="-1"></a>  }</span>
+<span id="cb1-178"><a href="#cb1-178" tabindex="-1"></a>  aveDietFinal <span class="ot">&lt;-</span> <span class="fu">clean_elton_diet_aves</span>(traitdata<span class="sc">::</span>elton_birds)</span>
+<span id="cb1-179"><a href="#cb1-179" tabindex="-1"></a></span>
+<span id="cb1-180"><a href="#cb1-180" tabindex="-1"></a>  birdTraits <span class="ot">&lt;-</span> avonet_final <span class="sc">%&gt;%</span></span>
+<span id="cb1-181"><a href="#cb1-181" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">scientificNameStd_birdlife =</span> scientificNameStd,</span>
+<span id="cb1-182"><a href="#cb1-182" tabindex="-1"></a>           <span class="at">scientificNameStd =</span> scientificNameStd_traitdata) <span class="sc">%&gt;%</span></span>
+<span id="cb1-183"><a href="#cb1-183" tabindex="-1"></a>    <span class="fu">full_join</span>(aveDietFinal, <span class="at">by =</span> <span class="st">&quot;scientificNameStd&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-184"><a href="#cb1-184" tabindex="-1"></a>    <span class="fu">full_join</span>(aveTraitsFinal, <span class="at">by =</span> <span class="st">&quot;scientificNameStd&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-185"><a href="#cb1-185" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">scientificNameStd_traitdata =</span> scientificNameStd,</span>
+<span id="cb1-186"><a href="#cb1-186" tabindex="-1"></a>           <span class="at">scientificNameStd =</span> <span class="fu">ifelse</span>(<span class="sc">!</span><span class="fu">is.na</span>(scientificNameStd_birdlife),</span>
+<span id="cb1-187"><a href="#cb1-187" tabindex="-1"></a>                                      scientificNameStd_birdlife, scientificNameStd_traitdata))</span>
+<span id="cb1-188"><a href="#cb1-188" tabindex="-1"></a></span>
+<span id="cb1-189"><a href="#cb1-189" tabindex="-1"></a>  cols_to_keep <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;scientificNameStd&quot;</span>,</span>
+<span id="cb1-190"><a href="#cb1-190" tabindex="-1"></a>                    <span class="fu">colnames</span>(birdTraits)[<span class="fu">c</span>(<span class="dv">18</span>,<span class="dv">47</span><span class="sc">:</span><span class="dv">53</span>,<span class="dv">15</span>)],</span>
+<span id="cb1-191"><a href="#cb1-191" tabindex="-1"></a>                    <span class="fu">colnames</span>(birdTraits)[<span class="dv">4</span><span class="sc">:</span><span class="dv">14</span>],</span>
+<span id="cb1-192"><a href="#cb1-192" tabindex="-1"></a>                    <span class="fu">colnames</span>(birdTraits)[<span class="dv">21</span><span class="sc">:</span><span class="dv">30</span>],</span>
+<span id="cb1-193"><a href="#cb1-193" tabindex="-1"></a>                    <span class="fu">colnames</span>(birdTraits)[<span class="dv">35</span><span class="sc">:</span><span class="dv">42</span>],</span>
+<span id="cb1-194"><a href="#cb1-194" tabindex="-1"></a>                    <span class="fu">colnames</span>(birdTraits)[<span class="dv">54</span><span class="sc">:</span><span class="dv">82</span>])</span>
+<span id="cb1-195"><a href="#cb1-195" tabindex="-1"></a>  birdTraits <span class="ot">&lt;-</span> birdTraits[, <span class="fu">unique</span>(cols_to_keep)]</span>
+<span id="cb1-196"><a href="#cb1-196" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">duplicated</span>(birdTraits<span class="sc">$</span>scientificNameStd))) {</span>
+<span id="cb1-197"><a href="#cb1-197" tabindex="-1"></a>    birdTraits <span class="ot">&lt;-</span> birdTraits <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(scientificNameStd) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>()</span>
+<span id="cb1-198"><a href="#cb1-198" tabindex="-1"></a>  }</span>
+<span id="cb1-199"><a href="#cb1-199" tabindex="-1"></a>  <span class="fu">write.csv</span>(birdTraits, <span class="at">file =</span> <span class="st">&quot;data/processed/BirdTraitCombined.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-200"><a href="#cb1-200" tabindex="-1"></a></span>
+<span id="cb1-201"><a href="#cb1-201" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb1-202"><a href="#cb1-202" tabindex="-1"></a>  birdTraits <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed/BirdTraitCombined.csv&quot;</span>)</span>
+<span id="cb1-203"><a href="#cb1-203" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="step2" class="section level2">
+<h2>Step 2 — Phylogenetic imputation</h2>
+<h3 class="step-divider"><span>missForest + phylogenetic eigenvectors</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step2">01_DATA_load_and_clean — Step 2</h4>
+      <div class="fn-desc">Build a bird megatree (from GitHub), compute phylogenetic PCoA eigenvectors, add missing species via <code>phytools::add.species.to.genus</code>, then impute missing trait values with <code>missForest</code> using parallel processing.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-ml">missForest</span>
+        <span class="fn-tag tag-stat">phylogenetics</span>
+        <span class="fn-tag tag-morph">trait imputation</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Inputs:</span>
+    <span class="fn-arg">data/processed/BirdTraitCombined.csv</span>
+    <span class="fn-arg">bird_megatree (GitHub)</span>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/processed/BirdPhylogeny.tre</span>
+    <span class="fn-arg">data/processed/pcoaPhylogenyAves.txt</span>
+    <span class="fn-arg">data/processed/phenoBirdsImputedAll.csv</span>
+    <span class="fn-arg">data/processed/phenoBirdsImputed.csv</span>
+  </div>
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span>(<span class="st">&quot;BirdTraitCombined.csv&quot;</span> <span class="sc">%in%</span> <span class="fu">list.files</span>(<span class="st">&quot;data/processed&quot;</span>))){</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  phylogeny_raw   <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">read.tree</span>(<span class="st">&#39;https://raw.githubusercontent.com/megatrees/bird_20221117/main/bird_megatree.tre&#39;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  phylogeny_ultra <span class="ot">&lt;-</span> phytools<span class="sc">::</span><span class="fu">force.ultrametric</span>(phylogeny_raw, <span class="at">method =</span> <span class="st">&quot;extend&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  sp_phylo <span class="ot">&lt;-</span> phylogeny_ultra<span class="sc">$</span>tip.label</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  sp_trait <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;_&quot;</span>, birdTraits<span class="sc">$</span>scientificNameStd)</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="co"># Synonymy resolution via ITIS</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  sp_to_check  <span class="ot">&lt;-</span> sp_trait[<span class="sc">!</span>sp_trait <span class="sc">%in%</span> sp_phylo]</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  chk_synonyms <span class="ot">&lt;-</span> taxize<span class="sc">::</span><span class="fu">synonyms</span>(sp_to_check, <span class="at">db =</span> <span class="st">&quot;itis&quot;</span>, <span class="at">rows =</span> <span class="dv">1</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>  birdTraits<span class="sc">$</span>scientificNameStd    <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;_&quot;</span>, birdTraits<span class="sc">$</span>scientificNameStd)</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>  birdTraits<span class="sc">$</span>scientificNameStdNEW <span class="ot">&lt;-</span> birdTraits<span class="sc">$</span>scientificNameStd</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(chk_synonyms)) {</span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>    orig_name   <span class="ot">&lt;-</span> sp_to_check[i]</span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>    current_syn <span class="ot">&lt;-</span> chk_synonyms[[i]]</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>    <span class="cf">if</span> (<span class="st">&quot;acc_name&quot;</span> <span class="sc">%in%</span> <span class="fu">colnames</span>(current_syn)) {</span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>      birdTraits<span class="sc">$</span>scientificNameStdNEW[birdTraits<span class="sc">$</span>scientificNameStd <span class="sc">==</span> orig_name] <span class="ot">&lt;-</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>        <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;_&quot;</span>, current_syn<span class="sc">$</span>acc_name[<span class="dv">1</span>])</span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (<span class="st">&quot;syn_name&quot;</span> <span class="sc">%in%</span> <span class="fu">colnames</span>(current_syn)) {</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>      syn_candidates <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;_&quot;</span>, current_syn<span class="sc">$</span>syn_name)</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>      match_found    <span class="ot">&lt;-</span> syn_candidates[syn_candidates <span class="sc">%in%</span> sp_phylo]</span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">length</span>(match_found) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a>        birdTraits<span class="sc">$</span>scientificNameStdNEW[birdTraits<span class="sc">$</span>scientificNameStd <span class="sc">==</span> orig_name] <span class="ot">&lt;-</span> match_found[<span class="dv">1</span>]</span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a>    }</span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a>  }</span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a>  is_missing <span class="ot">&lt;-</span> <span class="fu">is.na</span>(birdTraits<span class="sc">$</span>scientificNameStdNEW)</span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>  birdTraits<span class="sc">$</span>scientificNameStdNEW[is_missing] <span class="ot">&lt;-</span> birdTraits<span class="sc">$</span>scientificNameStd[is_missing]</span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a>  <span class="co"># Add missing species to phylogeny</span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a>  tips_missing   <span class="ot">&lt;-</span> birdTraits<span class="sc">$</span>scientificNameStdNEW[<span class="sc">!</span>birdTraits<span class="sc">$</span>scientificNameStdNEW <span class="sc">%in%</span> phylogeny_ultra<span class="sc">$</span>tip.label]</span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a>  names_to_add   <span class="ot">&lt;-</span> <span class="fu">unique</span>(tips_missing)</span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a>  genus_to_add   <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">strsplit</span>(names_to_add, <span class="st">&quot;_&quot;</span>), <span class="st">`</span><span class="at">[</span><span class="st">`</span>, <span class="dv">1</span>)</span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a>  phylogeny_final <span class="ot">&lt;-</span> phylogeny_ultra</span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(names_to_add)) {</span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a>    phylogeny_final <span class="ot">&lt;-</span> phytools<span class="sc">::</span><span class="fu">add.species.to.genus</span>(</span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a>      <span class="at">tree =</span> phylogeny_final, <span class="at">species =</span> names_to_add[i],</span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a>      <span class="at">genus =</span> genus_to_add[i], <span class="at">where =</span> <span class="st">&quot;root&quot;</span></span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a>    )</span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a>  }</span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a>  <span class="fu">write.tree</span>(phylogeny_final, <span class="at">file =</span> <span class="st">&quot;data/processed/BirdPhylogeny.tre&quot;</span>)</span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a>  <span class="co"># Phylogenetic PCoA (10 axes)</span></span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a>  phylo_dist  <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">cophenetic</span>(phylogeny_final))</span>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a>  pcoa_phylo  <span class="ot">&lt;-</span> <span class="fu">cmdscale</span>(phylo_dist, <span class="at">k =</span> <span class="dv">10</span>)</span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a>  <span class="fu">colnames</span>(pcoa_phylo) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;Eigen.&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(pcoa_phylo))</span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a>  pcoa_df     <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pcoa_phylo)</span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a>  pcoa_df<span class="sc">$</span>scientificNameStd <span class="ot">&lt;-</span> <span class="fu">rownames</span>(pcoa_df)</span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a>  <span class="fu">write.table</span>(pcoa_df, <span class="st">&quot;data/processed/pcoaPhylogenyAves.txt&quot;</span>,</span>
+<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a>              <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">quote =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>)</span>
+<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" tabindex="-1"></a>  <span class="co"># Merge + clean negative values</span></span>
+<span id="cb2-55"><a href="#cb2-55" tabindex="-1"></a>  clean_bird_traits_phylogeny <span class="ot">&lt;-</span> <span class="cf">function</span>(birdTraits, pcoaPhyl,</span>
+<span id="cb2-56"><a href="#cb2-56" tabindex="-1"></a>                                          <span class="at">output_file =</span> <span class="st">&quot;data/processed/phenoBirds.csv&quot;</span>) {</span>
+<span id="cb2-57"><a href="#cb2-57" tabindex="-1"></a>    merged_data <span class="ot">&lt;-</span> <span class="fu">merge</span>(birdTraits, pcoaPhyl,</span>
+<span id="cb2-58"><a href="#cb2-58" tabindex="-1"></a>                         <span class="at">by.x =</span> <span class="st">&quot;scientificNameStd&quot;</span>, <span class="at">by.y =</span> <span class="st">&quot;scientificNameStd&quot;</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-59"><a href="#cb2-59" tabindex="-1"></a>    numeric_columns_present <span class="ot">&lt;-</span> <span class="fu">intersect</span>(</span>
+<span id="cb2-60"><a href="#cb2-60" tabindex="-1"></a>      <span class="fu">c</span>(<span class="st">&quot;Beak.Length_Culmen&quot;</span>,<span class="st">&quot;Beak.Length_Nares&quot;</span>,<span class="st">&quot;Beak.Width&quot;</span>,<span class="st">&quot;Beak.Depth&quot;</span>,</span>
+<span id="cb2-61"><a href="#cb2-61" tabindex="-1"></a>        <span class="st">&quot;Tarsus.Length&quot;</span>,<span class="st">&quot;Wing.Length&quot;</span>,<span class="st">&quot;Kipps.Distance&quot;</span>,<span class="st">&quot;Secondary1&quot;</span>,</span>
+<span id="cb2-62"><a href="#cb2-62" tabindex="-1"></a>        <span class="st">&quot;Hand-Wing.Index&quot;</span>,<span class="st">&quot;Tail.Length&quot;</span>,<span class="st">&quot;Mass&quot;</span>,</span>
+<span id="cb2-63"><a href="#cb2-63" tabindex="-1"></a>        <span class="st">&quot;female_maturity_d&quot;</span>,<span class="st">&quot;litter_or_clutch_size_n&quot;</span>,<span class="st">&quot;litters_or_clutches_per_y&quot;</span>,</span>
+<span id="cb2-64"><a href="#cb2-64" tabindex="-1"></a>        <span class="st">&quot;adult_body_mass_g&quot;</span>,<span class="st">&quot;maximum_longevity_y&quot;</span>,<span class="st">&quot;gestation_d&quot;</span>,<span class="st">&quot;weaning_d&quot;</span>,</span>
+<span id="cb2-65"><a href="#cb2-65" tabindex="-1"></a>        <span class="st">&quot;birth_or_hatching_weight_g&quot;</span>,<span class="st">&quot;weaning_weight_g&quot;</span>,<span class="st">&quot;egg_mass_g&quot;</span>,<span class="st">&quot;incubation_d&quot;</span>,</span>
+<span id="cb2-66"><a href="#cb2-66" tabindex="-1"></a>        <span class="st">&quot;fledging_age_d&quot;</span>,<span class="st">&quot;longevity_y&quot;</span>,<span class="st">&quot;male_maturity_d&quot;</span>,</span>
+<span id="cb2-67"><a href="#cb2-67" tabindex="-1"></a>        <span class="st">&quot;inter_litter_or_interbirth_interval_y&quot;</span>,<span class="st">&quot;female_body_mass_g&quot;</span>,<span class="st">&quot;male_body_mass_g&quot;</span>,</span>
+<span id="cb2-68"><a href="#cb2-68" tabindex="-1"></a>        <span class="st">&quot;no_sex_body_mass_g&quot;</span>,<span class="st">&quot;egg_width_mm&quot;</span>,<span class="st">&quot;egg_length_mm&quot;</span>,<span class="st">&quot;fledging_mass_g&quot;</span>,</span>
+<span id="cb2-69"><a href="#cb2-69" tabindex="-1"></a>        <span class="st">&quot;adult_svl_cm&quot;</span>,<span class="st">&quot;female_svl_cm&quot;</span>,<span class="st">&quot;birth_or_hatching_svl_cm&quot;</span>,</span>
+<span id="cb2-70"><a href="#cb2-70" tabindex="-1"></a>        <span class="st">&quot;female_svl_at_maturity_cm&quot;</span>,<span class="st">&quot;female_body_mass_at_maturity_g&quot;</span>,</span>
+<span id="cb2-71"><a href="#cb2-71" tabindex="-1"></a>        <span class="st">&quot;no_sex_svl_cm&quot;</span>,<span class="st">&quot;no_sex_maturity_d&quot;</span>),</span>
+<span id="cb2-72"><a href="#cb2-72" tabindex="-1"></a>      <span class="fu">colnames</span>(merged_data)</span>
+<span id="cb2-73"><a href="#cb2-73" tabindex="-1"></a>    )</span>
+<span id="cb2-74"><a href="#cb2-74" tabindex="-1"></a>    merged_data[numeric_columns_present] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(</span>
+<span id="cb2-75"><a href="#cb2-75" tabindex="-1"></a>      merged_data[numeric_columns_present],</span>
+<span id="cb2-76"><a href="#cb2-76" tabindex="-1"></a>      <span class="cf">function</span>(x) <span class="cf">if</span> (<span class="fu">is.numeric</span>(x)) <span class="fu">replace</span>(x, x <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="cn">NA</span>) <span class="cf">else</span> x</span>
+<span id="cb2-77"><a href="#cb2-77" tabindex="-1"></a>    )</span>
+<span id="cb2-78"><a href="#cb2-78" tabindex="-1"></a>    <span class="fu">rownames</span>(merged_data) <span class="ot">&lt;-</span> merged_data<span class="sc">$</span>scientificNameStd</span>
+<span id="cb2-79"><a href="#cb2-79" tabindex="-1"></a>    merged_data <span class="ot">&lt;-</span> merged_data[, <span class="sc">!</span>(<span class="fu">colnames</span>(merged_data) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;scientificNameStd&quot;</span>,<span class="st">&quot;scientificNameStdNEW&quot;</span>))]</span>
+<span id="cb2-80"><a href="#cb2-80" tabindex="-1"></a>    merged_data <span class="ot">&lt;-</span> merged_data[, <span class="fu">colSums</span>(<span class="sc">!</span><span class="fu">is.na</span>(merged_data)) <span class="sc">&gt;</span> <span class="dv">0</span>]</span>
+<span id="cb2-81"><a href="#cb2-81" tabindex="-1"></a>    <span class="fu">write.csv</span>(merged_data, <span class="at">file =</span> output_file, <span class="at">row.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-82"><a href="#cb2-82" tabindex="-1"></a>    <span class="fu">invisible</span>(merged_data)</span>
+<span id="cb2-83"><a href="#cb2-83" tabindex="-1"></a>  }</span>
+<span id="cb2-84"><a href="#cb2-84" tabindex="-1"></a>  birdTraitsPhy <span class="ot">&lt;-</span> <span class="fu">clean_bird_traits_phylogeny</span>(birdTraits, pcoa_df)</span>
+<span id="cb2-85"><a href="#cb2-85" tabindex="-1"></a>  <span class="fu">write.csv</span>(birdTraitsPhy, <span class="at">file =</span> <span class="st">&quot;data/processed/phenoBirds.csv&quot;</span>)</span>
+<span id="cb2-86"><a href="#cb2-86" tabindex="-1"></a></span>
+<span id="cb2-87"><a href="#cb2-87" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb2-88"><a href="#cb2-88" tabindex="-1"></a>  birdTraitsPhy <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed/phenoBirds.csv&quot;</span>)</span>
+<span id="cb2-89"><a href="#cb2-89" tabindex="-1"></a></span>
+<span id="cb2-90"><a href="#cb2-90" tabindex="-1"></a>  morphoColumn <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Tarsus.Length&quot;</span>,<span class="st">&quot;Wing.Length&quot;</span>,<span class="st">&quot;Kipps.Distance&quot;</span>,<span class="st">&quot;Secondary1&quot;</span>,</span>
+<span id="cb2-91"><a href="#cb2-91" tabindex="-1"></a>                    <span class="st">&quot;Hand.Wing.Index&quot;</span>,<span class="st">&quot;Tail.Length&quot;</span>,<span class="st">&quot;Mass&quot;</span>,<span class="st">&quot;adult_svl_cm&quot;</span>)</span>
+<span id="cb2-92"><a href="#cb2-92" tabindex="-1"></a>  lhtColum     <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;litter_or_clutch_size_n&quot;</span>,<span class="st">&quot;litters_or_clutches_per_y&quot;</span>,</span>
+<span id="cb2-93"><a href="#cb2-93" tabindex="-1"></a>                    <span class="st">&quot;adult_body_mass_g&quot;</span>,<span class="st">&quot;maximum_longevity_y&quot;</span>,<span class="st">&quot;birth_or_hatching_weight_g&quot;</span>,</span>
+<span id="cb2-94"><a href="#cb2-94" tabindex="-1"></a>                    <span class="st">&quot;incubation_d&quot;</span>,<span class="st">&quot;fledging_age_d&quot;</span>,<span class="st">&quot;longevity_y&quot;</span>,<span class="st">&quot;egg_mass_g&quot;</span>,</span>
+<span id="cb2-95"><a href="#cb2-95" tabindex="-1"></a>                    <span class="st">&quot;male_maturity_d&quot;</span>,<span class="st">&quot;inter_litter_or_interbirth_interval_y&quot;</span>,</span>
+<span id="cb2-96"><a href="#cb2-96" tabindex="-1"></a>                    <span class="st">&quot;female_body_mass_g&quot;</span>,<span class="st">&quot;no_sex_body_mass_g&quot;</span>,</span>
+<span id="cb2-97"><a href="#cb2-97" tabindex="-1"></a>                    <span class="st">&quot;egg_length_mm&quot;</span>,<span class="st">&quot;fledging_mass_g&quot;</span>,<span class="st">&quot;no_sex_maturity_d&quot;</span>)</span>
+<span id="cb2-98"><a href="#cb2-98" tabindex="-1"></a>  dietColumn   <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;Diet.Inv&#39;</span>,<span class="st">&#39;Diet.Vend&#39;</span>,<span class="st">&#39;Diet.Vect&#39;</span>,<span class="st">&#39;Diet.Vfish&#39;</span>,<span class="st">&#39;Diet.Vunk&#39;</span>,</span>
+<span id="cb2-99"><a href="#cb2-99" tabindex="-1"></a>                    <span class="st">&#39;Diet.Scav&#39;</span>,<span class="st">&#39;Diet.Fruit&#39;</span>,<span class="st">&#39;Diet.Nect&#39;</span>,<span class="st">&#39;Diet.Seed&#39;</span>,<span class="st">&#39;Diet.PlantO&#39;</span>)</span>
+<span id="cb2-100"><a href="#cb2-100" tabindex="-1"></a>  phyloColumn  <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&#39;Eigen.&#39;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb2-101"><a href="#cb2-101" tabindex="-1"></a>  numericColumn <span class="ot">&lt;-</span> <span class="fu">c</span>(morphoColumn, lhtColum)</span>
+<span id="cb2-102"><a href="#cb2-102" tabindex="-1"></a></span>
+<span id="cb2-103"><a href="#cb2-103" tabindex="-1"></a>  birdTraitsPhy[, numericColumn] <span class="ot">&lt;-</span> <span class="fu">replace</span>(birdTraitsPhy[, numericColumn],</span>
+<span id="cb2-104"><a href="#cb2-104" tabindex="-1"></a>                                            birdTraitsPhy[, numericColumn] <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="cn">NA</span>)</span>
+<span id="cb2-105"><a href="#cb2-105" tabindex="-1"></a>  birdTraitsPhy <span class="ot">&lt;-</span> birdTraitsPhy[<span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">apply</span>(birdTraitsPhy[, dietColumn], <span class="dv">1</span>, sum)), ]</span>
+<span id="cb2-106"><a href="#cb2-106" tabindex="-1"></a></span>
+<span id="cb2-107"><a href="#cb2-107" tabindex="-1"></a>  birdTraitsToImpute <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">scale</span>(<span class="fu">log10</span>(birdTraitsPhy[, numericColumn])),</span>
+<span id="cb2-108"><a href="#cb2-108" tabindex="-1"></a>                              birdTraitsPhy[, dietColumn],</span>
+<span id="cb2-109"><a href="#cb2-109" tabindex="-1"></a>                              birdTraitsPhy[, phyloColumn])</span>
+<span id="cb2-110"><a href="#cb2-110" tabindex="-1"></a>  colToImputeAll <span class="ot">&lt;-</span> <span class="fu">c</span>(numericColumn, dietColumn, phyloColumn)</span>
+<span id="cb2-111"><a href="#cb2-111" tabindex="-1"></a></span>
+<span id="cb2-112"><a href="#cb2-112" tabindex="-1"></a>  doParallel<span class="sc">::</span><span class="fu">registerDoParallel</span>(<span class="at">cores =</span> <span class="dv">14</span>)</span>
+<span id="cb2-113"><a href="#cb2-113" tabindex="-1"></a>  birdTraitslogImputed <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(</span>
+<span id="cb2-114"><a href="#cb2-114" tabindex="-1"></a>    <span class="fu">missForest</span>(<span class="at">xmis =</span> birdTraitsToImpute[, colToImputeAll], <span class="at">parallelize =</span> <span class="st">&quot;variables&quot;</span>)<span class="sc">$</span>ximp</span>
+<span id="cb2-115"><a href="#cb2-115" tabindex="-1"></a>  )</span>
+<span id="cb2-116"><a href="#cb2-116" tabindex="-1"></a>  birdTraitsPhy[, colToImputeAll] <span class="ot">&lt;-</span> birdTraitslogImputed[, colToImputeAll]</span>
+<span id="cb2-117"><a href="#cb2-117" tabindex="-1"></a>  <span class="fu">write.csv</span>(birdTraitsPhy, <span class="at">file =</span> <span class="st">&quot;data/processed/phenoBirdsImputedAll.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-118"><a href="#cb2-118" tabindex="-1"></a></span>
+<span id="cb2-119"><a href="#cb2-119" tabindex="-1"></a>  colToImpute <span class="ot">&lt;-</span> <span class="fu">c</span>(lhtColum, phyloColumn)</span>
+<span id="cb2-120"><a href="#cb2-120" tabindex="-1"></a>  birdTraitslogImputed <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(</span>
+<span id="cb2-121"><a href="#cb2-121" tabindex="-1"></a>    <span class="fu">missForest</span>(<span class="at">xmis =</span> birdTraitsToImpute[, colToImpute], <span class="at">parallelize =</span> <span class="st">&quot;variables&quot;</span>)<span class="sc">$</span>ximp</span>
+<span id="cb2-122"><a href="#cb2-122" tabindex="-1"></a>  )</span>
+<span id="cb2-123"><a href="#cb2-123" tabindex="-1"></a>  birdTraitsPhy[, colToImpute] <span class="ot">&lt;-</span> birdTraitslogImputed[, colToImpute]</span>
+<span id="cb2-124"><a href="#cb2-124" tabindex="-1"></a>  <span class="fu">write.csv</span>(birdTraitsPhy, <span class="at">file =</span> <span class="st">&quot;data/processed/phenoBirdsImputed.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-125"><a href="#cb2-125" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="step3" class="section level2">
+<h2>Step 3 — PhenoBird</h2>
+<h3 class="step-divider"><span>Final species × traits matrix</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step3">01_DATA_load_and_clean — Step 3</h4>
+      <div class="fn-desc">Assemble the final PhenoBird matrix: remove problematic species, filter DD/EX/EW categories, compute trait completeness statistics, and save the ready-to-analyse dataset.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-data">data wrangling</span>
+        <span class="fn-tag tag-stat">IUCN filter</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Inputs:</span>
+    <span class="fn-arg">data/processed/phenoBirds.csv</span>
+    <span class="fn-arg">data/processed/phenoBirdsImputedAll.csv</span>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/processed/phenoBirdsImputedREADY.csv</span>
+    <span class="fn-arg">data/processed/Shortnames_Birds.csv</span>
+    <span class="fn-arg">data/processed/species_table.rds</span>
+  </div>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>SpToRem <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Struthio_molybdophanes&quot;</span>,<span class="st">&quot;Neochmia_phaeton&quot;</span>,<span class="st">&quot;Rhea_americana&quot;</span>,</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>             <span class="st">&quot;Stagonopleura_guttata&quot;</span>,<span class="st">&quot;Carpococcyx_renauldi&quot;</span>,<span class="st">&quot;Laterallus_rogersi&quot;</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>             <span class="st">&quot;Menura_novaehollandiae&quot;</span>,<span class="st">&quot;Rallicula_leucospila&quot;</span>,<span class="st">&quot;Rhea_tarapacensis&quot;</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>birdTraitsPhy <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed/phenoBirds.csv&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>birdTraitsPhy <span class="ot">&lt;-</span> birdTraitsPhy[<span class="sc">!</span>birdTraitsPhy<span class="sc">$</span>X <span class="sc">%in%</span> SpToRem, ]</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>phenoBird     <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed/phenoBirdsImputedAll.csv&quot;</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">colnames</span>(phenoBird)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;scientificNameStd&quot;</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">rownames</span>(phenoBird)    <span class="ot">&lt;-</span> phenoBird[, <span class="dv">1</span>]</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>phenoBird <span class="ot">&lt;-</span> phenoBird[<span class="sc">!</span><span class="fu">rownames</span>(phenoBird) <span class="sc">%in%</span> SpToRem, ]</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>morphoTrait <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Tarsus.Length&quot;</span>,<span class="st">&quot;Wing.Length&quot;</span>,<span class="st">&quot;Kipps.Distance&quot;</span>,<span class="st">&quot;Secondary1&quot;</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>                 <span class="st">&quot;Hand.Wing.Index&quot;</span>,<span class="st">&quot;Tail.Length&quot;</span>,<span class="st">&quot;Mass&quot;</span>,<span class="st">&quot;adult_svl_cm&quot;</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>LHTTrait    <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;litter_or_clutch_size_n&quot;</span>,<span class="st">&quot;egg_mass_g&quot;</span>,<span class="st">&quot;incubation_d&quot;</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>                 <span class="st">&quot;longevity_y&quot;</span>,<span class="st">&quot;fledging_age_d&quot;</span>,<span class="st">&quot;litters_or_clutches_per_y&quot;</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>DietTrait   <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Diet.Inv&quot;</span>,<span class="st">&quot;Diet.Vend&quot;</span>,<span class="st">&quot;Diet.Vect&quot;</span>,<span class="st">&quot;Diet.Vfish&quot;</span>,<span class="st">&quot;Diet.Vunk&quot;</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>                 <span class="st">&quot;Diet.Scav&quot;</span>,<span class="st">&quot;Diet.Fruit&quot;</span>,<span class="st">&quot;Diet.Nect&quot;</span>,<span class="st">&quot;Diet.Seed&quot;</span>,<span class="st">&quot;Diet.PlantO&quot;</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>shortNames <span class="ot">&lt;-</span> <span class="fu">cbind</span>(</span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>  <span class="at">original     =</span> <span class="fu">c</span>(morphoTrait, LHTTrait, DietTrait),</span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>  <span class="at">short        =</span> <span class="fu">c</span>(<span class="st">&quot;trl&quot;</span>,<span class="st">&quot;wl&quot;</span>,<span class="st">&quot;kd&quot;</span>,<span class="st">&quot;s1&quot;</span>,<span class="st">&quot;hwl&quot;</span>,<span class="st">&quot;tll&quot;</span>,<span class="st">&quot;bmA&quot;</span>,<span class="st">&quot;svl&quot;</span>,</span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>                   <span class="st">&quot;ls&quot;</span>,<span class="st">&quot;em&quot;</span>,<span class="st">&quot;inc&quot;</span>,<span class="st">&quot;lg&quot;</span>,<span class="st">&quot;fled&quot;</span>,<span class="st">&quot;ly&quot;</span>,</span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>                   <span class="st">&quot;DI&quot;</span>,<span class="st">&quot;DVd&quot;</span>,<span class="st">&quot;DVt&quot;</span>,<span class="st">&quot;DVf&quot;</span>,<span class="st">&quot;DVk&quot;</span>,<span class="st">&quot;DSv&quot;</span>,<span class="st">&quot;DF&quot;</span>,<span class="st">&quot;DN&quot;</span>,<span class="st">&quot;DSd&quot;</span>,<span class="st">&quot;DP&quot;</span>),</span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>  <span class="at">color        =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;#2E7D32&quot;</span>,<span class="dv">8</span>), <span class="fu">rep</span>(<span class="st">&quot;#1565C0&quot;</span>,<span class="dv">6</span>), <span class="fu">rep</span>(<span class="st">&quot;#C62828&quot;</span>,<span class="dv">10</span>)),</span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>  <span class="at">completeness =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(<span class="fu">c</span>(morphoTrait, LHTTrait, DietTrait))),</span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>  <span class="at">type         =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;Morphological (M)&quot;</span>,<span class="dv">8</span>), <span class="fu">rep</span>(<span class="st">&quot;Life-history (L)&quot;</span>,<span class="dv">6</span>), <span class="fu">rep</span>(<span class="st">&quot;Diet (D)&quot;</span>,<span class="dv">10</span>))</span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a>)</span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(shortNames)) {</span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>  cplet <span class="ot">&lt;-</span> birdTraitsPhy[, shortNames[i,<span class="dv">1</span>]]</span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a>  isna  <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(cplet)))</span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>  shortNames[i,<span class="st">&#39;completeness&#39;</span>] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(isna,<span class="st">&quot;/&quot;</span>,<span class="fu">length</span>(cplet),<span class="st">&quot; (&quot;</span>,<span class="fu">round</span>(isna<span class="sc">/</span><span class="fu">length</span>(cplet)<span class="sc">*</span><span class="dv">100</span>,<span class="dv">2</span>),<span class="st">&quot;%)&quot;</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a>}</span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="fu">write.csv</span>(shortNames, <span class="at">file =</span> <span class="st">&quot;data/processed/Shortnames_Birds.csv&quot;</span>)</span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a>phenoDiet <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(<span class="fu">as.data.frame</span>(<span class="fu">prep.fuzzy</span>(phenoBird[, DietTrait],</span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a>                                              <span class="at">col.blocks =</span> <span class="fu">ncol</span>(phenoBird[, DietTrait]),</span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a>                                              <span class="at">label =</span> <span class="st">&quot;diet&quot;</span>)))</span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a>phenoDiet <span class="ot">&lt;-</span> <span class="fu">replace</span>(phenoDiet, phenoDiet <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a>phenoBird <span class="ot">&lt;-</span> phenoBird[<span class="fu">rownames</span>(phenoDiet), ]</span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a><span class="co"># Finalize IUCN column + filter</span></span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a>phenoBird<span class="sc">$</span>category <span class="ot">&lt;-</span> phenoBird<span class="sc">$</span>iucn_category</span>
+<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a>unresolved <span class="ot">&lt;-</span> <span class="fu">unique</span>(phenoBird<span class="sc">$</span>scientificNameStd[<span class="fu">is.na</span>(phenoBird<span class="sc">$</span>category)])</span>
+<span id="cb3-44"><a href="#cb3-44" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(unresolved) <span class="sc">&gt;</span> <span class="dv">0</span><span class="dt">L</span>)</span>
+<span id="cb3-45"><a href="#cb3-45" tabindex="-1"></a>  <span class="fu">write.csv</span>(<span class="fu">data.frame</span>(<span class="at">species =</span> unresolved), <span class="st">&quot;data/processed/iucn_unresolved.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-46"><a href="#cb3-46" tabindex="-1"></a></span>
+<span id="cb3-47"><a href="#cb3-47" tabindex="-1"></a>phenoBird <span class="ot">&lt;-</span> phenoBird[<span class="sc">!</span>phenoBird<span class="sc">$</span>category <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;DD&quot;</span>,<span class="st">&quot;EW&quot;</span>,<span class="st">&quot;EX&quot;</span>,<span class="st">&quot;RE&quot;</span>), ]</span>
+<span id="cb3-48"><a href="#cb3-48" tabindex="-1"></a>phenoBird <span class="ot">&lt;-</span> phenoBird[<span class="sc">!</span><span class="fu">is.na</span>(phenoBird<span class="sc">$</span>category), ]</span>
+<span id="cb3-49"><a href="#cb3-49" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" tabindex="-1"></a><span class="fu">write.csv</span>(phenoBird, <span class="st">&quot;data/processed/phenoBirdsImputedREADY.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-51"><a href="#cb3-51" tabindex="-1"></a><span class="fu">saveRDS</span>(<span class="fu">unique</span>(phenoBird<span class="sc">$</span>scientificNameStd), <span class="st">&quot;data/processed/species_table.rds&quot;</span>)</span></code></pre></div>
+</div>
+<div id="step4" class="section level2">
+<h2>Step 4 — PCoA by functional dimension</h2>
+<h3 class="step-divider"><span>Locomotion · Diet · Reproduction · Combined</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step4">01_DATA_load_and_clean — Step 4</h4>
+      <div class="fn-desc">Run <code>PCoAGraph()</code> separately for morphological (M), life-history/reproduction (L), diet (D), and combined (LMD) trait spaces. Compute TPDs for each space using <code>make.TPD.2D.high.def()</code>.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-fd">functional diversity</span>
+        <span class="fn-tag tag-stat">PCoA</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">PCA_Birds_LMD/M/L/D.rds</span>
+    <span class="fn-arg">TPD_Birds_LMD/M/L/D.rds</span>
+  </div>
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>phenoBird <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed/phenoBirdsImputedREADY.csv&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">colnames</span>(phenoBird)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;scientificNameStd&quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">rownames</span>(phenoBird)    <span class="ot">&lt;-</span> phenoBird[, <span class="dv">1</span>]</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>phenoDiet <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(<span class="fu">as.data.frame</span>(<span class="fu">prep.fuzzy</span>(phenoBird[, DietTrait],</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>                                              <span class="at">col.blocks =</span> <span class="fu">ncol</span>(phenoBird[, DietTrait]), <span class="at">label =</span> <span class="st">&quot;diet&quot;</span>)))</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>phenoDiet <span class="ot">&lt;-</span> <span class="fu">replace</span>(phenoDiet, phenoDiet <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co"># Combined LMD</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="fu">handlers</span>(<span class="at">global =</span> <span class="cn">TRUE</span>); <span class="fu">handlers</span>(<span class="st">&quot;txtprogressbar&quot;</span>); <span class="fu">plan</span>(multisession)</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>PCA_Birds_LMD <span class="ot">&lt;-</span> <span class="fu">PCoAGraph</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  <span class="at">x      =</span> <span class="fu">list</span>(phenoBird[, LHTTrait], phenoBird[, morphoTrait], phenoDiet),</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  <span class="at">datax  =</span> <span class="fu">cbind.data.frame</span>(phenoBird[, LHTTrait], phenoBird[, morphoTrait], phenoDiet),</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  <span class="at">namesx =</span> phenoBird<span class="sc">$</span>scientificNameStd, <span class="at">groups =</span> <span class="fu">c</span>(<span class="st">&quot;Q&quot;</span>,<span class="st">&quot;Q&quot;</span>,<span class="st">&quot;F&quot;</span>),</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  <span class="at">saveFile =</span> <span class="st">&quot;data/processed/PCA_Birds_LMD.rds&quot;</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>)</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>TPDs_Birds_LMD <span class="ot">&lt;-</span> <span class="fu">make.TPD.2D.high.def</span>(</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>  <span class="at">traitsUSE =</span> PCA_Birds_LMD<span class="sc">$</span>PCoA<span class="sc">$</span>vectors[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],</span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>  <span class="at">dimensions =</span> <span class="dv">2</span>, <span class="at">alphaUse =</span> <span class="fl">0.95</span>, <span class="at">gridSize =</span> <span class="dv">100</span>,</span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>  <span class="at">saveFile =</span> <span class="st">&quot;data/processed/TPD_Birds_LMD.rds&quot;</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>); <span class="fu">rm</span>(TPDs_Birds_LMD)</span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co"># Diet only</span></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>PCA_Birds_D <span class="ot">&lt;-</span> <span class="fu">PCoAGraph</span>(<span class="at">x =</span> <span class="fu">list</span>(phenoDiet), <span class="at">datax =</span> <span class="fu">cbind.data.frame</span>(phenoDiet),</span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>                         <span class="at">namesx =</span> phenoBird<span class="sc">$</span>scientificNameStd, <span class="at">groups =</span> <span class="fu">c</span>(<span class="st">&quot;F&quot;</span>),</span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>                         <span class="at">saveFile =</span> <span class="st">&quot;data/processed/PCA_Birds_D.rds&quot;</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>TPDs_Birds_D <span class="ot">&lt;-</span> <span class="fu">make.TPD.2D.high.def</span>(<span class="at">traitsUSE =</span> PCA_Birds_D<span class="sc">$</span>PCoA<span class="sc">$</span>vectors[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],</span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>                                     <span class="at">dimensions =</span> <span class="dv">2</span>, <span class="at">alphaUse =</span> <span class="fl">0.95</span>, <span class="at">gridSize =</span> <span class="dv">100</span>,</span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>                                     <span class="at">saveFile =</span> <span class="st">&quot;data/processed/TPD_Birds_D.rds&quot;</span>); <span class="fu">rm</span>(TPDs_Birds_D)</span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="co"># Life-history (flip axis 2)</span></span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>PCA_Birds_L <span class="ot">&lt;-</span> <span class="fu">PCoAGraph</span>(<span class="at">x =</span> <span class="fu">list</span>(phenoBird[, LHTTrait]), <span class="at">datax =</span> <span class="fu">cbind.data.frame</span>(phenoBird[, LHTTrait]),</span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a>                         <span class="at">namesx =</span> phenoBird<span class="sc">$</span>scientificNameStd, <span class="at">groups =</span> <span class="fu">c</span>(<span class="st">&quot;Q&quot;</span>),</span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a>                         <span class="at">saveFile =</span> <span class="st">&quot;data/processed/PCA_Birds_L.rds&quot;</span>)</span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a>PCA_Birds_L <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/processed/PCA_Birds_L.rds&quot;</span>)</span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>PCA_Birds_L<span class="sc">$</span>PCoACor[,<span class="dv">2</span>]       <span class="ot">&lt;-</span> PCA_Birds_L<span class="sc">$</span>PCoACor[,<span class="dv">2</span>] <span class="sc">*</span> (<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>PCA_Birds_L<span class="sc">$</span>PCoA<span class="sc">$</span>vectors[,<span class="dv">2</span>]  <span class="ot">&lt;-</span> PCA_Birds_L<span class="sc">$</span>PCoA<span class="sc">$</span>vectors[,<span class="dv">2</span>] <span class="sc">*</span> (<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="fu">saveRDS</span>(PCA_Birds_L, <span class="st">&quot;data/processed/PCA_Birds_L.rds&quot;</span>)</span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a>TPDs_Birds_L <span class="ot">&lt;-</span> <span class="fu">make.TPD.2D.high.def</span>(<span class="at">traitsUSE =</span> PCA_Birds_L<span class="sc">$</span>PCoA<span class="sc">$</span>vectors[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],</span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a>                                     <span class="at">dimensions =</span> <span class="dv">2</span>, <span class="at">alphaUse =</span> <span class="fl">0.95</span>, <span class="at">gridSize =</span> <span class="dv">100</span>,</span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a>                                     <span class="at">saveFile =</span> <span class="st">&quot;data/processed/TPD_Birds_L.rds&quot;</span>); <span class="fu">rm</span>(TPDs_Birds_L)</span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co"># Morphology (flip axis 2)</span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a>PCA_Birds_M <span class="ot">&lt;-</span> <span class="fu">PCoAGraph</span>(<span class="at">x =</span> <span class="fu">list</span>(phenoBird[, morphoTrait]), <span class="at">datax =</span> <span class="fu">cbind.data.frame</span>(phenoBird[, morphoTrait]),</span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a>                         <span class="at">namesx =</span> phenoBird<span class="sc">$</span>scientificNameStd, <span class="at">groups =</span> <span class="fu">c</span>(<span class="st">&quot;Q&quot;</span>),</span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>                         <span class="at">saveFile =</span> <span class="st">&quot;data/processed/PCA_Birds_M.rds&quot;</span>)</span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a>PCA_Birds_M <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/processed/PCA_Birds_M.rds&quot;</span>)</span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a>PCA_Birds_M<span class="sc">$</span>PCoACor[,<span class="dv">2</span>]       <span class="ot">&lt;-</span> PCA_Birds_M<span class="sc">$</span>PCoACor[,<span class="dv">2</span>] <span class="sc">*</span> (<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a>PCA_Birds_M<span class="sc">$</span>PCoA<span class="sc">$</span>vectors[,<span class="dv">2</span>]  <span class="ot">&lt;-</span> PCA_Birds_M<span class="sc">$</span>PCoA<span class="sc">$</span>vectors[,<span class="dv">2</span>] <span class="sc">*</span> (<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a><span class="fu">saveRDS</span>(PCA_Birds_M, <span class="st">&quot;data/processed/PCA_Birds_M.rds&quot;</span>)</span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a>TPDs_Birds_M <span class="ot">&lt;-</span> <span class="fu">make.TPD.2D.high.def</span>(<span class="at">traitsUSE =</span> PCA_Birds_M<span class="sc">$</span>PCoA<span class="sc">$</span>vectors[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],</span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a>                                     <span class="at">dimensions =</span> <span class="dv">2</span>, <span class="at">alphaUse =</span> <span class="fl">0.95</span>, <span class="at">gridSize =</span> <span class="dv">100</span>,</span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a>                                     <span class="at">saveFile =</span> <span class="st">&quot;data/processed/TPD_Birds_M.rds&quot;</span>); <span class="fu">rm</span>(TPDs_Birds_M)</span></code></pre></div>
+</div>
+<div id="step5" class="section level2">
+<h2>Step 5 — Spatial assignment</h2>
+<h3 class="step-divider"><span>BOTW range maps → DGGS hexagons (res. 7)</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step5">01_DATA_load_and_clean — Step 5</h4>
+      <div class="fn-desc">Load 5 BirdLife BOTW shapefiles, reconcile taxonomy with the trait dataset via ITIS synonymy lookup, rasterize at 0.5° resolution, then assign species to DGGS hexagonal grid at resolution 7.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-geo">spatial</span>
+        <span class="fn-tag tag-util">taxonomy</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Inputs:</span>
+    <span class="fn-arg">data/raw/BOTW_1-5.shp</span>
+    <span class="fn-arg">data/raw/geogInfo_dggs7.RDS</span>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/raw/BOTW_1-5_New.shp</span>
+    <span class="fn-arg">data/raw/uniquedggs7.RDS</span>
+    <span class="fn-arg">data/raw/sitesdggs7.RDS</span>
+  </div>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>geog7 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/raw/geogInfo_dggs7.RDS&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>dggs7 <span class="ot">&lt;-</span> dggridR<span class="sc">::</span><span class="fu">dgconstruct</span>(<span class="at">res =</span> <span class="dv">7</span>, <span class="at">metric =</span> <span class="cn">FALSE</span>, <span class="at">resround =</span> <span class="st">&quot;down&quot;</span>, <span class="at">topology =</span> <span class="st">&quot;HEXAGON&quot;</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>sitesInRealms7 <span class="ot">&lt;-</span> <span class="fu">unique</span>(geog7<span class="sc">$</span>cell[<span class="sc">!</span><span class="fu">is.na</span>(geog7<span class="sc">$</span>Realm)])</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>botw_files   <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">&quot;data/raw&quot;</span>, <span class="fu">sprintf</span>(<span class="st">&quot;BOTW_%d.shp&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>))</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>missing_files <span class="ot">&lt;-</span> botw_files[<span class="sc">!</span><span class="fu">file.exists</span>(botw_files)]</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(missing_files) <span class="sc">&gt;</span> <span class="dv">0</span><span class="dt">L</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">&quot;Missing BOTW files: &quot;</span>, <span class="fu">paste</span>(<span class="fu">basename</span>(missing_files), <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>))</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>sp_chunks <span class="ot">&lt;-</span> <span class="fu">lapply</span>(botw_files, <span class="cf">function</span>(f) sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="at">dsn =</span> f, <span class="at">quiet =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>sp <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, sp_chunks); <span class="fu">rm</span>(sp_chunks); <span class="fu">gc</span>(<span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>sp_site_old <span class="ot">&lt;-</span> <span class="fu">unique</span>(sp<span class="sc">$</span>SCINAME)</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>sp_site     <span class="ot">&lt;-</span> <span class="fu">unique</span>(sp<span class="sc">$</span>SCINAME)</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>spTrait     <span class="ot">&lt;-</span> phenoBird<span class="sc">$</span>scientificNameStd</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>spToCheck   <span class="ot">&lt;-</span> sp_site[<span class="sc">!</span>sp_site <span class="sc">%in%</span> <span class="fu">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, spTrait)]</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(spToCheck) <span class="sc">&gt;</span> <span class="dv">0</span><span class="dt">L</span>) {</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>  chk <span class="ot">&lt;-</span> taxize<span class="sc">::</span><span class="fu">synonyms</span>(<span class="at">sci_id =</span> spToCheck, <span class="at">db =</span> <span class="st">&quot;itis&quot;</span>, <span class="at">row =</span> <span class="dv">1</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>  progressr<span class="sc">::</span><span class="fu">with_progress</span>({</span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>    p <span class="ot">&lt;-</span> progressr<span class="sc">::</span><span class="fu">progressor</span>(<span class="at">steps =</span> <span class="fu">length</span>(chk))</span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(chk)) {</span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>      <span class="fu">p</span>(<span class="fu">sprintf</span>(<span class="st">&quot;ITIS lookup %d/%d&quot;</span>, i, <span class="fu">length</span>(chk)))</span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>      entry <span class="ot">&lt;-</span> chk[[i]]</span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.null</span>(<span class="fu">dim</span>(entry)) <span class="sc">||</span> <span class="fu">dim</span>(entry)[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">0</span><span class="dt">L</span>) <span class="cf">next</span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>      <span class="cf">if</span> (<span class="st">&quot;acc_name&quot;</span> <span class="sc">%in%</span> <span class="fu">colnames</span>(entry)) {</span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>        sp_site[sp_site <span class="sc">==</span> <span class="fu">names</span>(chk)[i]] <span class="ot">&lt;-</span> entry[[<span class="st">&quot;acc_name&quot;</span>]][<span class="dv">1</span>]</span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>      } <span class="cf">else</span> <span class="cf">if</span> (<span class="st">&quot;syn_name&quot;</span> <span class="sc">%in%</span> <span class="fu">colnames</span>(entry)) {</span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>        syn_underscore <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;_&quot;</span>, entry[[<span class="st">&quot;syn_name&quot;</span>]])</span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a>        match_idx <span class="ot">&lt;-</span> <span class="fu">which</span>(syn_underscore <span class="sc">%in%</span> spTrait)</span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">length</span>(match_idx) <span class="sc">&gt;</span> <span class="dv">0</span><span class="dt">L</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a>          sp_site[sp_site <span class="sc">==</span> <span class="fu">names</span>(chk)[i]] <span class="ot">&lt;-</span> syn_underscore[match_idx[<span class="dv">1</span>]]</span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>      }</span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>    }</span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a>  })</span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a>}</span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a>trinomial_idx <span class="ot">&lt;-</span> <span class="fu">grepl</span>(<span class="st">&quot;[A-Za-z]+</span><span class="sc">\\</span><span class="st">s+[A-Za-z]+</span><span class="sc">\\</span><span class="st">s+[A-Za-z]&quot;</span>, sp_site)</span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a>sp_site[trinomial_idx] <span class="ot">&lt;-</span> sp_site_old[trinomial_idx]</span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a><span class="co"># Write reconciled shapefiles (chunks of 4000)</span></span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a>names_spatial <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">old =</span> sp_site_old, <span class="at">new =</span> sp_site, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a>sp1 <span class="ot">&lt;-</span> <span class="fu">merge</span>(sp, names_spatial, <span class="at">by.x =</span> <span class="st">&quot;SCINAME&quot;</span>, <span class="at">by.y =</span> <span class="st">&quot;old&quot;</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a>chunk_size <span class="ot">&lt;-</span> <span class="dv">4000</span><span class="dt">L</span>; n_chunks <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">nrow</span>(sp1) <span class="sc">/</span> chunk_size)</span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_len</span>(n_chunks)) {</span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a>  rows <span class="ot">&lt;-</span> ((j<span class="dv">-1</span><span class="dt">L</span>)<span class="sc">*</span>chunk_size<span class="sc">+</span><span class="dv">1</span><span class="dt">L</span>)<span class="sc">:</span><span class="fu">min</span>(j<span class="sc">*</span>chunk_size, <span class="fu">nrow</span>(sp1))</span>
+<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_write</span>(sp1[rows, ], <span class="fu">file.path</span>(<span class="st">&quot;data/raw&quot;</span>, <span class="fu">sprintf</span>(<span class="st">&quot;BOTW_%d_New.shp&quot;</span>, j)),</span>
+<span id="cb5-47"><a href="#cb5-47" tabindex="-1"></a>               <span class="at">quiet =</span> <span class="cn">TRUE</span>, <span class="at">append =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-48"><a href="#cb5-48" tabindex="-1"></a>}</span>
+<span id="cb5-49"><a href="#cb5-49" tabindex="-1"></a></span>
+<span id="cb5-50"><a href="#cb5-50" tabindex="-1"></a><span class="co"># Rasterize and assign to hexagons</span></span>
+<span id="cb5-51"><a href="#cb5-51" tabindex="-1"></a>pathSave <span class="ot">&lt;-</span> <span class="st">&quot;data/raw/SpeciesData&quot;</span></span>
+<span id="cb5-52"><a href="#cb5-52" tabindex="-1"></a><span class="fu">dir.create</span>(pathSave, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-53"><a href="#cb5-53" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_len</span>(n_chunks))</span>
+<span id="cb5-54"><a href="#cb5-54" tabindex="-1"></a>  rasterSp<span class="sc">::</span><span class="fu">rasterizeRange</span>(<span class="at">dsn =</span> <span class="fu">file.path</span>(<span class="st">&quot;data/raw&quot;</span>, <span class="fu">sprintf</span>(<span class="st">&quot;BOTW_%d_New.shp&quot;</span>, j)),</span>
+<span id="cb5-55"><a href="#cb5-55" tabindex="-1"></a>                           <span class="at">id =</span> <span class="st">&quot;new&quot;</span>, <span class="at">resolution =</span> <span class="fl">0.5</span>, <span class="at">origin =</span> <span class="dv">1</span>,</span>
+<span id="cb5-56"><a href="#cb5-56" tabindex="-1"></a>                           <span class="at">presence =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">save =</span> <span class="cn">TRUE</span>, <span class="at">path =</span> pathSave)</span>
+<span id="cb5-57"><a href="#cb5-57" tabindex="-1"></a></span>
+<span id="cb5-58"><a href="#cb5-58" tabindex="-1"></a>fileList           <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> pathSave, <span class="at">pattern =</span> <span class="st">&quot;*.tif&quot;</span>)</span>
+<span id="cb5-59"><a href="#cb5-59" tabindex="-1"></a>coordsSpecies      <span class="ot">&lt;-</span> <span class="fu">est_coord_sp</span>(<span class="st">&quot;data/raw&quot;</span>, fileList,</span>
+<span id="cb5-60"><a href="#cb5-60" tabindex="-1"></a>                                   <span class="at">pathSave =</span> <span class="st">&quot;data/raw/coordinates_Resol05.RDS&quot;</span>)</span>
+<span id="cb5-61"><a href="#cb5-61" tabindex="-1"></a>coordsSpeciesOrdered <span class="ot">&lt;-</span> <span class="fu">assign_hexagons</span>(coordsSpecies, dggs7, sitesInRealms7,</span>
+<span id="cb5-62"><a href="#cb5-62" tabindex="-1"></a>                                        <span class="at">savePath =</span> <span class="st">&quot;data/raw/coordinates_Resol05_dggs7.RDS&quot;</span>)</span>
+<span id="cb5-63"><a href="#cb5-63" tabindex="-1"></a>valid_sites <span class="ot">&lt;-</span> coordsSpeciesOrdered[<span class="sc">!</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(coordsSpeciesOrdered, ncol)) <span class="sc">!=</span> <span class="dv">3</span>)]</span>
+<span id="cb5-64"><a href="#cb5-64" tabindex="-1"></a>uniquedggs7 <span class="ot">&lt;-</span> <span class="fu">reorder_hexagon</span>(valid_sites, <span class="at">savePath =</span> <span class="st">&quot;data/raw/uniquedggs7.RDS&quot;</span>)</span>
+<span id="cb5-65"><a href="#cb5-65" tabindex="-1"></a>sitesdggs7  <span class="ot">&lt;-</span> <span class="fu">siteswithspecies</span>(valid_sites, uniquedggs7, <span class="at">savePath =</span> <span class="st">&quot;data/raw/sitesdggs7.RDS&quot;</span>)</span></code></pre></div>
+</div>
+<div id="step6" class="section level2">
+<h2>Step 6 — TPD computation per dimension</h2>
+<h3 class="step-divider"><span>Community-level TPDs at DGGS resolution 7</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step6">01_DATA_load_and_clean — Step 6</h4>
+      <div class="fn-desc">Compute community-level Trait Probability Densities (TPDs) for each functional dimension (M, L, D, MLD) across DGGS hexagons. Additional 4D calculations for MLD and D spaces.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-fd">TPD</span>
+        <span class="fn-tag tag-geo">spatial</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">Birds_TPDs_sdggs7_MLD/M/L/D.rds</span>
+    <span class="fn-arg">Birds_TPDs_sdggs7_MLD_4D/D_4D.rds</span>
+  </div>
+</div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>sitesdggs7 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/processed/sitesdggs7.RDS&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>PCA_file <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;data/processed/PCA_Birds_MLD.rds&quot;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>              <span class="st">&quot;data/processed/PCA_Birds_M.rds&quot;</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>              <span class="st">&quot;data/processed/PCA_Birds_L.rds&quot;</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>              <span class="st">&quot;data/processed/PCA_Birds_D.rds&quot;</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>type <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;MLD&quot;</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;L&quot;</span>, <span class="st">&quot;D&quot;</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(type)) {</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  PCA <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(PCA_file[i])</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="fu">TPDs_compute</span>(<span class="at">TraitsPCA   =</span> PCA<span class="sc">$</span>PCoA<span class="sc">$</span>vectors[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)],</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>               sitesdggs7,</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>               <span class="at">savePath    =</span> <span class="fu">sprintf</span>(<span class="st">&quot;data/processed/Birds_TPDs_sdggs7_%s.rds&quot;</span>, type[i]),</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>               <span class="at">sampleComms =</span> <span class="dv">400</span>, <span class="at">alphaUse =</span> <span class="fl">0.95</span>, <span class="at">gridSize =</span> <span class="dv">100</span>)</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>}</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co"># Additional 4D (axes 1 &amp; 4) for MLD and D</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>)) {</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>  PCA <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(PCA_file[i])</span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>  <span class="fu">TPDs_compute_large</span>(<span class="at">TraitsPCA   =</span> PCA<span class="sc">$</span>PCoA<span class="sc">$</span>vectors[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>)],</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>                     sitesdggs7,</span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>                     <span class="at">savePath    =</span> <span class="fu">sprintf</span>(<span class="st">&quot;data/processed/Birds_TPDs_sdggs7_%s_4D.rds&quot;</span>, type[i]),</span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>                     <span class="at">sampleComms =</span> <span class="dv">400</span>, <span class="at">alphaUse =</span> <span class="fl">0.95</span>, <span class="at">gridSize =</span> <span class="dv">20</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="step7" class="section level2">
+<h2>Step 7 — Save final objects</h2>
+<h3 class="step-divider"><span>PCA · TPD · species table · eigenvalues</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step7">01_DATA_load_and_clean — Step 7</h4>
+      <div class="fn-desc">Compute community-level FRic for all species, combine all PCA objects into a named list, export PCoA coordinates, species–IUCN table, TPD lists, and an eigenvalue summary table for supplementary material.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-data">export</span>
+        <span class="fn-tag tag-fd">FRic</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/processed/PCA_Birds.rds</span>
+    <span class="fn-arg">data/processed/pcoa_coords.rds</span>
+    <span class="fn-arg">data/processed/tpd_lists.rds</span>
+    <span class="fn-arg">data/processed/species_table.rds</span>
+    <span class="fn-arg">results/tables/Annexe_Table_Eigenvalues.csv</span>
+  </div>
+</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>phenoBird <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed/phenoBirdsImputedREADY.csv&quot;</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">colnames</span>(phenoBird)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;scientificNameStd&quot;</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="fu">rownames</span>(phenoBird)    <span class="ot">&lt;-</span> phenoBird[, <span class="dv">1</span>]</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co"># Taxonomy table</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>taxo <span class="ot">&lt;-</span> phenoBird[, <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)]</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>taxo<span class="sc">$</span>Genus        <span class="ot">&lt;-</span> <span class="fu">vapply</span>(<span class="fu">strsplit</span>(<span class="fu">rownames</span>(taxo), <span class="st">&quot;_&quot;</span>), <span class="cf">function</span>(x) x[<span class="dv">1</span>], <span class="fu">character</span>(<span class="dv">1</span><span class="dt">L</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>taxo<span class="sc">$</span>GenusSpecies <span class="ot">&lt;-</span> <span class="fu">rownames</span>(taxo)</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="fu">colnames</span>(taxo)    <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;class&quot;</span>, <span class="st">&quot;order&quot;</span>, <span class="st">&quot;family&quot;</span>, <span class="st">&quot;genus&quot;</span>, <span class="st">&quot;genusspecies&quot;</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="fu">write.csv</span>(taxo, <span class="st">&quot;data/processed/Taxo_Birds.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>PCA_file    <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;data/processed/PCA_Birds_MLD.rds&quot;</span>,<span class="st">&quot;data/processed/PCA_Birds_M.rds&quot;</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>                 <span class="st">&quot;data/processed/PCA_Birds_D.rds&quot;</span>,<span class="st">&quot;data/processed/PCA_Birds_L.rds&quot;</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>PCA_file_OK <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">.rds$&quot;</span>, <span class="st">&quot;_OK.rds&quot;</span>, PCA_file)</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>TPD_file    <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;data/processed/TPD_Birds_LMD.rds&quot;</span>,<span class="st">&quot;data/processed/TPD_Birds_M.rds&quot;</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>                 <span class="st">&quot;data/processed/TPD_Birds_D.rds&quot;</span>,<span class="st">&quot;data/processed/TPD_Birds_L.rds&quot;</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>TPD_file_bio <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;data/processed/Birds_TPDs_sdggs7_MLD.rds&quot;</span>,<span class="st">&quot;data/processed/Birds_TPDs_sdggs7_M.rds&quot;</span>,</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>                  <span class="st">&quot;data/processed/Birds_TPDs_sdggs7_D.rds&quot;</span>,<span class="st">&quot;data/processed/Birds_TPDs_sdggs7_L.rds&quot;</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(PCA_file)) {</span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>  PCA     <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(PCA_file[i])</span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a>  TPDsAux <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(TPD_file[i])</span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a>  species <span class="ot">&lt;-</span> <span class="fu">rownames</span>(PCA<span class="sc">$</span>PCoA<span class="sc">$</span>vectors)</span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a>  species <span class="ot">&lt;-</span> species[species <span class="sc">%in%</span> TPDsAux<span class="sc">$</span>data<span class="sc">$</span>species]</span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a>  occurences <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span>, <span class="at">ncol =</span> <span class="fu">length</span>(species), <span class="at">nrow =</span> <span class="dv">1</span>, <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="st">&quot;ALL&quot;</span>, species))</span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a>  TPDc_occ          <span class="ot">&lt;-</span> TPD<span class="sc">::</span><span class="fu">TPDc</span>(TPDsAux, occurences)</span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a>  PCA<span class="sc">$</span>ALLFRic       <span class="ot">&lt;-</span> <span class="fu">TPDRichness</span>(TPDc_occ)<span class="sc">$</span>communities<span class="sc">$</span>FRichness</span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a>  PCA<span class="sc">$</span>ALLDensity    <span class="ot">&lt;-</span> <span class="fu">densityProfileTPD</span>(TPDc_occ)</span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a>  TPDs_sdggs7       <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(TPD_file_bio[i])</span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a>  TPDc_occ_bio      <span class="ot">&lt;-</span> TPD<span class="sc">::</span><span class="fu">TPDc</span>(TPDs_sdggs7, occurences)</span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a>  PCA<span class="sc">$</span>ALLFRicBiogeo <span class="ot">&lt;-</span> <span class="fu">TPDRichness</span>(TPDc_occ_bio)<span class="sc">$</span>communities<span class="sc">$</span>FRichness</span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a>  <span class="fu">saveRDS</span>(PCA, <span class="at">file =</span> PCA_file_OK[i])</span>
+<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a>}</span>
+<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a></span>
+<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a>type      <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;MLD&quot;</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;D&quot;</span>, <span class="st">&quot;L&quot;</span>)</span>
+<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a>PCA_Birds <span class="ot">&lt;-</span> <span class="fu">setNames</span>(<span class="fu">lapply</span>(PCA_file_OK, readRDS), type)</span>
+<span id="cb7-37"><a href="#cb7-37" tabindex="-1"></a><span class="fu">saveRDS</span>(PCA_Birds, <span class="st">&quot;data/processed/PCA_Birds.rds&quot;</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" tabindex="-1"></a></span>
+<span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a>PCA    <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/processed/PCA_Birds.rds&quot;</span>)</span>
+<span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">locomotion   =</span> PCA<span class="sc">$</span>M<span class="sc">$</span>PCoA<span class="sc">$</span>vectors,</span>
+<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a>               <span class="at">diet         =</span> PCA<span class="sc">$</span>D<span class="sc">$</span>PCoA<span class="sc">$</span>vectors,</span>
+<span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a>               <span class="at">reproduction =</span> PCA<span class="sc">$</span>L<span class="sc">$</span>PCoA<span class="sc">$</span>vectors)</span>
+<span id="cb7-43"><a href="#cb7-43" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">lapply</span>(coords, <span class="cf">function</span>(x) {</span>
+<span id="cb7-44"><a href="#cb7-44" tabindex="-1"></a>  <span class="fu">colnames</span>(x) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;PC&quot;</span>, <span class="fu">seq_len</span>(<span class="fu">ncol</span>(x)))</span>
+<span id="cb7-45"><a href="#cb7-45" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(x); x<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">rownames</span>(x); x</span>
+<span id="cb7-46"><a href="#cb7-46" tabindex="-1"></a>})</span>
+<span id="cb7-47"><a href="#cb7-47" tabindex="-1"></a><span class="fu">saveRDS</span>(coords, <span class="st">&quot;data/processed/pcoa_coords.rds&quot;</span>)</span>
+<span id="cb7-48"><a href="#cb7-48" tabindex="-1"></a></span>
+<span id="cb7-49"><a href="#cb7-49" tabindex="-1"></a>species_df <span class="ot">&lt;-</span> phenoBird[, <span class="fu">c</span>(<span class="st">&quot;scientificNameStd&quot;</span>, <span class="st">&quot;category&quot;</span>)]</span>
+<span id="cb7-50"><a href="#cb7-50" tabindex="-1"></a><span class="fu">colnames</span>(species_df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;species&quot;</span>, <span class="st">&quot;iucn&quot;</span>)</span>
+<span id="cb7-51"><a href="#cb7-51" tabindex="-1"></a>species_df <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(species_df[<span class="sc">!</span>species_df<span class="sc">$</span>iucn <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;DD&quot;</span>,<span class="st">&quot;EW&quot;</span>,<span class="st">&quot;EX&quot;</span>,<span class="st">&quot;RE&quot;</span>), ])</span>
+<span id="cb7-52"><a href="#cb7-52" tabindex="-1"></a><span class="fu">saveRDS</span>(species_df, <span class="st">&quot;data/processed/species_table.rds&quot;</span>)</span>
+<span id="cb7-53"><a href="#cb7-53" tabindex="-1"></a></span>
+<span id="cb7-54"><a href="#cb7-54" tabindex="-1"></a>tpd_lists <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">locomotion   =</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/processed/TPD_Birds_M.rds&quot;</span>),</span>
+<span id="cb7-55"><a href="#cb7-55" tabindex="-1"></a>                  <span class="at">diet         =</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/processed/TPD_Birds_D.rds&quot;</span>),</span>
+<span id="cb7-56"><a href="#cb7-56" tabindex="-1"></a>                  <span class="at">reproduction =</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/processed/TPD_Birds_L.rds&quot;</span>))</span>
+<span id="cb7-57"><a href="#cb7-57" tabindex="-1"></a><span class="fu">saveRDS</span>(tpd_lists, <span class="st">&quot;data/processed/tpd_lists.rds&quot;</span>)</span>
+<span id="cb7-58"><a href="#cb7-58" tabindex="-1"></a></span>
+<span id="cb7-59"><a href="#cb7-59" tabindex="-1"></a>table_eigen_clean <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">names</span>(PCA), <span class="cf">function</span>(name) {</span>
+<span id="cb7-60"><a href="#cb7-60" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> PCA[[name]]<span class="sc">$</span>PCoA<span class="sc">$</span>values[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>)]</span>
+<span id="cb7-61"><a href="#cb7-61" tabindex="-1"></a>  tab[, <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> tab[, <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb7-62"><a href="#cb7-62" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> <span class="fu">round</span>(tab, <span class="dv">3</span>)</span>
+<span id="cb7-63"><a href="#cb7-63" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">Space =</span> name, <span class="at">Axis =</span> <span class="fu">rownames</span>(tab), tab)</span>
+<span id="cb7-64"><a href="#cb7-64" tabindex="-1"></a>  <span class="fu">colnames</span>(tab) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;TraitSpace&quot;</span>,<span class="st">&quot;Axis&quot;</span>,<span class="st">&quot;Eigenvalue&quot;</span>,<span class="st">&quot;%Variance&quot;</span>,<span class="st">&quot;%Cumulative&quot;</span>)</span>
+<span id="cb7-65"><a href="#cb7-65" tabindex="-1"></a>  tab</span>
+<span id="cb7-66"><a href="#cb7-66" tabindex="-1"></a>}))</span>
+<span id="cb7-67"><a href="#cb7-67" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;results/tables&quot;</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-68"><a href="#cb7-68" tabindex="-1"></a><span class="fu">write.csv</span>(table_eigen_clean, <span class="st">&quot;results/tables/Annexe_Table_Eigenvalues.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

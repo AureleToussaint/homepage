@@ -1,0 +1,1038 @@
+---
+title: ""
+pagetitle: "Bird trait analysis — R Scripts"
+output:
+  html_document:
+    self_contained: false
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    code_folding: show
+    highlight: tango
+    df_print: paged
+    includes:
+      in_header: header.html
+---
+
+```{=html}
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<style>
+#pw-overlay {
+  position: fixed; inset: 0; background: rgba(255,255,255,0.97);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+}
+.pw-box {
+  background: #fff; border: 1px solid #dde3ea; border-radius: 12px;
+  padding: 40px 48px; text-align: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-width: 400px; width: 90%;
+}
+.pw-box h2 { margin: 0 0 6px 0; font-size: 1.5em; color: #2c3e50; }
+.pw-box p  { color: #666; font-size: 0.95em; margin: 0 0 22px 0; }
+.pw-lock   { font-size: 3em; margin-bottom: 8px; }
+.pw-row    { display: flex; gap: 8px; }
+.pw-row input {
+  flex:1; padding: 10px 14px; border: 1px solid #ccc;
+  border-radius: 8px; font-size: 1em; outline: none;
+}
+.pw-row input:focus { border-color: #c0392b; }
+.pw-row button {
+  padding: 10px 18px; background: #c0392b; color: #fff;
+  border: none; border-radius: 8px; font-size: 1em; cursor: pointer;
+}
+.pw-row button:hover { opacity: 0.85; }
+.pw-err { color: #c0392b; font-size: 0.9em; margin: 8px 0 0 0; min-height: 20px; }
+.back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
+.back-link a { color: #c0392b; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+
+/* ── Custom sidebar nav ───────────────────────────── */
+#TOC,
+.tocify-wrapper,
+div[data-spy="affix"] {
+  display: none !important;
+  width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+body { margin-left: 0 !important; padding-left: 0 !important; }
+.main-container {
+  margin-left: 210px !important;
+  max-width: calc(100vw - 230px) !important;
+  width: calc(100vw - 230px) !important;
+  padding-right: 30px !important;
+}
+.col-xs-12.col-sm-4.col-md-3,
+.tocify-wrapper,
+div.tocify,
+#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
+.col-xs-12.col-sm-8.col-md-9 {
+  width: 100% !important;
+  -webkit-flex: none !important;
+  flex: none !important;
+}
+.row { margin-left: 0 !important; margin-right: 0 !important; }
+
+.fn-nav {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 205px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: 14px 10px 20px 14px;
+  border-right: 1px solid #e8e8e8;
+  background: #fafafa;
+  font-size: 0.82em;
+  z-index: 100;
+}
+.fn-nav .fn-nav-title {
+  font-size: 0.7em; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: #bbb;
+  margin-bottom: 10px; padding-left: 4px;
+}
+.fn-nav ul { list-style: none; margin: 0; padding: 0; }
+.fn-nav li a {
+  display: block; padding: 3px 6px; border-radius: 4px;
+  color: #444; text-decoration: none;
+  font-size: 0.9em; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.fn-nav li a:hover { background: #eef2f7; color: #2c3e50; }
+.fn-nav li a.active { background: #fce8e8; color: #c0392b; font-weight: 600; }
+
+/* ── Page intro ───────────────────────────────────── */
+.page-intro {
+  display:flex; align-items:center; gap:14px;
+  padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
+}
+.page-intro-icon {
+  width:48px; height:48px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5em; color:#fff; flex-shrink:0;
+}
+.page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
+.page-intro p  { font-size:0.92em; color:#777; margin:0; }
+
+/* ── Step cards (pipeline workflow) ──────────────── */
+.step-divider {
+  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+}
+.step-divider span {
+  font-size:0.75em; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:#aaa; white-space:nowrap;
+}
+.step-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
+
+.fn-card {
+  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+}
+.fn-header {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
+}
+.fn-name {
+  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
+  margin:0; padding:0; line-height:1.4;
+}
+.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
+.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+.fn-tag  { font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600; }
+.tag-data  { background:#fce4ec; color:#880e4f; }
+.tag-stat  { background:#e8f5e9; color:#1b6b2f; }
+.tag-ml    { background:#e8eaf6; color:#283593; }
+.tag-morph { background:#e0f2f1; color:#00574e; }
+.tag-fd    { background:#fff3e0; color:#b25000; }
+.tag-util  { background:#e3f2fd; color:#1557a0; }
+.tag-geo   { background:#f3e5f5; color:#6a1b9a; }
+
+.fn-args { display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
+           background:#fff; border-bottom:1px solid #f0f0f0; align-items:center; }
+.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
+.fn-arg { font-family:monospace; font-size:0.78em; padding:2px 8px;
+          background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555; }
+</style>
+
+<!-- Static sidebar nav -->
+<div class="fn-nav" id="fn-nav">
+  <div class="fn-nav-title">Pipeline steps</div>
+  <ul>
+    <li><a href="#fn-step1">01 — Load &amp; IUCN</a></li>
+    <li><a href="#fn-step2">02 — Imputation</a></li>
+    <li><a href="#fn-step3">03 — PhenoBird</a></li>
+    <li><a href="#fn-step4">04 — PCoA</a></li>
+    <li><a href="#fn-step5">05 — Spatial</a></li>
+    <li><a href="#fn-step6">06 — TPD</a></li>
+    <li><a href="#fn-step7">07 — Save outputs</a></li>
+  </ul>
+</div>
+
+<!-- Password overlay -->
+<div id="pw-overlay">
+  <div class="pw-box">
+    <div class="pw-lock">🔒</div>
+    <h2>R Scripts — Birds</h2>
+    <p>Enter the password to access this page.</p>
+    <div class="pw-row">
+      <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+      <button onclick="checkPw()">OK</button>
+    </div>
+    <p class="pw-err" id="pw-err"></p>
+  </div>
+</div>
+
+<script>
+(function(){
+  if(sessionStorage.getItem('rscripts_unlocked')==='1'){
+    document.getElementById('pw-overlay').style.display='none';
+  }
+})();
+async function checkPw(){
+  var val=document.getElementById('pw-input').value;
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+  var hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hex==='ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5'){
+    sessionStorage.setItem('rscripts_unlocked','1');
+    document.getElementById('pw-overlay').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='Incorrect password.';
+  }
+}
+</script>
+
+<div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
+
+<div class="page-intro">
+  <div class="page-intro-icon" style="background:#c0392b;">🐦</div>
+  <div>
+    <h1>Bird trait analysis</h1>
+    <p>Pipeline for avian trait data loading, imputation, PCoA and spatial assignment — FuSE_FuS project.</p>
+  </div>
+</div>
+
+<script>
+window.addEventListener("scroll", function() {
+  var links = document.querySelectorAll(".fn-nav li a");
+  var current = "";
+  links.forEach(function(a) {
+    var id = a.getAttribute("href").slice(1);
+    var el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 120) current = id;
+  });
+  links.forEach(function(a) {
+    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
+  });
+});
+</script>
+```
+
+## Step 1 — Data loading & taxonomic standardization {#step1}
+
+```{=html}
+<h3 class="step-divider"><span>AVONET + IUCN inline</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step1">01_DATA_load_and_clean — Step 1</h4>
+      <div class="fn-desc">Load AVONET BirdLife morphological traits, fetch IUCN Red List categories via API v4 (<code>rredlist</code>), merge into a single species × traits table, and resolve taxonomic duplicates. Results cached to <code>data/processed/BirdTraitCombined.csv</code>.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-data">data loading</span>
+        <span class="fn-tag tag-util">taxonomy</span>
+        <span class="fn-tag tag-stat">IUCN API</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Inputs:</span>
+    <span class="fn-arg">data/raw/AVONET.xlsx</span>
+    <span class="fn-arg">IUCN_REDLIST_KEY (.Renviron)</span>
+    <span class="fn-arg">traitdata::amniota</span>
+    <span class="fn-arg">traitdata::elton_birds</span>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/processed/BirdTraitCombined.csv</span>
+    <span class="fn-arg">data/processed/iucn_cache.rds</span>
+  </div>
+</div>
+```
+
+```{r step1_load, eval=FALSE}
+# ---- Reproducibility -------------------------------------------------------
+GLOBAL_SEED <- 20251029
+set.seed(GLOBAL_SEED)
+source("scripts/00_GeneralScript.R")
+
+########################################################################
+### 1. Loading original trait and taxonomic standardization
+########################################################################
+
+if(!("BirdTraitCombined.csv" %in% list.files("data/raw"))){
+
+  ### 1.a. AVONET morphological traits
+  avonet_raw <- readxl::read_excel(
+    path = "data/raw/AVONET.xlsx",
+    sheet = "AVONET1_BirdLife",
+    col_types = c(
+      "skip", "text", "text", "text", "skip", "skip", "skip", "skip", "skip", "skip",
+      "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
+      "numeric", "numeric", "numeric", "numeric",
+      rep("skip", 16)
+    )
+  )
+  avonet_raw <- as.data.frame(avonet_raw)
+  avonet_raw <- subset(avonet_raw, Family1 != "Apterygidae")  # remove flightless
+
+  ### 1.b. IUCN categories via API v4 (rredlist >= 1.0.0)
+  if (!requireNamespace("rredlist", quietly = TRUE)) install.packages("rredlist")
+  library(rredlist)
+  if (utils::packageVersion("rredlist") < "1.0.0")
+    stop("rredlist >= 1.0.0 required (API v4). install.packages('rredlist')")
+
+  `%||%` <- function(a, b) if (is.null(a) || length(a) == 0L) b else a
+
+  parse_binomial <- function(x, sep = "[_ ]+") {
+    parts <- strsplit(as.character(x), sep)
+    data.frame(
+      genus   = sapply(parts, function(p) if (length(p) >= 1L) p[1] else NA_character_),
+      species = sapply(parts, function(p) if (length(p) >= 2L) p[2] else NA_character_),
+      stringsAsFactors = FALSE
+    )
+  }
+
+  query_iucn <- function(genus, species, key) {
+    if (is.na(genus) || is.na(species) || genus == "" || species == "")
+      return(NA_character_)
+    tryCatch({
+      res <- rredlist::rl_species(genus = genus, species = species, key = key)
+      if (is.null(res) || is.null(res$assessments)) return(NA_character_)
+      asm <- res$assessments
+      if (is.data.frame(asm)) {
+        if (nrow(asm) == 0L) return(NA_character_)
+        latest_idx <- which(asm$latest == TRUE)
+        if (length(latest_idx) == 0L) latest_idx <- 1L
+        return(asm$red_list_category_code[latest_idx[1]])
+      }
+      if (is.list(asm) && length(asm) > 0L) {
+        latest_idx <- which(vapply(asm, function(a) isTRUE(a$latest), logical(1L)))
+        if (length(latest_idx) == 0L) latest_idx <- 1L
+        return(asm[[latest_idx[1]]]$red_list_category_code %||% NA_character_)
+      }
+      NA_character_
+    }, error = function(e) {
+      if (!grepl("404|not found", conditionMessage(e), ignore.case = TRUE))
+        message(sprintf("  [ERROR] %s %s — %s", genus, species, conditionMessage(e)))
+      NA_character_
+    })
+  }
+
+  fetch_iucn_categories <- function(binomials, key,
+                                    cache_path = "data/processed/iucn_cache.rds",
+                                    rate_limit_s = 0.6,
+                                    retry_failed = FALSE) {
+    binomials <- unique(binomials[!is.na(binomials) & binomials != ""])
+    cache <- if (file.exists(cache_path)) readRDS(cache_path) else list()
+    to_query <- if (retry_failed) {
+      binomials[!binomials %in% names(cache) |
+                  vapply(binomials, function(sp) is.null(cache[[sp]]) || is.na(cache[[sp]]), logical(1L))]
+    } else {
+      binomials[!binomials %in% names(cache)]
+    }
+    if (length(to_query) > 0L) {
+      parsed <- parse_binomial(to_query)
+      for (i in seq_along(to_query)) {
+        cache[[to_query[i]]] <- query_iucn(parsed$genus[i], parsed$species[i], key = key)
+        if (i %% 100L == 0L) {
+          dir.create(dirname(cache_path), showWarnings = FALSE, recursive = TRUE)
+          saveRDS(cache, cache_path)
+        }
+        if (i < length(to_query)) Sys.sleep(rate_limit_s)
+      }
+      dir.create(dirname(cache_path), showWarnings = FALSE, recursive = TRUE)
+      saveRDS(cache, cache_path)
+    }
+    out <- unlist(cache[binomials]); names(out) <- binomials; out
+  }
+
+  API_KEY <- Sys.getenv("IUCN_REDLIST_KEY")
+  if (API_KEY == "") stop("Set IUCN_REDLIST_KEY in .Renviron (https://api.iucnredlist.org)")
+
+  iucn_categories <- fetch_iucn_categories(
+    binomials = unique(avonet_raw$Species1), key = API_KEY,
+    cache_path = "data/processed/iucn_cache.rds", rate_limit_s = 0.6
+  )
+  avonet_raw$iucn_category <- iucn_categories[avonet_raw$Species1]
+
+  ### 1.c. Taxonomic fix + merge AMNIOTE + EltonTraits
+  avonet_merged <- avonet_raw
+  avonet_merged$scientificNameStd <- avonet_merged$Species1
+  avonet_merged$GenusSpecies      <- avonet_merged$Species1
+
+  avonet_traitdata_map <- traitdata::avonet
+  avonet_traitdata_map$GenusSpecies <- paste(avonet_traitdata_map$Genus, avonet_traitdata_map$Species)
+  avonet_traitdata_map <- unique(avonet_traitdata_map[, c("GenusSpecies", "scientificNameStd")])
+  colnames(avonet_traitdata_map) <- c("Species1", "scientificNameStd_traitdata")
+  avonet_merged <- merge(avonet_merged, avonet_traitdata_map, by = "Species1", all.x = TRUE)
+  avonet_merged <- avonet_merged[!is.na(avonet_merged$scientificNameStd), ]
+  avonet_merged <- avonet_merged[order(avonet_merged$scientificNameStd), ]
+
+  species_to_remove <- c(
+    'Atlantisia rogersi', 'Casuarius bennetti', 'Casuarius casuarius',
+    'Casuarius unappendiculatus', 'Dromaius novaehollandiae',
+    'Rhea americana', 'Rhea pennata', 'Struthio camelus'
+  )
+  avonet_filtered <- subset(avonet_merged, !(scientificNameStd %in% species_to_remove))
+
+  # Deduplicate: keep row matching GenusSpecies, else row with fewest NAs
+  duplicated_species <- names(which(table(avonet_filtered$scientificNameStd) > 1))
+  avonet_final <- subset(avonet_filtered, !(scientificNameStd %in% duplicated_species))
+  for (sp in duplicated_species) {
+    entries <- avonet_filtered[avonet_filtered$scientificNameStd == sp, ]
+    if (sp %in% entries$GenusSpecies) {
+      avonet_final <- rbind(avonet_final, entries[entries$GenusSpecies == sp, ])
+    } else {
+      na_counts <- apply(entries, 1, function(row) sum(is.na(row)))
+      avonet_final <- rbind(avonet_final, entries[which.min(na_counts), , drop = FALSE])
+    }
+  }
+
+  resolve_duplicates <- function(df_grouped) {
+    if (any(df_grouped$GenusSpecies == df_grouped$scientificNameStd[1])) {
+      return(df_grouped %>% filter(GenusSpecies == scientificNameStd[1]) %>% slice(1))
+    } else {
+      return(df_grouped %>% mutate(n_NA = rowSums(is.na(.))) %>% arrange(n_NA) %>% slice(1) %>% select(-n_NA))
+    }
+  }
+
+  clean_amniote_aves <- function(data = traitdata::amniota) {
+    aves_data <- data %>% filter(Class == "Aves") %>% distinct() %>%
+      filter(!is.na(scientificNameStd)) %>% mutate(GenusSpecies = paste(Genus, Species))
+    dup_names <- aves_data %>% count(scientificNameStd) %>% filter(n > 1) %>% pull(scientificNameStd)
+    aves_clean    <- aves_data %>% filter(!scientificNameStd %in% dup_names)
+    aves_resolved <- aves_data %>% filter(scientificNameStd %in% dup_names) %>%
+      group_by(scientificNameStd) %>% group_modify(~ resolve_duplicates(.x)) %>% ungroup()
+    final_data <- bind_rows(aves_clean, aves_resolved)
+    stopifnot(!any(duplicated(final_data$scientificNameStd)))
+    return(final_data)
+  }
+  aveTraitsFinal <- clean_amniote_aves()
+
+  clean_elton_diet_aves <- function(elton_birds_data) {
+    elton_clean <- elton_birds_data %>%
+      mutate(Genus = trimws(Genus), Species = trimws(Species),
+             scientificNameStd = paste(Genus, Species), GenusSpecies = paste(Genus, Species)) %>%
+      select(-c(1:7, 10, 36:42)) %>% distinct() %>% filter(!is.na(scientificNameStd))
+    dup_names <- elton_clean %>% count(scientificNameStd) %>% filter(n > 1) %>% pull(scientificNameStd)
+    elton_ok <- elton_clean %>% filter(!scientificNameStd %in% dup_names)
+    dup_resolved <- elton_clean %>% filter(scientificNameStd %in% dup_names) %>%
+      group_by(scientificNameStd) %>%
+      group_modify(~ {
+        match_gs <- .x %>% filter(GenusSpecies == .x$scientificNameStd[1])
+        if (nrow(match_gs) > 0) return(slice(match_gs, 1))
+        .x %>% mutate(n_NA = rowSums(is.na(.))) %>% arrange(n_NA) %>% slice(1) %>% select(-n_NA)
+      }) %>% ungroup()
+    elton_final <- bind_rows(elton_ok, dup_resolved)
+    stopifnot(!any(duplicated(elton_final$scientificNameStd)))
+    return(elton_final)
+  }
+  aveDietFinal <- clean_elton_diet_aves(traitdata::elton_birds)
+
+  birdTraits <- avonet_final %>%
+    rename(scientificNameStd_birdlife = scientificNameStd,
+           scientificNameStd = scientificNameStd_traitdata) %>%
+    full_join(aveDietFinal, by = "scientificNameStd") %>%
+    full_join(aveTraitsFinal, by = "scientificNameStd") %>%
+    mutate(scientificNameStd_traitdata = scientificNameStd,
+           scientificNameStd = ifelse(!is.na(scientificNameStd_birdlife),
+                                      scientificNameStd_birdlife, scientificNameStd_traitdata))
+
+  cols_to_keep <- c("scientificNameStd",
+                    colnames(birdTraits)[c(18,47:53,15)],
+                    colnames(birdTraits)[4:14],
+                    colnames(birdTraits)[21:30],
+                    colnames(birdTraits)[35:42],
+                    colnames(birdTraits)[54:82])
+  birdTraits <- birdTraits[, unique(cols_to_keep)]
+  if (any(duplicated(birdTraits$scientificNameStd))) {
+    birdTraits <- birdTraits %>% group_by(scientificNameStd) %>% slice(1) %>% ungroup()
+  }
+  write.csv(birdTraits, file = "data/processed/BirdTraitCombined.csv", row.names = FALSE)
+
+} else {
+  birdTraits <- read.csv("data/processed/BirdTraitCombined.csv")
+}
+```
+
+## Step 2 — Phylogenetic imputation {#step2}
+
+```{=html}
+<h3 class="step-divider"><span>missForest + phylogenetic eigenvectors</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step2">01_DATA_load_and_clean — Step 2</h4>
+      <div class="fn-desc">Build a bird megatree (from GitHub), compute phylogenetic PCoA eigenvectors, add missing species via <code>phytools::add.species.to.genus</code>, then impute missing trait values with <code>missForest</code> using parallel processing.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-ml">missForest</span>
+        <span class="fn-tag tag-stat">phylogenetics</span>
+        <span class="fn-tag tag-morph">trait imputation</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Inputs:</span>
+    <span class="fn-arg">data/processed/BirdTraitCombined.csv</span>
+    <span class="fn-arg">bird_megatree (GitHub)</span>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/processed/BirdPhylogeny.tre</span>
+    <span class="fn-arg">data/processed/pcoaPhylogenyAves.txt</span>
+    <span class="fn-arg">data/processed/phenoBirdsImputedAll.csv</span>
+    <span class="fn-arg">data/processed/phenoBirdsImputed.csv</span>
+  </div>
+</div>
+```
+
+```{r step2_imputation, eval=FALSE}
+if(!("BirdTraitCombined.csv" %in% list.files("data/processed"))){
+
+  phylogeny_raw   <- ape::read.tree('https://raw.githubusercontent.com/megatrees/bird_20221117/main/bird_megatree.tre')
+  phylogeny_ultra <- phytools::force.ultrametric(phylogeny_raw, method = "extend")
+
+  sp_phylo <- phylogeny_ultra$tip.label
+  sp_trait <- gsub(" ", "_", birdTraits$scientificNameStd)
+
+  # Synonymy resolution via ITIS
+  sp_to_check  <- sp_trait[!sp_trait %in% sp_phylo]
+  chk_synonyms <- taxize::synonyms(sp_to_check, db = "itis", rows = 1)
+
+  birdTraits$scientificNameStd    <- gsub(" ", "_", birdTraits$scientificNameStd)
+  birdTraits$scientificNameStdNEW <- birdTraits$scientificNameStd
+
+  for (i in seq_along(chk_synonyms)) {
+    orig_name   <- sp_to_check[i]
+    current_syn <- chk_synonyms[[i]]
+    if ("acc_name" %in% colnames(current_syn)) {
+      birdTraits$scientificNameStdNEW[birdTraits$scientificNameStd == orig_name] <-
+        gsub(" ", "_", current_syn$acc_name[1])
+    } else if ("syn_name" %in% colnames(current_syn)) {
+      syn_candidates <- gsub(" ", "_", current_syn$syn_name)
+      match_found    <- syn_candidates[syn_candidates %in% sp_phylo]
+      if (length(match_found) > 0)
+        birdTraits$scientificNameStdNEW[birdTraits$scientificNameStd == orig_name] <- match_found[1]
+    }
+  }
+  is_missing <- is.na(birdTraits$scientificNameStdNEW)
+  birdTraits$scientificNameStdNEW[is_missing] <- birdTraits$scientificNameStd[is_missing]
+
+  # Add missing species to phylogeny
+  tips_missing   <- birdTraits$scientificNameStdNEW[!birdTraits$scientificNameStdNEW %in% phylogeny_ultra$tip.label]
+  names_to_add   <- unique(tips_missing)
+  genus_to_add   <- sapply(strsplit(names_to_add, "_"), `[`, 1)
+  phylogeny_final <- phylogeny_ultra
+  for (i in seq_along(names_to_add)) {
+    phylogeny_final <- phytools::add.species.to.genus(
+      tree = phylogeny_final, species = names_to_add[i],
+      genus = genus_to_add[i], where = "root"
+    )
+  }
+  write.tree(phylogeny_final, file = "data/processed/BirdPhylogeny.tre")
+
+  # Phylogenetic PCoA (10 axes)
+  phylo_dist  <- sqrt(cophenetic(phylogeny_final))
+  pcoa_phylo  <- cmdscale(phylo_dist, k = 10)
+  colnames(pcoa_phylo) <- paste0("Eigen.", 1:ncol(pcoa_phylo))
+  pcoa_df     <- as.data.frame(pcoa_phylo)
+  pcoa_df$scientificNameStd <- rownames(pcoa_df)
+  write.table(pcoa_df, "data/processed/pcoaPhylogenyAves.txt",
+              row.names = FALSE, quote = FALSE, sep = "\t")
+
+  # Merge + clean negative values
+  clean_bird_traits_phylogeny <- function(birdTraits, pcoaPhyl,
+                                          output_file = "data/processed/phenoBirds.csv") {
+    merged_data <- merge(birdTraits, pcoaPhyl,
+                         by.x = "scientificNameStd", by.y = "scientificNameStd", all.x = TRUE)
+    numeric_columns_present <- intersect(
+      c("Beak.Length_Culmen","Beak.Length_Nares","Beak.Width","Beak.Depth",
+        "Tarsus.Length","Wing.Length","Kipps.Distance","Secondary1",
+        "Hand-Wing.Index","Tail.Length","Mass",
+        "female_maturity_d","litter_or_clutch_size_n","litters_or_clutches_per_y",
+        "adult_body_mass_g","maximum_longevity_y","gestation_d","weaning_d",
+        "birth_or_hatching_weight_g","weaning_weight_g","egg_mass_g","incubation_d",
+        "fledging_age_d","longevity_y","male_maturity_d",
+        "inter_litter_or_interbirth_interval_y","female_body_mass_g","male_body_mass_g",
+        "no_sex_body_mass_g","egg_width_mm","egg_length_mm","fledging_mass_g",
+        "adult_svl_cm","female_svl_cm","birth_or_hatching_svl_cm",
+        "female_svl_at_maturity_cm","female_body_mass_at_maturity_g",
+        "no_sex_svl_cm","no_sex_maturity_d"),
+      colnames(merged_data)
+    )
+    merged_data[numeric_columns_present] <- lapply(
+      merged_data[numeric_columns_present],
+      function(x) if (is.numeric(x)) replace(x, x < 0, NA) else x
+    )
+    rownames(merged_data) <- merged_data$scientificNameStd
+    merged_data <- merged_data[, !(colnames(merged_data) %in% c("scientificNameStd","scientificNameStdNEW"))]
+    merged_data <- merged_data[, colSums(!is.na(merged_data)) > 0]
+    write.csv(merged_data, file = output_file, row.names = TRUE)
+    invisible(merged_data)
+  }
+  birdTraitsPhy <- clean_bird_traits_phylogeny(birdTraits, pcoa_df)
+  write.csv(birdTraitsPhy, file = "data/processed/phenoBirds.csv")
+
+} else {
+  birdTraitsPhy <- read.csv("data/processed/phenoBirds.csv")
+
+  morphoColumn <- c("Tarsus.Length","Wing.Length","Kipps.Distance","Secondary1",
+                    "Hand.Wing.Index","Tail.Length","Mass","adult_svl_cm")
+  lhtColum     <- c("litter_or_clutch_size_n","litters_or_clutches_per_y",
+                    "adult_body_mass_g","maximum_longevity_y","birth_or_hatching_weight_g",
+                    "incubation_d","fledging_age_d","longevity_y","egg_mass_g",
+                    "male_maturity_d","inter_litter_or_interbirth_interval_y",
+                    "female_body_mass_g","no_sex_body_mass_g",
+                    "egg_length_mm","fledging_mass_g","no_sex_maturity_d")
+  dietColumn   <- c('Diet.Inv','Diet.Vend','Diet.Vect','Diet.Vfish','Diet.Vunk',
+                    'Diet.Scav','Diet.Fruit','Diet.Nect','Diet.Seed','Diet.PlantO')
+  phyloColumn  <- paste0('Eigen.', 1:10)
+  numericColumn <- c(morphoColumn, lhtColum)
+
+  birdTraitsPhy[, numericColumn] <- replace(birdTraitsPhy[, numericColumn],
+                                            birdTraitsPhy[, numericColumn] < 0, NA)
+  birdTraitsPhy <- birdTraitsPhy[!is.na(apply(birdTraitsPhy[, dietColumn], 1, sum)), ]
+
+  birdTraitsToImpute <- cbind(scale(log10(birdTraitsPhy[, numericColumn])),
+                              birdTraitsPhy[, dietColumn],
+                              birdTraitsPhy[, phyloColumn])
+  colToImputeAll <- c(numericColumn, dietColumn, phyloColumn)
+
+  doParallel::registerDoParallel(cores = 14)
+  birdTraitslogImputed <- as.matrix(
+    missForest(xmis = birdTraitsToImpute[, colToImputeAll], parallelize = "variables")$ximp
+  )
+  birdTraitsPhy[, colToImputeAll] <- birdTraitslogImputed[, colToImputeAll]
+  write.csv(birdTraitsPhy, file = "data/processed/phenoBirdsImputedAll.csv", row.names = FALSE)
+
+  colToImpute <- c(lhtColum, phyloColumn)
+  birdTraitslogImputed <- as.matrix(
+    missForest(xmis = birdTraitsToImpute[, colToImpute], parallelize = "variables")$ximp
+  )
+  birdTraitsPhy[, colToImpute] <- birdTraitslogImputed[, colToImpute]
+  write.csv(birdTraitsPhy, file = "data/processed/phenoBirdsImputed.csv", row.names = FALSE)
+}
+```
+
+## Step 3 — PhenoBird {#step3}
+
+```{=html}
+<h3 class="step-divider"><span>Final species × traits matrix</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step3">01_DATA_load_and_clean — Step 3</h4>
+      <div class="fn-desc">Assemble the final PhenoBird matrix: remove problematic species, filter DD/EX/EW categories, compute trait completeness statistics, and save the ready-to-analyse dataset.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-data">data wrangling</span>
+        <span class="fn-tag tag-stat">IUCN filter</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Inputs:</span>
+    <span class="fn-arg">data/processed/phenoBirds.csv</span>
+    <span class="fn-arg">data/processed/phenoBirdsImputedAll.csv</span>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/processed/phenoBirdsImputedREADY.csv</span>
+    <span class="fn-arg">data/processed/Shortnames_Birds.csv</span>
+    <span class="fn-arg">data/processed/species_table.rds</span>
+  </div>
+</div>
+```
+
+```{r step3_phenobird, eval=FALSE}
+SpToRem <- c("Struthio_molybdophanes","Neochmia_phaeton","Rhea_americana",
+             "Stagonopleura_guttata","Carpococcyx_renauldi","Laterallus_rogersi",
+             "Menura_novaehollandiae","Rallicula_leucospila","Rhea_tarapacensis")
+
+birdTraitsPhy <- read.csv("data/processed/phenoBirds.csv")
+birdTraitsPhy <- birdTraitsPhy[!birdTraitsPhy$X %in% SpToRem, ]
+phenoBird     <- read.csv("data/processed/phenoBirdsImputedAll.csv")
+colnames(phenoBird)[1] <- "scientificNameStd"
+rownames(phenoBird)    <- phenoBird[, 1]
+phenoBird <- phenoBird[!rownames(phenoBird) %in% SpToRem, ]
+
+morphoTrait <- c("Tarsus.Length","Wing.Length","Kipps.Distance","Secondary1",
+                 "Hand.Wing.Index","Tail.Length","Mass","adult_svl_cm")
+LHTTrait    <- c("litter_or_clutch_size_n","egg_mass_g","incubation_d",
+                 "longevity_y","fledging_age_d","litters_or_clutches_per_y")
+DietTrait   <- c("Diet.Inv","Diet.Vend","Diet.Vect","Diet.Vfish","Diet.Vunk",
+                 "Diet.Scav","Diet.Fruit","Diet.Nect","Diet.Seed","Diet.PlantO")
+
+shortNames <- cbind(
+  original     = c(morphoTrait, LHTTrait, DietTrait),
+  short        = c("trl","wl","kd","s1","hwl","tll","bmA","svl",
+                   "ls","em","inc","lg","fled","ly",
+                   "DI","DVd","DVt","DVf","DVk","DSv","DF","DN","DSd","DP"),
+  color        = c(rep("#2E7D32",8), rep("#1565C0",6), rep("#C62828",10)),
+  completeness = rep(NA, length(c(morphoTrait, LHTTrait, DietTrait))),
+  type         = c(rep("Morphological (M)",8), rep("Life-history (L)",6), rep("Diet (D)",10))
+)
+for (i in 1:nrow(shortNames)) {
+  cplet <- birdTraitsPhy[, shortNames[i,1]]
+  isna  <- length(which(!is.na(cplet)))
+  shortNames[i,'completeness'] <- paste0(isna,"/",length(cplet)," (",round(isna/length(cplet)*100,2),"%)")
+}
+write.csv(shortNames, file = "data/processed/Shortnames_Birds.csv")
+
+phenoDiet <- na.omit(as.data.frame(prep.fuzzy(phenoBird[, DietTrait],
+                                              col.blocks = ncol(phenoBird[, DietTrait]),
+                                              label = "diet")))
+phenoDiet <- replace(phenoDiet, phenoDiet < 0, 0)
+phenoBird <- phenoBird[rownames(phenoDiet), ]
+
+# Finalize IUCN column + filter
+phenoBird$category <- phenoBird$iucn_category
+unresolved <- unique(phenoBird$scientificNameStd[is.na(phenoBird$category)])
+if (length(unresolved) > 0L)
+  write.csv(data.frame(species = unresolved), "data/processed/iucn_unresolved.csv", row.names = FALSE)
+
+phenoBird <- phenoBird[!phenoBird$category %in% c("DD","EW","EX","RE"), ]
+phenoBird <- phenoBird[!is.na(phenoBird$category), ]
+
+write.csv(phenoBird, "data/processed/phenoBirdsImputedREADY.csv", row.names = FALSE)
+saveRDS(unique(phenoBird$scientificNameStd), "data/processed/species_table.rds")
+```
+
+## Step 4 — PCoA by functional dimension {#step4}
+
+```{=html}
+<h3 class="step-divider"><span>Locomotion · Diet · Reproduction · Combined</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step4">01_DATA_load_and_clean — Step 4</h4>
+      <div class="fn-desc">Run <code>PCoAGraph()</code> separately for morphological (M), life-history/reproduction (L), diet (D), and combined (LMD) trait spaces. Compute TPDs for each space using <code>make.TPD.2D.high.def()</code>.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-fd">functional diversity</span>
+        <span class="fn-tag tag-stat">PCoA</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">PCA_Birds_LMD/M/L/D.rds</span>
+    <span class="fn-arg">TPD_Birds_LMD/M/L/D.rds</span>
+  </div>
+</div>
+```
+
+```{r step4_pcoa, eval=FALSE}
+phenoBird <- read.csv("data/processed/phenoBirdsImputedREADY.csv")
+colnames(phenoBird)[1] <- "scientificNameStd"
+rownames(phenoBird)    <- phenoBird[, 1]
+
+phenoDiet <- na.omit(as.data.frame(prep.fuzzy(phenoBird[, DietTrait],
+                                              col.blocks = ncol(phenoBird[, DietTrait]), label = "diet")))
+phenoDiet <- replace(phenoDiet, phenoDiet < 0, 0)
+
+# Combined LMD
+handlers(global = TRUE); handlers("txtprogressbar"); plan(multisession)
+PCA_Birds_LMD <- PCoAGraph(
+  x      = list(phenoBird[, LHTTrait], phenoBird[, morphoTrait], phenoDiet),
+  datax  = cbind.data.frame(phenoBird[, LHTTrait], phenoBird[, morphoTrait], phenoDiet),
+  namesx = phenoBird$scientificNameStd, groups = c("Q","Q","F"),
+  saveFile = "data/processed/PCA_Birds_LMD.rds"
+)
+TPDs_Birds_LMD <- make.TPD.2D.high.def(
+  traitsUSE = PCA_Birds_LMD$PCoA$vectors[,1:2],
+  dimensions = 2, alphaUse = 0.95, gridSize = 100,
+  saveFile = "data/processed/TPD_Birds_LMD.rds"
+); rm(TPDs_Birds_LMD)
+
+# Diet only
+PCA_Birds_D <- PCoAGraph(x = list(phenoDiet), datax = cbind.data.frame(phenoDiet),
+                         namesx = phenoBird$scientificNameStd, groups = c("F"),
+                         saveFile = "data/processed/PCA_Birds_D.rds")
+TPDs_Birds_D <- make.TPD.2D.high.def(traitsUSE = PCA_Birds_D$PCoA$vectors[,1:2],
+                                     dimensions = 2, alphaUse = 0.95, gridSize = 100,
+                                     saveFile = "data/processed/TPD_Birds_D.rds"); rm(TPDs_Birds_D)
+
+# Life-history (flip axis 2)
+PCA_Birds_L <- PCoAGraph(x = list(phenoBird[, LHTTrait]), datax = cbind.data.frame(phenoBird[, LHTTrait]),
+                         namesx = phenoBird$scientificNameStd, groups = c("Q"),
+                         saveFile = "data/processed/PCA_Birds_L.rds")
+PCA_Birds_L <- readRDS("data/processed/PCA_Birds_L.rds")
+PCA_Birds_L$PCoACor[,2]       <- PCA_Birds_L$PCoACor[,2] * (-1)
+PCA_Birds_L$PCoA$vectors[,2]  <- PCA_Birds_L$PCoA$vectors[,2] * (-1)
+saveRDS(PCA_Birds_L, "data/processed/PCA_Birds_L.rds")
+TPDs_Birds_L <- make.TPD.2D.high.def(traitsUSE = PCA_Birds_L$PCoA$vectors[,1:2],
+                                     dimensions = 2, alphaUse = 0.95, gridSize = 100,
+                                     saveFile = "data/processed/TPD_Birds_L.rds"); rm(TPDs_Birds_L)
+
+# Morphology (flip axis 2)
+PCA_Birds_M <- PCoAGraph(x = list(phenoBird[, morphoTrait]), datax = cbind.data.frame(phenoBird[, morphoTrait]),
+                         namesx = phenoBird$scientificNameStd, groups = c("Q"),
+                         saveFile = "data/processed/PCA_Birds_M.rds")
+PCA_Birds_M <- readRDS("data/processed/PCA_Birds_M.rds")
+PCA_Birds_M$PCoACor[,2]       <- PCA_Birds_M$PCoACor[,2] * (-1)
+PCA_Birds_M$PCoA$vectors[,2]  <- PCA_Birds_M$PCoA$vectors[,2] * (-1)
+saveRDS(PCA_Birds_M, "data/processed/PCA_Birds_M.rds")
+TPDs_Birds_M <- make.TPD.2D.high.def(traitsUSE = PCA_Birds_M$PCoA$vectors[,1:2],
+                                     dimensions = 2, alphaUse = 0.95, gridSize = 100,
+                                     saveFile = "data/processed/TPD_Birds_M.rds"); rm(TPDs_Birds_M)
+```
+
+## Step 5 — Spatial assignment {#step5}
+
+```{=html}
+<h3 class="step-divider"><span>BOTW range maps → DGGS hexagons (res. 7)</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step5">01_DATA_load_and_clean — Step 5</h4>
+      <div class="fn-desc">Load 5 BirdLife BOTW shapefiles, reconcile taxonomy with the trait dataset via ITIS synonymy lookup, rasterize at 0.5° resolution, then assign species to DGGS hexagonal grid at resolution 7.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-geo">spatial</span>
+        <span class="fn-tag tag-util">taxonomy</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Inputs:</span>
+    <span class="fn-arg">data/raw/BOTW_1-5.shp</span>
+    <span class="fn-arg">data/raw/geogInfo_dggs7.RDS</span>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/raw/BOTW_1-5_New.shp</span>
+    <span class="fn-arg">data/raw/uniquedggs7.RDS</span>
+    <span class="fn-arg">data/raw/sitesdggs7.RDS</span>
+  </div>
+</div>
+```
+
+```{r step5_spatial, eval=FALSE}
+geog7 <- readRDS("data/raw/geogInfo_dggs7.RDS")
+dggs7 <- dggridR::dgconstruct(res = 7, metric = FALSE, resround = "down", topology = "HEXAGON")
+sitesInRealms7 <- unique(geog7$cell[!is.na(geog7$Realm)])
+
+botw_files   <- file.path("data/raw", sprintf("BOTW_%d.shp", 1:5))
+missing_files <- botw_files[!file.exists(botw_files)]
+if (length(missing_files) > 0L)
+  stop("Missing BOTW files: ", paste(basename(missing_files), collapse = ", "))
+
+sp_chunks <- lapply(botw_files, function(f) sf::st_read(dsn = f, quiet = TRUE))
+sp <- do.call(rbind, sp_chunks); rm(sp_chunks); gc(verbose = FALSE)
+
+sp_site_old <- unique(sp$SCINAME)
+sp_site     <- unique(sp$SCINAME)
+spTrait     <- phenoBird$scientificNameStd
+spToCheck   <- sp_site[!sp_site %in% gsub("_", " ", spTrait)]
+
+if (length(spToCheck) > 0L) {
+  chk <- taxize::synonyms(sci_id = spToCheck, db = "itis", row = 1)
+  progressr::with_progress({
+    p <- progressr::progressor(steps = length(chk))
+    for (i in seq_along(chk)) {
+      p(sprintf("ITIS lookup %d/%d", i, length(chk)))
+      entry <- chk[[i]]
+      if (is.null(dim(entry)) || dim(entry)[1] == 0L) next
+      if ("acc_name" %in% colnames(entry)) {
+        sp_site[sp_site == names(chk)[i]] <- entry[["acc_name"]][1]
+      } else if ("syn_name" %in% colnames(entry)) {
+        syn_underscore <- gsub(" ", "_", entry[["syn_name"]])
+        match_idx <- which(syn_underscore %in% spTrait)
+        if (length(match_idx) > 0L)
+          sp_site[sp_site == names(chk)[i]] <- syn_underscore[match_idx[1]]
+      }
+    }
+  })
+}
+trinomial_idx <- grepl("[A-Za-z]+\\s+[A-Za-z]+\\s+[A-Za-z]", sp_site)
+sp_site[trinomial_idx] <- sp_site_old[trinomial_idx]
+
+# Write reconciled shapefiles (chunks of 4000)
+names_spatial <- data.frame(old = sp_site_old, new = sp_site, stringsAsFactors = FALSE)
+sp1 <- merge(sp, names_spatial, by.x = "SCINAME", by.y = "old", all.x = TRUE)
+chunk_size <- 4000L; n_chunks <- ceiling(nrow(sp1) / chunk_size)
+for (j in seq_len(n_chunks)) {
+  rows <- ((j-1L)*chunk_size+1L):min(j*chunk_size, nrow(sp1))
+  sf::st_write(sp1[rows, ], file.path("data/raw", sprintf("BOTW_%d_New.shp", j)),
+               quiet = TRUE, append = FALSE)
+}
+
+# Rasterize and assign to hexagons
+pathSave <- "data/raw/SpeciesData"
+dir.create(pathSave, showWarnings = FALSE, recursive = TRUE)
+for (j in seq_len(n_chunks))
+  rasterSp::rasterizeRange(dsn = file.path("data/raw", sprintf("BOTW_%d_New.shp", j)),
+                           id = "new", resolution = 0.5, origin = 1,
+                           presence = c(1, 2, 3), save = TRUE, path = pathSave)
+
+fileList           <- list.files(path = pathSave, pattern = "*.tif")
+coordsSpecies      <- est_coord_sp("data/raw", fileList,
+                                   pathSave = "data/raw/coordinates_Resol05.RDS")
+coordsSpeciesOrdered <- assign_hexagons(coordsSpecies, dggs7, sitesInRealms7,
+                                        savePath = "data/raw/coordinates_Resol05_dggs7.RDS")
+valid_sites <- coordsSpeciesOrdered[!(unlist(lapply(coordsSpeciesOrdered, ncol)) != 3)]
+uniquedggs7 <- reorder_hexagon(valid_sites, savePath = "data/raw/uniquedggs7.RDS")
+sitesdggs7  <- siteswithspecies(valid_sites, uniquedggs7, savePath = "data/raw/sitesdggs7.RDS")
+```
+
+## Step 6 — TPD computation per dimension {#step6}
+
+```{=html}
+<h3 class="step-divider"><span>Community-level TPDs at DGGS resolution 7</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step6">01_DATA_load_and_clean — Step 6</h4>
+      <div class="fn-desc">Compute community-level Trait Probability Densities (TPDs) for each functional dimension (M, L, D, MLD) across DGGS hexagons. Additional 4D calculations for MLD and D spaces.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-fd">TPD</span>
+        <span class="fn-tag tag-geo">spatial</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">Birds_TPDs_sdggs7_MLD/M/L/D.rds</span>
+    <span class="fn-arg">Birds_TPDs_sdggs7_MLD_4D/D_4D.rds</span>
+  </div>
+</div>
+```
+
+```{r step6_tpd, eval=FALSE}
+sitesdggs7 <- readRDS("data/processed/sitesdggs7.RDS")
+
+PCA_file <- c("data/processed/PCA_Birds_MLD.rds",
+              "data/processed/PCA_Birds_M.rds",
+              "data/processed/PCA_Birds_L.rds",
+              "data/processed/PCA_Birds_D.rds")
+type <- c("MLD", "M", "L", "D")
+
+for (i in seq_along(type)) {
+  PCA <- readRDS(PCA_file[i])
+  TPDs_compute(TraitsPCA   = PCA$PCoA$vectors[, c(1, 2)],
+               sitesdggs7,
+               savePath    = sprintf("data/processed/Birds_TPDs_sdggs7_%s.rds", type[i]),
+               sampleComms = 400, alphaUse = 0.95, gridSize = 100)
+}
+# Additional 4D (axes 1 & 4) for MLD and D
+for (i in c(1, 4)) {
+  PCA <- readRDS(PCA_file[i])
+  TPDs_compute_large(TraitsPCA   = PCA$PCoA$vectors[, c(1, 4)],
+                     sitesdggs7,
+                     savePath    = sprintf("data/processed/Birds_TPDs_sdggs7_%s_4D.rds", type[i]),
+                     sampleComms = 400, alphaUse = 0.95, gridSize = 20)
+}
+```
+
+## Step 7 — Save final objects {#step7}
+
+```{=html}
+<h3 class="step-divider"><span>PCA · TPD · species table · eigenvalues</span><hr></h3>
+
+<div class="fn-card">
+  <div class="fn-header">
+    <div>
+      <h4 class="fn-name" id="fn-step7">01_DATA_load_and_clean — Step 7</h4>
+      <div class="fn-desc">Compute community-level FRic for all species, combine all PCA objects into a named list, export PCoA coordinates, species–IUCN table, TPD lists, and an eigenvalue summary table for supplementary material.</div>
+      <div class="fn-tags">
+        <span class="fn-tag tag-data">export</span>
+        <span class="fn-tag tag-fd">FRic</span>
+      </div>
+    </div>
+  </div>
+  <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/processed/PCA_Birds.rds</span>
+    <span class="fn-arg">data/processed/pcoa_coords.rds</span>
+    <span class="fn-arg">data/processed/tpd_lists.rds</span>
+    <span class="fn-arg">data/processed/species_table.rds</span>
+    <span class="fn-arg">results/tables/Annexe_Table_Eigenvalues.csv</span>
+  </div>
+</div>
+```
+
+```{r step7_save, eval=FALSE}
+phenoBird <- read.csv("data/processed/phenoBirdsImputedREADY.csv", stringsAsFactors = FALSE)
+colnames(phenoBird)[1] <- "scientificNameStd"
+rownames(phenoBird)    <- phenoBird[, 1]
+
+# Taxonomy table
+taxo <- phenoBird[, c(2, 3, 4)]
+taxo$Genus        <- vapply(strsplit(rownames(taxo), "_"), function(x) x[1], character(1L))
+taxo$GenusSpecies <- rownames(taxo)
+colnames(taxo)    <- c("class", "order", "family", "genus", "genusspecies")
+write.csv(taxo, "data/processed/Taxo_Birds.csv", row.names = TRUE)
+
+PCA_file    <- c("data/processed/PCA_Birds_MLD.rds","data/processed/PCA_Birds_M.rds",
+                 "data/processed/PCA_Birds_D.rds","data/processed/PCA_Birds_L.rds")
+PCA_file_OK <- sub("\\.rds$", "_OK.rds", PCA_file)
+TPD_file    <- c("data/processed/TPD_Birds_LMD.rds","data/processed/TPD_Birds_M.rds",
+                 "data/processed/TPD_Birds_D.rds","data/processed/TPD_Birds_L.rds")
+TPD_file_bio <- c("data/processed/Birds_TPDs_sdggs7_MLD.rds","data/processed/Birds_TPDs_sdggs7_M.rds",
+                  "data/processed/Birds_TPDs_sdggs7_D.rds","data/processed/Birds_TPDs_sdggs7_L.rds")
+
+for (i in seq_along(PCA_file)) {
+  PCA     <- readRDS(PCA_file[i])
+  TPDsAux <- readRDS(TPD_file[i])
+  species <- rownames(PCA$PCoA$vectors)
+  species <- species[species %in% TPDsAux$data$species]
+  occurences <- matrix(1, ncol = length(species), nrow = 1, dimnames = list("ALL", species))
+  TPDc_occ          <- TPD::TPDc(TPDsAux, occurences)
+  PCA$ALLFRic       <- TPDRichness(TPDc_occ)$communities$FRichness
+  PCA$ALLDensity    <- densityProfileTPD(TPDc_occ)
+  TPDs_sdggs7       <- readRDS(TPD_file_bio[i])
+  TPDc_occ_bio      <- TPD::TPDc(TPDs_sdggs7, occurences)
+  PCA$ALLFRicBiogeo <- TPDRichness(TPDc_occ_bio)$communities$FRichness
+  saveRDS(PCA, file = PCA_file_OK[i])
+}
+
+type      <- c("MLD", "M", "D", "L")
+PCA_Birds <- setNames(lapply(PCA_file_OK, readRDS), type)
+saveRDS(PCA_Birds, "data/processed/PCA_Birds.rds")
+
+PCA    <- readRDS("data/processed/PCA_Birds.rds")
+coords <- list(locomotion   = PCA$M$PCoA$vectors,
+               diet         = PCA$D$PCoA$vectors,
+               reproduction = PCA$L$PCoA$vectors)
+coords <- lapply(coords, function(x) {
+  colnames(x) <- paste0("PC", seq_len(ncol(x)))
+  x <- as.data.frame(x); x$species <- rownames(x); x
+})
+saveRDS(coords, "data/processed/pcoa_coords.rds")
+
+species_df <- phenoBird[, c("scientificNameStd", "category")]
+colnames(species_df) <- c("species", "iucn")
+species_df <- na.omit(species_df[!species_df$iucn %in% c("DD","EW","EX","RE"), ])
+saveRDS(species_df, "data/processed/species_table.rds")
+
+tpd_lists <- list(locomotion   = readRDS("data/processed/TPD_Birds_M.rds"),
+                  diet         = readRDS("data/processed/TPD_Birds_D.rds"),
+                  reproduction = readRDS("data/processed/TPD_Birds_L.rds"))
+saveRDS(tpd_lists, "data/processed/tpd_lists.rds")
+
+table_eigen_clean <- do.call(rbind, lapply(names(PCA), function(name) {
+  tab <- PCA[[name]]$PCoA$values[, c(1, 2, 4)]
+  tab[, 2:3] <- 100 * tab[, 2:3]
+  tab <- round(tab, 3)
+  tab <- cbind(Space = name, Axis = rownames(tab), tab)
+  colnames(tab) <- c("TraitSpace","Axis","Eigenvalue","%Variance","%Cumulative")
+  tab
+}))
+dir.create("results/tables", showWarnings = FALSE, recursive = TRUE)
+write.csv(table_eigen_clean, "results/tables/Annexe_Table_Eigenvalues.csv", row.names = FALSE)
+```
