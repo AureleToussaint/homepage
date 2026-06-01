@@ -13,7 +13,7 @@ navbar:
       href: RData.html
     - text: "R scripts"
       href: Rscripts.html
-    - text: "Courses"
+    - text: "Teaching"
       href: Courses.html
     - text: "My blog"
       href: my-blog/site

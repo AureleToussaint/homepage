@@ -29,9 +29,6 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -226,69 +223,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -296,16 +230,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -339,7 +263,7 @@ div.tocify {
   <a href="Rscripts.html">R scripts</a>
 </li>
 <li>
-  <a href="Courses.html">Courses</a>
+  <a href="Courses.html">Teaching</a>
 </li>
 <li>
   <a href="my-blog/site">My blog</a>
@@ -385,105 +309,216 @@ div.tocify {
 
 <link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
 <link rel="stylesheet" href="styles.css" type="text/css">
-
 <style>
-.page-header {
-  margin: 32px 0 28px 0;
-  border-bottom: 1px solid #e5e5e5;
-  padding-bottom: 14px;
+/* ── kill rmarkdown TOC column ── */
+#TOC, .tocify-wrapper, div[data-spy="affix"] {
+  display:none !important; width:0 !important; margin:0 !important; padding:0 !important;
 }
-.page-header h1 {
-  font-size: 1.9em; font-weight: bold; color: #2c3e50; margin: 0 0 4px 0;
+.col-xs-12.col-sm-4.col-md-3, div.tocify {
+  display:none !important; width:0 !important; padding:0 !important; margin:0 !important;
 }
-.back-link {
-  font-size: 0.9em; margin-bottom: 8px;
+.col-xs-12.col-sm-8.col-md-9 {
+  width:100% !important; -webkit-flex:none !important; flex:none !important;
 }
-.back-link a { color: #e67e22; text-decoration: none; }
-.back-link a:hover { text-decoration: underline; }
+.row { margin-left:0 !important; margin-right:0 !important; }
+.main-container { max-width:860px !important; margin:0 auto !important; padding:0 24px !important; }
 
-/* Reuse styles from index */
-.section-title {
-  font-size: 1.3em; font-weight: bold; margin: 36px 0 14px 0;
-  border-bottom: 1px solid #ddd; padding-bottom: 6px; color: #2c3e50;
+/* ── Back link ── */
+.back-link { font-size:0.88em; margin-bottom:20px; }
+.back-link a { color:#e67e22; text-decoration:none; font-weight:500; }
+.back-link a:hover { text-decoration:underline; }
+
+/* ── Page hero ── */
+.page-hero {
+  display:flex; align-items:center; gap:18px;
+  padding:24px 28px; border-radius:14px; margin:0 0 32px 0;
+  background:linear-gradient(135deg, #e67e2218 0%, #e67e2208 100%);
+  border:1px solid #e67e2230;
 }
-.pub-list {
-  counter-reset: pub-counter 30;
-  list-style: none; padding: 0;
+.page-hero-icon {
+  width:52px; height:52px; border-radius:12px;
+  background:#e67e22; display:flex; align-items:center;
+  justify-content:center; font-size:1.5em; flex-shrink:0;
 }
-.pub-list li {
-  counter-increment: pub-counter -1;
-  padding: 6px 0 6px 48px; position: relative;
-  line-height: 1.5; border-bottom: 1px solid #f0f0f0;
+.page-hero h1 { font-size:1.8em; font-weight:700; color:#2c3e50; margin:0 0 4px 0; }
+.page-hero p  { font-size:0.9em; color:#777; margin:0; }
+
+/* ── Section dividers ── */
+.sec-divider {
+  display:flex; align-items:center; gap:12px; margin:36px 0 16px 0;
 }
-.pub-list li::before {
-  content: counter(pub-counter) "/";
-  position: absolute; left: 0; font-weight: bold;
-  color: #555; width: 40px; text-align: right;
+.sec-divider-icon {
+  width:32px; height:32px; border-radius:8px; background:#e67e22;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.95em; flex-shrink:0;
 }
-.pub-list li.pub-year-label {
-  counter-increment: none; font-size: 1.15em; font-weight: bold;
-  color: #333; padding: 20px 0 4px 0; border-bottom: none;
+.sec-divider h2 {
+  font-size:1.15em; font-weight:700; color:#2c3e50; margin:0;
 }
-.pub-list li.pub-year-label::before { content: none; }
-.pub-year { font-size: 1.1em; font-weight: bold; margin: 24px 0 8px 0; color: #333; }
-.grant-item {
-  margin: 10px 0; padding: 10px 14px;
-  border-left: 3px solid #e67e22; background: #fafafa; line-height: 1.6;
+.sec-divider hr { flex:1; border:none; border-top:1px solid #e5e5e5; }
+
+/* ── Grant cards ── */
+.grant-card {
+  background:#fff; border:1px solid #e4e9f0; border-radius:10px;
+  padding:16px 20px; margin-bottom:12px;
+  border-left:4px solid #e67e22;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+  transition:box-shadow .15s;
 }
-.student-list { list-style: none; padding: 0; }
-.student-list li {
-  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+.grant-card:hover { box-shadow:0 3px 14px rgba(0,0,0,0.08); }
+.grant-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.grant-years {
+  font-size:0.75em; font-weight:700; padding:3px 10px;
+  background:#e67e2218; color:#e67e22; border-radius:20px;
+  white-space:nowrap; flex-shrink:0;
 }
-.conf-list { list-style: none; padding: 0; }
-.conf-list li {
-  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+.grant-title { font-weight:700; color:#2c3e50; font-size:0.97em; }
+.grant-desc  { font-size:0.87em; color:#666; margin-top:5px; line-height:1.6; }
+
+/* ── Student cards ── */
+.student-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:14px; margin-bottom:8px;
 }
+.student-card {
+  background:#fff; border:1px solid #e4e9f0; border-radius:10px;
+  padding:14px 16px; box-shadow:0 1px 4px rgba(0,0,0,0.04);
+  transition:box-shadow .15s;
+}
+.student-card:hover { box-shadow:0 3px 14px rgba(0,0,0,0.08); }
+.student-card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.student-name { font-weight:700; color:#2c3e50; font-size:0.95em; }
+.student-badge {
+  font-size:0.68em; font-weight:700; padding:2px 8px; border-radius:20px;
+}
+.badge-phd    { background:#fce4ec; color:#c62828; }
+.badge-master { background:#e3f2fd; color:#1565c0; }
+.badge-bachelor { background:#e8f5e9; color:#2e7d32; }
+.student-year { font-size:0.78em; color:#aaa; margin-bottom:4px; }
+.student-topic { font-size:0.82em; color:#666; line-height:1.5; }
+
+/* ── Conference list ── */
+.conf-entry {
+  display:flex; gap:16px; padding:10px 0;
+  border-bottom:1px solid #f0f0f0; align-items:flex-start;
+}
+.conf-entry:last-child { border-bottom:none; }
+.conf-year {
+  font-size:0.75em; font-weight:700; color:#e67e22;
+  min-width:38px; padding-top:2px; flex-shrink:0;
+}
+.conf-body { font-size:0.87em; color:#555; line-height:1.55; }
+.conf-body strong { color:#2c3e50; }
+
+/* ── Award card ── */
+.award-card {
+  background:linear-gradient(135deg,#e67e2212,#e67e2206);
+  border:1px solid #e67e2235; border-radius:10px;
+  padding:16px 20px; margin-bottom:12px;
+}
+.award-card-title { font-weight:700; color:#2c3e50; margin-bottom:4px; font-size:0.97em; }
+.award-card-desc  { font-size:0.87em; color:#555; line-height:1.6; }
+
+/* ── Media entry ── */
+.media-entry {
+  display:flex; gap:14px; align-items:flex-start;
+  padding:10px 0; border-bottom:1px solid #f0f0f0;
+}
+.media-entry:last-child { border-bottom:none; }
+.media-year  { font-size:0.75em; font-weight:700; color:#e67e22; min-width:38px; flex-shrink:0; padding-top:2px; }
+.media-body  { font-size:0.87em; color:#555; line-height:1.55; }
+.media-body a { color:#e67e22; text-decoration:none; font-weight:500; }
+.media-body a:hover { text-decoration:underline; }
 </style>
 
-<div class="back-link">← <a href="index.html">← Home</a></div>
+<div class="back-link">← <a href="index.html">Home</a></div>
 
-<div class="page-header">
-  <h1>Communication, Awards &amp; Conferences</h1>
+<div class="page-hero">
+  <div class="page-hero-icon">📢</div>
+  <div>
+    <h1>Communication &amp; Awards</h1>
+    <p>Media coverage, prizes and international conference presentations.</p>
+  </div>
 </div>
 
-<h2 class="section-title">Communication</h2>
-
-<p class="pub-year">2025</p>
-<ul class="conf-list">
-  <li>
-    <strong>France 3 Occitanie.</strong> Article sur la 'diversité fantôme'.
-    <a href="https://france3-regions.francetvinfo.fr/occitanie/haute-garonne/toulouse/nous-avons-ete-surpris-par-l-ampleur-du-resultat-une-nouvelle-etude-pointe-l-impact-majeur-de-l-homme-sur-la-baisse-de-la-biodiversite-3139076.html" target="_blank">Link</a>
-  </li>
-</ul>
-
-<h2 class="section-title">Awards</h2>
-
-<p class="pub-year">2024</p>
-<div class="grant-item">
-  <strong>Estonian Research Award</strong> for research on the functional diversity of plants and vertebrates at global scale.
-  Key publications:
-  <a href="https://www.science.org/doi/full/10.1126/sciadv.abf2675" target="_blank">Science Advances</a> and
-  <a href="https://www.nature.com/articles/s41467-021-25293-0" target="_blank">Nature Communications</a>.
+<!-- Media -->
+<div class="sec-divider">
+  <div class="sec-divider-icon">📰</div>
+  <h2>Media coverage</h2>
+  <hr>
 </div>
 
-<h2 class="section-title">Conferences</h2>
-
-<ul class="conf-list">
-  <li><em>2024</em> — Annual meeting for macroecology of the Ecological Society of Germany, Austria and Switzerland, Marburg, Germany. <em>Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in bird assemblages.</em></li>
-  <li><em>2023</em> — 19th International Symposium on River and Lake Environment (ISRLE 19), China. <em>Mapping extinction risk in the global functional spectra across the tree of life.</em></li>
-  <li><em>2020</em> — Annual meeting for macroecology of the Ecological Society of Germany, Austria and Switzerland, Konstanz, Germany. <em>Mapping extinction risk in the global functional spectra across the tree of life.</em></li>
-  <li><em>2018</em> — Annual meeting for macroecology of the Ecological Society of Germany, Austria and Switzerland, Birmendorf, Switzerland. <em>Global mismatch between the species richness of vascular plants and symbiosis fungi.</em></li>
-  <li><em>2017</em> — 60th IAVS Annual Symposium, Palermo, Italy. <em>Global mismatch between the species richness of vascular plants and symbiosis fungi across biogeographic realms.</em></li>
-  <li><em>2016</em> — 7th EAFES International Congress, Daegu, South Korea. <em>Functional diversity and vulnerability of freshwater fish at the global scale.</em></li>
-  <li><em>2015</em> — 9th Symposium for European Freshwater Sciences, Geneva, Switzerland. <em>Introductions of non-native freshwater fish affected differently the taxonomic and functional biodiversity facets.</em></li>
-  <li><em>2015</em> — 7th Biennial Conference of the International Biogeography Society, Bayreuth, Germany. <em>Functional diversity of the freshwater fish fauna.</em> (poster)</li>
-  <li><em>2013</em> — 8th Symposium for European Freshwater Sciences, Münster, Germany. <em>Historical assemblage distinctiveness and the introduction of widespread non-native species explain worldwide changes in freshwater fish taxonomic dissimilarity.</em></li>
-</ul>
-
-
-
+<div class="media-entry">
+  <span class="media-year">2025</span>
+  <div class="media-body">
+    <strong>France 3 Occitanie</strong> — Article on 'dark diversity' and its implications for biodiversity monitoring.
+    <a href="https://france3-regions.francetvinfo.fr/occitanie/haute-garonne/toulouse/nous-avons-ete-surpris-par-l-ampleur-du-resultat-une-nouvelle-etude-pointe-l-impact-majeur-de-l-homme-sur-la-baisse-de-la-biodiversite-3139076.html" target="_blank">Read article ↗</a>
+  </div>
 </div>
+
+<!-- Awards -->
+<div class="sec-divider">
+  <div class="sec-divider-icon">🏆</div>
+  <h2>Awards</h2>
+  <hr>
 </div>
+
+<div class="award-card">
+  <div class="award-card-title">🏅 Estonian Research Award &nbsp;<span style="font-size:0.78em; font-weight:400; color:#888;">2024</span></div>
+  <div class="award-card-desc">
+    National science prize for research on the functional diversity of plants and vertebrates at global scale.
+    Key publications:
+    <a href="https://www.science.org/doi/full/10.1126/sciadv.abf2675" target="_blank">Science Advances</a>
+    &amp; <a href="https://www.nature.com/articles/s41467-021-25293-0" target="_blank">Nature Communications</a>.
+  </div>
+</div>
+
+<!-- Conferences -->
+<div class="sec-divider">
+  <div class="sec-divider-icon">🌍</div>
+  <h2>Conferences</h2>
+  <hr>
+</div>
+
+<div class="conf-entry">
+  <span class="conf-year">2024</span>
+  <div class="conf-body"><strong>GfÖ Annual Meeting for Macroecology</strong>, Marburg, Germany. <em>Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in bird assemblages.</em></div>
+</div>
+<div class="conf-entry">
+  <span class="conf-year">2023</span>
+  <div class="conf-body"><strong>19th ISRLE</strong>, China. <em>Mapping extinction risk in the global functional spectra across the tree of life.</em></div>
+</div>
+<div class="conf-entry">
+  <span class="conf-year">2020</span>
+  <div class="conf-body"><strong>GfÖ Annual Meeting for Macroecology</strong>, Konstanz, Germany. <em>Mapping extinction risk in the global functional spectra across the tree of life.</em></div>
+</div>
+<div class="conf-entry">
+  <span class="conf-year">2018</span>
+  <div class="conf-body"><strong>GfÖ Annual Meeting for Macroecology</strong>, Birmendorf, Switzerland. <em>Global mismatch between the species richness of vascular plants and symbiosis fungi.</em></div>
+</div>
+<div class="conf-entry">
+  <span class="conf-year">2017</span>
+  <div class="conf-body"><strong>60th IAVS Annual Symposium</strong>, Palermo, Italy. <em>Global mismatch between the species richness of vascular plants and symbiosis fungi across biogeographic realms.</em></div>
+</div>
+<div class="conf-entry">
+  <span class="conf-year">2016</span>
+  <div class="conf-body"><strong>7th EAFES International Congress</strong>, Daegu, South Korea. <em>Functional diversity and vulnerability of freshwater fish at the global scale.</em></div>
+</div>
+<div class="conf-entry">
+  <span class="conf-year">2015</span>
+  <div class="conf-body"><strong>9th SEFS</strong>, Geneva, Switzerland. <em>Introductions of non-native freshwater fish affected differently the taxonomic and functional biodiversity facets.</em></div>
+</div>
+<div class="conf-entry">
+  <span class="conf-year">2015</span>
+  <div class="conf-body"><strong>7th IBS Biennial Conference</strong>, Bayreuth, Germany. <em>Functional diversity of the freshwater fish fauna.</em> (poster)</div>
+</div>
+<div class="conf-entry">
+  <span class="conf-year">2013</span>
+  <div class="conf-body"><strong>8th SEFS</strong>, Münster, Germany. <em>Historical assemblage distinctiveness and the introduction of widespread non-native species explain worldwide changes in freshwater fish taxonomic dissimilarity.</em></div>
+</div>
+
+
+
 
 </div>
 
@@ -516,35 +551,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

@@ -4,11 +4,7 @@ pagetitle: "Grants — Aurèle Toussaint"
 output:
   html_document:
     self_contained: false
-    toc: true
-    toc_depth: 3
-    toc_float:
-      collapsed: true
-      smooth_scroll: true
+    toc: false
     includes:
       in_header: header.html
 ---
@@ -16,94 +12,204 @@ output:
 ```{=html}
 <link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
 <link rel="stylesheet" href="styles.css" type="text/css">
-
 <style>
-.page-header {
-  margin: 32px 0 28px 0;
-  border-bottom: 1px solid #e5e5e5;
-  padding-bottom: 14px;
+/* ── kill rmarkdown TOC column ── */
+#TOC, .tocify-wrapper, div[data-spy="affix"] {
+  display:none !important; width:0 !important; margin:0 !important; padding:0 !important;
 }
-.page-header h1 {
-  font-size: 1.9em; font-weight: bold; color: #2c3e50; margin: 0 0 4px 0;
+.col-xs-12.col-sm-4.col-md-3, div.tocify {
+  display:none !important; width:0 !important; padding:0 !important; margin:0 !important;
 }
-.back-link {
-  font-size: 0.9em; margin-bottom: 8px;
+.col-xs-12.col-sm-8.col-md-9 {
+  width:100% !important; -webkit-flex:none !important; flex:none !important;
 }
-.back-link a { color: #27ae60; text-decoration: none; }
-.back-link a:hover { text-decoration: underline; }
+.row { margin-left:0 !important; margin-right:0 !important; }
+.main-container { max-width:860px !important; margin:0 auto !important; padding:0 24px !important; }
 
-/* Reuse styles from index */
-.section-title {
-  font-size: 1.3em; font-weight: bold; margin: 36px 0 14px 0;
-  border-bottom: 1px solid #ddd; padding-bottom: 6px; color: #2c3e50;
+/* ── Back link ── */
+.back-link { font-size:0.88em; margin-bottom:20px; }
+.back-link a { color:#27ae60; text-decoration:none; font-weight:500; }
+.back-link a:hover { text-decoration:underline; }
+
+/* ── Page hero ── */
+.page-hero {
+  display:flex; align-items:center; gap:18px;
+  padding:24px 28px; border-radius:14px; margin:0 0 32px 0;
+  background:linear-gradient(135deg, #27ae6018 0%, #27ae6008 100%);
+  border:1px solid #27ae6030;
 }
-.pub-list {
-  counter-reset: pub-counter 30;
-  list-style: none; padding: 0;
+.page-hero-icon {
+  width:52px; height:52px; border-radius:12px;
+  background:#27ae60; display:flex; align-items:center;
+  justify-content:center; font-size:1.5em; flex-shrink:0;
 }
-.pub-list li {
-  counter-increment: pub-counter -1;
-  padding: 6px 0 6px 48px; position: relative;
-  line-height: 1.5; border-bottom: 1px solid #f0f0f0;
+.page-hero h1 { font-size:1.8em; font-weight:700; color:#2c3e50; margin:0 0 4px 0; }
+.page-hero p  { font-size:0.9em; color:#777; margin:0; }
+
+/* ── Section dividers ── */
+.sec-divider {
+  display:flex; align-items:center; gap:12px; margin:36px 0 16px 0;
 }
-.pub-list li::before {
-  content: counter(pub-counter) "/";
-  position: absolute; left: 0; font-weight: bold;
-  color: #555; width: 40px; text-align: right;
+.sec-divider-icon {
+  width:32px; height:32px; border-radius:8px; background:#27ae60;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.95em; flex-shrink:0;
 }
-.pub-list li.pub-year-label {
-  counter-increment: none; font-size: 1.15em; font-weight: bold;
-  color: #333; padding: 20px 0 4px 0; border-bottom: none;
+.sec-divider h2 {
+  font-size:1.15em; font-weight:700; color:#2c3e50; margin:0;
 }
-.pub-list li.pub-year-label::before { content: none; }
-.pub-year { font-size: 1.1em; font-weight: bold; margin: 24px 0 8px 0; color: #333; }
-.grant-item {
-  margin: 10px 0; padding: 10px 14px;
-  border-left: 3px solid #27ae60; background: #fafafa; line-height: 1.6;
+.sec-divider hr { flex:1; border:none; border-top:1px solid #e5e5e5; }
+
+/* ── Grant cards ── */
+.grant-card {
+  background:#fff; border:1px solid #e4e9f0; border-radius:10px;
+  padding:16px 20px; margin-bottom:12px;
+  border-left:4px solid #27ae60;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+  transition:box-shadow .15s;
 }
-.student-list { list-style: none; padding: 0; }
-.student-list li {
-  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+.grant-card:hover { box-shadow:0 3px 14px rgba(0,0,0,0.08); }
+.grant-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.grant-years {
+  font-size:0.75em; font-weight:700; padding:3px 10px;
+  background:#27ae6018; color:#27ae60; border-radius:20px;
+  white-space:nowrap; flex-shrink:0;
 }
-.conf-list { list-style: none; padding: 0; }
-.conf-list li {
-  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+.grant-title { font-weight:700; color:#2c3e50; font-size:0.97em; }
+.grant-desc  { font-size:0.87em; color:#666; margin-top:5px; line-height:1.6; }
+
+/* ── Student cards ── */
+.student-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:14px; margin-bottom:8px;
 }
+.student-card {
+  background:#fff; border:1px solid #e4e9f0; border-radius:10px;
+  padding:14px 16px; box-shadow:0 1px 4px rgba(0,0,0,0.04);
+  transition:box-shadow .15s;
+}
+.student-card:hover { box-shadow:0 3px 14px rgba(0,0,0,0.08); }
+.student-card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.student-name { font-weight:700; color:#2c3e50; font-size:0.95em; }
+.student-badge {
+  font-size:0.68em; font-weight:700; padding:2px 8px; border-radius:20px;
+}
+.badge-phd    { background:#fce4ec; color:#c62828; }
+.badge-master { background:#e3f2fd; color:#1565c0; }
+.badge-bachelor { background:#e8f5e9; color:#2e7d32; }
+.student-year { font-size:0.78em; color:#aaa; margin-bottom:4px; }
+.student-topic { font-size:0.82em; color:#666; line-height:1.5; }
+
+/* ── Conference list ── */
+.conf-entry {
+  display:flex; gap:16px; padding:10px 0;
+  border-bottom:1px solid #f0f0f0; align-items:flex-start;
+}
+.conf-entry:last-child { border-bottom:none; }
+.conf-year {
+  font-size:0.75em; font-weight:700; color:#27ae60;
+  min-width:38px; padding-top:2px; flex-shrink:0;
+}
+.conf-body { font-size:0.87em; color:#555; line-height:1.55; }
+.conf-body strong { color:#2c3e50; }
+
+/* ── Award card ── */
+.award-card {
+  background:linear-gradient(135deg,#27ae6012,#27ae6006);
+  border:1px solid #27ae6035; border-radius:10px;
+  padding:16px 20px; margin-bottom:12px;
+}
+.award-card-title { font-weight:700; color:#2c3e50; margin-bottom:4px; font-size:0.97em; }
+.award-card-desc  { font-size:0.87em; color:#555; line-height:1.6; }
+
+/* ── Media entry ── */
+.media-entry {
+  display:flex; gap:14px; align-items:flex-start;
+  padding:10px 0; border-bottom:1px solid #f0f0f0;
+}
+.media-entry:last-child { border-bottom:none; }
+.media-year  { font-size:0.75em; font-weight:700; color:#27ae60; min-width:38px; flex-shrink:0; padding-top:2px; }
+.media-body  { font-size:0.87em; color:#555; line-height:1.55; }
+.media-body a { color:#27ae60; text-decoration:none; font-weight:500; }
+.media-body a:hover { text-decoration:underline; }
 </style>
 
-<div class="back-link">← <a href="index.html">← Home</a></div>
+<div class="back-link">← <a href="index.html">Home</a></div>
 
-<div class="page-header">
-  <h1>Grants &amp; Funding</h1>
+<div class="page-hero">
+  <div class="page-hero-icon">💰</div>
+  <div>
+    <h1>Grants &amp; Funding</h1>
+    <p>Research grants, fellowships and funding awarded since 2016.</p>
+  </div>
 </div>
 
-<h2 class="section-title">Current grants</h2>
-
-<div class="grant-item">
-  <em>2025–2026</em> &nbsp;|&nbsp; <strong>INTRAIT</strong> — Influence of Intraspecific trait variability on the functional diversity of fish communities in French Guiana.<br>
-  Supported by <em>CEBA</em> <a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">here</a>
-  and <em>TREMPLIN</em> <a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">here</a>.
+<!-- Current -->
+<div class="sec-divider">
+  <div class="sec-divider-icon">🔬</div>
+  <h2>Current grants</h2>
+  <hr>
 </div>
 
-<h2 class="section-title">Previous grants</h2>
-
-<div class="grant-item">
-  <em>2026</em> &nbsp;|&nbsp; <strong>Lauréat du réseau de chaires du CFBBA</strong> — Building an Intraspecific Trait Database for Amazonian Freshwater Fishes.<br>
-  Supported by <em>CFBBA</em> <a href="https://cfbbamazonia.org/fr/" target="_blank">here</a>.
+<div class="grant-card">
+  <div class="grant-card-top">
+    <div class="grant-title">INTRAIT — Intraspecific trait variability in freshwater fish communities, French Guiana</div>
+    <span class="grant-years">2025–2026</span>
+  </div>
+  <div class="grant-desc">
+    Influence of intraspecific trait variability on the functional diversity of fish communities in French Guiana.<br>
+    Funded by <strong>CEBA</strong> <a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">↗</a>
+    &amp; <strong>TREMPLIN</strong> <a href="https://www.labex-ceba.fr/assets/projets-annuels-2025" target="_blank">↗</a>
+  </div>
 </div>
 
-<div class="grant-item">
-  <em>2020–2023</em> &nbsp;|&nbsp; <strong>Research Fellow</strong> — Estonian Research Council (PSG-505).
-  <a href="https://app.dimensions.ai/details/grant/grant.8855456" target="_blank">Details</a>
+<!-- Previous -->
+<div class="sec-divider">
+  <div class="sec-divider-icon">📁</div>
+  <h2>Previous grants</h2>
+  <hr>
 </div>
 
-<div class="grant-item">
-  <em>2017–2019</em> &nbsp;|&nbsp; <strong>Post-doctoral Fellow</strong> — Estonian Research Council (MOBJD-276).
-  <a href="https://app.dimensions.ai/details/grant/grant.7070239" target="_blank">Details</a>
+<div class="grant-card">
+  <div class="grant-card-top">
+    <div class="grant-title">CFBBA Chair — Building an Intraspecific Trait Database for Amazonian Freshwater Fishes</div>
+    <span class="grant-years">2026</span>
+  </div>
+  <div class="grant-desc">
+    Laureate of the inaugural Franco-Brazilian Chair Network. Collaboration with Luciano Montag (UFPA, Belém).<br>
+    Funded by <strong>CFBBA</strong> <a href="https://cfbbamazonia.org/fr/" target="_blank">↗</a>
+  </div>
 </div>
 
-<div class="grant-item">
-  <em>2016</em> &nbsp;|&nbsp; <strong>Erasmus MUNDUS</strong> —
-  <a href="https://www.khu.ac.kr/eng/main/index.do" target="_blank">Kyung Hee University</a>, Seoul, Korea.
+<div class="grant-card">
+  <div class="grant-card-top">
+    <div class="grant-title">Research Fellow — Estonian Research Council (PSG-505)</div>
+    <span class="grant-years">2020–2023</span>
+  </div>
+  <div class="grant-desc">
+    Post-doctoral research fellowship at the University of Tartu, Estonia.
+    <a href="https://app.dimensions.ai/details/grant/grant.8855456" target="_blank">Details ↗</a>
+  </div>
+</div>
+
+<div class="grant-card">
+  <div class="grant-card-top">
+    <div class="grant-title">Post-doctoral Fellow — Estonian Research Council (MOBJD-276)</div>
+    <span class="grant-years">2017–2019</span>
+  </div>
+  <div class="grant-desc">
+    Mobility post-doctoral fellowship, University of Tartu, Estonia.
+    <a href="https://app.dimensions.ai/details/grant/grant.7070239" target="_blank">Details ↗</a>
+  </div>
+</div>
+
+<div class="grant-card">
+  <div class="grant-card-top">
+    <div class="grant-title">Erasmus MUNDUS — Kyung Hee University, Seoul, Korea</div>
+    <span class="grant-years">2016</span>
+  </div>
+  <div class="grant-desc">
+    Mobility grant for a research visit at <a href="https://www.khu.ac.kr/eng/main/index.do" target="_blank">Kyung Hee University</a>.
+  </div>
 </div>
 ```

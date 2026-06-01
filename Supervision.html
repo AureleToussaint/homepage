@@ -29,9 +29,6 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -226,69 +223,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -296,16 +230,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -339,7 +263,7 @@ div.tocify {
   <a href="Rscripts.html">R scripts</a>
 </li>
 <li>
-  <a href="Courses.html">Courses</a>
+  <a href="Courses.html">Teaching</a>
 </li>
 <li>
   <a href="my-blog/site">My blog</a>
@@ -385,82 +309,231 @@ div.tocify {
 
 <link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
 <link rel="stylesheet" href="styles.css" type="text/css">
-
 <style>
-.page-header {
-  margin: 32px 0 28px 0;
-  border-bottom: 1px solid #e5e5e5;
-  padding-bottom: 14px;
+/* ── kill rmarkdown TOC column ── */
+#TOC, .tocify-wrapper, div[data-spy="affix"] {
+  display:none !important; width:0 !important; margin:0 !important; padding:0 !important;
 }
-.page-header h1 {
-  font-size: 1.9em; font-weight: bold; color: #2c3e50; margin: 0 0 4px 0;
+.col-xs-12.col-sm-4.col-md-3, div.tocify {
+  display:none !important; width:0 !important; padding:0 !important; margin:0 !important;
 }
-.back-link {
-  font-size: 0.9em; margin-bottom: 8px;
+.col-xs-12.col-sm-8.col-md-9 {
+  width:100% !important; -webkit-flex:none !important; flex:none !important;
 }
-.back-link a { color: #8e44ad; text-decoration: none; }
-.back-link a:hover { text-decoration: underline; }
+.row { margin-left:0 !important; margin-right:0 !important; }
+.main-container { max-width:860px !important; margin:0 auto !important; padding:0 24px !important; }
 
-/* Reuse styles from index */
-.section-title {
-  font-size: 1.3em; font-weight: bold; margin: 36px 0 14px 0;
-  border-bottom: 1px solid #ddd; padding-bottom: 6px; color: #2c3e50;
+/* ── Back link ── */
+.back-link { font-size:0.88em; margin-bottom:20px; }
+.back-link a { color:#8e44ad; text-decoration:none; font-weight:500; }
+.back-link a:hover { text-decoration:underline; }
+
+/* ── Page hero ── */
+.page-hero {
+  display:flex; align-items:center; gap:18px;
+  padding:24px 28px; border-radius:14px; margin:0 0 32px 0;
+  background:linear-gradient(135deg, #8e44ad18 0%, #8e44ad08 100%);
+  border:1px solid #8e44ad30;
 }
-.pub-list {
-  counter-reset: pub-counter 30;
-  list-style: none; padding: 0;
+.page-hero-icon {
+  width:52px; height:52px; border-radius:12px;
+  background:#8e44ad; display:flex; align-items:center;
+  justify-content:center; font-size:1.5em; flex-shrink:0;
 }
-.pub-list li {
-  counter-increment: pub-counter -1;
-  padding: 6px 0 6px 48px; position: relative;
-  line-height: 1.5; border-bottom: 1px solid #f0f0f0;
+.page-hero h1 { font-size:1.8em; font-weight:700; color:#2c3e50; margin:0 0 4px 0; }
+.page-hero p  { font-size:0.9em; color:#777; margin:0; }
+
+/* ── Section dividers ── */
+.sec-divider {
+  display:flex; align-items:center; gap:12px; margin:36px 0 16px 0;
 }
-.pub-list li::before {
-  content: counter(pub-counter) "/";
-  position: absolute; left: 0; font-weight: bold;
-  color: #555; width: 40px; text-align: right;
+.sec-divider-icon {
+  width:32px; height:32px; border-radius:8px; background:#8e44ad;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.95em; flex-shrink:0;
 }
-.pub-list li.pub-year-label {
-  counter-increment: none; font-size: 1.15em; font-weight: bold;
-  color: #333; padding: 20px 0 4px 0; border-bottom: none;
+.sec-divider h2 {
+  font-size:1.15em; font-weight:700; color:#2c3e50; margin:0;
 }
-.pub-list li.pub-year-label::before { content: none; }
-.pub-year { font-size: 1.1em; font-weight: bold; margin: 24px 0 8px 0; color: #333; }
-.grant-item {
-  margin: 10px 0; padding: 10px 14px;
-  border-left: 3px solid #8e44ad; background: #fafafa; line-height: 1.6;
+.sec-divider hr { flex:1; border:none; border-top:1px solid #e5e5e5; }
+
+/* ── Grant cards ── */
+.grant-card {
+  background:#fff; border:1px solid #e4e9f0; border-radius:10px;
+  padding:16px 20px; margin-bottom:12px;
+  border-left:4px solid #8e44ad;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+  transition:box-shadow .15s;
 }
-.student-list { list-style: none; padding: 0; }
-.student-list li {
-  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+.grant-card:hover { box-shadow:0 3px 14px rgba(0,0,0,0.08); }
+.grant-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.grant-years {
+  font-size:0.75em; font-weight:700; padding:3px 10px;
+  background:#8e44ad18; color:#8e44ad; border-radius:20px;
+  white-space:nowrap; flex-shrink:0;
 }
-.conf-list { list-style: none; padding: 0; }
-.conf-list li {
-  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+.grant-title { font-weight:700; color:#2c3e50; font-size:0.97em; }
+.grant-desc  { font-size:0.87em; color:#666; margin-top:5px; line-height:1.6; }
+
+/* ── Student cards ── */
+.student-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:14px; margin-bottom:8px;
 }
+.student-card {
+  background:#fff; border:1px solid #e4e9f0; border-radius:10px;
+  padding:14px 16px; box-shadow:0 1px 4px rgba(0,0,0,0.04);
+  transition:box-shadow .15s;
+}
+.student-card:hover { box-shadow:0 3px 14px rgba(0,0,0,0.08); }
+.student-card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.student-name { font-weight:700; color:#2c3e50; font-size:0.95em; }
+.student-badge {
+  font-size:0.68em; font-weight:700; padding:2px 8px; border-radius:20px;
+}
+.badge-phd    { background:#fce4ec; color:#c62828; }
+.badge-master { background:#e3f2fd; color:#1565c0; }
+.badge-bachelor { background:#e8f5e9; color:#2e7d32; }
+.student-year { font-size:0.78em; color:#aaa; margin-bottom:4px; }
+.student-topic { font-size:0.82em; color:#666; line-height:1.5; }
+
+/* ── Conference list ── */
+.conf-entry {
+  display:flex; gap:16px; padding:10px 0;
+  border-bottom:1px solid #f0f0f0; align-items:flex-start;
+}
+.conf-entry:last-child { border-bottom:none; }
+.conf-year {
+  font-size:0.75em; font-weight:700; color:#8e44ad;
+  min-width:38px; padding-top:2px; flex-shrink:0;
+}
+.conf-body { font-size:0.87em; color:#555; line-height:1.55; }
+.conf-body strong { color:#2c3e50; }
+
+/* ── Award card ── */
+.award-card {
+  background:linear-gradient(135deg,#8e44ad12,#8e44ad06);
+  border:1px solid #8e44ad35; border-radius:10px;
+  padding:16px 20px; margin-bottom:12px;
+}
+.award-card-title { font-weight:700; color:#2c3e50; margin-bottom:4px; font-size:0.97em; }
+.award-card-desc  { font-size:0.87em; color:#555; line-height:1.6; }
+
+/* ── Media entry ── */
+.media-entry {
+  display:flex; gap:14px; align-items:flex-start;
+  padding:10px 0; border-bottom:1px solid #f0f0f0;
+}
+.media-entry:last-child { border-bottom:none; }
+.media-year  { font-size:0.75em; font-weight:700; color:#8e44ad; min-width:38px; flex-shrink:0; padding-top:2px; }
+.media-body  { font-size:0.87em; color:#555; line-height:1.55; }
+.media-body a { color:#8e44ad; text-decoration:none; font-weight:500; }
+.media-body a:hover { text-decoration:underline; }
 </style>
 
-<div class="back-link">← <a href="index.html">← Home</a></div>
+<div class="back-link">← <a href="index.html">Home</a></div>
 
-<div class="page-header">
-  <h1>Student Supervision</h1>
+<div class="page-hero">
+  <div class="page-hero-icon">👥</div>
+  <div>
+    <h1>Student Supervision</h1>
+    <p>Master, Bachelor and PhD students supervised at CRBE, Toulouse.</p>
+  </div>
 </div>
 
-<ul class="student-list">
-  <li><strong>Adrien Lagalle.</strong> <em>Master.</em> 2026. Comparaison des méthodes de mesure des traits fonctionnels des poissons d'eau douce.</li>
-  <li><strong>Anouk Schneider.</strong> <em>Master.</em> 2026. Quantification du biais utilisateur dans la mesure des traits morphologiques des poissons d'eau douce.</li>
-  <li><strong>Laura Boutic.</strong> <em>Bachelor.</em> 2026. Quantification du biais utilisateur dans la mesure des traits morphologiques des poissons d'eau douce.</li>
-  <li><strong>Joseph Crochez.</strong> <em>Bachelor.</em> 2026. Quantification du biais utilisateur dans la mesure des traits morphologiques des poissons d'eau douce.</li>
-  <li><strong>Pierre Bertrand.</strong> <em>Master.</em> 2026. Quantification de la diversité intraspécifique des poissons d'eau douce de Guyane française et impact sur les mesures de diversité fonctionnelle.</li>
-  <li><strong>Nell Pause.</strong> <em>Master.</em> 2025. Disentangling morphological, life-history, and dietary predictors of extinction risk and population trends in birds.</li>
-  <li><strong>Pierre Bouchet.</strong> <em>PhD Student.</em> 2024–2027. Diversité fonctionnelle des vertébrés et utilisation par l'homme : liens entre traits fonctionnels, utilisation anthropique et crise de biodiversité.</li>
-  <li><strong>Adrien Solacroup.</strong> <em>Master.</em> 2014. Characterization of the morphological intra-specific variability in the French Guyana and European freshwater fish community.</li>
-</ul>
-
-
-
+<div class="sec-divider">
+  <div class="sec-divider-icon">🎓</div>
+  <h2>PhD students</h2>
+  <hr>
 </div>
+
+<div class="student-grid">
+  <div class="student-card">
+    <div class="student-card-top">
+      <span class="student-name">Pierre Bouchet</span>
+      <span class="student-badge badge-phd">PhD</span>
+    </div>
+    <div class="student-year">2024–2027</div>
+    <div class="student-topic">Functional diversity of vertebrates and human use: links between functional traits, anthropogenic exploitation and the biodiversity crisis.</div>
+  </div>
 </div>
+
+<div class="sec-divider">
+  <div class="sec-divider-icon">📚</div>
+  <h2>Master students</h2>
+  <hr>
+</div>
+
+<div class="student-grid">
+  <div class="student-card">
+    <div class="student-card-top">
+      <span class="student-name">Adrien Lagalle</span>
+      <span class="student-badge badge-master">Master</span>
+    </div>
+    <div class="student-year">2026</div>
+    <div class="student-topic">Comparison of methods for measuring functional traits of freshwater fishes.</div>
+  </div>
+  <div class="student-card">
+    <div class="student-card-top">
+      <span class="student-name">Anouk Schneider</span>
+      <span class="student-badge badge-master">Master</span>
+    </div>
+    <div class="student-year">2026</div>
+    <div class="student-topic">Quantification of user bias in morphological trait measurement of freshwater fishes.</div>
+  </div>
+  <div class="student-card">
+    <div class="student-card-top">
+      <span class="student-name">Pierre Bertrand</span>
+      <span class="student-badge badge-master">Master</span>
+    </div>
+    <div class="student-year">2026</div>
+    <div class="student-topic">Quantification of intraspecific diversity of freshwater fishes in French Guiana and its impact on functional diversity estimates.</div>
+  </div>
+  <div class="student-card">
+    <div class="student-card-top">
+      <span class="student-name">Nell Pause</span>
+      <span class="student-badge badge-master">Master</span>
+    </div>
+    <div class="student-year">2025</div>
+    <div class="student-topic">Disentangling morphological, life-history, and dietary predictors of extinction risk and population trends in birds.</div>
+  </div>
+  <div class="student-card">
+    <div class="student-card-top">
+      <span class="student-name">Adrien Solacroup</span>
+      <span class="student-badge badge-master">Master</span>
+    </div>
+    <div class="student-year">2014</div>
+    <div class="student-topic">Characterization of morphological intraspecific variability in French Guiana and European freshwater fish communities.</div>
+  </div>
+</div>
+
+<div class="sec-divider">
+  <div class="sec-divider-icon">🔬</div>
+  <h2>Bachelor students</h2>
+  <hr>
+</div>
+
+<div class="student-grid">
+  <div class="student-card">
+    <div class="student-card-top">
+      <span class="student-name">Laura Boutic</span>
+      <span class="student-badge badge-bachelor">Bachelor</span>
+    </div>
+    <div class="student-year">2026</div>
+    <div class="student-topic">Quantification of user bias in morphological trait measurement of freshwater fishes.</div>
+  </div>
+  <div class="student-card">
+    <div class="student-card-top">
+      <span class="student-name">Joseph Crochez</span>
+      <span class="student-badge badge-bachelor">Bachelor</span>
+    </div>
+    <div class="student-year">2026</div>
+    <div class="student-topic">Quantification of user bias in morphological trait measurement of freshwater fishes.</div>
+  </div>
+</div>
+
+
+
 
 </div>
 
@@ -493,35 +566,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
