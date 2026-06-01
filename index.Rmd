@@ -205,6 +205,21 @@ editor_options:
   <!-- Affiliation -->
   <div class="affil-card">
     <img src="data/CNRSCRBE.png" alt="CNRS CRBE logo"/>
+
+    <!-- Contact first -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:0.72em; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#aaa; margin-bottom:8px;">Contact</div>
+      <div class="contact-row">
+        <div class="contact-icon">🏛️</div>
+        <a href="mailto:aurele.toussaint@cnrs.fr">aurele.toussaint@cnrs.fr</a>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">🎓</div>
+        <a href="mailto:aurele.toussaint@utoulouse.fr">aurele.toussaint@utoulouse.fr</a>
+      </div>
+    </div>
+
+    <!-- Address below -->
     <div class="affil-address">
       <strong>Centre de Recherche sur la Biodiversité et l'Environnement</strong><br>
       UMR5300 — UPS · CNRS · IRD · INP<br>
@@ -291,8 +306,12 @@ editor_options:
         var line = "M " + pts[0][0] + "," + pts[0][1];
         pts.slice(1).forEach(function(p){ line += " L " + p[0] + "," + p[1]; });
 
+        // y-axis label (rotated)
+        var yAxisLabel = '<text transform="rotate(-90)" x="' + (-(PAD.t + ch/2)) + '" y="10" ' +
+          'text-anchor="middle" font-size="8" fill="#bbb" letter-spacing="0.05em">CITATIONS</text>';
+
         // y-axis ticks (0 and max)
-        var yTicks = [0, Math.round(maxV/2), maxV].map(function(v){
+        var yTicks = yAxisLabel + [0, Math.round(maxV/2), maxV].map(function(v){
           return '<text x="' + (PAD.l - 5) + '" y="' + (py(v) + 4) + '" text-anchor="end" ' +
                  'font-size="9" fill="#bbb">' + (v >= 1000 ? (v/1000).toFixed(1)+'k' : v) + '</text>';
         }).join("");
@@ -306,7 +325,7 @@ editor_options:
         // dot + tooltip on each point
         var dots = pts.map(function(p, i){
           return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3" fill="#2980b9" stroke="#fff" stroke-width="1.5">' +
-                 '<title>' + counts[i].year + ': ' + counts[i].cited_by_count + ' citations</title></circle>';
+                 '<title>Citations received in ' + counts[i].year + ': ' + counts[i].cited_by_count + '</title></circle>';
         }).join("");
 
         el.innerHTML =
@@ -330,33 +349,25 @@ editor_options:
           '</svg>';
       }
 
+      // Fetch live stats (citations total, h-index, i10) from OpenAlex
       fetch(API + "?mailto=aurele.toussaint@cnrs.fr")
         .then(function(r){ return r.json(); })
         .then(function(d) {
           setVal("stat-cit", d.cited_by_count || 0);
           setVal("stat-h",   (d.summary_stats && d.summary_stats.h_index)   || 0);
           setVal("stat-i10", (d.summary_stats && d.summary_stats.i10_index) || 0);
-          drawChart(d.counts_by_year || []);
           var src = document.getElementById("scholar-src");
           if (src) src.textContent = "· via OpenAlex";
         })
-        .catch(function(){
-          /* silently fail — values stay as — */
-        });
+        .catch(function(){ /* silently fail */ });
+
+      // Fetch per-year chart from local JSON (updated manually from Google Scholar)
+      fetch("data/citations_by_year.json")
+        .then(function(r){ return r.json(); })
+        .then(function(d){ drawChart(d); })
+        .catch(function(){ /* silently fail */ });
     })();
     </script>
-
-    <div class="contact-card">
-      <h4>Contact</h4>
-      <div class="contact-row">
-        <div class="contact-icon">🏛️</div>
-        <a href="mailto:aurele.toussaint@cnrs.fr">aurele.toussaint@cnrs.fr</a>
-      </div>
-      <div class="contact-row">
-        <div class="contact-icon">🎓</div>
-        <a href="mailto:aurele.toussaint@utoulouse.fr">aurele.toussaint@utoulouse.fr</a>
-      </div>
-    </div>
 
   </div>
 </div>
@@ -536,7 +547,7 @@ editor_options:
   <a class="nav-card" href="Courses.html">
     <div class="nav-card-top">
       <div class="nav-icon" style="background:#16a085;"><i class="fa fa-graduation-cap"></i></div>
-      <h3>Courses</h3>
+      <h3>Teaching</h3>
     </div>
     <p>Teaching materials for R and functional ecology courses.</p>
     <div class="nav-card-arrow">→</div>
@@ -584,9 +595,55 @@ editor_options:
 <!--  RESEARCH                                         -->
 <!-- ══════════════════════════════════════════════════ -->
 
-<h1 class="section-title">Research</h1>
+<style>
+.research-header {
+  display: flex; align-items: center; gap: 14px;
+  margin: 40px 0 20px 0; border-bottom: 1px solid #e5e5e5; padding-bottom: 14px;
+}
+.research-header h1 { font-size: 1.8em; font-weight: 700; color: #2c3e50; margin: 0; }
 
-<p>
+/* Key numbers strip */
+.key-numbers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin: 0 0 28px 0;
+}
+.key-number {
+  background: #fff; border: 1px solid #e4e9f0; border-radius: 12px;
+  padding: 14px 16px; text-align: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.key-number-val {
+  font-size: 1.7em; font-weight: 800; color: #2c3e50; line-height: 1;
+}
+.key-number-val span { font-size: 0.6em; font-weight: 600; color: #2980b9; }
+.key-number-lbl { font-size: 0.72em; color: #888; margin-top: 4px; line-height: 1.3; }
+
+/* Research topic tags */
+.research-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 0 0; }
+.rtag {
+  font-size: 0.8em; font-weight: 600; padding: 4px 14px; border-radius: 20px;
+  background: #f0f4f8; color: #2c3e50; border: 1px solid #dde3ea;
+}
+
+/* Journal badges inline */
+.journal-strip {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin: 12px 0 0 0; padding: 12px 16px;
+  background: #fafbfc; border-radius: 10px; border: 1px solid #eef0f3;
+}
+.jbadge {
+  font-size: 0.75em; font-weight: 700; padding: 3px 10px;
+  border-radius: 20px; white-space: nowrap;
+}
+</style>
+
+<div class="research-header">
+  <h1>Research</h1>
+</div>
+
+<p style="font-size:0.95em; color:#555; line-height:1.75; margin-bottom:20px;">
   My research sits at the interface of macroecology, functional ecology, and
   conservation biology, with a focus on understanding how the functional diversity
   of vertebrates and plants is distributed across the globe, what processes
@@ -594,7 +651,27 @@ editor_options:
   reshaping them.
 </p>
 
-<p>
+<!-- Key numbers -->
+<div class="key-numbers">
+  <div class="key-number">
+    <div class="key-number-val">9,000<span>+</span></div>
+    <div class="key-number-lbl">fish species in trait database</div>
+  </div>
+  <div class="key-number">
+    <div class="key-number-val">1,000<span>+</span></div>
+    <div class="key-number-lbl">river basins worldwide</div>
+  </div>
+  <div class="key-number">
+    <div class="key-number-val">75<span>%</span></div>
+    <div class="key-number-lbl">of global fish functional diversity in Neotropics</div>
+  </div>
+  <div class="key-number">
+    <div class="key-number-val">150<span>%</span></div>
+    <div class="key-number-lbl">increase in FD from non-native species</div>
+  </div>
+</div>
+
+<p style="font-size:0.93em; color:#555; line-height:1.75;">
   A central theme of my work is the <strong>functional diversity of freshwater
   fishes</strong>. During my PhD and subsequent projects, I built one of the
   largest morphological trait databases for freshwater fishes, covering more than
@@ -608,7 +685,7 @@ editor_options:
   dominance of a few widespread invasive species.
 </p>
 
-<p>
+<p style="font-size:0.93em; color:#555; line-height:1.75;">
   A second major axis of my research concerns the <strong>consequences of
   biodiversity loss</strong> for functional diversity. I have demonstrated that
   the extinction of threatened vertebrates will not lead to uniform losses of
@@ -620,7 +697,7 @@ editor_options:
   ecosystem functioning.
 </p>
 
-<p>
+<p style="font-size:0.93em; color:#555; line-height:1.75;">
   More recently, I have been investigating <strong>intraspecific trait
   variability</strong> as a neglected but critical component of functional
   diversity. The INTRAIT project aims to quantify morphological variation within
@@ -628,14 +705,29 @@ editor_options:
   variability biases community-level estimates of functional diversity.
 </p>
 
-<p>
+<p style="font-size:0.93em; color:#555; line-height:1.75; margin-bottom:14px;">
   Across all these research axes, I employ a combination of <strong>large-scale
   trait databases, multivariate statistics, and simulation approaches</strong>
-  implemented in R. My work has been published in leading international
-  journals including <em>Nature</em>, <em>Nature Communications</em>,
-  <em>Science Advances</em>, <em>Ecology Letters</em>, and
-  <em>Global Ecology and Biogeography</em>.
+  implemented in R. My work has been published in leading international journals:
 </p>
+
+<div class="journal-strip">
+  <span class="jbadge" style="background:#fff0e0;color:#b85c00;border:1px solid #f5d0a0;">Nature</span>
+  <span class="jbadge" style="background:#e8f4fb;color:#1a6a9a;border:1px solid #b3d9f0;">Nature Communications</span>
+  <span class="jbadge" style="background:#eaf6ea;color:#1e7e34;border:1px solid #a8dba8;">Science Advances</span>
+  <span class="jbadge" style="background:#f3eafc;color:#6b21a8;border:1px solid #d8b4fe;">Ecology Letters</span>
+  <span class="jbadge" style="background:#fff8e1;color:#92610a;border:1px solid #f5e0a0;">Global Ecology &amp; Biogeography</span>
+</div>
+
+<div class="research-tags">
+  <span class="rtag">🐟 Freshwater fishes</span>
+  <span class="rtag">🌍 Macroecology</span>
+  <span class="rtag">🌿 Functional diversity</span>
+  <span class="rtag">🧬 Intraspecific variability</span>
+  <span class="rtag">🦅 Vertebrates</span>
+  <span class="rtag">⚠️ Biodiversity loss</span>
+  <span class="rtag">📊 Trait databases</span>
+</div>
 
 <div class="wordcloud-wrap">
   <img src="data/wordcloud.png" alt="Word cloud of research themes"/>
