@@ -29,9 +29,6 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -226,69 +223,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -296,16 +230,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -387,316 +311,630 @@ div.tocify {
 <link rel="stylesheet" href="styles.css" type="text/css">
 
 <style>
-.page-header {
-  margin: 32px 0 28px 0;
-  border-bottom: 1px solid #e5e5e5;
-  padding-bottom: 14px;
-}
-.page-header h1 {
-  font-size: 1.9em; font-weight: bold; color: #2c3e50; margin: 0 0 4px 0;
-}
-.back-link {
-  font-size: 0.9em; margin-bottom: 8px;
-}
+.back-link { font-size: 0.9em; margin-bottom: 8px; }
 .back-link a { color: #2980b9; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
 
-/* Reuse styles from index */
-.section-title {
-  font-size: 1.3em; font-weight: bold; margin: 36px 0 14px 0;
-  border-bottom: 1px solid #ddd; padding-bottom: 6px; color: #2c3e50;
+.pub-page-header {
+  margin: 28px 0 20px 0;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 14px;
+  display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 12px;
 }
-.pub-list {
-  counter-reset: pub-counter 30;
-  list-style: none; padding: 0;
+.pub-page-header h1 { font-size: 1.9em; font-weight: bold; color: #2c3e50; margin: 0; }
+.pub-meta { font-size: 0.88em; color: #888; }
+.pub-meta a { color: #2980b9; text-decoration: none; }
+.pub-meta a:hover { text-decoration: underline; }
+
+/* ── Controls ─────────────────────────────────────── */
+.pub-controls {
+  display: flex; gap: 12px; align-items: center;
+  margin-bottom: 20px; flex-wrap: wrap;
 }
-.pub-list li {
-  counter-increment: pub-counter -1;
-  padding: 6px 0 6px 48px; position: relative;
-  line-height: 1.5; border-bottom: 1px solid #f0f0f0;
+.pub-search {
+  flex: 1; min-width: 200px;
+  padding: 8px 14px; border: 1px solid #dde3ea;
+  border-radius: 8px; font-size: 0.92em; outline: none;
+  background: #fff;
 }
-.pub-list li::before {
-  content: counter(pub-counter) "/";
-  position: absolute; left: 0; font-weight: bold;
-  color: #555; width: 40px; text-align: right;
+.pub-search:focus { border-color: #2980b9; }
+
+.year-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.yr-btn {
+  padding: 5px 12px; border: 1px solid #dde3ea;
+  border-radius: 20px; font-size: 0.82em; font-weight: 600;
+  background: #fff; cursor: pointer; color: #555;
+  transition: background .15s, color .15s;
 }
-.pub-list li.pub-year-label {
-  counter-increment: none; font-size: 1.15em; font-weight: bold;
-  color: #333; padding: 20px 0 4px 0; border-bottom: none;
+.yr-btn:hover { background: #eef3f8; }
+.yr-btn.active { background: #2980b9; color: #fff; border-color: #2980b9; }
+
+/* ── Publication cards ────────────────────────────── */
+.pub-year-heading {
+  font-size: 1.1em; font-weight: 700; color: #2c3e50;
+  margin: 32px 0 10px 0;
+  display: flex; align-items: center; gap: 10px;
 }
-.pub-list li.pub-year-label::before { content: none; }
-.pub-year { font-size: 1.1em; font-weight: bold; margin: 24px 0 8px 0; color: #333; }
-.grant-item {
-  margin: 10px 0; padding: 10px 14px;
-  border-left: 3px solid #2980b9; background: #fafafa; line-height: 1.6;
+.pub-year-heading hr { flex: 1; border: none; border-top: 1px solid #e5e5e5; }
+
+.pub-card {
+  background: #fff; border: 1px solid #e4e9f0;
+  border-radius: 10px; padding: 16px 18px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow .15s;
 }
-.student-list { list-style: none; padding: 0; }
-.student-list li {
-  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+.pub-card:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.08); }
+
+.pub-card-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 6px; }
+
+/* Journal badge */
+.pub-journal-badge {
+  flex-shrink: 0; font-size: 0.68em; font-weight: 700;
+  padding: 3px 9px; border-radius: 20px;
+  white-space: nowrap; margin-top: 2px;
 }
-.conf-list { list-style: none; padding: 0; }
-.conf-list li {
-  padding: 6px 0; border-bottom: 1px solid #f0f0f0; line-height: 1.5;
+.jbadge-nature      { background: #fff0e0; color: #b85c00; border: 1px solid #f5d0a0; }
+.jbadge-natcomms    { background: #e8f4fb; color: #1a6a9a; border: 1px solid #b3d9f0; }
+.jbadge-sciadv      { background: #eaf6ea; color: #1e7e34; border: 1px solid #a8dba8; }
+.jbadge-ecollett    { background: #f3eafc; color: #6b21a8; border: 1px solid #d8b4fe; }
+.jbadge-geb         { background: #fff8e1; color: #92610a; border: 1px solid #f5e0a0; }
+.jbadge-tree        { background: #fce8e8; color: #9b1c1c; border: 1px solid #f5b8b8; }
+.jbadge-other       { background: #f1f3f5; color: #555;    border: 1px solid #dde3ea; }
+.jbadge-preprint    { background: #f0f0f0; color: #888;    border: 1px solid #ddd; font-style: italic; }
+
+.pub-title {
+  font-size: 0.97em; font-weight: 600; color: #2c3e50; line-height: 1.4;
 }
+.pub-authors {
+  font-size: 0.85em; color: #666; margin: 3px 0 0 0; line-height: 1.5;
+}
+.pub-authors strong { color: #2c3e50; }
+
+/* Link buttons */
+.pub-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.pub-btn {
+  font-size: 0.75em; font-weight: 600;
+  padding: 3px 10px; border-radius: 5px;
+  text-decoration: none !important;
+  transition: opacity .15s;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.pub-btn:hover { opacity: 0.78; text-decoration: none !important; }
+.btn-pdf      { background: #2980b9; color: #fff !important; }
+.btn-doi      { background: #27ae60; color: #fff !important; }
+.btn-press    { background: #e67e22; color: #fff !important; }
+.btn-supp     { background: #8e44ad; color: #fff !important; }
+.btn-blog     { background: #7f8c8d; color: #fff !important; }
+.btn-radio    { background: #c0392b; color: #fff !important; }
+
+#pub-count { font-size: 0.85em; color: #888; margin-top: 4px; }
 </style>
 
-<div class="back-link">← <a href="index.html">← Home</a></div>
+<div class="back-link">← <a href="index.html">Home</a></div>
 
-<div class="page-header">
-  <h1>Publications</h1>
+<div class="pub-page-header">
+  <div>
+    <h1>Publications</h1>
+    <div class="pub-meta">
+      <a href="https://scholar.google.fr/citations?user=oTxWHKgAAAAJ&hl=fr" target="_blank">Google Scholar</a> ·
+      <a href="https://www.researchgate.net/profile/Aurele_Toussaint" target="_blank">ResearchGate</a> ·
+      Data repository <a href="RData.html">here</a>
+    </div>
+  </div>
 </div>
 
-<p>A full list is available on
-<a href="https://scholar.google.fr/citations?user=oTxWHKgAAAAJ&hl=fr" target="_blank">Google Scholar</a> and
-<a href="https://www.researchgate.net/profile/Aurele_Toussaint" target="_blank">ResearchGate</a>.
-Data repository available <a href="RData.html">here</a>.</p>
+<!-- Controls -->
+<div class="pub-controls">
+  <input class="pub-search" id="pub-search" type="text" placeholder="🔍  Search by title, author, journal…" oninput="filterPubs()">
+  <div class="year-filters" id="year-filters"></div>
+</div>
+<div id="pub-count"></div>
 
-<ol class="pub-list">
+<!-- ══════════════════════════════════════════════════ -->
+<!--  PUBLICATION LIST                                  -->
+<!-- ══════════════════════════════════════════════════ -->
 
-  <li class="pub-year-label">2025</li>
+<div id="pub-container">
 
-  <li>
-    Partel M., Tamme R., …, <strong>Toussaint A.</strong>, …, Zobel M.
-    Global impoverishment of natural vegetation revealed by dark diversity.
-    <em>Nature</em>, 641, 917–924.
-    <a href="data/2025_Partel_Nature.pdf" target="_blank">PDF</a> ·
-    <a href="https://www.inee.cnrs.fr/fr/cnrsinfo/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur" target="_blank">Press release CNRS</a> ·
-    <a href="https://crbe.cnrs.fr/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur-la-biodiversite" target="_blank">Actualité CRBE</a> ·
-    <a href="https://www.eurekalert.org/news-releases/1078990" target="_blank">EurekAlert</a>
-  </li>
+<!-- 2025 -->
+<div class="pub-year-block" data-year="2025">
+<div class="pub-year-heading">2025<hr></div>
 
-  <li>
-    Chen Z., Xu C., Brosse S., <strong>Toussaint A.</strong>, Xu J., Su G.
-    Global Patterns and Determinants of Multiple Facets of Freshwater Fishes Beta Diversity.
-    <em>Global Ecology and Biogeography</em>.
-    <a href="data/2025_Chen_GEB.pdf" target="_blank">PDF</a>
-  </li>
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-nature">Nature</span>
+    <div>
+      <div class="pub-title">Global impoverishment of natural vegetation revealed by dark diversity.</div>
+      <div class="pub-authors">Partel M., Tamme R., …, <strong>Toussaint A.</strong>, …, Zobel M. — <em>Nature</em>, 641, 917–924.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2025_Partel_Nature.pdf" target="_blank">PDF</a>
+    <a class="pub-btn btn-press" href="https://www.inee.cnrs.fr/fr/cnrsinfo/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur" target="_blank">Press CNRS</a>
+    <a class="pub-btn btn-press" href="https://crbe.cnrs.fr/la-diversite-fantome-ou-dark-diversity-revele-limpact-mondial-des-activites-humaines-sur-la-biodiversite" target="_blank">CRBE</a>
+    <a class="pub-btn btn-press" href="https://www.eurekalert.org/news-releases/1078990" target="_blank">EurekAlert</a>
+  </div>
+</div>
 
-  <li class="pub-year-label">2024</li>
-
-  <li>
-    <strong>Toussaint A.</strong>, Pärtel M., Carmona C.P.
-    Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in bird assemblages.
-    <em>Ecology Letters</em>, 27, e14373.
-    <a href="data/2024_Toussaint_EcolLett.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Tordoni E., Carmona C.P., <strong>Toussaint A.</strong>, Tamme R., Pärtel M.
-    Global patterns and determinants of multiple facets of plant diversity.
-    <em>Global Ecology and Biogeography</em>, e13823.
-    <a href="data/2024_Tordoni_GEB.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Carmona C.P., Pärtel M., Tamme R., <strong>Toussaint A.</strong>
-    OTSIMAS ELURIKKUSE MÕÕTMEID LOOMADE JA TAIMEDE SEAST, MAA ALT JA MAA PEALT.
-    <em>EESTI VABARIIGI PREEMIAD</em>.
-    <a href="data/2024_Carmona_EESTI.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Coulon N., Pilet S., Lizé A., Lacoue-Labarthe T., Sturbois A., <strong>Toussaint A.</strong>, Feunteun E., Carpentier A.
-    Shark critical life stage vulnerability to monthly temperature variations under climate change.
-    <em>Marine Environmental Research</em>, 198, 106531.
-    <a href="data/2024_Coulon_MER.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li class="pub-year-label">2023</li>
-
-  <li>
-    <strong>Toussaint A.</strong>, Pärtel M., Carmona C.P.
-    Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in birds' assemblages.
-    <em>Authorea</em>.
-    <a href="data/2023_Toussaint_Authorea_2.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Coulon N., Lindegren M., Goberville E., <strong>Toussaint A.</strong>, Receveur A., Auber A.
-    Threatened fish species in the Northeast Atlantic are functionally rare.
-    <em>Global Ecology and Biogeography</em>, 1–19.
-    <a href="data/2023_Coulon_GEB.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Bueno C.G., <strong>Toussaint A.</strong>, Träger S. et al.
-    Reply to: The importance of trait selection in ecology.
-    <em>Nature</em>, 618, E31–E34.
-    <a href="data/2023_Bueno_nature.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    <strong>Toussaint A.</strong>, Pärtel M., Carmona C.P.
-    Non-native bird species will not compensate for the loss of phylogenetic and functional diversity after the extinction of threatened species.
-    <em>Authorea</em>.
-    <a href="data/2023_Toussaint_Authorea.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    de Tombeur F., Raven J.A., <strong>Toussaint A.</strong>, Lambers H., Cooke J., Hartley S.E., Johnson S.N., Coq S., Katz O., Schaller J., Violle C.
-    Why do plants silicify?
-    <em>Trends in Ecology and Evolution</em>, 38(3), 275–288.
-    <a href="data/2023_deTombeur.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li class="pub-year-label">2022</li>
-
-  <li>
-    Auber A., Waldock C., Maire A., Goberville E., Albouy C., Algar A.C., McLean M., Brind'Amour A., Green A.L., Tupper M., Vigliola L., Kaschner K., Kesner-Reyes K., Beger M., Tjiputra J., <strong>Toussaint A.</strong>, Violle C., Mouquet N., Thuiller W., Mouillot D.
-    A functional vulnerability framework for biodiversity conservation.
-    <em>Nature Communications</em>, 13, 4774.
-    <a href="data/2022_Auber_NatComms.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Paganeli B., <strong>Toussaint A.</strong>, Bueno C.G., Fujinuma J., Reier Ü., Pärtel M.
-    Dark diversity at home describes the success of cross-continent tree invasions.
-    <em>Diversity and Distributions</em>, 28(6), 1202–1213.
-    <a href="data/2022_Paganeli_DDI.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Su G., Tedesco P.A., <strong>Toussaint A.</strong>, Villeger S., Brosse S.
-    Contemporary environment and historical legacy explain functional diversity of freshwater fishes in the world rivers.
-    <em>Global Ecology and Biogeography</em>, 31, 700–713.
-    <a href="data/2022_Su_GEB.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li class="pub-year-label">2021</li>
-
-  <li>
-    Carmona C.P., Tamme R., Pärtel M., de Bello F., Brosse S., Capdevila P., Gonzalez-M R., Gonzalez-Suarez M., Salguero-Gomez R., Vasquez-Valderrama M., <strong>Toussaint A.</strong>
-    Erosion of global functional diversity across the tree of life.
-    <em>Science Advances</em>, 7(13), eabf2675.
-    <a href="data/2021_Carmona_SciAdv.pdf" target="_blank">PDF</a> ·
-    <a href="https://inee.cnrs.fr/fr/cnrsinfo/lextinction-des-especes-en-danger-entrainera-une-reorganisation-globale-du-role-des-autres" target="_blank">Press release CNRS</a> ·
-    <a href="https://www.eurekalert.org/news-releases/546861" target="_blank">EurekAlert!</a>
-  </li>
-
-  <li>
-    Tordoni E., <strong>Toussaint A.</strong>, Pärtel M., Nogues-Bravo D., Carmona C.P.
-    Combining taxonomic, phylogenetic and functional diversity reveals new global priority areas for tetrapod conservation.
-    <em>bioRxiv</em>.
-    <a href="https://doi.org/10.1101/2021.07.01.450689" target="_blank">doi: 10.1101/2021.07.01.450689</a>
-  </li>
-
-  <li>
-    <strong>Toussaint A.</strong>, Brosse S., Bueno C.G., Pärtel M., Tamme S., Carmona C.P.
-    Extinction of threatened vertebrates will lead to idiosyncratic changes in functional diversity across the world.
-    <em>Nature Communications</em>, 12(1), 1–12.
-    <a href="data/2021_Toussaint_NatCom.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Carmona C.P., Bueno C.G., <strong>Toussaint A.</strong>, Träger S., Diaz S., Moora M., Munson D.A., Pärtel M., Zobel M., Tamme R.
-    Fine-root traits in the global spectrum of plant form and function.
-    <em>Nature</em>, 597(7878), 683–687.
-    <a href="data/2021_Carmona_Nature.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Brosse S., Charpin N., Su G., <strong>Toussaint A.</strong>, Herrera-R. G.A., Tedesco P.A., Villeger S.
-    FISHMORPH: A global database on morphological traits of freshwater fishes.
-    <em>Global Ecology and Biogeography</em>, 30(12), 2330–2336.
-    <a href="data/2021_Brosse_GEB.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li class="pub-year-label">2020</li>
-
-  <li>
-    <strong>Toussaint A.</strong>, Bueno C.G., Davison J., Moora M., Tedersoo L., Zobel M., Opik M., Partel M.
-    Asymmetric patterns of global diversity among plants and mycorrhizal fungi.
-    <em>Journal of Vegetation Science</em>, 31(2), 355–366.
-    <a href="data/2019_Toussaint_JVS.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Derezal O., Mondy P.C., Dembski S., Kreutzenberger K., Reyjol Y., Chanderis A., Valette L., Brosse S., <strong>Toussaint A.</strong>, Beillard J., Merg M.L., Usseglio-Polatera P.
-    A diagnostic-based approach to assess specific risks of river degradation in a multiple pressure context: Insights from fish communities.
-    <em>Science of The Total Environment</em>, 734, 139467.
-    <a href="data/2020_Derezal_et_al_STOTEN.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Carmona C.P., Tamme R., Partel M., de Bello F., Brosse S., Capdevila P., Gonzalez-M R., Gonzalez-Suarez M., Salguero-Gomez R., Vasquez-Valderrama M., <strong>Toussaint A.</strong>
-    Mapping extinction risk in the global functional spectra across the tree of life.
-    <em>bioRxiv</em>.
-    <a href="https://doi.org/10.1101/2020.06.29.179143" target="_blank">doi: 10.1101/2020.06.29.179143</a>
-  </li>
-
-  <li class="pub-year-label">2018</li>
-
-  <li>
-    Tedersoo L., Laanisto L., Rahimlou S., <strong>Toussaint A.</strong>, Hallikma T., Pärtel M.
-    Global database of plants with root-symbiotic nitrogen fixation: Nod DB.
-    <em>Journal of Vegetation Science</em>, 29(3), 560–568.
-    <a href="data/2018_Tedersoo_JVS.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    Kuczynski L., Côte J., <strong>Toussaint A.</strong>, Brosse S., Buisson L., Grenouillet G.
-    Spatial mismatch in morphological, ecological and phylogenetic diversity in historical and contemporary European freshwater fish faunas.
-    <em>Ecography</em>, 41, 1665–1674.
-    <a href="data/2018_Kuczinski_et_al_Ecography.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    <strong>Toussaint A.</strong>, Charpin N., Beauchard O., Grenouillet G., Oberdorff T., Tedesco P.A., Villéger S., Brosse S.
-    Non-native species led to marked shifts in functional diversity of the world freshwater fish faunas.
-    <em>Ecology Letters</em>, 21(11), 1649–1659.
-    <a href="data/2018_Toussaint_Ecolet.pdf" target="_blank">PDF</a> ·
-    <a href="http://www.cnrs.fr/inee/communication/breves/b405.html" target="_blank">Press release CNRS</a> ·
-    <a href="http://www.ird.fr/toute-l-actualite/actualites-scientifiques/la-biodiversite-des-poissons-d-eau-douce-bouleverse" target="_blank">Press release IRD</a> ·
-    <a href="https://ecolchange.wordpress.com/2018/10/11/new-publication-non-native-species-led-to-marked-shifts-in-functional-diversity-of-the-world-freshwater-fish-faunas" target="_blank">Blog post</a> ·
-    <a href="data/ele13141-sup-0001-suppinfo.docx" target="_blank">Supplementary</a>
-  </li>
-
-  <li class="pub-year-label">2016</li>
-
-  <li>
-    <strong>Toussaint A.</strong>, Beauchard O., Oberdorff T., Brosse S., Villeger S.
-    Worldwide freshwater fish homogenization is driven by a few widespread non-native species.
-    <em>Biological Invasions</em>, 18, 1295–1304.
-    <a href="data/2016_Toussaint_BiologicalInvasions.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li>
-    <strong>Toussaint A.</strong>, Charpin N., Brosse S., Villéger S.
-    Global functional diversity of freshwater fish is concentrated in the Neotropics.
-    <em>Scientific Reports</em>, 6, 22125.
-    <a href="data/2016_Toussaint_SciRep.pdf" target="_blank">PDF</a> ·
-    <a href="http://www.cnrs.fr/inee/communication/breves/b178.html" target="_blank">Press release CNRS</a> ·
-    <a href="https://www.franceinter.fr/emissions/la-tete-au-carre/la-tete-au-carre-11-avril-2016" target="_blank">Radio (France Inter, 11/04/2016)</a> ·
-    <a href="data/srep22125-s1.docx" target="_blank">Supplementary</a>
-  </li>
-
-  <li class="pub-year-label">2015</li>
-
-  <li>
-    Allard L., <strong>Toussaint A.</strong>, Vigouroux R., Brosse S.
-    Length-weight relationship of 58 fish species in streams of French Guiana.
-    <em>Journal of Applied Ichthyology</em>, 31, 567–570.
-    <a href="data/2016_Toussaint_BiologicalInvasions.pdf" target="_blank">PDF</a>
-  </li>
-
-  <li class="pub-year-label">2014</li>
-
-  <li>
-    <strong>Toussaint A.</strong>, Beauchard O., Oberdorff T., Brosse S., Villéger S.
-    Historical assemblage distinctiveness and the introduction of widespread non-native species explain worldwide changes in freshwater fish taxonomic dissimilarity.
-    <em>Global Ecology and Biogeography</em>, 23, 574–584.
-    <a href="data/2014_Toussaint%20et%20al._GEB.pdf" target="_blank">PDF</a> ·
-    <a href="https://www.cnrs.fr/occitanie-ouest/CNRS-Hebdo/Actualites/18686/Suite.aspx" target="_blank">Press release CNRS</a> ·
-    <a href="data/geb12141-sup-0001-si.doc" target="_blank">Supplementary 1</a> ·
-    <a href="data/geb12141-sup-0002-si.doc" target="_blank">Supplementary 2</a>
-  </li>
-
-</ol>
-
-
-
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-geb">GEB</span>
+    <div>
+      <div class="pub-title">Global Patterns and Determinants of Multiple Facets of Freshwater Fishes Beta Diversity.</div>
+      <div class="pub-authors">Chen Z., Xu C., Brosse S., <strong>Toussaint A.</strong>, Xu J., Su G. — <em>Global Ecology and Biogeography</em>.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2025_Chen_GEB.pdf" target="_blank">PDF</a>
+  </div>
 </div>
 </div>
+
+<!-- 2024 -->
+<div class="pub-year-block" data-year="2024">
+<div class="pub-year-heading">2024<hr></div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-ecollett">Ecol. Lett.</span>
+    <div>
+      <div class="pub-title">Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in bird assemblages.</div>
+      <div class="pub-authors"><strong>Toussaint A.</strong>, Pärtel M., Carmona C.P. — <em>Ecology Letters</em>, 27, e14373.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2024_Toussaint_EcolLett.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-geb">GEB</span>
+    <div>
+      <div class="pub-title">Global patterns and determinants of multiple facets of plant diversity.</div>
+      <div class="pub-authors">Tordoni E., Carmona C.P., <strong>Toussaint A.</strong>, Tamme R., Pärtel M. — <em>Global Ecology and Biogeography</em>, e13823.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2024_Tordoni_GEB.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-other">Award</span>
+    <div>
+      <div class="pub-title">OTSIMAS ELURIKKUSE MÕÕTMEID LOOMADE JA TAIMEDE SEAST, MAA ALT JA MAA PEALT.</div>
+      <div class="pub-authors">Carmona C.P., Pärtel M., Tamme R., <strong>Toussaint A.</strong> — <em>EESTI VABARIIGI PREEMIAD</em>.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2024_Carmona_EESTI.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-other">Mar. Env. Res.</span>
+    <div>
+      <div class="pub-title">Shark critical life stage vulnerability to monthly temperature variations under climate change.</div>
+      <div class="pub-authors">Coulon N., Pilet S., Lizé A., Lacoue-Labarthe T., Sturbois A., <strong>Toussaint A.</strong>, Feunteun E., Carpentier A. — <em>Marine Environmental Research</em>, 198, 106531.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2024_Coulon_MER.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+</div>
+
+<!-- 2023 -->
+<div class="pub-year-block" data-year="2023">
+<div class="pub-year-heading">2023<hr></div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-preprint">Preprint</span>
+    <div>
+      <div class="pub-title">Contrasting impacts of non-native and threatened species on morphological, life-history, and phylogenetic diversity in birds' assemblages.</div>
+      <div class="pub-authors"><strong>Toussaint A.</strong>, Pärtel M., Carmona C.P. — <em>Authorea</em>.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2023_Toussaint_Authorea_2.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-geb">GEB</span>
+    <div>
+      <div class="pub-title">Threatened fish species in the Northeast Atlantic are functionally rare.</div>
+      <div class="pub-authors">Coulon N., Lindegren M., Goberville E., <strong>Toussaint A.</strong>, Receveur A., Auber A. — <em>Global Ecology and Biogeography</em>, 1–19.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2023_Coulon_GEB.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-nature">Nature</span>
+    <div>
+      <div class="pub-title">Reply to: The importance of trait selection in ecology.</div>
+      <div class="pub-authors">Bueno C.G., <strong>Toussaint A.</strong>, Träger S. et al. — <em>Nature</em>, 618, E31–E34.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2023_Bueno_nature.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-preprint">Preprint</span>
+    <div>
+      <div class="pub-title">Non-native bird species will not compensate for the loss of phylogenetic and functional diversity after the extinction of threatened species.</div>
+      <div class="pub-authors"><strong>Toussaint A.</strong>, Pärtel M., Carmona C.P. — <em>Authorea</em>.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2023_Toussaint_Authorea.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-tree">TREE</span>
+    <div>
+      <div class="pub-title">Why do plants silicify?</div>
+      <div class="pub-authors">de Tombeur F., Raven J.A., <strong>Toussaint A.</strong>, Lambers H., Cooke J., Hartley S.E., Johnson S.N., Coq S., Katz O., Schaller J., Violle C. — <em>Trends in Ecology and Evolution</em>, 38(3), 275–288.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2023_deTombeur.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+</div>
+
+<!-- 2022 -->
+<div class="pub-year-block" data-year="2022">
+<div class="pub-year-heading">2022<hr></div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-natcomms">Nat. Comms.</span>
+    <div>
+      <div class="pub-title">A functional vulnerability framework for biodiversity conservation.</div>
+      <div class="pub-authors">Auber A., Waldock C., Maire A., Goberville E., Albouy C., Algar A.C., McLean M., Brind'Amour A., Green A.L., Tupper M., Vigliola L., Kaschner K., Kesner-Reyes K., Beger M., Tjiputra J., <strong>Toussaint A.</strong>, Violle C., Mouquet N., Thuiller W., Mouillot D. — <em>Nature Communications</em>, 13, 4774.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2022_Auber_NatComms.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-other">Div. Distrib.</span>
+    <div>
+      <div class="pub-title">Dark diversity at home describes the success of cross-continent tree invasions.</div>
+      <div class="pub-authors">Paganeli B., <strong>Toussaint A.</strong>, Bueno C.G., Fujinuma J., Reier Ü., Pärtel M. — <em>Diversity and Distributions</em>, 28(6), 1202–1213.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2022_Paganeli_DDI.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-geb">GEB</span>
+    <div>
+      <div class="pub-title">Contemporary environment and historical legacy explain functional diversity of freshwater fishes in the world rivers.</div>
+      <div class="pub-authors">Su G., Tedesco P.A., <strong>Toussaint A.</strong>, Villeger S., Brosse S. — <em>Global Ecology and Biogeography</em>, 31, 700–713.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2022_Su_GEB.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+</div>
+
+<!-- 2021 -->
+<div class="pub-year-block" data-year="2021">
+<div class="pub-year-heading">2021<hr></div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-sciadv">Sci. Advances</span>
+    <div>
+      <div class="pub-title">Erosion of global functional diversity across the tree of life.</div>
+      <div class="pub-authors">Carmona C.P., Tamme R., Pärtel M., de Bello F., Brosse S., Capdevila P., Gonzalez-M R., Gonzalez-Suarez M., Salguero-Gomez R., Vasquez-Valderrama M., <strong>Toussaint A.</strong> — <em>Science Advances</em>, 7(13), eabf2675.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2021_Carmona_SciAdv.pdf" target="_blank">PDF</a>
+    <a class="pub-btn btn-press" href="https://inee.cnrs.fr/fr/cnrsinfo/lextinction-des-especes-en-danger-entrainera-une-reorganisation-globale-du-role-des-autres" target="_blank">Press CNRS</a>
+    <a class="pub-btn btn-press" href="https://www.eurekalert.org/news-releases/546861" target="_blank">EurekAlert!</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-preprint">Preprint</span>
+    <div>
+      <div class="pub-title">Combining taxonomic, phylogenetic and functional diversity reveals new global priority areas for tetrapod conservation.</div>
+      <div class="pub-authors">Tordoni E., <strong>Toussaint A.</strong>, Pärtel M., Nogues-Bravo D., Carmona C.P. — <em>bioRxiv</em>.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-doi" href="https://doi.org/10.1101/2021.07.01.450689" target="_blank">DOI</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-natcomms">Nat. Comms.</span>
+    <div>
+      <div class="pub-title">Extinction of threatened vertebrates will lead to idiosyncratic changes in functional diversity across the world.</div>
+      <div class="pub-authors"><strong>Toussaint A.</strong>, Brosse S., Bueno C.G., Pärtel M., Tamme S., Carmona C.P. — <em>Nature Communications</em>, 12(1), 1–12.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2021_Toussaint_NatCom.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-nature">Nature</span>
+    <div>
+      <div class="pub-title">Fine-root traits in the global spectrum of plant form and function.</div>
+      <div class="pub-authors">Carmona C.P., Bueno C.G., <strong>Toussaint A.</strong>, Träger S., Diaz S., Moora M., Munson D.A., Pärtel M., Zobel M., Tamme R. — <em>Nature</em>, 597(7878), 683–687.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2021_Carmona_Nature.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-geb">GEB</span>
+    <div>
+      <div class="pub-title">FISHMORPH: A global database on morphological traits of freshwater fishes.</div>
+      <div class="pub-authors">Brosse S., Charpin N., Su G., <strong>Toussaint A.</strong>, Herrera-R. G.A., Tedesco P.A., Villeger S. — <em>Global Ecology and Biogeography</em>, 30(12), 2330–2336.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2021_Brosse_GEB.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+</div>
+
+<!-- 2020 -->
+<div class="pub-year-block" data-year="2020">
+<div class="pub-year-heading">2020<hr></div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-other">J. Veg. Sci.</span>
+    <div>
+      <div class="pub-title">Asymmetric patterns of global diversity among plants and mycorrhizal fungi.</div>
+      <div class="pub-authors"><strong>Toussaint A.</strong>, Bueno C.G., Davison J., Moora M., Tedersoo L., Zobel M., Opik M., Partel M. — <em>Journal of Vegetation Science</em>, 31(2), 355–366.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2019_Toussaint_JVS.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-other">Sci. Tot. Env.</span>
+    <div>
+      <div class="pub-title">A diagnostic-based approach to assess specific risks of river degradation in a multiple pressure context: Insights from fish communities.</div>
+      <div class="pub-authors">Derezal O., Mondy P.C., Dembski S., Kreutzenberger K., Reyjol Y., Chanderis A., Valette L., Brosse S., <strong>Toussaint A.</strong>, Beillard J., Merg M.L., Usseglio-Polatera P. — <em>Science of The Total Environment</em>, 734, 139467.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2020_Derezal_et_al_STOTEN.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-preprint">Preprint</span>
+    <div>
+      <div class="pub-title">Mapping extinction risk in the global functional spectra across the tree of life.</div>
+      <div class="pub-authors">Carmona C.P., Tamme R., Partel M., de Bello F., Brosse S., Capdevila P., Gonzalez-M R., Gonzalez-Suarez M., Salguero-Gomez R., Vasquez-Valderrama M., <strong>Toussaint A.</strong> — <em>bioRxiv</em>.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-doi" href="https://doi.org/10.1101/2020.06.29.179143" target="_blank">DOI</a>
+  </div>
+</div>
+</div>
+
+<!-- 2018 -->
+<div class="pub-year-block" data-year="2018">
+<div class="pub-year-heading">2018<hr></div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-other">J. Veg. Sci.</span>
+    <div>
+      <div class="pub-title">Global database of plants with root-symbiotic nitrogen fixation: Nod DB.</div>
+      <div class="pub-authors">Tedersoo L., Laanisto L., Rahimlou S., <strong>Toussaint A.</strong>, Hallikma T., Pärtel M. — <em>Journal of Vegetation Science</em>, 29(3), 560–568.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2018_Tedersoo_JVS.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-other">Ecography</span>
+    <div>
+      <div class="pub-title">Spatial mismatch in morphological, ecological and phylogenetic diversity in historical and contemporary European freshwater fish faunas.</div>
+      <div class="pub-authors">Kuczynski L., Côte J., <strong>Toussaint A.</strong>, Brosse S., Buisson L., Grenouillet G. — <em>Ecography</em>, 41, 1665–1674.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2018_Kuczinski_et_al_Ecography.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-ecollett">Ecol. Lett.</span>
+    <div>
+      <div class="pub-title">Non-native species led to marked shifts in functional diversity of the world freshwater fish faunas.</div>
+      <div class="pub-authors"><strong>Toussaint A.</strong>, Charpin N., Beauchard O., Grenouillet G., Oberdorff T., Tedesco P.A., Villéger S., Brosse S. — <em>Ecology Letters</em>, 21(11), 1649–1659.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2018_Toussaint_Ecolet.pdf" target="_blank">PDF</a>
+    <a class="pub-btn btn-press" href="http://www.cnrs.fr/inee/communication/breves/b405.html" target="_blank">Press CNRS</a>
+    <a class="pub-btn btn-press" href="http://www.ird.fr/toute-l-actualite/actualites-scientifiques/la-biodiversite-des-poissons-d-eau-douce-bouleverse" target="_blank">Press IRD</a>
+    <a class="pub-btn btn-blog" href="https://ecolchange.wordpress.com/2018/10/11/new-publication-non-native-species-led-to-marked-shifts-in-functional-diversity-of-the-world-freshwater-fish-faunas" target="_blank">Blog</a>
+    <a class="pub-btn btn-supp" href="data/ele13141-sup-0001-suppinfo.docx" target="_blank">Supplementary</a>
+  </div>
+</div>
+</div>
+
+<!-- 2016 -->
+<div class="pub-year-block" data-year="2016">
+<div class="pub-year-heading">2016<hr></div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-other">Biol. Invasions</span>
+    <div>
+      <div class="pub-title">Worldwide freshwater fish homogenization is driven by a few widespread non-native species.</div>
+      <div class="pub-authors"><strong>Toussaint A.</strong>, Beauchard O., Oberdorff T., Brosse S., Villeger S. — <em>Biological Invasions</em>, 18, 1295–1304.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2016_Toussaint_BiologicalInvasions.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-other">Sci. Reports</span>
+    <div>
+      <div class="pub-title">Global functional diversity of freshwater fish is concentrated in the Neotropics.</div>
+      <div class="pub-authors"><strong>Toussaint A.</strong>, Charpin N., Brosse S., Villéger S. — <em>Scientific Reports</em>, 6, 22125.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2016_Toussaint_SciRep.pdf" target="_blank">PDF</a>
+    <a class="pub-btn btn-press" href="http://www.cnrs.fr/inee/communication/breves/b178.html" target="_blank">Press CNRS</a>
+    <a class="pub-btn btn-radio" href="https://www.franceinter.fr/emissions/la-tete-au-carre/la-tete-au-carre-11-avril-2016" target="_blank">Radio France Inter</a>
+    <a class="pub-btn btn-supp" href="data/srep22125-s1.docx" target="_blank">Supplementary</a>
+  </div>
+</div>
+</div>
+
+<!-- 2015 -->
+<div class="pub-year-block" data-year="2015">
+<div class="pub-year-heading">2015<hr></div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-other">J. Appl. Ichthyol.</span>
+    <div>
+      <div class="pub-title">Length-weight relationship of 58 fish species in streams of French Guiana.</div>
+      <div class="pub-authors">Allard L., <strong>Toussaint A.</strong>, Vigouroux R., Brosse S. — <em>Journal of Applied Ichthyology</em>, 31, 567–570.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2016_Toussaint_BiologicalInvasions.pdf" target="_blank">PDF</a>
+  </div>
+</div>
+</div>
+
+<!-- 2014 -->
+<div class="pub-year-block" data-year="2014">
+<div class="pub-year-heading">2014<hr></div>
+
+<div class="pub-card">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-geb">GEB</span>
+    <div>
+      <div class="pub-title">Historical assemblage distinctiveness and the introduction of widespread non-native species explain worldwide changes in freshwater fish taxonomic dissimilarity.</div>
+      <div class="pub-authors"><strong>Toussaint A.</strong>, Beauchard O., Oberdorff T., Brosse S., Villéger S. — <em>Global Ecology and Biogeography</em>, 23, 574–584.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2014_Toussaint%20et%20al._GEB.pdf" target="_blank">PDF</a>
+    <a class="pub-btn btn-press" href="https://www.cnrs.fr/occitanie-ouest/CNRS-Hebdo/Actualites/18686/Suite.aspx" target="_blank">Press CNRS</a>
+    <a class="pub-btn btn-supp" href="data/geb12141-sup-0001-si.doc" target="_blank">Supp. 1</a>
+    <a class="pub-btn btn-supp" href="data/geb12141-sup-0002-si.doc" target="_blank">Supp. 2</a>
+  </div>
+</div>
+</div>
+
+</div><!-- #pub-container -->
+
+<script>
+(function() {
+  // Build year filter buttons
+  var years = Array.from(document.querySelectorAll(".pub-year-block"))
+    .map(function(b){ return b.dataset.year; });
+  var filterDiv = document.getElementById("year-filters");
+  var activeYear = "all";
+
+  var allBtn = document.createElement("button");
+  allBtn.className = "yr-btn active"; allBtn.textContent = "All";
+  allBtn.onclick = function(){ setYear("all"); };
+  filterDiv.appendChild(allBtn);
+
+  years.forEach(function(y) {
+    var btn = document.createElement("button");
+    btn.className = "yr-btn"; btn.textContent = y; btn.dataset.year = y;
+    btn.onclick = function(){ setYear(y); };
+    filterDiv.appendChild(btn);
+  });
+
+  function setYear(y) {
+    activeYear = y;
+    document.querySelectorAll(".yr-btn").forEach(function(b){
+      b.classList.toggle("active", b.dataset.year === y || (y === "all" && b.textContent === "All"));
+    });
+    applyFilters();
+  }
+
+  function applyFilters() {
+    var q = document.getElementById("pub-search").value.toLowerCase();
+    var total = 0;
+    document.querySelectorAll(".pub-year-block").forEach(function(block) {
+      var yearMatch = activeYear === "all" || block.dataset.year === activeYear;
+      var cards = block.querySelectorAll(".pub-card");
+      var visibleCards = 0;
+      cards.forEach(function(card) {
+        var text = card.textContent.toLowerCase();
+        var show = yearMatch && (q === "" || text.includes(q));
+        card.style.display = show ? "" : "none";
+        if (show) { visibleCards++; total++; }
+      });
+      block.style.display = visibleCards > 0 ? "" : "none";
+    });
+    document.getElementById("pub-count").textContent =
+      total + " publication" + (total !== 1 ? "s" : "") + " shown";
+  }
+
+  window.filterPubs = applyFilters;
+  applyFilters();
+})();
+</script>
+
+
+
 
 </div>
 
@@ -729,35 +967,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
