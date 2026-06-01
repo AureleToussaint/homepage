@@ -2,7 +2,7 @@ name: "Aurèle Toussaint"
 title: "Aurèle Toussaint"
 description: |
   My Blog
-output_dir: "_site"
+output_dir: "site"
 base_url: https://beta.rstudioconnect.com/content/3776/
 collections:
   posts:

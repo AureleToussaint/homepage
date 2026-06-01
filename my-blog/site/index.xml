@@ -7,7 +7,17 @@
     <description>My Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 20 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Field notes from Belém — teaching R in the Amazon gateway</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2026-06-01-belem-brazil</link>
+      <description>A week in Belém, Brazil, teaching functional ecology and R to graduate students at the edge of the Amazon. On biodiversity, heat, açaí, and the strange privilege of doing science here.</description>
+      <category>teaching</category>
+      <category>field notes</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2026-06-01-belem-brazil</guid>
+      <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2026-06-01-belem-brazil/picBelem.jpeg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>What Shapes the Differences Between Freshwater Fish Communities Worldwide?</title>
       <link>https://beta.rstudioconnect.com/content/3776/posts/2025-12-20-global-patterns-of-freshwater-fish-beta-diversity</link>
@@ -16,6 +26,16 @@
       <guid>https://beta.rstudioconnect.com/content/3776/posts/2025-12-20-global-patterns-of-freshwater-fish-beta-diversity</guid>
       <pubDate>Sat, 20 Dec 2025 00:00:00 +0000</pubDate>
       <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2025-12-20-global-patterns-of-freshwater-fish-beta-diversity/Fig1.png" medium="image" type="image/png" width="1377" height="1487"/>
+    </item>
+    <item>
+      <title>Field mission INTRAIT — freshwater fish morphology along the Maroni river, French Guiana</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2025-12-01-intrait-french-guiana</link>
+      <description>In November 2025, our team from CRBE travelled to French Guiana to sample freshwater fish along the Maroni river as part of the INTRAIT project. We collected 1,408 individuals from ~76 species across four sites spanning a gradient of human pressure — the raw material for quantifying intraspecific morphological variation in tropical fish assemblages.</description>
+      <category>fieldwork</category>
+      <category>INTRAIT</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2025-12-01-intrait-french-guiana</guid>
+      <pubDate>Mon, 01 Dec 2025 00:00:00 +0000</pubDate>
+      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2025-12-01-intrait-french-guiana/fish_guiana.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
       <title>New paper accepted in Nature on global patterns of 'dark diversity' in plants</title>
