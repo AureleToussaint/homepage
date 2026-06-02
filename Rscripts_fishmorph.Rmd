@@ -4,126 +4,14 @@ pagetitle: "FishMORPH — R Scripts"
 output:
   html_document:
     self_contained: false
-    toc: true
-    toc_depth: 4
-    toc_float:
-      collapsed: true
-      smooth_scroll: true
-    code_folding: show
-    highlight: tango
-    df_print: paged
-    css: assets/custom.css
+    toc: false
     includes:
-      after_body: assets/after_body.html
+      in_header: header.html
 ---
 
 ```{=html}
-<style>
-/* Custom function TOC — overrides rmarkdown floating TOC */
-#TOC,
-.tocify-wrapper,
-div[data-spy="affix"] {
-  display: none !important;
-  width: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-.fn-nav {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 205px;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-  padding: 14px 10px 20px 14px;
-  border-right: 1px solid #e8e8e8;
-  background: #fafafa;
-  font-size: 0.82em;
-  z-index: 100;
-}
-.fn-nav .fn-nav-title {
-  font-size: 0.7em;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: #bbb;
-  margin-bottom: 10px;
-  padding-left: 4px;
-}
-.fn-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.fn-nav li a {
-  display: block;
-  padding: 3px 6px;
-  border-radius: 4px;
-  color: #444;
-  text-decoration: none;
-  font-family: monospace;
-  font-size: 0.95em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.fn-nav li a:hover {
-  background: #eef2f7;
-  color: #2c3e50;
-}
-.fn-nav li a.active {
-  background: #e3f0fb;
-  color: #1a6faf;
-  font-weight: 600;
-}
-/* push main content right to make room */
-body {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-}
-.main-container {
-  margin-left: 210px !important;
-  max-width: calc(100vw - 230px) !important;
-  width: calc(100vw - 230px) !important;
-  padding-right: 30px !important;
-}
-/* kill rmarkdown's bootstrap TOC column entirely */
-.col-xs-12.col-sm-4.col-md-3,
-.tocify-wrapper,
-div.tocify,
-#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
-/* expand content column to full width */
-.col-xs-12.col-sm-8.col-md-9 {
-  width: 100% !important;
-  -webkit-flex: none !important;
-  flex: none !important;
-}
-.row { margin-left: 0 !important; margin-right: 0 !important; }
-</style>
-
-<div class="fn-nav" id="fn-nav">
-  <div class="fn-nav-title">Functions</div>
-  <ul>
-    <li><a href="#fn-fishmorph">FishMORPH — data preparation</a></li>
-    <li><a href="#fn-funSpace">FishMORPH — Functional space</a></li>
-  </ul>
-</div>
-
-<script>
-/* Highlight active function on scroll */
-window.addEventListener("scroll", function() {
-  var links = document.querySelectorAll(".fn-nav li a");
-  var current = "";
-  links.forEach(function(a) {
-    var id = a.getAttribute("href").slice(1);
-    var el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top < 120) current = id;
-  });
-  links.forEach(function(a) {
-    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
-  });
-});
-</script>
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 <style>
 #pw-overlay {
@@ -153,811 +41,90 @@ window.addEventListener("scroll", function() {
 .back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
 .back-link a { color: #c0392b; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
-
-/* ── Function cards ────────────────────────────────── */
 .page-intro {
   display:flex; align-items:center; gap:14px;
   padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
 }
 .page-intro-icon {
-  width:48px; height:48px; border-radius:10px;
+  width:52px; height:52px; border-radius:12px; background:#c0392b;
   display:flex; align-items:center; justify-content:center;
-  font-size:1.5em; color:#fff; flex-shrink:0;
+  font-size:1.6em; color:#fff; flex-shrink:0;
 }
 .page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
 .page-intro p  { font-size:0.92em; color:#777; margin:0; }
-
-.fn-section-divider {
-  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+.session-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px; margin-bottom: 40px;
 }
-.fn-section-divider span {
-  font-size:0.75em; font-weight:700; letter-spacing:.08em;
-  text-transform:uppercase; color:#aaa; white-space:nowrap;
+.session-card {
+  background: #fff; border: 1px solid #e4e9f0; border-radius: 12px;
+  padding: 16px 18px; text-decoration: none !important; color: inherit !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow .15s, transform .12s;
+  display: flex; flex-direction: column; gap: 6px;
+  border-left: 4px solid #c0392b;
 }
-.fn-section-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
-
-.fn-card {
-  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+.session-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10); transform: translateY(-2px);
+  text-decoration: none !important;
 }
-.fn-header {
-  display:flex; align-items:flex-start; justify-content:space-between;
-  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
-}
-.fn-name {
-  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
-  margin:0; padding:0; line-height:1.4;
-}
-.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
-.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
-.fn-tag {
-  font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600;
-}
-.tag-stat   { background:#e8f5e9; color:#1b6b2f; }
-.tag-util   { background:#e3f2fd; color:#1557a0; }
-.tag-viz    { background:#f3e5f5; color:#6a1b9a; }
-.tag-fd     { background:#fff3e0; color:#b25000; }
-.tag-data   { background:#fce4ec; color:#880e4f; }
-.tag-ml     { background:#e8eaf6; color:#283593; }
-.tag-morph  { background:#e0f2f1; color:#00574e; }
-
-.fn-args {
-  display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
-  background:#fff; border-bottom:1px solid #f0f0f0; align-items:center;
-}
-.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
-.fn-arg {
-  font-family:monospace; font-size:0.78em; padding:2px 8px;
-  background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555;
-}
-
+.session-num   { font-size: 0.88em; font-weight: 700; }
+.session-topics{ font-size: 0.82em; color: #888; line-height: 1.5; }
+.session-link  { margin-top: auto; padding-top: 8px; font-size: 0.8em; font-weight: 600; }
 </style>
 
 <div id="pw-overlay">
   <div class="pw-box">
     <div class="pw-lock">🔒</div>
-    <h2>FishMORPH</h2>
-    <p>Please enter the access password.</p>
+    <h2>R Scripts — FishMORPH</h2>
+    <p>Enter the password to access this page.</p>
     <div class="pw-row">
-      <input type="password" id="pw-input" placeholder="Password…"
-             onkeydown="if(event.key==='Enter') checkPw()"/>
-      <button onclick="checkPw()">Enter</button>
+      <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+      <button onclick="checkPw()">OK</button>
     </div>
-    <p class="pw-err" id="pw-error"></p>
+    <p class="pw-err" id="pw-err"></p>
   </div>
 </div>
+<script>
+(function(){
+  if(sessionStorage.getItem('rscripts_unlocked')==='1'){
+    document.getElementById('pw-overlay').style.display='none';
+  }
+})();
+async function checkPw(){
+  var val=document.getElementById('pw-input').value;
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+  var hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hex==='ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5'){
+    sessionStorage.setItem('rscripts_unlocked','1');
+    document.getElementById('pw-overlay').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='Incorrect password.';
+  }
+}
+</script>
 
 <div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
 
-<script>
-const CORRECT_HASH = "ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5";
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-async function checkPw() {
-  const hash = await sha256(document.getElementById("pw-input").value);
-  if (hash === CORRECT_HASH) {
-    document.getElementById("pw-overlay").style.display = "none";
-    sessionStorage.setItem("rscripts_unlocked", "1");
-  } else {
-    const err = document.getElementById("pw-error");
-    err.textContent = "Incorrect password. Please try again.";
-    document.getElementById("pw-input").value = "";
-    document.getElementById("pw-input").focus();
-    setTimeout(()=>{ err.textContent=""; }, 3000);
-  }
-}
-if (sessionStorage.getItem("rscripts_unlocked") === "1")
-  document.getElementById("pw-overlay").style.display = "none";
-</script>
-```
-
-```{=html}
 <div class="page-intro">
-  <div class="page-intro-icon" style="background:#c0392b;">🐟</div>
+  <div class="page-intro-icon">🐟</div>
   <div>
     <h1>FishMORPH</h1>
-    <p>Data preparation, FishBase queries and morphological trait workflows</p>
+    <p>FishMORPH database queries and morphological trait workflows</p>
   </div>
 </div>
-```
 
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-fishmorph">FishMORPH — data preparation</h4>
-    <div class="fn-desc">Load FishMORPH trait and phylogeny objects, standardise species names and prepare the full species list.</div>
-    <div class="fn-tags"><span class="fn-tag tag-data">data</span><span class="fn-tag tag-morph">morphology</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">FishMORPH_Traits.rds — trait RDS</span><span class="fn-arg">FishMORPH_Phylogeny.rds — phylogeny RDS</span></div>
-</div>
-```
-
-```{r fn_fishmorph_fishmorph_data_prep_0, eval=FALSE}
-################################################################################
-# data preparation
-################################################################################
-
-# --- Load the data ---
-
-trait <- readRDS("FishMORPH_Traits.rds")
-phylogeny <- readRDS("FishMORPH_Phylogeny.rds")
-traitNames <- colnames(trait)[-c(1:6)]
-
-# --- Prepare the data ---
-
-# Species list
-list_sp <- gsub("\\.", " ", as.character(trait$Genus.species))
-
-# Lenght-weight fishbase
-lgtwgt <- as.data.frame(length_weight(list_sp))
-lgtwgt <- lgtwgt[!is.na(lgtwgt$a) & !is.na(lgtwgt$b), ]
-
-# Best coeff
-ab <- lgtwgt %>%
-  group_by(Species) %>%
-  slice_max(order_by = CoeffDetermination, with_ties = FALSE, na_rm = TRUE) %>%
-  dplyr::select(Species, a, b) %>%
-  distinct()
-
-# Other traits
-speciesInfo <- species(list_sp) %>% data.table()
-speciesInfoSub <- speciesInfo[, .(Species, Fresh, LongevityWild, Length, Weight, LTypeMaxM)]
-speciesInfoSub <- unique(speciesInfoSub)
-speciesInfoSub$Species <- gsub(" ", ".", speciesInfoSub$Species)
-speciesInfoSub <- speciesInfoSub %>%
-  mutate(
-    Length = ifelse(LTypeMaxM != "SL", NA, Length),
-    Weight2 = ifelse(Species %in% gsub(" ", ".", rownames(ab)),
-                     ab[gsub("\\.", " ", Species), "a"] * Length^ab[gsub("\\.", " ", Species), "b"],
-                     NA)
-  ) %>%
-  mutate(Weight = ifelse(is.na(Weight) & !is.na(Weight2), Weight2, Weight))
-
-# fusion with Fishmorph
-fishTraits <- merge(trait[,6:15], speciesInfoSub[, .(Species, Length, Weight)], 
-                    by.x = "Genus.species", by.y = "Species", all.x = TRUE)
-
-fishTraits <- fishTraits %>%
-  mutate(across(-Genus.species, ~log10(.x + 1))) %>%
-  rename(species = Genus.species) %>%
-  mutate(species = gsub("\\.", "_", species))
-
-spToKeep <- fishTraits %>% # keep only freshwater species
-  dplyr::select(species) %>%
-  mutate(species = gsub("_", " ", species)) %>%
-  pull() %>%
-  rfishbase::species() %>%
-  as.data.table() %>%
-  filter(Fresh == 1) %>%
-  dplyr::select(Species) %>%
-  mutate(Species = gsub(" ", "_", Species)) %>%
-  pull()
-
-fishTraits <- fishTraits %>%
-  filter(species %in% spToKeep)
-
-#dir.create("dataPrepared/Fish", showWarnings = FALSE, recursive = TRUE)
-
-# write.table(fishTraits, "dataPrepared/Fish/fishTraitsMissing.txt")
-fishTraits <- read.table( "dataPrepared/Fish/fishTraitsMissing.txt")
-
-# --- PCoA phylogenetic ---
-
-phylogeny$tip.label <- gsub("\\.", "_", phylogeny$tip.label)
-phylogeny <- drop.tip(phylogeny, setdiff(phylogeny$tip.label, fishTraits$species))
-phylogenyTraits <- phytools::force.ultrametric(phylogeny)
-phylDiss <- sqrt(cophenetic(phylogenyTraits))
-pcoaPhyl <- cmdscale(phylDiss, k = 10) #long
-
-rownames(pcoaPhyl) = fishTraits$species
-colnames(pcoaPhyl) = paste0("Eigen.", 1:10)
-
-# write.table(pcoaPhyl, "dataPrepared/Fish/pcoaPhylogenyFish.txt")
-pcoaPhyl <- read.table("dataPrepared/Fish/pcoaPhylogenyFish.txt", header = T, stringsAsFactors = F)
-
-# --- Taxonomic standardization (quick) ---
-
-list_sp_raw <- fishTraits$species
-list_sp_raw <- gsub("_", " ", list_sp_raw)
-list_sp_raw <- stringr::str_squish(list_sp_raw)
-
-verified_names <- taxize::gna_verifier( # long
-  names = list_sp_raw,
-  data_sources = c(11), 
-  all_matches = FALSE,   
-  capitalize = TRUE,         
-  species_group = TRUE,      
-  output_type = "table"      
-)
-
-new_names <- gsub(" ", "_", verified_names$matchedCanonicalSimple)
-
-rownames(pcoaPhyl) <- new_names
-fishTraits$species <- new_names
-traitsAndPCOA <- cbind(fishTraits, pcoaPhyl)
-
-# write.table(traitsAndPCOA, "dataPrepared/Fish/traitsWithPCOA.txt")
-traitsAndPCOA <- read.table("dataPrepared/Fish/traitsWithPCOA.txt", header = T, stringsAsFactors = F)
-
-# --- IUCN data ---
-
-species_list <- unique(str_trim(traitsAndPCOA$species))
-iucn_statut <- read.csv("dataOriginal/assessments.csv", header = TRUE, stringsAsFactors = FALSE) # IUCN data 2024
-iucn_clean <- iucn_statut %>%
-  mutate(scientificName = str_trim(scientificName))
-species_list <- gsub("_", " ", species_list)
-matched_species <- inner_join(
-  tibble(species = species_list),
-  iucn_clean,
-  by = c("species" = "scientificName")
-)
-
-species_to_update <- tibble(species = species_list) %>%
-  anti_join(iucn_clean, by = c("species" = "scientificName"))
-synonyms_info <- rfishbase::synonyms(
-  species_list = species_to_update$species,
-  server = "fishbase",
-  version = "latest",
-  fields = NULL
-)
-synonyms_info_filtered <- synonyms_info %>%
-  filter(!Status %in% c("misapplied name", "ambiguous synonym", "provisionally accepted name"))
-synonyms_mapping <- synonyms_info_filtered %>%
-  dplyr::select(Species, synonym) %>%
-  distinct()
-
-iucn_clean <- iucn_clean %>%
-  mutate(scientificName = if_else(
-    scientificName %in% synonyms_mapping$Species,
-    synonyms_mapping$synonym[match(scientificName, synonyms_mapping$Species)],
-    scientificName
-  ))
-matched_species <- inner_join(
-  tibble(species = species_list),
-  iucn_clean,
-  by = c("species" = "scientificName")
-)
-
-species_to_update <- tibble(species = species_list) %>%
-  anti_join(iucn_clean, by = c("species" = "scientificName")) %>%
-  as.data.frame()
-rownames(species_to_update) <- species_to_update$species
-
-# manual correction
-species_to_check <- read.csv("dataOriginal/species_to_update_900_done.csv", sep = ";", header = TRUE, stringsAsFactors = FALSE)
-colnames(species_to_check) <- c("scientificName", "redlistCategory")
-
-iucn_clean <- iucn_clean[, c("scientificName", "redlistCategory")]
-acronyms <- c(
-  "Critically Endangered" = "CR",
-  "Endangered" = "EN",
-  "Vulnerable" = "VU",
-  "Near Threatened" = "NT",
-  "Least Concern" = "LC",
-  "Data Deficient" = "DD",
-  "Extinct" = "EX",
-  "Extinct in the Wild" = "EW",
-  "Not Evaluated" = "NE"
-)
-iucn_clean <- iucn_clean %>%
-  mutate(redlistCategory = dplyr::recode(redlistCategory, !!!acronyms))
-iucn_clean <- bind_rows(iucn_clean, species_to_check)
-iucn_clean <- iucn_clean %>%
-  filter(scientificName %in% species_list)
-iucn_clean <- iucn_clean %>%
-  group_by(scientificName) %>%
-  slice(1) %>%
-  ungroup()
-
-traitsAndPCOA$species <- gsub("_", " ", traitsAndPCOA$species)
-traitsAndPCOA$IUCN <- iucn_clean$redlistCategory[match(traitsAndPCOA$species, iucn_clean$scientificName)]
-
-# write.table(traitsAndPCOA, "dataPrepared/Fish/traitsWithPCOAIUCN.txt")
-traitsAndPCOAIUCN <- read.table("dataPrepared/Fish/traitsWithPCOAIUCN.txt", header = T, stringsAsFactors = F)
-
-# --- Complete taxonomy ---
-
-taxInfo <- pblapply(traitsAndPCOAIUCN$species, function(sp) {
-  tryCatch({
-    traitdataform::get_gbif_taxonomy(sp, subspecies = TRUE, higherrank = TRUE,
-                                     conf_threshold = 80, resolve_synonyms = FALSE)[1, ]
-  }, error = function(e) NULL)
-}) %>% rbindlist(fill = TRUE)
-
-# --- Final table ---
-
-fishTraitsPhylogenyIUCN <- data.table(traitsAndPCOAIUCN)
-
-# write.table(fishTraitsPhylogenyIUCN, "dataPrepared/Fish/AllDataFish_clean.txt")
-fishData <- read.table("dataPrepared/Fish/traitsWithPCOAIUCN.txt", header = T, stringsAsFactors = F)
-
-# define columns
-columnsTraits <- 2:(which(colnames(fishData) == "Eigen.1") - 1)
-columnsImputation <- 2:(which(colnames(fishData) == "IUCN") - 1)
-
-# --- missForest imputation ---
-
-set.seed(123) 
-imputed_forest <- missForest(xmis = fishData[, columnsImputation]) # it takes long
-print(imputed_forest$OOBerror)
-
-traits_names <- colnames(fishData)[columnsTraits]
-fishData_imputed_forest <- fishData
-fishData_imputed_forest[traits_names] <- imputed_forest$ximp[traits_names]
-
-# write.table(fishData_imputed_forest, "dataPrepared/Fish/fishData_imputed_forest.txt", row.names = FALSE)
-fishData_imputed_forest <- read.table("dataPrepared/Fish/fishData_imputed_forest.txt", header = T)
-
-# --- trait selection and renaming ---
-
-selectedTraits <- c("EdHd", "EhBd", "JlHd", "MoBd", "BlBd", "HdBd",
-                    "PFiBd", "PFlBl", "CFdCPd", "Length", "Weight")
-
-newTraitNames <- c("es", "ep", "ms", "mp", "elo", "wid", "pp", "ps", "cs", "svl", "bm")
-
-fishTraitsMissing <- fishData[, selectedTraits]
-colnames(fishTraitsMissing) <- newTraitNames
-rownames(fishTraitsMissing) <- fishData$species
-
-fishTraitsImputed <- fishData_imputed_forest[, selectedTraits]
-colnames(fishTraitsImputed) <- newTraitNames
-rownames(fishTraitsImputed) <- fishData$species
-
-# --- add IUCN to the table ---
-
-fishTraitsMissing <- data.frame(fishTraitsMissing, IUCN = fishData$IUCN)
-# write.table(fishTraitsMissing, "dataPrepared/Fish/TraitFishMissing.txt")
-fishTraitsImputed <- data.frame(fishTraitsImputed, IUCN = fishData$IUCN)
-# write.table(fishTraitsImputed, "dataPrepared/Fish/TraitFishImputed.txt")
-
-# --- ACP and TPD ---
-
-# it takes long !!!
-results <- computePCAandTPDs(fishTraitsImputed[,!colnames(fishTraitsImputed) == "IUCN"])
-# saveRDS(results, "output/All_fish.rds")
-pca_trait = results$PCA
-# saveRDS(pca_trait, "output/PCA_fish.rds")
-tpd_trait = results$TPDs
-# saveRDS(tpd_trait, "output/TPDs_fish.rds")
-
-# --- (optionnal) other fish info ---
-
-fishOtherInfo <- fishData[, (max(columnsTraits) + 1):ncol(fishData)]
-
-# --- add uses to pca_traits ---
-
-df_scraping <- readRDS("output/fish_human_uses_binary_FB.rds") %>% as.data.table()
-df_uni <- fread("data/uni.csv")
-
-setnames(df_scraping, c("species_name", "aquarium", "fisheries", "bait", "game_fish", "aquaculture"),
-         c("Species", "Aquarium", "Fisheries", "Bait", "Game_fish", "Aquaculture"))
-setnames(df_uni, "Game fish", "Game_fish", skip_absent = TRUE)
-
-binary_cols <- c("Fisheries", "Aquaculture", "Aquarium", "Game_fish", "Bait")
-
-merged_df <- merge(
-  df_uni,
-  df_scraping[, c("Species", binary_cols), with = FALSE],
-  by = "Species",
-  suffixes = c("", ".scraping"),
-  all.x = TRUE
-)
-
-for (col in binary_cols) {
-  col_scraping <- paste0(col, ".scraping")
-  if (col_scraping %in% colnames(merged_df)) {
-    merged_df[[col]] <- pmax(
-      as.numeric(merged_df[[col]]),
-      as.numeric(merged_df[[col_scraping]]),
-      na.rm = TRUE
-    )
-    merged_df[[col_scraping]] <- NULL
-  }
-}
-
-merged_df[, All_uses := as.integer(Fisheries + Aquaculture + Aquarium + Game_fish + Bait > 0)]
-
-merged_df_clean <- merged_df %>%
-  select(Species, all_of(binary_cols), All_uses) %>%
-  rename("Game fish" = Game_fish, "All uses" = All_uses)
-
-usage_cols <- c("Fisheries", "Aquaculture", "Aquarium", "Game fish", "Bait", "All uses")
-
-uses_df <- as.data.frame(merged_df_clean[, c("Species", usage_cols), with = FALSE])
-uses_df <- uses_df[!is.na(uses_df$Species) & uses_df$Species != "NA", ]
-rownames(uses_df) <- uses_df$Species
-uses_df$Species <- NULL
-
-uses_df["Centromochlus musaica", ] <- list( # miss match in the species name for Centromochlus musaica
-  Fisheries = 0,
-  Aquaculture = 0,
-  Aquarium = 1, # only one use associated to Centromochlus musaica
-  `Game fish` = 0,
-  Bait = 0,
-  `All uses` = 1
-)
-
-pca_trait$uses <- uses_df[species_ref, usage_cols, drop = FALSE]
-use <- pca_trait$uses
-saveRDS(pca_trait, "output/pca_trait.rds")
-
-# --- create the matrice ---
-
-pca_trait <- readRDS("output/pca_trait.rds")
-  
-species_scores <- as.data.frame(pca_trait$traits_scores[,1:4])
-species_uses <- as.data.frame(pca_trait$uses)
-
-species_uses$rownames <- rownames(species_uses)
-species_scores$rownames <- rownames(species_scores)
-species_scores_uses <- merge(species_uses, species_scores, by = "rownames")
-rownames(species_scores_uses) <- species_scores_uses$rownames
-species_scores_uses$rownames <- NULL
-species_uses$rownames <- NULL
-MatriceFish <- t(as.matrix(species_uses))
-column_names <- rownames(species_uses)
-MatriceFish_1 <- matrix(1, nrow = 1, ncol = length(column_names))
-colnames(MatriceFish_1) <- column_names
-rownames(MatriceFish_1) <- "all"
-MatriceFish <- rbind(MatriceFish, MatriceFish_1)
-
-write.csv(MatriceFish, "output/MatriceFish.csv", row.names = TRUE)
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-<div>
-<h4 class="fn-name" id="fn-funSpace">FishMORPH — FSpace</h4>
-  <div class="fn-desc">Representation of the functional space based on subset of fish</div>
-  <div class="fn-tags"><span class="fn-tag tag-data">data</span><span class="fn-tag tag-morph">morphology</span></div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">FishMORPH_Traits.rds — trait RDS</span><span class="fn-arg">FishMORPH_Phylogeny.rds — phylogeny RDS</span></div>
+<div class="session-grid">
+  <a class="session-card" href="fn/fn-fishmorph_fishmorph.html" target="_blank">
+    <div class="session-num" style="color:#c0392b;"><span style="font-family:monospace;">FishMORPH — data preparation</span></div>
+    <div class="session-topics">Load FishMORPH trait and phylogeny objects, standardise species names and prepare the full species l</div>
+    <div class="session-link" style="color:#c0392b;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-funSpace_fishmorph.html" target="_blank">
+    <div class="session-num" style="color:#c0392b;"><span style="font-family:monospace;">FishMORPH — FSpace</span></div>
+    <div class="session-topics">Representation of the functional space based on subset of fish</div>
+    <div class="session-link" style="color:#c0392b;">Open ↗</div>
+  </a>
 </div>
 ```
-
-```{r fn_fishmorph_fspace, eval=FALSE}
-# =============================================================================
-# 0. LIBRAIRIES
-# =============================================================================
-library(readxl)
-library(dplyr)
-library(tidyr)
-library(data.table)
-library(pbapply)
-library(traitdataform)
-library(openxlsx)
-library(tibble)
-
-set.seed(20260527)   # reproductibilité des tirages au genre/famille
-
-make.PCA <- function(TRAITS, dimensionsAux, savePCA) {
-  paran_aux <- paran::paran(TRAITS)
-  pca_obj   <- list()
-  pca_obj$traits     <- TRAITS
-  pca_obj$PCA        <- princomp(TRAITS)
-  pca_obj$dimensions <- dimensionsAux
-  eigenvalues        <- summary(pca_obj$PCA)[[1]]^2
-  pca_obj$variance   <- eigenvalues[seq_len(dimensionsAux)] / sum(eigenvalues)
-  pca_obj$loadings   <- pca_obj$PCA$loadings
-  pca_obj$traitsUse  <- data.frame(pca_obj$PCA$scores[, seq_len(dimensionsAux)])
-  if (!is.na(savePCA)) saveRDS(pca_obj, savePCA)
-  pca_obj
-}
-
-# =============================================================================
-# 1. LISTE D'ESPECES (Amazonie)
-# =============================================================================
-setwd("~/Library/CloudStorage/OneDrive-Personnel/iCloud Drive/00_Co-authors/Marcello")
-planilha <- read_excel("Planilha_selecao_especies_kedma.xlsx")
-
-species <- planilha[["...3"]] |> trimws()
-species <- species[!is.na(species) & species != "" & grepl(" ", species)]
-species <- sort(unique(species))
-
-# =============================================================================
-# 2. CHARGEMENT FISHMORPH + RESOLUTION GBIF
-# =============================================================================
-setwd("~/Library/CloudStorage/OneDrive-Personnel/iCloud Drive/00_Co-authors/Julien")
-fishTraitsImputed <- read.table("data/TraitFishImputed.txt")
-pca_trait         <- readRDS("data/pca_trait.rds")
-setwd("~/Library/CloudStorage/OneDrive-Personnel/iCloud Drive/00_Co-authors/Marcello")
-
-traitCols <- setdiff(colnames(fishTraitsImputed), "IUCN")
-fishMorph <- trimws(rownames(fishTraitsImputed))
-
-fishMORPH_info <- pbapply::pblapply(fishMorph, function(sp) {
-  tryCatch(
-    get_gbif_taxonomy(sp, subspecies = TRUE, higherrank = TRUE,
-                      conf_threshold = 80, resolve_synonyms = TRUE)[1, ],
-    error = function(e) NULL
-  )
-}) %>% data.table::rbindlist(fill = TRUE)
-
-# Tables de correspondance pour FishMORPH (réutilisées en sections 6 et 6bis)
-fishMORPH_lookup <- data.table(
-  scientificName = fishMorph,
-  genus  = sub(" .*$", "", fishMorph),
-  family = fishMORPH_info$family
-)
-# Index ligne dans fishTraitsImputed (l'ordre des deux objets est aligné)
-fishMORPH_lookup[, row_id := .I]
-
-# =============================================================================
-# 3. APPARIEMENT EXACT (verbatim == FishMORPH)
-# =============================================================================
-commonSP   <- intersect(species, fishMorph)
-spToCheck  <- species[!species %in% commonSP]
-
-# =============================================================================
-# 4. RESOLUTION GBIF DES NON-APPARIES
-# =============================================================================
-taxInfo <- pbapply::pblapply(spToCheck, function(sp) {
-  tryCatch(
-    get_gbif_taxonomy(sp, subspecies = TRUE, higherrank = TRUE,
-                      conf_threshold = 80, resolve_synonyms = TRUE)[1, ],
-    error = function(e) NULL
-  )
-}) %>% data.table::rbindlist(fill = TRUE)
-
-taxInfo <- as.data.table(taxInfo)
-taxInfo[is.na(scientificName) | scientificName == "",
-        scientificName := verbatimScientificName]
-
-# =============================================================================
-# 5. SECOND APPARIEMENT EXACT (sur nom GBIF résolu)
-# =============================================================================
-commonSP2     <- intersect(taxInfo$scientificName, fishMorph)
-spToCheck2All <- taxInfo[!scientificName %in% commonSP2, ]
-
-traits_species <- fishTraitsImputed[unique(c(commonSP, commonSP2)), traitCols]
-traits_species <- tibble::rownames_to_column(traits_species, var = "scientificName")
-traits_species$match_level <- "species"
-
-# =============================================================================
-# 6. APPARIEMENT AU GENRE
-# =============================================================================
-spGenus <- sub(" .*$", "", spToCheck2All$scientificName)
-
-# Helper : tirage normal coordonnée par coordonnée pour n>=2 congénères,
-# moyenne sinon. Filet de sécurité contre sd indéfini.
-draw_traits <- function(mat) {
-  if (nrow(mat) == 1L) return(unlist(mat[1, , drop = TRUE]))
-  apply(mat, 2, function(x) {
-    m <- mean(x, na.rm = TRUE); s <- sd(x, na.rm = TRUE)
-    if (is.na(s) || s == 0) m else rnorm(1, mean = m, sd = s)
-  })
-}
-
-genusList <- lapply(seq_len(nrow(spToCheck2All)), function(i) {
-  idx <- fishMORPH_lookup[genus == spGenus[i], row_id]
-  if (length(idx) == 0L) return(NULL)
-  vals <- draw_traits(fishTraitsImputed[idx, traitCols, drop = FALSE])
-  data.frame(
-    verbatimScientificName = spToCheck2All$verbatimScientificName[i],
-    scientificName         = spToCheck2All$scientificName[i],
-    as.list(vals),
-    match_level            = "genus",
-    check.names = FALSE, stringsAsFactors = FALSE
-  )
-})
-traits_genus <- data.table::rbindlist(genusList, fill = TRUE)
-
-# =============================================================================
-# 6bis. APPARIEMENT A LA FAMILLE (espèces sans congénère dans FishMORPH)
-# =============================================================================
-spToCheckFam <- spToCheck2All[!scientificName %in% traits_genus$scientificName, ]
-
-# Famille manquante après GBIF -> on ne peut pas apparier
-spToCheckFam <- spToCheckFam[!is.na(family) & family != "", ]
-
-familyList <- lapply(seq_len(nrow(spToCheckFam)), function(i) {
-  fam <- spToCheckFam$family[i]
-  idx <- fishMORPH_lookup[family == fam, row_id]
-  if (length(idx) == 0L) return(NULL)
-  vals <- draw_traits(fishTraitsImputed[idx, traitCols, drop = FALSE])
-  data.frame(
-    verbatimScientificName = spToCheckFam$verbatimScientificName[i],
-    scientificName         = spToCheckFam$scientificName[i],
-    family                 = fam,
-    n_family_donors        = length(idx),
-    as.list(vals),
-    match_level            = "family",
-    check.names = FALSE, stringsAsFactors = FALSE
-  )
-})
-traits_family <- data.table::rbindlist(familyList, fill = TRUE)
-
-# =============================================================================
-# 7. NON TROUVEES (ni espèce, ni genre, ni famille)
-# =============================================================================
-matched_all <- unique(c(traits_genus$scientificName, traits_family$scientificName))
-traits_notfound <- unique(
-  spToCheck2All[!scientificName %in% matched_all,
-                c("verbatimScientificName", "scientificName", "family")]
-)
-
-# =============================================================================
-# 8. CONSTRUCTION DU POOL POUR LA PCA (alignement strict)
-# =============================================================================
-fishMORPH_df <- fishTraitsImputed[, traitCols] |>
-  tibble::rownames_to_column(var = "scientificName") |>
-  dplyr::mutate(match_level = "fishMORPH")
-
-cols_pca <- c("scientificName", traitCols, "match_level")
-add_species <- traits_species[, cols_pca]
-add_genus   <- as.data.frame(traits_genus)[,   cols_pca]
-add_family  <- as.data.frame(traits_family)[,  cols_pca]
-
-# On exclut du pool FishMORPH les espèces déjà identifiées par appariement
-# direct (commonSP / commonSP2) : elles seraient sinon dupliquées.
-already_in_fishMORPH <- intersect(add_species$scientificName,
-                                  fishMORPH_df$scientificName)
-add_species_extra <- add_species[!add_species$scientificName %in% already_in_fishMORPH, ]
-
-# Et on évite tout doublon (un nom imputé au genre/famille déjà résolu à l'espèce)
-add_genus_extra  <- add_genus[!add_genus$scientificName  %in% fishMORPH_df$scientificName, ]
-add_family_extra <- add_family[!add_family$scientificName %in% c(fishMORPH_df$scientificName,
-                                                                 add_genus_extra$scientificName), ]
-
-trait_pool <- rbind(fishMORPH_df, add_species_extra, add_genus_extra, add_family_extra)
-
-# Identifiants uniques (au cas où des noms se répéteraient encore, ex. synonymes)
-trait_pool$row_label <- make.unique(trait_pool$scientificName, sep = "__")
-rownames(trait_pool) <- trait_pool$row_label
-
-# Indices des espèces du sous-ensemble amazonien (toutes les espèces appariées
-# à l'espèce, au genre ou à la famille)
-sub_names <- c(commonSP, commonSP2,
-               traits_genus$scientificName,
-               traits_family$scientificName)
-sub_idx_pool <- which(trait_pool$scientificName %in% sub_names)
-
-# =============================================================================
-# 9. DEUX PCA INDEPENDANTES, ESPECES DU SOUS-ENSEMBLE ALIGNEES
-# =============================================================================
-
-# --- 9a. PCA globale sur l'ensemble du pool (FishMORPH + espèces ajoutées) -----
-trait_mat_all <- scale(trait_pool[, traitCols])
-keep_all      <- stats::complete.cases(trait_mat_all)
-trait_mat_all <- trait_mat_all[keep_all, ]
-labels_all    <- rownames(trait_pool)[keep_all]
-rownames(trait_mat_all) <- labels_all
-
-pca_all <- make.PCA(trait_mat_all, dimensionsAux = 4, savePCA = NA)
-# Stabilisation du signe de PC1 (convention héritée du script original)
-pca_all$PCA$loadings[, 1] <- pca_all$PCA$loadings[, 1] * (-1)
-pca_all$PCA$scores[,   1] <- pca_all$PCA$scores[,   1] * (-1)
-
-# --- 9b. Liste de référence des espèces du sous-ensemble amazonien -------------
-# On part des row_label du pool (uniques, gérant les éventuels doublons de noms)
-sub_labels_target <- trait_pool$row_label[sub_idx_pool]
-
-# On ne garde que celles qui ont survécu au filtrage NA dans pca_all : c'est cette
-# liste qui définit le sous-ensemble effectivement représentable.
-sub_labels <- intersect(sub_labels_target, labels_all)
-
-# Diagnostic explicite des pertes éventuelles (NA dans les traits)
-dropped_NA <- setdiff(sub_labels_target, sub_labels)
-if (length(dropped_NA) > 0L) {
-  message(length(dropped_NA),
-          " espèce(s) du sous-ensemble écartée(s) pour traits manquants : ",
-          paste(head(dropped_NA, 5), collapse = ", "),
-          if (length(dropped_NA) > 5) " ..." else "")
-}
-
-# --- 9c. PCA recalculée sur le seul sous-ensemble ------------------------------
-sub_pool        <- trait_pool[sub_labels, , drop = FALSE]
-trait_mat_sub   <- scale(sub_pool[, traitCols])
-keep_sub        <- stats::complete.cases(trait_mat_sub)   # par sécurité
-trait_mat_sub   <- trait_mat_sub[keep_sub, ]
-rownames(trait_mat_sub) <- sub_labels[keep_sub]
-
-pca_sub <- make.PCA(trait_mat_sub, dimensionsAux = 4, savePCA = NA)
-
-# --- 9d. Cohérence de l'orientation des axes entre les deux PCA ----------------
-# Deux PCA indépendantes peuvent inverser arbitrairement le signe d'un axe.
-# On aligne le signe de chaque axe de pca_sub sur celui de pca_all en comparant
-# les loadings : si la corrélation est négative, on retourne l'axe.
-for (k in seq_len(pca_sub$dimensions)) {
-  l_all <- pca_all$PCA$loadings[, k]
-  l_sub <- pca_sub$PCA$loadings[, k]
-  if (stats::cor(l_all, l_sub) < 0) {
-    pca_sub$PCA$loadings[, k] <- pca_sub$PCA$loadings[, k] * (-1)
-    pca_sub$PCA$scores[,   k] <- pca_sub$PCA$scores[,   k] * (-1)
-    pca_sub$loadings[,     k] <- pca_sub$loadings[,     k] * (-1)
-    pca_sub$traitsUse[,    k] <- pca_sub$traitsUse[,    k] * (-1)
-  }
-}
-
-# --- 9e. Vecteur d'espèces du sous-ensemble (pour les plots et TPD) ------------
-com_sp <- rownames(pca_sub$PCA$scores)
-
-# =============================================================================
-# 10. COMMUNAUTES + TPD/FRic + SES
-# =============================================================================
-comm_mat <- matrix(0,
-                   nrow = 2,
-                   ncol = nrow(pca_all$PCA$scores),
-                   dimnames = list(paste0("Comm.", 1:2),
-                                   rownames(pca_all$PCA$scores)))
-comm_mat[1, ] <- 1
-comm_mat[2, com_sp] <- 1
-
-gridSize <- 100
-scores2  <- pca_all$PCA$scores[, c(1, 2)]
-sdTraits <- sqrt(diag(ks::Hpi.diag(scores2)))
-
-TPDsAux <- TPD::TPDsMean(
-  species = rownames(scores2),
-  means   = scores2,
-  sds     = matrix(rep(sdTraits, nrow(scores2)), byrow = TRUE, ncol = 2),
-  alpha   = 0.95,
-  n_divisions = gridSize
-)
-TPDcAux <- TPD::TPDc(TPDs = TPDsAux, sampUnit = comm_mat)
-FRic    <- TPD::REND(TPDcAux)
-
-obs    <- numeric(100)
-obs[1] <- FRic$communities$FRichness[2] / FRic$communities$FRichness[1]
-for (b in 1:99) {
-  rdm_comm <- comm_mat
-  rdm_comm[2, ] <- sample(rdm_comm[2, ])
-  TPDcRdm  <- TPD::TPDc(TPDs = TPDsAux, sampUnit = rdm_comm)
-  FRicRdm  <- TPD::REND(TPDcRdm)
-  obs[b + 1] <- FRicRdm$communities$FRichness[2] / FRic$communities$FRichness[1]
-}
-
-sesandpvalues_bis <- function(sr, obs, rand, nreps, probs = c(0.025, 0.975), rnd = 2) {
-  SES      <- (obs - mean(rand)) / sd(rand)
-  pValsSES <- rank(c(obs, rand))[1] / (length(rand) + 1)
-  out <- round(c(sr, obs, SES, mean(rand), quantile(rand, prob = probs), pValsSES, nreps), rnd)
-  names(out) <- c("SpeciesRichness", "Observed", "SES",
-                  "MeanRd", "CI025Rd", "CI975Rd", "Pval", "Nreps")
-  out
-}
-fric_stats <- sesandpvalues_bis(sr = sum(comm_mat[2, ]),
-                                obs = obs[1], rand = obs[-1],
-                                nreps = 99)
-
-# =============================================================================
-# 11. EXPORT EXCEL : 4 feuilles
-# =============================================================================
-openxlsx::write.xlsx(
-  list(
-    "Species"    = traits_species,
-    "Genus_avg"  = as.data.frame(traits_genus),
-    "Family_avg" = as.data.frame(traits_family),
-    "Not_Found"  = as.data.frame(traits_notfound),
-    "Pool_PCA"   = trait_pool
-  ),
-  file = "Traits_FishMORPH.xlsx",
-  rowNames = FALSE, overwrite = TRUE
-)
-
-# =============================================================================
-# 12. FIGURES
-# =============================================================================
-p_groups <- plot_FS_new(
-  pca_sub = NULL, pca_all = pca_all, com_sp = com_sp,
-  group_mode = "groups", fric_stats = fric_stats,
-  title = "PCA on FishMORPH", phylopic_species = NULL,
-  arrow_mult = 1.2, contour_lwd = 0.4,
-  n_density_bands = 20, bw_mult = 0.4, band_line_lwd = 0.07
-)
-p_single <- plot_FS_new(
-  pca_sub = pca_sub, pca_all = pca_all, com_sp = com_sp,
-  group_mode = "single", phylopic_species = NULL,
-  title = "PCA on subset",
-  contour_lwd = 0.4, n_density_bands = 20,
-  bw_mult = 1, arrow_mult = 1.2
-)
-ggsave("FS_main.png", (p_groups | p_single),
-       width = 15, height = 6, dpi = 300)
-
-```
-
-</div>

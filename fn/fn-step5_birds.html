@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>01_DATA_load_and_clean — Step 5 — R Scripts</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #f7f9fc; color: #2c3e50; }
+.fn-page-wrap { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px 20px; }
+.back-link { font-size: 0.88em; margin-bottom: 18px; }
+.back-link a { color: #c0392b; text-decoration: none; font-weight: 500; }
+.back-link a:hover { text-decoration: underline; }
+.fn-hero { background: #fff; border: 1px solid #e4e9f0; border-radius: 14px; padding: 20px 22px; margin-bottom: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); border-left: 5px solid #c0392b; }
+.fn-hero h1 { font-family: monospace; font-size: 1.2em; font-weight: 700; color: #2c3e50; margin: 0 0 6px 0; }
+.fn-hero p  { font-size: 0.9em; color: #666; margin: 0 0 10px 0; line-height: 1.6; }
+.fn-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.fn-tag { font-size: 0.72em; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+.tag-stat  { background:#e8f5e9; color:#1b6b2f; }
+.tag-util  { background:#e3f2fd; color:#1557a0; }
+.tag-viz   { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd    { background:#fff3e0; color:#b25000; }
+.tag-data  { background:#fce4ec; color:#880e4f; }
+.tag-ml    { background:#e8eaf6; color:#283593; }
+.tag-morph { background:#e0f2f1; color:#00574e; }
+.tag-geo   { background:#f3e5f5; color:#6a1b9a; }
+.fn-args { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+.fn-args-label { font-size: 0.78em; font-weight: 700; color: #999; }
+.fn-arg { font-family: monospace; font-size: 0.78em; padding: 2px 8px; background: #f1f3f5; border: 1px solid #e0e3e8; border-radius: 5px; color: #555; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.tb-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8em; font-weight: 600; padding: 6px 14px; border-radius: 7px; cursor: pointer; border: 1px solid; background: #fff; transition: opacity .15s; }
+.tb-btn:hover { opacity: 0.75; }
+.tb-copy    { color: #2471a3; border-color: #2471a3; }
+.tb-save    { color: #27ae60; border-color: #27ae60; }
+.tb-suggest { color: #e67e22; border-color: #e67e22; }
+.tb-copied  { color: #27ae60 !important; border-color: #27ae60 !important; }
+.code-wrap { background: #fff; border: 1px solid #e4e9f0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.code-wrap pre { margin: 0; padding: 20px; overflow-x: auto; font-size: 0.87em; }
+</style>
+</head>
+<body>
+<div class="fn-page-wrap">
+  <div class="back-link">← <a href="../Rscripts_birds.html">Back to Birds Scripts</a></div>
+
+  <div class="fn-hero">
+    <h1>01_DATA_load_and_clean — Step 5</h1>
+    <p>Load 5 BirdLife BOTW shapefiles, reconcile taxonomy with the trait dataset via ITIS synonymy lookup, rasterize at 0.5° resolution, then assign species to DGGS hexagonal grid at resolution 7.</p>
+    <div class="fn-tags">
+        <span class="fn-tag tag-geo">spatial</span>
+        <span class="fn-tag tag-util">taxonomy</span>
+      </div>
+    <div class="fn-args">
+    <span class="fn-args-label">Inputs:</span>
+    <span class="fn-arg">data/raw/BOTW_1-5.shp</span>
+    <span class="fn-arg">data/raw/geogInfo_dggs7.RDS</span>
+  </div><div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/raw/BOTW_1-5_New.shp</span>
+    <span class="fn-arg">data/raw/uniquedggs7.RDS</span>
+    <span class="fn-arg">data/raw/sitesdggs7.RDS</span>
+  
+<div class="fn-toolbar"><button class="fn-tb-btn fn-tb-copy" onclick="fnCopy(this)">⧉ Copy</button><button class="fn-tb-btn fn-tb-save" onclick="fnSave(this,'01_DATA_load_and_clean___Step_5')">↓ Save .R</button><button class="fn-tb-btn fn-tb-suggest" onclick="fnSuggest('01_DATA_load_and_clean — Step 5')">✉ Suggest</button></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="tb-btn tb-copy" onclick="doCopy()">⧉ Copy</button>
+    <button class="tb-btn tb-save" onclick="doSave()">↓ Save .R</button>
+    <button class="tb-btn tb-suggest" onclick="doSuggest()">✉ Suggest modification</button>
+  </div>
+
+  <div class="code-wrap">
+    <pre><code id="fn-code" class="language-r">geog7 &lt;- readRDS("data/raw/geogInfo_dggs7.RDS")
+dggs7 &lt;- dggridR::dgconstruct(res = 7, metric = FALSE, resround = "down", topology = "HEXAGON")
+sitesInRealms7 &lt;- unique(geog7$cell[!is.na(geog7$Realm)])
+
+botw_files   &lt;- file.path("data/raw", sprintf("BOTW_%d.shp", 1:5))
+missing_files &lt;- botw_files[!file.exists(botw_files)]
+if (length(missing_files) &gt; 0L)
+  stop("Missing BOTW files: ", paste(basename(missing_files), collapse = ", "))
+
+sp_chunks &lt;- lapply(botw_files, function(f) sf::st_read(dsn = f, quiet = TRUE))
+sp &lt;- do.call(rbind, sp_chunks); rm(sp_chunks); gc(verbose = FALSE)
+
+sp_site_old &lt;- unique(sp$SCINAME)
+sp_site     &lt;- unique(sp$SCINAME)
+spTrait     &lt;- phenoBird$scientificNameStd
+spToCheck   &lt;- sp_site[!sp_site %in% gsub("_", " ", spTrait)]
+
+if (length(spToCheck) &gt; 0L) {
+  chk &lt;- taxize::synonyms(sci_id = spToCheck, db = "itis", row = 1)
+  progressr::with_progress({
+    p &lt;- progressr::progressor(steps = length(chk))
+    for (i in seq_along(chk)) {
+      p(sprintf("ITIS lookup %d/%d", i, length(chk)))
+      entry &lt;- chk[[i]]
+      if (is.null(dim(entry)) || dim(entry)[1] == 0L) next
+      if ("acc_name" %in% colnames(entry)) {
+        sp_site[sp_site == names(chk)[i]] &lt;- entry[["acc_name"]][1]
+      } else if ("syn_name" %in% colnames(entry)) {
+        syn_underscore &lt;- gsub(" ", "_", entry[["syn_name"]])
+        match_idx &lt;- which(syn_underscore %in% spTrait)
+        if (length(match_idx) &gt; 0L)
+          sp_site[sp_site == names(chk)[i]] &lt;- syn_underscore[match_idx[1]]
+      }
+    }
+  })
+}
+trinomial_idx &lt;- grepl("[A-Za-z]+\\s+[A-Za-z]+\\s+[A-Za-z]", sp_site)
+sp_site[trinomial_idx] &lt;- sp_site_old[trinomial_idx]
+
+# Write reconciled shapefiles (chunks of 4000)
+names_spatial &lt;- data.frame(old = sp_site_old, new = sp_site, stringsAsFactors = FALSE)
+sp1 &lt;- merge(sp, names_spatial, by.x = "SCINAME", by.y = "old", all.x = TRUE)
+chunk_size &lt;- 4000L; n_chunks &lt;- ceiling(nrow(sp1) / chunk_size)
+for (j in seq_len(n_chunks)) {
+  rows &lt;- ((j-1L)*chunk_size+1L):min(j*chunk_size, nrow(sp1))
+  sf::st_write(sp1[rows, ], file.path("data/raw", sprintf("BOTW_%d_New.shp", j)),
+               quiet = TRUE, append = FALSE)
+}
+
+# Rasterize and assign to hexagons
+pathSave &lt;- "data/raw/SpeciesData"
+dir.create(pathSave, showWarnings = FALSE, recursive = TRUE)
+for (j in seq_len(n_chunks))
+  rasterSp::rasterizeRange(dsn = file.path("data/raw", sprintf("BOTW_%d_New.shp", j)),
+                           id = "new", resolution = 0.5, origin = 1,
+                           presence = c(1, 2, 3), save = TRUE, path = pathSave)
+
+fileList           &lt;- list.files(path = pathSave, pattern = "*.tif")
+coordsSpecies      &lt;- est_coord_sp("data/raw", fileList,
+                                   pathSave = "data/raw/coordinates_Resol05.RDS")
+coordsSpeciesOrdered &lt;- assign_hexagons(coordsSpecies, dggs7, sitesInRealms7,
+                                        savePath = "data/raw/coordinates_Resol05_dggs7.RDS")
+valid_sites &lt;- coordsSpeciesOrdered[!(unlist(lapply(coordsSpeciesOrdered, ncol)) != 3)]
+uniquedggs7 &lt;- reorder_hexagon(valid_sites, savePath = "data/raw/uniquedggs7.RDS")
+sitesdggs7  &lt;- siteswithspecies(valid_sites, uniquedggs7, savePath = "data/raw/sitesdggs7.RDS")</code></pre>
+  </div>
+</div>
+<script>
+hljs.highlightAll();
+function doCopy() {
+  var code = document.getElementById('fn-code').innerText;
+  navigator.clipboard.writeText(code).then(function() {
+    var btn = document.querySelector('.tb-copy');
+    btn.textContent = '✓ Copied!'; btn.classList.add('tb-copied');
+    setTimeout(function(){ btn.textContent = '⧉ Copy'; btn.classList.remove('tb-copied'); }, 1800);
+  });
+}
+function doSave() {
+  var code = document.getElementById('fn-code').innerText;
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([code], {type:'text/plain'}));
+  a.download = '01_DATA_load_and_clean___Step_5.R'; a.click();
+}
+function doSuggest() {
+  var s = encodeURIComponent('Suggestion for: 01_DATA_load_and_clean — Step 5');
+  var b = encodeURIComponent('Hi Aurèle,\n\nSuggestion for 01_DATA_load_and_clean — Step 5:\n\n');
+  window.open('mailto:aurele.toussaint@cnrs.fr?subject='+s+'&body='+b);
+}
+</script>
+</body>
+</html>

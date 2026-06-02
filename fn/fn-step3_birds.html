@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>01_DATA_load_and_clean — Step 3 — R Scripts</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #f7f9fc; color: #2c3e50; }
+.fn-page-wrap { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px 20px; }
+.back-link { font-size: 0.88em; margin-bottom: 18px; }
+.back-link a { color: #c0392b; text-decoration: none; font-weight: 500; }
+.back-link a:hover { text-decoration: underline; }
+.fn-hero { background: #fff; border: 1px solid #e4e9f0; border-radius: 14px; padding: 20px 22px; margin-bottom: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); border-left: 5px solid #c0392b; }
+.fn-hero h1 { font-family: monospace; font-size: 1.2em; font-weight: 700; color: #2c3e50; margin: 0 0 6px 0; }
+.fn-hero p  { font-size: 0.9em; color: #666; margin: 0 0 10px 0; line-height: 1.6; }
+.fn-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.fn-tag { font-size: 0.72em; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+.tag-stat  { background:#e8f5e9; color:#1b6b2f; }
+.tag-util  { background:#e3f2fd; color:#1557a0; }
+.tag-viz   { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd    { background:#fff3e0; color:#b25000; }
+.tag-data  { background:#fce4ec; color:#880e4f; }
+.tag-ml    { background:#e8eaf6; color:#283593; }
+.tag-morph { background:#e0f2f1; color:#00574e; }
+.tag-geo   { background:#f3e5f5; color:#6a1b9a; }
+.fn-args { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+.fn-args-label { font-size: 0.78em; font-weight: 700; color: #999; }
+.fn-arg { font-family: monospace; font-size: 0.78em; padding: 2px 8px; background: #f1f3f5; border: 1px solid #e0e3e8; border-radius: 5px; color: #555; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.tb-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8em; font-weight: 600; padding: 6px 14px; border-radius: 7px; cursor: pointer; border: 1px solid; background: #fff; transition: opacity .15s; }
+.tb-btn:hover { opacity: 0.75; }
+.tb-copy    { color: #2471a3; border-color: #2471a3; }
+.tb-save    { color: #27ae60; border-color: #27ae60; }
+.tb-suggest { color: #e67e22; border-color: #e67e22; }
+.tb-copied  { color: #27ae60 !important; border-color: #27ae60 !important; }
+.code-wrap { background: #fff; border: 1px solid #e4e9f0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.code-wrap pre { margin: 0; padding: 20px; overflow-x: auto; font-size: 0.87em; }
+</style>
+</head>
+<body>
+<div class="fn-page-wrap">
+  <div class="back-link">← <a href="../Rscripts_birds.html">Back to Birds Scripts</a></div>
+
+  <div class="fn-hero">
+    <h1>01_DATA_load_and_clean — Step 3</h1>
+    <p>Assemble the final PhenoBird matrix: remove problematic species, filter DD/EX/EW categories, compute trait completeness statistics, and save the ready-to-analyse dataset.</p>
+    <div class="fn-tags">
+        <span class="fn-tag tag-data">data wrangling</span>
+        <span class="fn-tag tag-stat">IUCN filter</span>
+      </div>
+    <div class="fn-args">
+    <span class="fn-args-label">Inputs:</span>
+    <span class="fn-arg">data/processed/phenoBirds.csv</span>
+    <span class="fn-arg">data/processed/phenoBirdsImputedAll.csv</span>
+  </div><div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/processed/phenoBirdsImputedREADY.csv</span>
+    <span class="fn-arg">data/processed/Shortnames_Birds.csv</span>
+    <span class="fn-arg">data/processed/species_table.rds</span>
+  
+<div class="fn-toolbar"><button class="fn-tb-btn fn-tb-copy" onclick="fnCopy(this)">⧉ Copy</button><button class="fn-tb-btn fn-tb-save" onclick="fnSave(this,'01_DATA_load_and_clean___Step_3')">↓ Save .R</button><button class="fn-tb-btn fn-tb-suggest" onclick="fnSuggest('01_DATA_load_and_clean — Step 3')">✉ Suggest</button></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="tb-btn tb-copy" onclick="doCopy()">⧉ Copy</button>
+    <button class="tb-btn tb-save" onclick="doSave()">↓ Save .R</button>
+    <button class="tb-btn tb-suggest" onclick="doSuggest()">✉ Suggest modification</button>
+  </div>
+
+  <div class="code-wrap">
+    <pre><code id="fn-code" class="language-r">SpToRem &lt;- c("Struthio_molybdophanes","Neochmia_phaeton","Rhea_americana",
+             "Stagonopleura_guttata","Carpococcyx_renauldi","Laterallus_rogersi",
+             "Menura_novaehollandiae","Rallicula_leucospila","Rhea_tarapacensis")
+
+birdTraitsPhy &lt;- read.csv("data/processed/phenoBirds.csv")
+birdTraitsPhy &lt;- birdTraitsPhy[!birdTraitsPhy$X %in% SpToRem, ]
+phenoBird     &lt;- read.csv("data/processed/phenoBirdsImputedAll.csv")
+colnames(phenoBird)[1] &lt;- "scientificNameStd"
+rownames(phenoBird)    &lt;- phenoBird[, 1]
+phenoBird &lt;- phenoBird[!rownames(phenoBird) %in% SpToRem, ]
+
+morphoTrait &lt;- c("Tarsus.Length","Wing.Length","Kipps.Distance","Secondary1",
+                 "Hand.Wing.Index","Tail.Length","Mass","adult_svl_cm")
+LHTTrait    &lt;- c("litter_or_clutch_size_n","egg_mass_g","incubation_d",
+                 "longevity_y","fledging_age_d","litters_or_clutches_per_y")
+DietTrait   &lt;- c("Diet.Inv","Diet.Vend","Diet.Vect","Diet.Vfish","Diet.Vunk",
+                 "Diet.Scav","Diet.Fruit","Diet.Nect","Diet.Seed","Diet.PlantO")
+
+shortNames &lt;- cbind(
+  original     = c(morphoTrait, LHTTrait, DietTrait),
+  short        = c("trl","wl","kd","s1","hwl","tll","bmA","svl",
+                   "ls","em","inc","lg","fled","ly",
+                   "DI","DVd","DVt","DVf","DVk","DSv","DF","DN","DSd","DP"),
+  color        = c(rep("#2E7D32",8), rep("#1565C0",6), rep("#C62828",10)),
+  completeness = rep(NA, length(c(morphoTrait, LHTTrait, DietTrait))),
+  type         = c(rep("Morphological (M)",8), rep("Life-history (L)",6), rep("Diet (D)",10))
+)
+for (i in 1:nrow(shortNames)) {
+  cplet &lt;- birdTraitsPhy[, shortNames[i,1]]
+  isna  &lt;- length(which(!is.na(cplet)))
+  shortNames[i,'completeness'] &lt;- paste0(isna,"/",length(cplet)," (",round(isna/length(cplet)*100,2),"%)")
+}
+write.csv(shortNames, file = "data/processed/Shortnames_Birds.csv")
+
+phenoDiet &lt;- na.omit(as.data.frame(prep.fuzzy(phenoBird[, DietTrait],
+                                              col.blocks = ncol(phenoBird[, DietTrait]),
+                                              label = "diet")))
+phenoDiet &lt;- replace(phenoDiet, phenoDiet &lt; 0, 0)
+phenoBird &lt;- phenoBird[rownames(phenoDiet), ]
+
+# Finalize IUCN column + filter
+phenoBird$category &lt;- phenoBird$iucn_category
+unresolved &lt;- unique(phenoBird$scientificNameStd[is.na(phenoBird$category)])
+if (length(unresolved) &gt; 0L)
+  write.csv(data.frame(species = unresolved), "data/processed/iucn_unresolved.csv", row.names = FALSE)
+
+phenoBird &lt;- phenoBird[!phenoBird$category %in% c("DD","EW","EX","RE"), ]
+phenoBird &lt;- phenoBird[!is.na(phenoBird$category), ]
+
+write.csv(phenoBird, "data/processed/phenoBirdsImputedREADY.csv", row.names = FALSE)
+saveRDS(unique(phenoBird$scientificNameStd), "data/processed/species_table.rds")</code></pre>
+  </div>
+</div>
+<script>
+hljs.highlightAll();
+function doCopy() {
+  var code = document.getElementById('fn-code').innerText;
+  navigator.clipboard.writeText(code).then(function() {
+    var btn = document.querySelector('.tb-copy');
+    btn.textContent = '✓ Copied!'; btn.classList.add('tb-copied');
+    setTimeout(function(){ btn.textContent = '⧉ Copy'; btn.classList.remove('tb-copied'); }, 1800);
+  });
+}
+function doSave() {
+  var code = document.getElementById('fn-code').innerText;
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([code], {type:'text/plain'}));
+  a.download = '01_DATA_load_and_clean___Step_3.R'; a.click();
+}
+function doSuggest() {
+  var s = encodeURIComponent('Suggestion for: 01_DATA_load_and_clean — Step 3');
+  var b = encodeURIComponent('Hi Aurèle,\n\nSuggestion for 01_DATA_load_and_clean — Step 3:\n\n');
+  window.open('mailto:aurele.toussaint@cnrs.fr?subject='+s+'&body='+b);
+}
+</script>
+</body>
+</html>

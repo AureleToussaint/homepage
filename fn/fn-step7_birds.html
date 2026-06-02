@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>01_DATA_load_and_clean — Step 7 — R Scripts</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #f7f9fc; color: #2c3e50; }
+.fn-page-wrap { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px 20px; }
+.back-link { font-size: 0.88em; margin-bottom: 18px; }
+.back-link a { color: #c0392b; text-decoration: none; font-weight: 500; }
+.back-link a:hover { text-decoration: underline; }
+.fn-hero { background: #fff; border: 1px solid #e4e9f0; border-radius: 14px; padding: 20px 22px; margin-bottom: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); border-left: 5px solid #c0392b; }
+.fn-hero h1 { font-family: monospace; font-size: 1.2em; font-weight: 700; color: #2c3e50; margin: 0 0 6px 0; }
+.fn-hero p  { font-size: 0.9em; color: #666; margin: 0 0 10px 0; line-height: 1.6; }
+.fn-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.fn-tag { font-size: 0.72em; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+.tag-stat  { background:#e8f5e9; color:#1b6b2f; }
+.tag-util  { background:#e3f2fd; color:#1557a0; }
+.tag-viz   { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd    { background:#fff3e0; color:#b25000; }
+.tag-data  { background:#fce4ec; color:#880e4f; }
+.tag-ml    { background:#e8eaf6; color:#283593; }
+.tag-morph { background:#e0f2f1; color:#00574e; }
+.tag-geo   { background:#f3e5f5; color:#6a1b9a; }
+.fn-args { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+.fn-args-label { font-size: 0.78em; font-weight: 700; color: #999; }
+.fn-arg { font-family: monospace; font-size: 0.78em; padding: 2px 8px; background: #f1f3f5; border: 1px solid #e0e3e8; border-radius: 5px; color: #555; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.tb-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8em; font-weight: 600; padding: 6px 14px; border-radius: 7px; cursor: pointer; border: 1px solid; background: #fff; transition: opacity .15s; }
+.tb-btn:hover { opacity: 0.75; }
+.tb-copy    { color: #2471a3; border-color: #2471a3; }
+.tb-save    { color: #27ae60; border-color: #27ae60; }
+.tb-suggest { color: #e67e22; border-color: #e67e22; }
+.tb-copied  { color: #27ae60 !important; border-color: #27ae60 !important; }
+.code-wrap { background: #fff; border: 1px solid #e4e9f0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.code-wrap pre { margin: 0; padding: 20px; overflow-x: auto; font-size: 0.87em; }
+</style>
+</head>
+<body>
+<div class="fn-page-wrap">
+  <div class="back-link">← <a href="../Rscripts_birds.html">Back to Birds Scripts</a></div>
+
+  <div class="fn-hero">
+    <h1>01_DATA_load_and_clean — Step 7</h1>
+    <p>Compute community-level FRic for all species, combine all PCA objects into a named list, export PCoA coordinates, species–IUCN table, TPD lists, and an eigenvalue summary table for supplementary material.</p>
+    <div class="fn-tags">
+        <span class="fn-tag tag-data">export</span>
+        <span class="fn-tag tag-fd">FRic</span>
+      </div>
+    <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/processed/PCA_Birds.rds</span>
+    <span class="fn-arg">data/processed/pcoa_coords.rds</span>
+    <span class="fn-arg">data/processed/tpd_lists.rds</span>
+    <span class="fn-arg">data/processed/species_table.rds</span>
+    <span class="fn-arg">results/tables/Annexe_Table_Eigenvalues.csv</span>
+  
+<div class="fn-toolbar"><button class="fn-tb-btn fn-tb-copy" onclick="fnCopy(this)">⧉ Copy</button><button class="fn-tb-btn fn-tb-save" onclick="fnSave(this,'01_DATA_load_and_clean___Step_7')">↓ Save .R</button><button class="fn-tb-btn fn-tb-suggest" onclick="fnSuggest('01_DATA_load_and_clean — Step 7')">✉ Suggest</button></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="tb-btn tb-copy" onclick="doCopy()">⧉ Copy</button>
+    <button class="tb-btn tb-save" onclick="doSave()">↓ Save .R</button>
+    <button class="tb-btn tb-suggest" onclick="doSuggest()">✉ Suggest modification</button>
+  </div>
+
+  <div class="code-wrap">
+    <pre><code id="fn-code" class="language-r">phenoBird &lt;- read.csv("data/processed/phenoBirdsImputedREADY.csv", stringsAsFactors = FALSE)
+colnames(phenoBird)[1] &lt;- "scientificNameStd"
+rownames(phenoBird)    &lt;- phenoBird[, 1]
+
+# Taxonomy table
+taxo &lt;- phenoBird[, c(2, 3, 4)]
+taxo$Genus        &lt;- vapply(strsplit(rownames(taxo), "_"), function(x) x[1], character(1L))
+taxo$GenusSpecies &lt;- rownames(taxo)
+colnames(taxo)    &lt;- c("class", "order", "family", "genus", "genusspecies")
+write.csv(taxo, "data/processed/Taxo_Birds.csv", row.names = TRUE)
+
+PCA_file    &lt;- c("data/processed/PCA_Birds_MLD.rds","data/processed/PCA_Birds_M.rds",
+                 "data/processed/PCA_Birds_D.rds","data/processed/PCA_Birds_L.rds")
+PCA_file_OK &lt;- sub("\\.rds$", "_OK.rds", PCA_file)
+TPD_file    &lt;- c("data/processed/TPD_Birds_LMD.rds","data/processed/TPD_Birds_M.rds",
+                 "data/processed/TPD_Birds_D.rds","data/processed/TPD_Birds_L.rds")
+TPD_file_bio &lt;- c("data/processed/Birds_TPDs_sdggs7_MLD.rds","data/processed/Birds_TPDs_sdggs7_M.rds",
+                  "data/processed/Birds_TPDs_sdggs7_D.rds","data/processed/Birds_TPDs_sdggs7_L.rds")
+
+for (i in seq_along(PCA_file)) {
+  PCA     &lt;- readRDS(PCA_file[i])
+  TPDsAux &lt;- readRDS(TPD_file[i])
+  species &lt;- rownames(PCA$PCoA$vectors)
+  species &lt;- species[species %in% TPDsAux$data$species]
+  occurences &lt;- matrix(1, ncol = length(species), nrow = 1, dimnames = list("ALL", species))
+  TPDc_occ          &lt;- TPD::TPDc(TPDsAux, occurences)
+  PCA$ALLFRic       &lt;- TPDRichness(TPDc_occ)$communities$FRichness
+  PCA$ALLDensity    &lt;- densityProfileTPD(TPDc_occ)
+  TPDs_sdggs7       &lt;- readRDS(TPD_file_bio[i])
+  TPDc_occ_bio      &lt;- TPD::TPDc(TPDs_sdggs7, occurences)
+  PCA$ALLFRicBiogeo &lt;- TPDRichness(TPDc_occ_bio)$communities$FRichness
+  saveRDS(PCA, file = PCA_file_OK[i])
+}
+
+type      &lt;- c("MLD", "M", "D", "L")
+PCA_Birds &lt;- setNames(lapply(PCA_file_OK, readRDS), type)
+saveRDS(PCA_Birds, "data/processed/PCA_Birds.rds")
+
+PCA    &lt;- readRDS("data/processed/PCA_Birds.rds")
+coords &lt;- list(locomotion   = PCA$M$PCoA$vectors,
+               diet         = PCA$D$PCoA$vectors,
+               reproduction = PCA$L$PCoA$vectors)
+coords &lt;- lapply(coords, function(x) {
+  colnames(x) &lt;- paste0("PC", seq_len(ncol(x)))
+  x &lt;- as.data.frame(x); x$species &lt;- rownames(x); x
+})
+saveRDS(coords, "data/processed/pcoa_coords.rds")
+
+species_df &lt;- phenoBird[, c("scientificNameStd", "category")]
+colnames(species_df) &lt;- c("species", "iucn")
+species_df &lt;- na.omit(species_df[!species_df$iucn %in% c("DD","EW","EX","RE"), ])
+saveRDS(species_df, "data/processed/species_table.rds")
+
+tpd_lists &lt;- list(locomotion   = readRDS("data/processed/TPD_Birds_M.rds"),
+                  diet         = readRDS("data/processed/TPD_Birds_D.rds"),
+                  reproduction = readRDS("data/processed/TPD_Birds_L.rds"))
+saveRDS(tpd_lists, "data/processed/tpd_lists.rds")
+
+table_eigen_clean &lt;- do.call(rbind, lapply(names(PCA), function(name) {
+  tab &lt;- PCA[[name]]$PCoA$values[, c(1, 2, 4)]
+  tab[, 2:3] &lt;- 100 * tab[, 2:3]
+  tab &lt;- round(tab, 3)
+  tab &lt;- cbind(Space = name, Axis = rownames(tab), tab)
+  colnames(tab) &lt;- c("TraitSpace","Axis","Eigenvalue","%Variance","%Cumulative")
+  tab
+}))
+dir.create("results/tables", showWarnings = FALSE, recursive = TRUE)
+write.csv(table_eigen_clean, "results/tables/Annexe_Table_Eigenvalues.csv", row.names = FALSE)</code></pre>
+  </div>
+</div>
+<script>
+hljs.highlightAll();
+function doCopy() {
+  var code = document.getElementById('fn-code').innerText;
+  navigator.clipboard.writeText(code).then(function() {
+    var btn = document.querySelector('.tb-copy');
+    btn.textContent = '✓ Copied!'; btn.classList.add('tb-copied');
+    setTimeout(function(){ btn.textContent = '⧉ Copy'; btn.classList.remove('tb-copied'); }, 1800);
+  });
+}
+function doSave() {
+  var code = document.getElementById('fn-code').innerText;
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([code], {type:'text/plain'}));
+  a.download = '01_DATA_load_and_clean___Step_7.R'; a.click();
+}
+function doSuggest() {
+  var s = encodeURIComponent('Suggestion for: 01_DATA_load_and_clean — Step 7');
+  var b = encodeURIComponent('Hi Aurèle,\n\nSuggestion for 01_DATA_load_and_clean — Step 7:\n\n');
+  window.open('mailto:aurele.toussaint@cnrs.fr?subject='+s+'&body='+b);
+}
+</script>
+</body>
+</html>

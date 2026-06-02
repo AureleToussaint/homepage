@@ -4,131 +4,14 @@ pagetitle: "Statistics — R Scripts"
 output:
   html_document:
     self_contained: false
-    toc: true
-    toc_depth: 4
-    toc_float:
-      collapsed: true
-      smooth_scroll: true
-    code_folding: show
-    highlight: tango
-    df_print: paged
-    css: assets/custom.css
+    toc: false
     includes:
-      after_body: assets/after_body.html
+      in_header: header.html
 ---
 
 ```{=html}
-<style>
-/* Custom function TOC — overrides rmarkdown floating TOC */
-#TOC,
-.tocify-wrapper,
-div[data-spy="affix"] {
-  display: none !important;
-  width: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-.fn-nav {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 205px;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-  padding: 14px 10px 20px 14px;
-  border-right: 1px solid #e8e8e8;
-  background: #fafafa;
-  font-size: 0.82em;
-  z-index: 100;
-}
-.fn-nav .fn-nav-title {
-  font-size: 0.7em;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: #bbb;
-  margin-bottom: 10px;
-  padding-left: 4px;
-}
-.fn-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.fn-nav li a {
-  display: block;
-  padding: 3px 6px;
-  border-radius: 4px;
-  color: #444;
-  text-decoration: none;
-  font-family: monospace;
-  font-size: 0.95em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.fn-nav li a:hover {
-  background: #eef2f7;
-  color: #2c3e50;
-}
-.fn-nav li a.active {
-  background: #e3f0fb;
-  color: #1a6faf;
-  font-weight: 600;
-}
-/* push main content right to make room */
-body {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-}
-.main-container {
-  margin-left: 210px !important;
-  max-width: calc(100vw - 230px) !important;
-  width: calc(100vw - 230px) !important;
-  padding-right: 30px !important;
-}
-/* kill rmarkdown's bootstrap TOC column entirely */
-.col-xs-12.col-sm-4.col-md-3,
-.tocify-wrapper,
-div.tocify,
-#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
-/* expand content column to full width */
-.col-xs-12.col-sm-8.col-md-9 {
-  width: 100% !important;
-  -webkit-flex: none !important;
-  flex: none !important;
-}
-.row { margin-left: 0 !important; margin-right: 0 !important; }
-</style>
-
-<div class="fn-nav" id="fn-nav">
-  <div class="fn-nav-title">Functions</div>
-  <ul>
-    <li><a href="#fn-distrib">distrib</a></li>
-    <li><a href="#fn-hms-span">hms_span</a></li>
-    <li><a href="#fn-sesandpvalues-bis">sesandpvalues_bis</a></li>
-    <li><a href="#fn-extract-t-test">extract_t_test</a></li>
-    <li><a href="#fn-extract-indices-list">extract_indices_list</a></li>
-    <li><a href="#fn-extract-indices-change">extract_indices_change</a></li>
-    <li><a href="#fn-extract-indices-change-log">extract_indices_change_log</a></li>
-  </ul>
-</div>
-
-<script>
-/* Highlight active function on scroll */
-window.addEventListener("scroll", function() {
-  var links = document.querySelectorAll(".fn-nav li a");
-  var current = "";
-  links.forEach(function(a) {
-    var id = a.getAttribute("href").slice(1);
-    var el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top < 120) current = id;
-  });
-  links.forEach(function(a) {
-    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
-  });
-});
-</script>
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 <style>
 #pw-overlay {
@@ -158,346 +41,130 @@ window.addEventListener("scroll", function() {
 .back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
 .back-link a { color: #27ae60; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
-
-/* ── Function cards ────────────────────────────────── */
 .page-intro {
   display:flex; align-items:center; gap:14px;
   padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
 }
 .page-intro-icon {
-  width:48px; height:48px; border-radius:10px;
+  width:52px; height:52px; border-radius:12px; background:#27ae60;
   display:flex; align-items:center; justify-content:center;
-  font-size:1.5em; color:#fff; flex-shrink:0;
+  font-size:1.6em; color:#fff; flex-shrink:0;
 }
 .page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
 .page-intro p  { font-size:0.92em; color:#777; margin:0; }
-
-.fn-section-divider {
-  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+.session-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px; margin-bottom: 40px;
 }
-.fn-section-divider span {
-  font-size:0.75em; font-weight:700; letter-spacing:.08em;
-  text-transform:uppercase; color:#aaa; white-space:nowrap;
+.session-card {
+  background: #fff; border: 1px solid #e4e9f0; border-radius: 12px;
+  padding: 16px 18px; text-decoration: none !important; color: inherit !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow .15s, transform .12s;
+  display: flex; flex-direction: column; gap: 6px;
+  border-left: 4px solid #27ae60;
 }
-.fn-section-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
-
-.fn-card {
-  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+.session-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10); transform: translateY(-2px);
+  text-decoration: none !important;
 }
-.fn-header {
-  display:flex; align-items:flex-start; justify-content:space-between;
-  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
-}
-.fn-name {
-  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
-  margin:0; padding:0; line-height:1.4;
-}
-.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
-.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
-.fn-tag {
-  font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600;
-}
-.tag-stat   { background:#e8f5e9; color:#1b6b2f; }
-.tag-util   { background:#e3f2fd; color:#1557a0; }
-.tag-viz    { background:#f3e5f5; color:#6a1b9a; }
-.tag-fd     { background:#fff3e0; color:#b25000; }
-.tag-data   { background:#fce4ec; color:#880e4f; }
-.tag-ml     { background:#e8eaf6; color:#283593; }
-.tag-morph  { background:#e0f2f1; color:#00574e; }
-
-.fn-args {
-  display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
-  background:#fff; border-bottom:1px solid #f0f0f0; align-items:center;
-}
-.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
-.fn-arg {
-  font-family:monospace; font-size:0.78em; padding:2px 8px;
-  background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555;
-}
-
+.session-num   { font-size: 0.88em; font-weight: 700; }
+.session-topics{ font-size: 0.82em; color: #888; line-height: 1.5; }
+.session-link  { margin-top: auto; padding-top: 8px; font-size: 0.8em; font-weight: 600; }
 </style>
 
 <div id="pw-overlay">
   <div class="pw-box">
     <div class="pw-lock">🔒</div>
-    <h2>Statistics</h2>
-    <p>Please enter the access password.</p>
+    <h2>R Scripts — Statistics</h2>
+    <p>Enter the password to access this page.</p>
     <div class="pw-row">
-      <input type="password" id="pw-input" placeholder="Password…"
-             onkeydown="if(event.key==='Enter') checkPw()"/>
-      <button onclick="checkPw()">Enter</button>
+      <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+      <button onclick="checkPw()">OK</button>
     </div>
-    <p class="pw-err" id="pw-error"></p>
+    <p class="pw-err" id="pw-err"></p>
   </div>
 </div>
+<script>
+(function(){
+  if(sessionStorage.getItem('rscripts_unlocked')==='1'){
+    document.getElementById('pw-overlay').style.display='none';
+  }
+})();
+async function checkPw(){
+  var val=document.getElementById('pw-input').value;
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+  var hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hex==='ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5'){
+    sessionStorage.setItem('rscripts_unlocked','1');
+    document.getElementById('pw-overlay').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='Incorrect password.';
+  }
+}
+</script>
 
 <div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
 
-<script>
-const CORRECT_HASH = "ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5";
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-async function checkPw() {
-  const hash = await sha256(document.getElementById("pw-input").value);
-  if (hash === CORRECT_HASH) {
-    document.getElementById("pw-overlay").style.display = "none";
-    sessionStorage.setItem("rscripts_unlocked", "1");
-  } else {
-    const err = document.getElementById("pw-error");
-    err.textContent = "Incorrect password. Please try again.";
-    document.getElementById("pw-input").value = "";
-    document.getElementById("pw-input").focus();
-    setTimeout(()=>{ err.textContent=""; }, 3000);
-  }
-}
-if (sessionStorage.getItem("rscripts_unlocked") === "1")
-  document.getElementById("pw-overlay").style.display = "none";
-</script>
-```
-
-```{=html}
 <div class="page-intro">
-  <div class="page-intro-icon" style="background:#27ae60;">📊</div>
+  <div class="page-intro-icon">📊</div>
   <div>
     <h1>Statistics</h1>
-    <p>Summary statistics, SES computation, t-tests and index extraction helpers</p>
+    <p>Summary stats, SES, t-tests and index extraction helpers</p>
   </div>
 </div>
-```
 
-```{=html}
-<h3 class="fn-section-divider"><span>Summary & timing</span><hr></h3>
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-distrib">distrib(x, k=6)</h4>
-    <div class="fn-desc">Compute a compact NA-cleaned numeric summary: N, min, Q1, median, mean, Q3, max.</div>
-    <div class="fn-tags"><span class="fn-tag tag-stat">statistics</span><span class="fn-tag tag-util">utility</span></div>
-  </div>
+<div class="session-grid">
+  <a class="session-card" href="fn/fn-distrib_statistics.html" target="_blank">
+    <div class="session-num" style="color:#27ae60;"><span style="font-family:monospace;">distrib(x, k=6)</span></div>
+    <div class="session-topics">Compute a compact NA-cleaned numeric summary: N, min, Q1, median, mean, Q3, max.</div>
+    <div class="session-link" style="color:#27ae60;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-hms-span_statistics.html" target="_blank">
+    <div class="session-num" style="color:#27ae60;"><span style="font-family:monospace;">hms_span(start, end)</span></div>
+    <div class="session-topics">Format the elapsed time between two POSIXct timestamps as HH:MM:SS.</div>
+    <div class="session-link" style="color:#27ae60;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-sesandpvalues-bis_statistics.html" target="_blank">
+    <div class="session-num" style="color:#27ae60;"><span style="font-family:monospace;">sesandpvalues_bis(obs, rand, nreps, probs, rnd)</span></div>
+    <div class="session-topics">Standardised effect size (SES) and p-value from an observed value vs. a null randomisation vector.</div>
+    <div class="session-link" style="color:#27ae60;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-extract-t-test_statistics.html" target="_blank">
+    <div class="session-num" style="color:#27ae60;"><span style="font-family:monospace;">extract_t_test(x, y, ...)</span></div>
+    <div class="session-topics">Run a Welch t-test and return a tidy data frame with means, SDs, t-statistic, p-value and significan</div>
+    <div class="session-link" style="color:#27ae60;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-extract-indices-list_statistics.html" target="_blank">
+    <div class="session-num" style="color:#27ae60;"><span style="font-family:monospace;">extract_indices_list(ind)</span></div>
+    <div class="session-topics">Compute SES (Observed, SES, MeanRd, CI, Pval) for each column of an index matrix.</div>
+    <div class="session-link" style="color:#27ae60;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-extract-indices-change_statistics.html" target="_blank">
+    <div class="session-num" style="color:#27ae60;"><span style="font-family:monospace;">extract_indices_change(ind)</span></div>
+    <div class="session-topics">Absolute difference in functional indices across two conditions.</div>
+    <div class="session-link" style="color:#27ae60;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-extract-indices-change-log_statistics.html" target="_blank">
+    <div class="session-num" style="color:#27ae60;"><span style="font-family:monospace;">extract_indices_change_log(ind)</span></div>
+    <div class="session-topics">Log-ratio change in functional indices across two conditions.</div>
+    <div class="session-link" style="color:#27ae60;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-lm-summary_statistics.html" target="_blank">
+    <div class="session-num" style="color:#27ae60;"><span style="font-family:monospace;">lm_summary()</span></div>
+    <div class="session-topics">Extract tidy results from a fitted lm object</div>
+    <div class="session-link" style="color:#27ae60;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-check-completeness_statistics.html" target="_blank">
+    <div class="session-num" style="color:#27ae60;"><span style="font-family:monospace;">check_completeness()</span></div>
+    <div class="session-topics">Report trait completeness per column</div>
+    <div class="session-link" style="color:#27ae60;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-boot-ci_statistics.html" target="_blank">
+    <div class="session-num" style="color:#27ae60;"><span style="font-family:monospace;">boot_ci()</span></div>
+    <div class="session-topics">Bootstrap confidence intervals for any statistic</div>
+    <div class="session-link" style="color:#27ae60;">Open ↗</div>
+  </a>
 </div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">x — numeric vector</span><span class="fn-arg">k=6 — decimal places</span></div>
 ```
-
-```{r fn_statistics_distrib_0, eval=FALSE}
-distrib <- function(x, k = 6) {
-  # NA removing
-  x <- x[is.na(x) == FALSE]
-
-  Nx <- length(x)
-  sum <- round(summary(x), k)
-  res <- c(Nx, sum)
-  names(res) <- c("N", names(sum))
-  return(res)
-} # end of function distrib
-```
-
-</div>
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-hms-span">hms_span(start, end)</h4>
-    <div class="fn-desc">Format the elapsed time between two POSIXct timestamps as HH:MM:SS.</div>
-    <div class="fn-tags"><span class="fn-tag tag-util">utility</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">start — POSIXct start time</span><span class="fn-arg">end — POSIXct end time</span></div>
-```
-
-```{r fn_statistics_hms_span_1, eval=FALSE}
-hms_span <- function(start, end) {
-  dsec <- as.numeric(difftime(end, start, unit = "secs"))
-  hours <- floor(dsec / 3600)
-  minutes <- floor((dsec - 3600 * hours) / 60)
-  seconds <- dsec - 3600 * hours - 60 * minutes
-  paste0(
-    sapply(c(hours, minutes, seconds), function(x) {
-      formatC(x, width = 2, format = "d", flag = "0")
-    }),
-    collapse = ":"
-  )
-}
-```
-
-</div>
-
-```{=html}
-<h3 class="fn-section-divider"><span>Randomisation & SES</span><hr></h3>
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-sesandpvalues-bis">sesandpvalues_bis(obs, rand, nreps, probs, rnd)</h4>
-    <div class="fn-desc">Standardised effect size (SES) and p-value from an observed value vs. a null randomisation vector.</div>
-    <div class="fn-tags"><span class="fn-tag tag-stat">statistics</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">obs — observed value</span><span class="fn-arg">rand — null distribution vector</span><span class="fn-arg">nreps — number of randomisations</span><span class="fn-arg">probs=c(0.025,0.975) — CI bounds</span></div>
-```
-
-```{r fn_statistics_sesandpvalues_bis_2, eval=FALSE}
-sesandpvalues_bis <- function(obs, rand, nreps, probs = c(0.025, 0.975), rnd = 2) {
-  SES <- (obs - mean(rand)) / sd(rand)
-  pValsSES <- rank(c(obs, rand))[1] / (length(rand) + 1)
-  results <- round(c(obs, SES, mean(rand), quantile(rand, prob = probs), pValsSES, nreps), rnd)
-  names(results) <- c("Observed", "SES", "MeanRd", "CI025Rd", "CI975Rd", "Pval", "Nreps")
-  return(results)
-}
-```
-
-</div>
-
-```{=html}
-<h3 class="fn-section-divider"><span>Tests & index extraction</span><hr></h3>
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-extract-t-test">extract_t_test(x, y, ...)</h4>
-    <div class="fn-desc">Run a Welch t-test and return a tidy data frame with means, SDs, t-statistic, p-value and significance stars.</div>
-    <div class="fn-tags"><span class="fn-tag tag-stat">statistics</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">x — first numeric vector</span><span class="fn-arg">y — second numeric vector</span></div>
-```
-
-```{r fn_statistics_extract_t_test_3, eval=FALSE}
-extract_t_test <- function(x, y, ...) {
-  z <- t.test(x, y)
-  stat <- z$statistic
-  pval <- z$p.value
-  pvalStars <- ifelse(pval > 0.05, ".",
-                      ifelse(pval > 0.01, "*",
-                             ifelse(pval > 0.001, "**", "***")))
-  est <- z$estimate
-  sdv <- c(sd(x), sd(y))
-
-  res <- data.frame(est[1], sdv[1], est[2], sdv[2], stat, pval, pvalStars)
-  res[1:4] <- round(as.numeric(res[1:4]), 2)
-  names(res) <- c("Mean x", "sd x", "Mean y", "sd y", "t", "Pvalues", "P")
-  return(res)
-}
-```
-
-</div>
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-extract-indices-list">extract_indices_list(ind)</h4>
-    <div class="fn-desc">Compute SES (Observed, SES, MeanRd, CI, Pval) for each column of an index matrix.</div>
-    <div class="fn-tags"><span class="fn-tag tag-stat">statistics</span><span class="fn-tag tag-fd">functional diversity</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">ind — matrix of observed vs. randomised indices</span></div>
-```
-
-```{r fn_statistics_extract_indices_list_4, eval=FALSE}
-extract_indices_list <- function(ind) {
-  indSES <- matrix(
-    NA, nr = ncol(ind), nc = 7,
-    dimnames = list(
-      colnames(ind),
-      c("Observed", "SES", "MeanRd", "CI025Rd", "CI975Rd", "Pval", "Nreps")
-    )
-  )
-  for (i in 1:nrow(indSES)) {
-    indSES[i, ] <- sesandpvalues_bis(
-      obs = ind[1, i],
-      rand = ind[-1, i],
-      nreps = length(ind[, 1]) - 1,
-      probs = c(0.025, 0.975),
-      rnd = 2
-    )
-  }
-  rownames(indSES) <- gsub("\\.", " ", rownames(indSES))
-  return(indSES)
-}
-```
-
-</div>
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-extract-indices-change">extract_indices_change(ind)</h4>
-    <div class="fn-desc">Absolute difference in functional indices across two conditions.</div>
-    <div class="fn-tags"><span class="fn-tag tag-stat">statistics</span><span class="fn-tag tag-fd">functional diversity</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">ind — named list of index matrices (before / after)</span></div>
-```
-
-```{r fn_statistics_extract_indices_change_5, eval=FALSE}
-extract_indices_change <- function(ind) {
-  indSES <- matrix(
-    NA, nr = ncol(ind), nc = 7,
-    dimnames = list(
-      colnames(ind),
-      c("Observed", "SES", "MeanRd", "CI025Rd", "CI975Rd", "Pval", "Nreps")
-    )
-  )
-  for (i in 1:nrow(indSES)) {
-    indSES[i, ] <- sesandpvalues_bis(
-      obs = ((ind[2, i] - ind[1, i]) / ind[1, i]) * 100,
-      rand = ((ind[-c(1:2), i] - ind[1, i]) / ind[1, i]) * 100,
-      nreps = length(ind[, 1]) - 2,
-      probs = c(0.025, 0.975),
-      rnd = 2
-    )
-  }
-  rownames(indSES) <- gsub("\\.", " ", rownames(indSES))
-  return(indSES)
-}
-```
-
-</div>
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-extract-indices-change-log">extract_indices_change_log(ind)</h4>
-    <div class="fn-desc">Log-ratio change in functional indices across two conditions.</div>
-    <div class="fn-tags"><span class="fn-tag tag-stat">statistics</span><span class="fn-tag tag-fd">functional diversity</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">ind — named list of index matrices</span></div>
-```
-
-```{r fn_statistics_extract_indices_change_log_6, eval=FALSE}
-extract_indices_change_log <- function(ind) {
-  indSES <- matrix(
-    NA, nr = ncol(ind), nc = 7,
-    dimnames = list(
-      colnames(ind),
-      c("Observed", "SES", "MeanRd", "CI025Rd", "CI975Rd", "Pval", "Nreps")
-    )
-  )
-  for (i in 1:nrow(indSES)) {
-    indSES[i, ] <- sesandpvalues_bis(
-      obs = log(ind[2, i] / ind[1, i]),
-      rand = log(ind[-c(1:2), i] / ind[1, i]),
-      nreps = length(ind[, 1]) - 2,
-      probs = c(0.025, 0.975),
-      rnd = 2
-    )
-  }
-  rownames(indSES) <- gsub("\\.", " ", rownames(indSES))
-  return(indSES)
-}
-```
-
-</div>

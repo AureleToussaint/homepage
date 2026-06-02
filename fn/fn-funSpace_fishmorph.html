@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FishMORPH — FSpace — R Scripts</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #f7f9fc; color: #2c3e50; }
+.fn-page-wrap { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px 20px; }
+.back-link { font-size: 0.88em; margin-bottom: 18px; }
+.back-link a { color: #2980b9; text-decoration: none; font-weight: 500; }
+.back-link a:hover { text-decoration: underline; }
+.fn-hero { background: #fff; border: 1px solid #e4e9f0; border-radius: 14px; padding: 20px 22px; margin-bottom: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); border-left: 5px solid #2980b9; }
+.fn-hero h1 { font-family: monospace; font-size: 1.2em; font-weight: 700; color: #2c3e50; margin: 0 0 6px 0; }
+.fn-hero p  { font-size: 0.9em; color: #666; margin: 0 0 10px 0; line-height: 1.6; }
+.fn-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.fn-tag { font-size: 0.72em; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+.tag-stat  { background:#e8f5e9; color:#1b6b2f; }
+.tag-util  { background:#e3f2fd; color:#1557a0; }
+.tag-viz   { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd    { background:#fff3e0; color:#b25000; }
+.tag-data  { background:#fce4ec; color:#880e4f; }
+.tag-ml    { background:#e8eaf6; color:#283593; }
+.tag-morph { background:#e0f2f1; color:#00574e; }
+.tag-geo   { background:#f3e5f5; color:#6a1b9a; }
+.fn-args { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+.fn-args-label { font-size: 0.78em; font-weight: 700; color: #999; }
+.fn-arg { font-family: monospace; font-size: 0.78em; padding: 2px 8px; background: #f1f3f5; border: 1px solid #e0e3e8; border-radius: 5px; color: #555; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.tb-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8em; font-weight: 600; padding: 6px 14px; border-radius: 7px; cursor: pointer; border: 1px solid; background: #fff; transition: opacity .15s; }
+.tb-btn:hover { opacity: 0.75; }
+.tb-copy    { color: #2471a3; border-color: #2471a3; }
+.tb-save    { color: #27ae60; border-color: #27ae60; }
+.tb-suggest { color: #e67e22; border-color: #e67e22; }
+.tb-copied  { color: #27ae60 !important; border-color: #27ae60 !important; }
+.code-wrap { background: #fff; border: 1px solid #e4e9f0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.code-wrap pre { margin: 0; padding: 20px; overflow-x: auto; font-size: 0.87em; }
+</style>
+</head>
+<body>
+<div class="fn-page-wrap">
+  <div class="back-link">← <a href="../Rscripts_fishmorph.html">Back to Fishmorph Scripts</a></div>
+
+  <div class="fn-hero">
+    <h1>FishMORPH — FSpace</h1>
+    <p>Representation of the functional space based on subset of fish</p>
+    <div class="fn-tags"><span class="fn-tag tag-data">data</span><span class="fn-tag tag-morph">morphology</span>
+<div class="fn-toolbar"><button class="fn-tb-btn fn-tb-copy" onclick="fnCopy(this)">⧉ Copy</button><button class="fn-tb-btn fn-tb-save" onclick="fnSave(this,'FishMORPH___FSpace')">↓ Save .R</button><button class="fn-tb-btn fn-tb-suggest" onclick="fnSuggest('FishMORPH — FSpace')">✉ Suggest</button></div>
+    <div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">FishMORPH_Traits.rds — trait RDS</span><span class="fn-arg">FishMORPH_Phylogeny.rds — phylogeny RDS</span></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="tb-btn tb-copy" onclick="doCopy()">⧉ Copy</button>
+    <button class="tb-btn tb-save" onclick="doSave()">↓ Save .R</button>
+    <button class="tb-btn tb-suggest" onclick="doSuggest()">✉ Suggest modification</button>
+  </div>
+
+  <div class="code-wrap">
+    <pre><code id="fn-code" class="language-r"># =============================================================================
+# 0. LIBRAIRIES
+# =============================================================================
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(data.table)
+library(pbapply)
+library(traitdataform)
+library(openxlsx)
+library(tibble)
+
+set.seed(20260527)   # reproductibilité des tirages au genre/famille
+
+make.PCA &lt;- function(TRAITS, dimensionsAux, savePCA) {
+  paran_aux &lt;- paran::paran(TRAITS)
+  pca_obj   &lt;- list()
+  pca_obj$traits     &lt;- TRAITS
+  pca_obj$PCA        &lt;- princomp(TRAITS)
+  pca_obj$dimensions &lt;- dimensionsAux
+  eigenvalues        &lt;- summary(pca_obj$PCA)[[1]]^2
+  pca_obj$variance   &lt;- eigenvalues[seq_len(dimensionsAux)] / sum(eigenvalues)
+  pca_obj$loadings   &lt;- pca_obj$PCA$loadings
+  pca_obj$traitsUse  &lt;- data.frame(pca_obj$PCA$scores[, seq_len(dimensionsAux)])
+  if (!is.na(savePCA)) saveRDS(pca_obj, savePCA)
+  pca_obj
+}
+
+# =============================================================================
+# 1. LISTE D'ESPECES (Amazonie)
+# =============================================================================
+setwd("~/Library/CloudStorage/OneDrive-Personnel/iCloud Drive/00_Co-authors/Marcello")
+planilha &lt;- read_excel("Planilha_selecao_especies_kedma.xlsx")
+
+species &lt;- planilha[["...3"]] |&gt; trimws()
+species &lt;- species[!is.na(species) &amp; species != "" &amp; grepl(" ", species)]
+species &lt;- sort(unique(species))
+
+# =============================================================================
+# 2. CHARGEMENT FISHMORPH + RESOLUTION GBIF
+# =============================================================================
+setwd("~/Library/CloudStorage/OneDrive-Personnel/iCloud Drive/00_Co-authors/Julien")
+fishTraitsImputed &lt;- read.table("data/TraitFishImputed.txt")
+pca_trait         &lt;- readRDS("data/pca_trait.rds")
+setwd("~/Library/CloudStorage/OneDrive-Personnel/iCloud Drive/00_Co-authors/Marcello")
+
+traitCols &lt;- setdiff(colnames(fishTraitsImputed), "IUCN")
+fishMorph &lt;- trimws(rownames(fishTraitsImputed))
+
+fishMORPH_info &lt;- pbapply::pblapply(fishMorph, function(sp) {
+  tryCatch(
+    get_gbif_taxonomy(sp, subspecies = TRUE, higherrank = TRUE,
+                      conf_threshold = 80, resolve_synonyms = TRUE)[1, ],
+    error = function(e) NULL
+  )
+}) %&gt;% data.table::rbindlist(fill = TRUE)
+
+# Tables de correspondance pour FishMORPH (réutilisées en sections 6 et 6bis)
+fishMORPH_lookup &lt;- data.table(
+  scientificName = fishMorph,
+  genus  = sub(" .*$", "", fishMorph),
+  family = fishMORPH_info$family
+)
+# Index ligne dans fishTraitsImputed (l'ordre des deux objets est aligné)
+fishMORPH_lookup[, row_id := .I]
+
+# =============================================================================
+# 3. APPARIEMENT EXACT (verbatim == FishMORPH)
+# =============================================================================
+commonSP   &lt;- intersect(species, fishMorph)
+spToCheck  &lt;- species[!species %in% commonSP]
+
+# =============================================================================
+# 4. RESOLUTION GBIF DES NON-APPARIES
+# =============================================================================
+taxInfo &lt;- pbapply::pblapply(spToCheck, function(sp) {
+  tryCatch(
+    get_gbif_taxonomy(sp, subspecies = TRUE, higherrank = TRUE,
+                      conf_threshold = 80, resolve_synonyms = TRUE)[1, ],
+    error = function(e) NULL
+  )
+}) %&gt;% data.table::rbindlist(fill = TRUE)
+
+taxInfo &lt;- as.data.table(taxInfo)
+taxInfo[is.na(scientificName) | scientificName == "",
+        scientificName := verbatimScientificName]
+
+# =============================================================================
+# 5. SECOND APPARIEMENT EXACT (sur nom GBIF résolu)
+# =============================================================================
+commonSP2     &lt;- intersect(taxInfo$scientificName, fishMorph)
+spToCheck2All &lt;- taxInfo[!scientificName %in% commonSP2, ]
+
+traits_species &lt;- fishTraitsImputed[unique(c(commonSP, commonSP2)), traitCols]
+traits_species &lt;- tibble::rownames_to_column(traits_species, var = "scientificName")
+traits_species$match_level &lt;- "species"
+
+# =============================================================================
+# 6. APPARIEMENT AU GENRE
+# =============================================================================
+spGenus &lt;- sub(" .*$", "", spToCheck2All$scientificName)
+
+# Helper : tirage normal coordonnée par coordonnée pour n&gt;=2 congénères,
+# moyenne sinon. Filet de sécurité contre sd indéfini.
+draw_traits &lt;- function(mat) {
+  if (nrow(mat) == 1L) return(unlist(mat[1, , drop = TRUE]))
+  apply(mat, 2, function(x) {
+    m &lt;- mean(x, na.rm = TRUE); s &lt;- sd(x, na.rm = TRUE)
+    if (is.na(s) || s == 0) m else rnorm(1, mean = m, sd = s)
+  })
+}
+
+genusList &lt;- lapply(seq_len(nrow(spToCheck2All)), function(i) {
+  idx &lt;- fishMORPH_lookup[genus == spGenus[i], row_id]
+  if (length(idx) == 0L) return(NULL)
+  vals &lt;- draw_traits(fishTraitsImputed[idx, traitCols, drop = FALSE])
+  data.frame(
+    verbatimScientificName = spToCheck2All$verbatimScientificName[i],
+    scientificName         = spToCheck2All$scientificName[i],
+    as.list(vals),
+    match_level            = "genus",
+    check.names = FALSE, stringsAsFactors = FALSE
+  )
+})
+traits_genus &lt;- data.table::rbindlist(genusList, fill = TRUE)
+
+# =============================================================================
+# 6bis. APPARIEMENT A LA FAMILLE (espèces sans congénère dans FishMORPH)
+# =============================================================================
+spToCheckFam &lt;- spToCheck2All[!scientificName %in% traits_genus$scientificName, ]
+
+# Famille manquante après GBIF -&gt; on ne peut pas apparier
+spToCheckFam &lt;- spToCheckFam[!is.na(family) &amp; family != "", ]
+
+familyList &lt;- lapply(seq_len(nrow(spToCheckFam)), function(i) {
+  fam &lt;- spToCheckFam$family[i]
+  idx &lt;- fishMORPH_lookup[family == fam, row_id]
+  if (length(idx) == 0L) return(NULL)
+  vals &lt;- draw_traits(fishTraitsImputed[idx, traitCols, drop = FALSE])
+  data.frame(
+    verbatimScientificName = spToCheckFam$verbatimScientificName[i],
+    scientificName         = spToCheckFam$scientificName[i],
+    family                 = fam,
+    n_family_donors        = length(idx),
+    as.list(vals),
+    match_level            = "family",
+    check.names = FALSE, stringsAsFactors = FALSE
+  )
+})
+traits_family &lt;- data.table::rbindlist(familyList, fill = TRUE)
+
+# =============================================================================
+# 7. NON TROUVEES (ni espèce, ni genre, ni famille)
+# =============================================================================
+matched_all &lt;- unique(c(traits_genus$scientificName, traits_family$scientificName))
+traits_notfound &lt;- unique(
+  spToCheck2All[!scientificName %in% matched_all,
+                c("verbatimScientificName", "scientificName", "family")]
+)
+
+# =============================================================================
+# 8. CONSTRUCTION DU POOL POUR LA PCA (alignement strict)
+# =============================================================================
+fishMORPH_df &lt;- fishTraitsImputed[, traitCols] |&gt;
+  tibble::rownames_to_column(var = "scientificName") |&gt;
+  dplyr::mutate(match_level = "fishMORPH")
+
+cols_pca &lt;- c("scientificName", traitCols, "match_level")
+add_species &lt;- traits_species[, cols_pca]
+add_genus   &lt;- as.data.frame(traits_genus)[,   cols_pca]
+add_family  &lt;- as.data.frame(traits_family)[,  cols_pca]
+
+# On exclut du pool FishMORPH les espèces déjà identifiées par appariement
+# direct (commonSP / commonSP2) : elles seraient sinon dupliquées.
+already_in_fishMORPH &lt;- intersect(add_species$scientificName,
+                                  fishMORPH_df$scientificName)
+add_species_extra &lt;- add_species[!add_species$scientificName %in% already_in_fishMORPH, ]
+
+# Et on évite tout doublon (un nom imputé au genre/famille déjà résolu à l'espèce)
+add_genus_extra  &lt;- add_genus[!add_genus$scientificName  %in% fishMORPH_df$scientificName, ]
+add_family_extra &lt;- add_family[!add_family$scientificName %in% c(fishMORPH_df$scientificName,
+                                                                 add_genus_extra$scientificName), ]
+
+trait_pool &lt;- rbind(fishMORPH_df, add_species_extra, add_genus_extra, add_family_extra)
+
+# Identifiants uniques (au cas où des noms se répéteraient encore, ex. synonymes)
+trait_pool$row_label &lt;- make.unique(trait_pool$scientificName, sep = "__")
+rownames(trait_pool) &lt;- trait_pool$row_label
+
+# Indices des espèces du sous-ensemble amazonien (toutes les espèces appariées
+# à l'espèce, au genre ou à la famille)
+sub_names &lt;- c(commonSP, commonSP2,
+               traits_genus$scientificName,
+               traits_family$scientificName)
+sub_idx_pool &lt;- which(trait_pool$scientificName %in% sub_names)
+
+# =============================================================================
+# 9. DEUX PCA INDEPENDANTES, ESPECES DU SOUS-ENSEMBLE ALIGNEES
+# =============================================================================
+
+# --- 9a. PCA globale sur l'ensemble du pool (FishMORPH + espèces ajoutées) -----
+trait_mat_all &lt;- scale(trait_pool[, traitCols])
+keep_all      &lt;- stats::complete.cases(trait_mat_all)
+trait_mat_all &lt;- trait_mat_all[keep_all, ]
+labels_all    &lt;- rownames(trait_pool)[keep_all]
+rownames(trait_mat_all) &lt;- labels_all
+
+pca_all &lt;- make.PCA(trait_mat_all, dimensionsAux = 4, savePCA = NA)
+# Stabilisation du signe de PC1 (convention héritée du script original)
+pca_all$PCA$loadings[, 1] &lt;- pca_all$PCA$loadings[, 1] * (-1)
+pca_all$PCA$scores[,   1] &lt;- pca_all$PCA$scores[,   1] * (-1)
+
+# --- 9b. Liste de référence des espèces du sous-ensemble amazonien -------------
+# On part des row_label du pool (uniques, gérant les éventuels doublons de noms)
+sub_labels_target &lt;- trait_pool$row_label[sub_idx_pool]
+
+# On ne garde que celles qui ont survécu au filtrage NA dans pca_all : c'est cette
+# liste qui définit le sous-ensemble effectivement représentable.
+sub_labels &lt;- intersect(sub_labels_target, labels_all)
+
+# Diagnostic explicite des pertes éventuelles (NA dans les traits)
+dropped_NA &lt;- setdiff(sub_labels_target, sub_labels)
+if (length(dropped_NA) &gt; 0L) {
+  message(length(dropped_NA),
+          " espèce(s) du sous-ensemble écartée(s) pour traits manquants : ",
+          paste(head(dropped_NA, 5), collapse = ", "),
+          if (length(dropped_NA) &gt; 5) " ..." else "")
+}
+
+# --- 9c. PCA recalculée sur le seul sous-ensemble ------------------------------
+sub_pool        &lt;- trait_pool[sub_labels, , drop = FALSE]
+trait_mat_sub   &lt;- scale(sub_pool[, traitCols])
+keep_sub        &lt;- stats::complete.cases(trait_mat_sub)   # par sécurité
+trait_mat_sub   &lt;- trait_mat_sub[keep_sub, ]
+rownames(trait_mat_sub) &lt;- sub_labels[keep_sub]
+
+pca_sub &lt;- make.PCA(trait_mat_sub, dimensionsAux = 4, savePCA = NA)
+
+# --- 9d. Cohérence de l'orientation des axes entre les deux PCA ----------------
+# Deux PCA indépendantes peuvent inverser arbitrairement le signe d'un axe.
+# On aligne le signe de chaque axe de pca_sub sur celui de pca_all en comparant
+# les loadings : si la corrélation est négative, on retourne l'axe.
+for (k in seq_len(pca_sub$dimensions)) {
+  l_all &lt;- pca_all$PCA$loadings[, k]
+  l_sub &lt;- pca_sub$PCA$loadings[, k]
+  if (stats::cor(l_all, l_sub) &lt; 0) {
+    pca_sub$PCA$loadings[, k] &lt;- pca_sub$PCA$loadings[, k] * (-1)
+    pca_sub$PCA$scores[,   k] &lt;- pca_sub$PCA$scores[,   k] * (-1)
+    pca_sub$loadings[,     k] &lt;- pca_sub$loadings[,     k] * (-1)
+    pca_sub$traitsUse[,    k] &lt;- pca_sub$traitsUse[,    k] * (-1)
+  }
+}
+
+# --- 9e. Vecteur d'espèces du sous-ensemble (pour les plots et TPD) ------------
+com_sp &lt;- rownames(pca_sub$PCA$scores)
+
+# =============================================================================
+# 10. COMMUNAUTES + TPD/FRic + SES
+# =============================================================================
+comm_mat &lt;- matrix(0,
+                   nrow = 2,
+                   ncol = nrow(pca_all$PCA$scores),
+                   dimnames = list(paste0("Comm.", 1:2),
+                                   rownames(pca_all$PCA$scores)))
+comm_mat[1, ] &lt;- 1
+comm_mat[2, com_sp] &lt;- 1
+
+gridSize &lt;- 100
+scores2  &lt;- pca_all$PCA$scores[, c(1, 2)]
+sdTraits &lt;- sqrt(diag(ks::Hpi.diag(scores2)))
+
+TPDsAux &lt;- TPD::TPDsMean(
+  species = rownames(scores2),
+  means   = scores2,
+  sds     = matrix(rep(sdTraits, nrow(scores2)), byrow = TRUE, ncol = 2),
+  alpha   = 0.95,
+  n_divisions = gridSize
+)
+TPDcAux &lt;- TPD::TPDc(TPDs = TPDsAux, sampUnit = comm_mat)
+FRic    &lt;- TPD::REND(TPDcAux)
+
+obs    &lt;- numeric(100)
+obs[1] &lt;- FRic$communities$FRichness[2] / FRic$communities$FRichness[1]
+for (b in 1:99) {
+  rdm_comm &lt;- comm_mat
+  rdm_comm[2, ] &lt;- sample(rdm_comm[2, ])
+  TPDcRdm  &lt;- TPD::TPDc(TPDs = TPDsAux, sampUnit = rdm_comm)
+  FRicRdm  &lt;- TPD::REND(TPDcRdm)
+  obs[b + 1] &lt;- FRicRdm$communities$FRichness[2] / FRic$communities$FRichness[1]
+}
+
+sesandpvalues_bis &lt;- function(sr, obs, rand, nreps, probs = c(0.025, 0.975), rnd = 2) {
+  SES      &lt;- (obs - mean(rand)) / sd(rand)
+  pValsSES &lt;- rank(c(obs, rand))[1] / (length(rand) + 1)
+  out &lt;- round(c(sr, obs, SES, mean(rand), quantile(rand, prob = probs), pValsSES, nreps), rnd)
+  names(out) &lt;- c("SpeciesRichness", "Observed", "SES",
+                  "MeanRd", "CI025Rd", "CI975Rd", "Pval", "Nreps")
+  out
+}
+fric_stats &lt;- sesandpvalues_bis(sr = sum(comm_mat[2, ]),
+                                obs = obs[1], rand = obs[-1],
+                                nreps = 99)
+
+# =============================================================================
+# 11. EXPORT EXCEL : 4 feuilles
+# =============================================================================
+openxlsx::write.xlsx(
+  list(
+    "Species"    = traits_species,
+    "Genus_avg"  = as.data.frame(traits_genus),
+    "Family_avg" = as.data.frame(traits_family),
+    "Not_Found"  = as.data.frame(traits_notfound),
+    "Pool_PCA"   = trait_pool
+  ),
+  file = "Traits_FishMORPH.xlsx",
+  rowNames = FALSE, overwrite = TRUE
+)
+
+# =============================================================================
+# 12. FIGURES
+# =============================================================================
+p_groups &lt;- plot_FS_new(
+  pca_sub = NULL, pca_all = pca_all, com_sp = com_sp,
+  group_mode = "groups", fric_stats = fric_stats,
+  title = "PCA on FishMORPH", phylopic_species = NULL,
+  arrow_mult = 1.2, contour_lwd = 0.4,
+  n_density_bands = 20, bw_mult = 0.4, band_line_lwd = 0.07
+)
+p_single &lt;- plot_FS_new(
+  pca_sub = pca_sub, pca_all = pca_all, com_sp = com_sp,
+  group_mode = "single", phylopic_species = NULL,
+  title = "PCA on subset",
+  contour_lwd = 0.4, n_density_bands = 20,
+  bw_mult = 1, arrow_mult = 1.2
+)
+ggsave("FS_main.png", (p_groups | p_single),
+       width = 15, height = 6, dpi = 300)</code></pre>
+  </div>
+</div>
+<script>
+hljs.highlightAll();
+function doCopy() {
+  var code = document.getElementById('fn-code').innerText;
+  navigator.clipboard.writeText(code).then(function() {
+    var btn = document.querySelector('.tb-copy');
+    btn.textContent = '✓ Copied!'; btn.classList.add('tb-copied');
+    setTimeout(function(){ btn.textContent = '⧉ Copy'; btn.classList.remove('tb-copied'); }, 1800);
+  });
+}
+function doSave() {
+  var code = document.getElementById('fn-code').innerText;
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([code], {type:'text/plain'}));
+  a.download = 'FishMORPH___FSpace.R'; a.click();
+}
+function doSuggest() {
+  var s = encodeURIComponent('Suggestion for: FishMORPH — FSpace');
+  var b = encodeURIComponent('Hi Aurèle,\n\nSuggestion for FishMORPH — FSpace:\n\n');
+  window.open('mailto:aurele.toussaint@cnrs.fr?subject='+s+'&body='+b);
+}
+</script>
+</body>
+</html>

@@ -135,162 +135,164 @@ output:
     <p>Reusable R utilities organised by theme. Click a card to open the scripts.</p>
   </div>
 
-  <div class="courses-grid">
+  <style>
+  .section-group { margin-bottom: 36px; }
+  .section-group-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.72em; font-weight: 800; letter-spacing: .1em;
+    text-transform: uppercase; color: #aaa;
+    margin-bottom: 14px;
+  }
+  .section-group-title hr { flex: 1; border: none; border-top: 1px solid #e8e8e8; }
+  </style>
 
-    <a class="course-card" href="Rscripts_library.html">
-      <div class="card-top">
-        <div class="card-icon-circle" style="background:#2980b9;">
-          <i class="fa fa-book"></i>
-        </div>
-        <div class="card-meta">
-          <h3>Library</h3>
-          <span>Package management</span>
-        </div>
-      </div>
-      <p class="card-desc">Package installation and loading utilities.</p>
-      <div class="card-arrow">→</div>
-    </a>
+  <!-- ── R Basics & Statistics ── -->
+  <div class="section-group">
+    <div class="section-group-title"><span>R Basics &amp; Statistics</span><hr></div>
+    <div class="courses-grid">
 
-    <a class="course-card" href="Rscripts_statistics.html">
-      <div class="card-top">
-        <div class="card-icon-circle" style="background:#27ae60;">
-          <i class="fa fa-bar-chart"></i>
+      <a class="course-card" href="Rscripts_library.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#2980b9;"><i class="fa fa-book"></i></div>
+          <div class="card-meta"><h3>Library</h3><span>Package management</span></div>
         </div>
-        <div class="card-meta">
-          <h3>Statistics</h3>
-          <span>Summary &amp; correlation</span>
-        </div>
-      </div>
-      <p class="card-desc">Distribution, summary, correlation and statistical helper functions.</p>
-      <div class="card-arrow">→</div>
-    </a>
+        <p class="card-desc">Package installation and loading utilities.</p>
+        <div class="card-arrow">→</div>
+      </a>
 
-    <a class="course-card" href="Rscripts_sorting.html">
-      <div class="card-top">
-        <div class="card-icon-circle" style="background:#8e44ad;">
-          <i class="fa fa-sort"></i>
+      <a class="course-card" href="Rscripts_basics.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#1abc9c;"><i class="fa fa-graduation-cap"></i></div>
+          <div class="card-meta"><h3>R Basics</h3><span>Core syntax</span></div>
         </div>
-        <div class="card-meta">
-          <h3>Sorting data</h3>
-          <span>Data wrangling</span>
-        </div>
-      </div>
-      <p class="card-desc">Data wrangling, filtering and sorting workflows.</p>
-      <div class="card-arrow">→</div>
-    </a>
+        <p class="card-desc">Objects, vectors, data frames, control flow, functions and base plots.</p>
+        <div class="card-arrow">→</div>
+      </a>
 
-    <a class="course-card" href="Rscripts_pca.html">
-      <div class="card-top">
-        <div class="card-icon-circle" style="background:#16a085;">
-          <i class="fa fa-arrows-alt"></i>
+      <a class="course-card" href="Rscripts_statistics.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#27ae60;"><i class="fa fa-bar-chart"></i></div>
+          <div class="card-meta"><h3>Statistics</h3><span>Summary &amp; correlation</span></div>
         </div>
-        <div class="card-meta">
-          <h3>PCA</h3>
-          <span>Ordination &amp; Procrustes</span>
-        </div>
-      </div>
-      <p class="card-desc">Principal component analyses, Procrustes and correlation plots.</p>
-      <div class="card-arrow">→</div>
-    </a>
+        <p class="card-desc">Distribution, summary, correlation and statistical helper functions.</p>
+        <div class="card-arrow">→</div>
+      </a>
 
-    <a class="course-card" href="Rscripts_fd.html">
-      <div class="card-top">
-        <div class="card-icon-circle" style="background:#e67e22;">
-          <i class="fa fa-leaf"></i>
+      <a class="course-card" href="Rscripts_sorting.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#8e44ad;"><i class="fa fa-sort"></i></div>
+          <div class="card-meta"><h3>Sorting data</h3><span>Data wrangling</span></div>
         </div>
-        <div class="card-meta">
-          <h3>Functional diversity</h3>
-          <span>TPD · indices</span>
-        </div>
-      </div>
-      <p class="card-desc">TPD, functional space and diversity index computations.</p>
-      <div class="card-arrow">→</div>
-    </a>
+        <p class="card-desc">Data wrangling, filtering and sorting workflows.</p>
+        <div class="card-arrow">→</div>
+      </a>
 
-    <a class="course-card" href="Rscripts_fishmorph.html">
-      <div class="card-top">
-        <div class="card-icon-circle" style="background:#c0392b;">
-          <i class="fa fa-database"></i>
-        </div>
-        <div class="card-meta">
-          <h3>FishMORPH</h3>
-          <span>Morphological traits</span>
-        </div>
-      </div>
-      <p class="card-desc">FishMORPH database queries and morphological trait workflows.</p>
-      <div class="card-arrow">→</div>
-    </a>
+    </div>
+  </div>
 
-    <a class="course-card" href="Rscripts_funcspace.html">
-      <div class="card-top">
-        <div class="card-icon-circle" style="background:#2c3e50;">
-          <i class="fa fa-cube"></i>
-        </div>
-        <div class="card-meta">
-          <h3>FunctionalSpace</h3>
-          <span>Hypervolumes · visualisation</span>
-        </div>
-      </div>
-      <p class="card-desc">Functional space construction, hypervolumes and visualisation.</p>
-      <div class="card-arrow">→</div>
-    </a>
+  <!-- ── Trait-based approaches ── -->
+  <div class="section-group">
+    <div class="section-group-title"><span>Trait-based approaches</span><hr></div>
+    <div class="courses-grid">
 
-    <a class="course-card" href="Rscripts_imputation.html">
-      <div class="card-top">
-        <div class="card-icon-circle" style="background:#7f8c8d;">
-          <i class="fa fa-magic"></i>
+      <a class="course-card" href="Rscripts_pca.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#16a085;"><i class="fa fa-arrows-alt"></i></div>
+          <div class="card-meta"><h3>PCA</h3><span>Ordination &amp; Procrustes</span></div>
         </div>
-        <div class="card-meta">
-          <h3>Imputation</h3>
-          <span>Missing data</span>
-        </div>
-      </div>
-      <p class="card-desc">Missing data imputation pipelines (missForest, MICE, etc.).</p>
-      <div class="card-arrow">→</div>
-    </a>
+        <p class="card-desc">Principal component analyses, Procrustes and correlation plots.</p>
+        <div class="card-arrow">→</div>
+      </a>
 
-    <a class="course-card" href="Rscripts_intra.html">
-      <div class="card-top">
-        <div class="card-icon-circle" style="background:#d35400;">
-          <i class="fa fa-adjust"></i>
+      <a class="course-card" href="Rscripts_fd.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#e67e22;"><i class="fa fa-leaf"></i></div>
+          <div class="card-meta"><h3>Functional diversity</h3><span>TPD · indices</span></div>
         </div>
-        <div class="card-meta">
-          <h3>Intra-specific variability</h3>
-          <span>ITV quantification</span>
-        </div>
-      </div>
-      <p class="card-desc">Intraspecific trait variability quantification.</p>
-      <div class="card-arrow">→</div>
-    </a>
+        <p class="card-desc">TPD, functional space and diversity index computations.</p>
+        <div class="card-arrow">→</div>
+      </a>
 
-    <a class="course-card" href="Rscripts_others.html">
-      <div class="card-top">
-        <div class="card-icon-circle" style="background:#95a5a6;">
-          <i class="fa fa-ellipsis-h"></i>
+      <a class="course-card" href="Rscripts_funcspace.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#2c3e50;"><i class="fa fa-cube"></i></div>
+          <div class="card-meta"><h3>Functional Space</h3><span>Hypervolumes · viz</span></div>
         </div>
-        <div class="card-meta">
-          <h3>Other functions</h3>
-          <span>Miscellaneous</span>
-        </div>
-      </div>
-      <p class="card-desc">Miscellaneous utility snippets.</p>
-      <div class="card-arrow">→</div>
-    </a>
+        <p class="card-desc">Functional space construction, hypervolumes and visualisation.</p>
+        <div class="card-arrow">→</div>
+      </a>
 
-    <a class="course-card" href="Rscripts_birds.html">
-      <div class="card-top">
-        <div class="card-icon-circle" style="background:#c0392b;">
-          🐦
+      <a class="course-card" href="Rscripts_imputation.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#7f8c8d;"><i class="fa fa-magic"></i></div>
+          <div class="card-meta"><h3>Imputation</h3><span>Missing data</span></div>
         </div>
-        <div class="card-meta">
-          <h3>Bird trait analysis</h3>
-          <span>FuSE_FuS pipeline</span>
-        </div>
-      </div>
-      <p class="card-desc">Load, impute and spatially assign avian trait data (AVONET · IUCN · BOTW).</p>
-      <div class="card-arrow">→</div>
-    </a>
+        <p class="card-desc">Missing data imputation pipelines (missForest, MICE, etc.).</p>
+        <div class="card-arrow">→</div>
+      </a>
 
+      <a class="course-card" href="Rscripts_intra.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#d35400;"><i class="fa fa-adjust"></i></div>
+          <div class="card-meta"><h3>Intraspecific variability</h3><span>ITV quantification</span></div>
+        </div>
+        <p class="card-desc">Intraspecific trait variability quantification.</p>
+        <div class="card-arrow">→</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── Databases ── -->
+  <div class="section-group">
+    <div class="section-group-title"><span>Databases</span><hr></div>
+    <div class="courses-grid">
+
+      <a class="course-card" href="Rscripts_fishmorph.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#c0392b;"><i class="fa fa-database"></i></div>
+          <div class="card-meta"><h3>FishMORPH</h3><span>Morphological traits</span></div>
+        </div>
+        <p class="card-desc">FishMORPH database queries and morphological trait workflows.</p>
+        <div class="card-arrow">→</div>
+      </a>
+
+      <a class="course-card" href="Rscripts_birds.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#c0392b;">🐦</div>
+          <div class="card-meta"><h3>Bird trait analysis</h3><span>FuSE_FuS pipeline</span></div>
+        </div>
+        <p class="card-desc">Load, impute and spatially assign avian trait data (AVONET · IUCN · BOTW).</p>
+        <div class="card-arrow">→</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── Community analyses ── -->
+  <div class="section-group">
+    <div class="section-group-title"><span>Community analyses</span><hr></div>
+    <div class="courses-grid">
+
+      <a class="course-card" href="Rscripts_community.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#2471a3;"><i class="fa fa-sitemap"></i></div>
+          <div class="card-meta"><h3>Community ecology</h3><span>LTOM 2023</span></div>
+        </div>
+        <p class="card-desc">Species diversity, ordinations, trait-based community analysis — LTOM.01.002 course materials.</p>
+        <div class="card-arrow">→</div>
+      </a>
+
+      <a class="course-card" href="Rscripts_others.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#95a5a6;"><i class="fa fa-ellipsis-h"></i></div>
+          <div class="card-meta"><h3>Other functions</h3><span>Miscellaneous</span></div>
+        </div>
+        <p class="card-desc">Miscellaneous utility snippets.</p>
+        <div class="card-arrow">→</div>
+      </a>
+
+    </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════ -->

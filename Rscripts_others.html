@@ -29,15 +29,21 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
-<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
-<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel="shortcut icon" href="data/ATc.jpg" />
+
+<style>
+/* ── Wider page layout ── */
+.container { max-width: 1140px !important; width: 96% !important; }
+.main-container { max-width: 1140px !important; width: 96% !important; }
+@media (min-width: 1400px) {
+  .container, .main-container { max-width: 1280px !important; }
+}
+</style>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -48,124 +54,23 @@
   ul.task-list{list-style: none;}
     </style>
 
-
-
-<style type="text/css">
-  code {
-    white-space: pre;
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
   }
-  .sourceCode {
-    overflow: visible;
-  }
-</style>
-<style type="text/css" data-origin="pandoc">
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
 }
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  background-color: #f8f8f8; }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ef2929; } /* Alert */
-code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #204a87; } /* Attribute */
-code span.bn { color: #0000cf; } /* BaseN */
-code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #8f5902; } /* Constant */
-code span.co { color: #8f5902; font-style: italic; } /* Comment */
-code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code span.dt { color: #204a87; } /* DataType */
-code span.dv { color: #0000cf; } /* DecVal */
-code span.er { color: #a40000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #204a87; font-weight: bold; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code span.ot { color: #8f5902; } /* Other */
-code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
-code span.ss { color: #4e9a06; } /* SpecialString */
-code span.st { color: #4e9a06; } /* String */
-code span.va { color: #000000; } /* Variable */
-code span.vs { color: #4e9a06; } /* VerbatimString */
-code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
-
-.sourceCode .row {
-  width: 100%;
-}
-.sourceCode {
-  overflow-x: auto;
-}
-.code-folding-btn {
-  margin-right: -30px;
-}
-</style>
-<script>
-// apply pandoc div.sourceCode style to pre.sourceCode instead
-(function() {
-  var sheets = document.styleSheets;
-  for (var i = 0; i < sheets.length; i++) {
-    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
-    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    var j = 0;
-    while (j < rules.length) {
-      var rule = rules[j];
-      // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
-        j++;
-        continue;
-      }
-      var style = rule.style.cssText;
-      // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') {
-        j++;
-        continue;
-      }
-      // replace div.sourceCode by a pre.sourceCode rule
-      sheets[i].deleteRule(j);
-      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
-    }
-  }
-})();
 </script>
 
 
 
 
-<link rel="stylesheet" href="assets/custom.css" type="text/css" />
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
 
 
 
@@ -324,73 +229,7 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
 
-
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
 
 
 
@@ -400,16 +239,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -481,126 +310,14 @@ div.tocify {
 
 <div id="header">
 
-<div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-</ul>
-</div>
-
 
 
 
 </div>
 
 
-<style>
-/* Custom function TOC — overrides rmarkdown floating TOC */
-#TOC,
-.tocify-wrapper,
-div[data-spy="affix"] {
-  display: none !important;
-  width: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-.fn-nav {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 205px;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-  padding: 14px 10px 20px 14px;
-  border-right: 1px solid #e8e8e8;
-  background: #fafafa;
-  font-size: 0.82em;
-  z-index: 100;
-}
-.fn-nav .fn-nav-title {
-  font-size: 0.7em;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: #bbb;
-  margin-bottom: 10px;
-  padding-left: 4px;
-}
-.fn-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.fn-nav li a {
-  display: block;
-  padding: 3px 6px;
-  border-radius: 4px;
-  color: #444;
-  text-decoration: none;
-  font-family: monospace;
-  font-size: 0.95em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.fn-nav li a:hover {
-  background: #eef2f7;
-  color: #2c3e50;
-}
-.fn-nav li a.active {
-  background: #e3f0fb;
-  color: #1a6faf;
-  font-weight: 600;
-}
-/* push main content right to make room */
-body {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-}
-.main-container {
-  margin-left: 210px !important;
-  max-width: calc(100vw - 230px) !important;
-  width: calc(100vw - 230px) !important;
-  padding-right: 30px !important;
-}
-/* kill rmarkdown's bootstrap TOC column entirely */
-.col-xs-12.col-sm-4.col-md-3,
-.tocify-wrapper,
-div.tocify,
-#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
-/* expand content column to full width */
-.col-xs-12.col-sm-8.col-md-9 {
-  width: 100% !important;
-  -webkit-flex: none !important;
-  flex: none !important;
-}
-.row { margin-left: 0 !important; margin-right: 0 !important; }
-</style>
-
-<div class="fn-nav" id="fn-nav">
-  <div class="fn-nav-title">Functions</div>
-  <ul>
-    <li><a href="#fn-funfun">funfun</a></li>
-    <li><a href="#fn-compute-gower-block">compute_gower_block</a></li>
-  </ul>
-</div>
-
-<script>
-/* Highlight active function on scroll */
-window.addEventListener("scroll", function() {
-  var links = document.querySelectorAll(".fn-nav li a");
-  var current = "";
-  links.forEach(function(a) {
-    var id = a.getAttribute("href").slice(1);
-    var el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top < 120) current = id;
-  });
-  links.forEach(function(a) {
-    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
-  });
-});
-</script>
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 <style>
 #pw-overlay {
@@ -630,147 +347,105 @@ window.addEventListener("scroll", function() {
 .back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
 .back-link a { color: #95a5a6; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
-
-/* ── Function cards ────────────────────────────────── */
 .page-intro {
   display:flex; align-items:center; gap:14px;
   padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
 }
 .page-intro-icon {
-  width:48px; height:48px; border-radius:10px;
+  width:52px; height:52px; border-radius:12px; background:#95a5a6;
   display:flex; align-items:center; justify-content:center;
-  font-size:1.5em; color:#fff; flex-shrink:0;
+  font-size:1.6em; color:#fff; flex-shrink:0;
 }
 .page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
 .page-intro p  { font-size:0.92em; color:#777; margin:0; }
-
-.fn-section-divider {
-  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+.session-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px; margin-bottom: 40px;
 }
-.fn-section-divider span {
-  font-size:0.75em; font-weight:700; letter-spacing:.08em;
-  text-transform:uppercase; color:#aaa; white-space:nowrap;
+.session-card {
+  background: #fff; border: 1px solid #e4e9f0; border-radius: 12px;
+  padding: 16px 18px; text-decoration: none !important; color: inherit !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow .15s, transform .12s;
+  display: flex; flex-direction: column; gap: 6px;
+  border-left: 4px solid #95a5a6;
 }
-.fn-section-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
-
-.fn-card {
-  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+.session-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10); transform: translateY(-2px);
+  text-decoration: none !important;
 }
-.fn-header {
-  display:flex; align-items:flex-start; justify-content:space-between;
-  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
-}
-.fn-name {
-  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
-  margin:0; padding:0; line-height:1.4;
-}
-.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
-.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
-.fn-tag {
-  font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600;
-}
-.tag-stat   { background:#e8f5e9; color:#1b6b2f; }
-.tag-util   { background:#e3f2fd; color:#1557a0; }
-.tag-viz    { background:#f3e5f5; color:#6a1b9a; }
-.tag-fd     { background:#fff3e0; color:#b25000; }
-.tag-data   { background:#fce4ec; color:#880e4f; }
-.tag-ml     { background:#e8eaf6; color:#283593; }
-.tag-morph  { background:#e0f2f1; color:#00574e; }
-
-.fn-args {
-  display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
-  background:#fff; border-bottom:1px solid #f0f0f0; align-items:center;
-}
-.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
-.fn-arg {
-  font-family:monospace; font-size:0.78em; padding:2px 8px;
-  background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555;
-}
-
+.session-num   { font-size: 0.88em; font-weight: 700; }
+.session-topics{ font-size: 0.82em; color: #888; line-height: 1.5; }
+.session-link  { margin-top: auto; padding-top: 8px; font-size: 0.8em; font-weight: 600; }
 </style>
 
 <div id="pw-overlay">
   <div class="pw-box">
     <div class="pw-lock">🔒</div>
-    <h2>Other functions</h2>
-    <p>Please enter the access password.</p>
+    <h2>R Scripts — Other functions</h2>
+    <p>Enter the password to access this page.</p>
     <div class="pw-row">
-      <input type="password" id="pw-input" placeholder="Password…"
-             onkeydown="if(event.key==='Enter') checkPw()"/>
-      <button onclick="checkPw()">Enter</button>
+      <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+      <button onclick="checkPw()">OK</button>
     </div>
-    <p class="pw-err" id="pw-error"></p>
+    <p class="pw-err" id="pw-err"></p>
   </div>
 </div>
+<script>
+(function(){
+  if(sessionStorage.getItem('rscripts_unlocked')==='1'){
+    document.getElementById('pw-overlay').style.display='none';
+  }
+})();
+async function checkPw(){
+  var val=document.getElementById('pw-input').value;
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+  var hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hex==='ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5'){
+    sessionStorage.setItem('rscripts_unlocked','1');
+    document.getElementById('pw-overlay').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='Incorrect password.';
+  }
+}
+</script>
 
 <div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
 
-<script>
-const CORRECT_HASH = "ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5";
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-async function checkPw() {
-  const hash = await sha256(document.getElementById("pw-input").value);
-  if (hash === CORRECT_HASH) {
-    document.getElementById("pw-overlay").style.display = "none";
-    sessionStorage.setItem("rscripts_unlocked", "1");
-  } else {
-    const err = document.getElementById("pw-error");
-    err.textContent = "Incorrect password. Please try again.";
-    document.getElementById("pw-input").value = "";
-    document.getElementById("pw-input").focus();
-    setTimeout(()=>{ err.textContent=""; }, 3000);
-  }
-}
-if (sessionStorage.getItem("rscripts_unlocked") === "1")
-  document.getElementById("pw-overlay").style.display = "none";
-</script>
 <div class="page-intro">
-  <div class="page-intro-icon" style="background:#95a5a6;">⚙️</div>
+  <div class="page-intro-icon">⚙️</div>
   <div>
     <h1>Other functions</h1>
-    <p>Custom formula application and memory-safe Gower distance computation</p>
+    <p>Miscellaneous utility snippets</p>
   </div>
 </div>
-<h3 class="fn-section-divider"><span>Data transformation</span><hr></h3>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-funfun">funfun(data, expr='log(x1/x2)*10^2')</h4>
-    <div class="fn-desc">Apply a custom arithmetic expression to columns of a data frame using column aliases x1, x2…</div>
-    <div class="fn-tags"><span class="fn-tag tag-util">utility</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">data — data frame</span><span class="fn-arg">expr — R expression string with x1/x2/… as column placeholders</span></div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>funfun <span class="ot">&lt;-</span> <span class="cf">function</span>(data, <span class="at">expr =</span> <span class="st">&quot;log(x1 / x2) * 10^2&quot;</span>) {</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  expr <span class="ot">&lt;-</span> <span class="fu">parse</span>(<span class="at">text =</span> expr)</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">x3 =</span> <span class="fu">eval</span>(expr))</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>}</span></code></pre></div>
-</div>
-<h3 class="fn-section-divider"><span>Gower distance</span><hr></h3>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-compute-gower-block">compute_gower_block(start_idx, end_idx, traits_data)</h4>
-    <div class="fn-desc">Compute Gower distances for a row subset — use in a loop to handle large trait matrices in memory-safe blocks.</div>
-    <div class="fn-tags"><span class="fn-tag tag-util">utility</span><span class="fn-tag tag-data">data</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">start_idx — first row index</span><span class="fn-arg">end_idx — last row index</span><span class="fn-arg">traits_data — full trait data frame</span></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>compute_gower_block <span class="ot">&lt;-</span> <span class="cf">function</span>(start_idx, end_idx, traits_data) {</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  block_data <span class="ot">&lt;-</span> traits_data[start_idx<span class="sc">:</span>end_idx, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  gower_dist_block <span class="ot">&lt;-</span> <span class="fu">daisy</span>(block_data, <span class="at">metric =</span> <span class="st">&quot;gower&quot;</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">as.matrix</span>(gower_dist_block))</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>}</span></code></pre></div>
+
+<div class="session-grid">
+  <a class="session-card" href="fn/fn-funfun_others.html" target="_blank">
+    <div class="session-num" style="color:#95a5a6;"><span style="font-family:monospace;">funfun(data, expr='log(x1/x2)*10^2')</span></div>
+    <div class="session-topics">Apply a custom arithmetic expression to columns of a data frame using column aliases x1, x2…</div>
+    <div class="session-link" style="color:#95a5a6;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-compute-gower-block_others.html" target="_blank">
+    <div class="session-num" style="color:#95a5a6;"><span style="font-family:monospace;">compute_gower_block(start_idx, end_idx, traits_data)</span></div>
+    <div class="session-topics">Compute Gower distances for a row subset — use in a loop to handle large trait matrices in memory-sa</div>
+    <div class="session-link" style="color:#95a5a6;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-pal-ecology_others.html" target="_blank">
+    <div class="session-num" style="color:#95a5a6;"><span style="font-family:monospace;">pal_ecology()</span></div>
+    <div class="session-topics">Ecology-themed colour palettes (biome, ocean, threat, realm)</div>
+    <div class="session-link" style="color:#95a5a6;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-scale-traits_others.html" target="_blank">
+    <div class="session-num" style="color:#95a5a6;"><span style="font-family:monospace;">scale_traits()</span></div>
+    <div class="session-topics">Standardise traits: z-score, min-max or unit variance</div>
+    <div class="session-link" style="color:#95a5a6;">Open ↗</div>
+  </a>
 </div>
 
-<script src="assets/copy-code.js"></script>
 
 
-</div>
-</div>
 
 </div>
 
@@ -802,41 +477,7 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("show" === "show");
-});
-</script>
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3,h4",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

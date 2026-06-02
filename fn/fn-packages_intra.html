@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ITV error measurement — R Scripts</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #f7f9fc; color: #2c3e50; }
+.fn-page-wrap { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px 20px; }
+.back-link { font-size: 0.88em; margin-bottom: 18px; }
+.back-link a { color: #d35400; text-decoration: none; font-weight: 500; }
+.back-link a:hover { text-decoration: underline; }
+.fn-hero { background: #fff; border: 1px solid #e4e9f0; border-radius: 14px; padding: 20px 22px; margin-bottom: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); border-left: 5px solid #d35400; }
+.fn-hero h1 { font-family: monospace; font-size: 1.2em; font-weight: 700; color: #2c3e50; margin: 0 0 6px 0; }
+.fn-hero p  { font-size: 0.9em; color: #666; margin: 0 0 10px 0; line-height: 1.6; }
+.fn-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.fn-tag { font-size: 0.72em; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+.tag-stat  { background:#e8f5e9; color:#1b6b2f; }
+.tag-util  { background:#e3f2fd; color:#1557a0; }
+.tag-viz   { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd    { background:#fff3e0; color:#b25000; }
+.tag-data  { background:#fce4ec; color:#880e4f; }
+.tag-ml    { background:#e8eaf6; color:#283593; }
+.tag-morph { background:#e0f2f1; color:#00574e; }
+.tag-geo   { background:#f3e5f5; color:#6a1b9a; }
+.fn-args { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+.fn-args-label { font-size: 0.78em; font-weight: 700; color: #999; }
+.fn-arg { font-family: monospace; font-size: 0.78em; padding: 2px 8px; background: #f1f3f5; border: 1px solid #e0e3e8; border-radius: 5px; color: #555; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.tb-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8em; font-weight: 600; padding: 6px 14px; border-radius: 7px; cursor: pointer; border: 1px solid; background: #fff; transition: opacity .15s; }
+.tb-btn:hover { opacity: 0.75; }
+.tb-copy    { color: #2471a3; border-color: #2471a3; }
+.tb-save    { color: #27ae60; border-color: #27ae60; }
+.tb-suggest { color: #e67e22; border-color: #e67e22; }
+.tb-copied  { color: #27ae60 !important; border-color: #27ae60 !important; }
+.code-wrap { background: #fff; border: 1px solid #e4e9f0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.code-wrap pre { margin: 0; padding: 20px; overflow-x: auto; font-size: 0.87em; }
+</style>
+</head>
+<body>
+<div class="fn-page-wrap">
+  <div class="back-link">← <a href="../Rscripts_intra.html">Back to Intra Scripts</a></div>
+
+  <div class="fn-hero">
+    <h1>ITV error measurement</h1>
+    <p>Defined the error made by the operator</p>
+    <div class="fn-tags"><span class="fn-tag tag-util">utility</span></div>
+    
+  </div>
+
+  <div class="toolbar">
+    <button class="tb-btn tb-copy" onclick="doCopy()">⧉ Copy</button>
+    <button class="tb-btn tb-save" onclick="doSave()">↓ Save .R</button>
+    <button class="tb-btn tb-suggest" onclick="doSuggest()">✉ Suggest modification</button>
+  </div>
+
+  <div class="code-wrap">
+    <pre><code id="fn-code" class="language-r"># -----------------------------------------------------------------------------
+# 0. Libraries
+# -----------------------------------------------------------------------------
+
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(lme4)
+library(glmmTMB)
+library(DHARMa)
+library(performance)
+
+
+# -----------------------------------------------------------------------------
+# 1. Load data
+# -----------------------------------------------------------------------------
+
+data_error &lt;- read_csv("data/data_error.csv")
+
+str(data_error)
+
+
+# -----------------------------------------------------------------------------
+# 2. Image reference dimensions
+# -----------------------------------------------------------------------------
+
+img_width    &lt;- 4000
+img_height   &lt;- 3000
+img_diagonal &lt;- sqrt(img_width^2 + img_height^2)
+
+
+# -----------------------------------------------------------------------------
+# 3. Preprocessing — coerce factor/character columns, reshape to long format
+# -----------------------------------------------------------------------------
+
+# Cast metadata columns to character
+df &lt;- data_error %&gt;%
+  mutate(across(c(Code, Genus_species, Site, Lot_1), as.character))
+
+# Identify landmark coordinate columns (pattern: "&lt;n&gt;_X" or "&lt;n&gt;_Y")
+xy_cols &lt;- names(df)[grepl("^\\d+_[XY]$", names(df))]
+
+# Pivot from wide to long: one row per (individual × landmark × replicate)
+long &lt;- df %&gt;%
+  mutate(rep = row_number()) %&gt;%
+  pivot_longer(
+    cols      = all_of(xy_cols),
+    names_to  = c("landmark", "coord"),
+    names_pattern = "^(\\d+)_(X|Y)$",
+    values_to = "value"
+  ) %&gt;%
+  pivot_wider(names_from = coord, values_from = value) %&gt;%
+  mutate(landmark = as.integer(landmark)) %&gt;%
+  filter(
+    !is.na(X), !is.na(Y),
+    !landmark %in% c(20, 21)   # remove semi-landmarks or problematic points
+  )
+
+
+# -----------------------------------------------------------------------------
+# 4. Reference scale — inter-landmark distance between landmarks 1 and 2
+# -----------------------------------------------------------------------------
+# Option A (implemented): median distance across replicates per individual.
+# Option B (alternative, preferred): distance computed on mean coordinates —
+#   avoids digitization noise in the scale estimate.
+#
+#   ref_species &lt;- long %&gt;%
+#     filter(landmark %in% c(1, 2)) %&gt;%
+#     group_by(Code, landmark) %&gt;%
+#     summarise(mX = mean(X), mY = mean(Y), .groups = "drop") %&gt;%
+#     pivot_wider(names_from = landmark, values_from = c(mX, mY)) %&gt;%
+#     mutate(ref_value = sqrt((mX_1 - mX_2)^2 + (mY_1 - mY_2)^2)) %&gt;%
+#     select(Code, ref_value)
+
+ref_species &lt;- long %&gt;%
+  filter(landmark %in% c(1, 2)) %&gt;%
+  pivot_wider(
+    names_from  = landmark,
+    values_from = c(X, Y),
+    names_sep   = "_"
+  ) %&gt;%
+  mutate(ref_value = sqrt((X_1 - X_2)^2 + (Y_1 - Y_2)^2)) %&gt;%
+  group_by(Code) %&gt;%
+  summarise(ref_value = median(ref_value, na.rm = TRUE), .groups = "drop")
+
+
+# -----------------------------------------------------------------------------
+# 5. Per-landmark digitization error
+# -----------------------------------------------------------------------------
+# For each replicate, compute the Euclidean distance from the landmark
+# position to the mean position across replicates, then normalize by the
+# reference inter-landmark distance (expressed as %).
+
+landmark_err &lt;- long %&gt;%
+  group_by(Code, Genus_species, Site, landmark) %&gt;%
+  reframe(
+    X_coord = X,
+    Y_coord = Y,
+    mean_X  = mean(X, na.rm = TRUE),
+    mean_Y  = mean(Y, na.rm = TRUE),
+    dist    = sqrt((X - mean_X)^2 + (Y - mean_Y)^2)
+  ) %&gt;%
+  left_join(ref_species, by = "Code") %&gt;%
+  mutate(dist_norm = (dist / ref_value) * 100)
+
+
+# -----------------------------------------------------------------------------
+# 6. Summary tables
+# -----------------------------------------------------------------------------
+
+# Error per individual (averaged over all landmarks and replicates)
+indiv_err &lt;- landmark_err %&gt;%
+  group_by(Code, Genus_species) %&gt;%
+  summarise(
+    n_obs        = n(),
+    mean_dist    = mean(dist_norm, na.rm = TRUE),
+    sd_dist      = sd(dist_norm,   na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Error per species
+species_err &lt;- landmark_err %&gt;%
+  group_by(Genus_species) %&gt;%
+  summarise(
+    n_obs        = n(),
+    mean_dist    = mean(dist_norm, na.rm = TRUE),
+    sd_dist      = sd(dist_norm,   na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Error per site
+site_err &lt;- landmark_err %&gt;%
+  group_by(Site) %&gt;%
+  summarise(
+    n_obs        = n(),
+    mean_dist    = mean(dist_norm, na.rm = TRUE),
+    sd_dist      = sd(dist_norm,   na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Global error (all individuals, landmarks, and replicates)
+global_err &lt;- landmark_err %&gt;%
+  summarise(
+    n_obs        = n(),
+    mean_dist    = mean(dist_norm, na.rm = TRUE),
+    sd_dist      = sd(dist_norm,   na.rm = TRUE)
+  )
+
+# Error per landmark point (ranked by decreasing mean error)
+point_err &lt;- landmark_err %&gt;%
+  group_by(landmark) %&gt;%
+  summarise(
+    n_obs        = n(),
+    mean_dist    = mean(dist_norm, na.rm = TRUE),
+    sd_dist      = sd(dist_norm,   na.rm = TRUE),
+    .groups = "drop"
+  ) %&gt;%
+  arrange(desc(mean_dist))
+
+
+# -----------------------------------------------------------------------------
+# 7. Export results
+# -----------------------------------------------------------------------------
+
+dir.create("output", showWarnings = FALSE)
+
+write_csv(landmark_err, "output/erreur_landmark_par_individu.csv")
+write_csv(indiv_err,    "output/erreur_par_individu.csv")
+write_csv(species_err,  "output/erreur_par_espece.csv")
+write_csv(site_err,     "output/erreur_par_site.csv")
+write_csv(global_err,   "output/erreur_globale.csv")
+write_csv(point_err,    "output/erreur_par_landmark.csv")
+
+
+# -----------------------------------------------------------------------------
+# 8. Visualization — digitization error by individual
+# -----------------------------------------------------------------------------
+
+p_indiv &lt;- ggplot(
+  indiv_err,
+  aes(x = reorder(Code, sd_dist), y = sd_dist, fill = Genus_species)
+) +
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  labs(
+    title = "Erreur de mesure par individu",
+    x     = "Individu (Code)",
+    y     = "Écart-type des distances normalisées (%)"
+  ) +
+  theme_minimal(base_size = 12)
+
+ggsave("output/erreur_par_individu.png", p_indiv, width = 10, height = 8, dpi = 300)</code></pre>
+  </div>
+</div>
+<script>
+hljs.highlightAll();
+function doCopy() {
+  var code = document.getElementById('fn-code').innerText;
+  navigator.clipboard.writeText(code).then(function() {
+    var btn = document.querySelector('.tb-copy');
+    btn.textContent = '✓ Copied!'; btn.classList.add('tb-copied');
+    setTimeout(function(){ btn.textContent = '⧉ Copy'; btn.classList.remove('tb-copied'); }, 1800);
+  });
+}
+function doSave() {
+  var code = document.getElementById('fn-code').innerText;
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([code], {type:'text/plain'}));
+  a.download = 'ITV_error_measurement.R'; a.click();
+}
+function doSuggest() {
+  var s = encodeURIComponent('Suggestion for: ITV error measurement');
+  var b = encodeURIComponent('Hi Aurèle,\n\nSuggestion for ITV error measurement:\n\n');
+  window.open('mailto:aurele.toussaint@cnrs.fr?subject='+s+'&body='+b);
+}
+</script>
+</body>
+</html>

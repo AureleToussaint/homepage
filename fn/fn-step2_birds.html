@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>01_DATA_load_and_clean — Step 2 — R Scripts</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #f7f9fc; color: #2c3e50; }
+.fn-page-wrap { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px 20px; }
+.back-link { font-size: 0.88em; margin-bottom: 18px; }
+.back-link a { color: #c0392b; text-decoration: none; font-weight: 500; }
+.back-link a:hover { text-decoration: underline; }
+.fn-hero { background: #fff; border: 1px solid #e4e9f0; border-radius: 14px; padding: 20px 22px; margin-bottom: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); border-left: 5px solid #c0392b; }
+.fn-hero h1 { font-family: monospace; font-size: 1.2em; font-weight: 700; color: #2c3e50; margin: 0 0 6px 0; }
+.fn-hero p  { font-size: 0.9em; color: #666; margin: 0 0 10px 0; line-height: 1.6; }
+.fn-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.fn-tag { font-size: 0.72em; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+.tag-stat  { background:#e8f5e9; color:#1b6b2f; }
+.tag-util  { background:#e3f2fd; color:#1557a0; }
+.tag-viz   { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd    { background:#fff3e0; color:#b25000; }
+.tag-data  { background:#fce4ec; color:#880e4f; }
+.tag-ml    { background:#e8eaf6; color:#283593; }
+.tag-morph { background:#e0f2f1; color:#00574e; }
+.tag-geo   { background:#f3e5f5; color:#6a1b9a; }
+.fn-args { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+.fn-args-label { font-size: 0.78em; font-weight: 700; color: #999; }
+.fn-arg { font-family: monospace; font-size: 0.78em; padding: 2px 8px; background: #f1f3f5; border: 1px solid #e0e3e8; border-radius: 5px; color: #555; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.tb-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8em; font-weight: 600; padding: 6px 14px; border-radius: 7px; cursor: pointer; border: 1px solid; background: #fff; transition: opacity .15s; }
+.tb-btn:hover { opacity: 0.75; }
+.tb-copy    { color: #2471a3; border-color: #2471a3; }
+.tb-save    { color: #27ae60; border-color: #27ae60; }
+.tb-suggest { color: #e67e22; border-color: #e67e22; }
+.tb-copied  { color: #27ae60 !important; border-color: #27ae60 !important; }
+.code-wrap { background: #fff; border: 1px solid #e4e9f0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.code-wrap pre { margin: 0; padding: 20px; overflow-x: auto; font-size: 0.87em; }
+</style>
+</head>
+<body>
+<div class="fn-page-wrap">
+  <div class="back-link">← <a href="../Rscripts_birds.html">Back to Birds Scripts</a></div>
+
+  <div class="fn-hero">
+    <h1>01_DATA_load_and_clean — Step 2</h1>
+    <p>Build a bird megatree (from GitHub), compute phylogenetic PCoA eigenvectors, add missing species via phytools::add.species.to.genus, then impute missing trait values with missForest using parallel processing.</p>
+    <div class="fn-tags">
+        <span class="fn-tag tag-ml">missForest</span>
+        <span class="fn-tag tag-stat">phylogenetics</span>
+        <span class="fn-tag tag-morph">trait imputation</span>
+      </div>
+    <div class="fn-args">
+    <span class="fn-args-label">Inputs:</span>
+    <span class="fn-arg">data/processed/BirdTraitCombined.csv</span>
+    <span class="fn-arg">bird_megatree (GitHub)</span>
+  </div><div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">data/processed/BirdPhylogeny.tre</span>
+    <span class="fn-arg">data/processed/pcoaPhylogenyAves.txt</span>
+    <span class="fn-arg">data/processed/phenoBirdsImputedAll.csv</span>
+    <span class="fn-arg">data/processed/phenoBirdsImputed.csv</span>
+  
+<div class="fn-toolbar"><button class="fn-tb-btn fn-tb-copy" onclick="fnCopy(this)">⧉ Copy</button><button class="fn-tb-btn fn-tb-save" onclick="fnSave(this,'01_DATA_load_and_clean___Step_2')">↓ Save .R</button><button class="fn-tb-btn fn-tb-suggest" onclick="fnSuggest('01_DATA_load_and_clean — Step 2')">✉ Suggest</button></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="tb-btn tb-copy" onclick="doCopy()">⧉ Copy</button>
+    <button class="tb-btn tb-save" onclick="doSave()">↓ Save .R</button>
+    <button class="tb-btn tb-suggest" onclick="doSuggest()">✉ Suggest modification</button>
+  </div>
+
+  <div class="code-wrap">
+    <pre><code id="fn-code" class="language-r">if(!("BirdTraitCombined.csv" %in% list.files("data/processed"))){
+
+  phylogeny_raw   &lt;- ape::read.tree('https://raw.githubusercontent.com/megatrees/bird_20221117/main/bird_megatree.tre')
+  phylogeny_ultra &lt;- phytools::force.ultrametric(phylogeny_raw, method = "extend")
+
+  sp_phylo &lt;- phylogeny_ultra$tip.label
+  sp_trait &lt;- gsub(" ", "_", birdTraits$scientificNameStd)
+
+  # Synonymy resolution via ITIS
+  sp_to_check  &lt;- sp_trait[!sp_trait %in% sp_phylo]
+  chk_synonyms &lt;- taxize::synonyms(sp_to_check, db = "itis", rows = 1)
+
+  birdTraits$scientificNameStd    &lt;- gsub(" ", "_", birdTraits$scientificNameStd)
+  birdTraits$scientificNameStdNEW &lt;- birdTraits$scientificNameStd
+
+  for (i in seq_along(chk_synonyms)) {
+    orig_name   &lt;- sp_to_check[i]
+    current_syn &lt;- chk_synonyms[[i]]
+    if ("acc_name" %in% colnames(current_syn)) {
+      birdTraits$scientificNameStdNEW[birdTraits$scientificNameStd == orig_name] &lt;-
+        gsub(" ", "_", current_syn$acc_name[1])
+    } else if ("syn_name" %in% colnames(current_syn)) {
+      syn_candidates &lt;- gsub(" ", "_", current_syn$syn_name)
+      match_found    &lt;- syn_candidates[syn_candidates %in% sp_phylo]
+      if (length(match_found) &gt; 0)
+        birdTraits$scientificNameStdNEW[birdTraits$scientificNameStd == orig_name] &lt;- match_found[1]
+    }
+  }
+  is_missing &lt;- is.na(birdTraits$scientificNameStdNEW)
+  birdTraits$scientificNameStdNEW[is_missing] &lt;- birdTraits$scientificNameStd[is_missing]
+
+  # Add missing species to phylogeny
+  tips_missing   &lt;- birdTraits$scientificNameStdNEW[!birdTraits$scientificNameStdNEW %in% phylogeny_ultra$tip.label]
+  names_to_add   &lt;- unique(tips_missing)
+  genus_to_add   &lt;- sapply(strsplit(names_to_add, "_"), `[`, 1)
+  phylogeny_final &lt;- phylogeny_ultra
+  for (i in seq_along(names_to_add)) {
+    phylogeny_final &lt;- phytools::add.species.to.genus(
+      tree = phylogeny_final, species = names_to_add[i],
+      genus = genus_to_add[i], where = "root"
+    )
+  }
+  write.tree(phylogeny_final, file = "data/processed/BirdPhylogeny.tre")
+
+  # Phylogenetic PCoA (10 axes)
+  phylo_dist  &lt;- sqrt(cophenetic(phylogeny_final))
+  pcoa_phylo  &lt;- cmdscale(phylo_dist, k = 10)
+  colnames(pcoa_phylo) &lt;- paste0("Eigen.", 1:ncol(pcoa_phylo))
+  pcoa_df     &lt;- as.data.frame(pcoa_phylo)
+  pcoa_df$scientificNameStd &lt;- rownames(pcoa_df)
+  write.table(pcoa_df, "data/processed/pcoaPhylogenyAves.txt",
+              row.names = FALSE, quote = FALSE, sep = "\t")
+
+  # Merge + clean negative values
+  clean_bird_traits_phylogeny &lt;- function(birdTraits, pcoaPhyl,
+                                          output_file = "data/processed/phenoBirds.csv") {
+    merged_data &lt;- merge(birdTraits, pcoaPhyl,
+                         by.x = "scientificNameStd", by.y = "scientificNameStd", all.x = TRUE)
+    numeric_columns_present &lt;- intersect(
+      c("Beak.Length_Culmen","Beak.Length_Nares","Beak.Width","Beak.Depth",
+        "Tarsus.Length","Wing.Length","Kipps.Distance","Secondary1",
+        "Hand-Wing.Index","Tail.Length","Mass",
+        "female_maturity_d","litter_or_clutch_size_n","litters_or_clutches_per_y",
+        "adult_body_mass_g","maximum_longevity_y","gestation_d","weaning_d",
+        "birth_or_hatching_weight_g","weaning_weight_g","egg_mass_g","incubation_d",
+        "fledging_age_d","longevity_y","male_maturity_d",
+        "inter_litter_or_interbirth_interval_y","female_body_mass_g","male_body_mass_g",
+        "no_sex_body_mass_g","egg_width_mm","egg_length_mm","fledging_mass_g",
+        "adult_svl_cm","female_svl_cm","birth_or_hatching_svl_cm",
+        "female_svl_at_maturity_cm","female_body_mass_at_maturity_g",
+        "no_sex_svl_cm","no_sex_maturity_d"),
+      colnames(merged_data)
+    )
+    merged_data[numeric_columns_present] &lt;- lapply(
+      merged_data[numeric_columns_present],
+      function(x) if (is.numeric(x)) replace(x, x &lt; 0, NA) else x
+    )
+    rownames(merged_data) &lt;- merged_data$scientificNameStd
+    merged_data &lt;- merged_data[, !(colnames(merged_data) %in% c("scientificNameStd","scientificNameStdNEW"))]
+    merged_data &lt;- merged_data[, colSums(!is.na(merged_data)) &gt; 0]
+    write.csv(merged_data, file = output_file, row.names = TRUE)
+    invisible(merged_data)
+  }
+  birdTraitsPhy &lt;- clean_bird_traits_phylogeny(birdTraits, pcoa_df)
+  write.csv(birdTraitsPhy, file = "data/processed/phenoBirds.csv")
+
+} else {
+  birdTraitsPhy &lt;- read.csv("data/processed/phenoBirds.csv")
+
+  morphoColumn &lt;- c("Tarsus.Length","Wing.Length","Kipps.Distance","Secondary1",
+                    "Hand.Wing.Index","Tail.Length","Mass","adult_svl_cm")
+  lhtColum     &lt;- c("litter_or_clutch_size_n","litters_or_clutches_per_y",
+                    "adult_body_mass_g","maximum_longevity_y","birth_or_hatching_weight_g",
+                    "incubation_d","fledging_age_d","longevity_y","egg_mass_g",
+                    "male_maturity_d","inter_litter_or_interbirth_interval_y",
+                    "female_body_mass_g","no_sex_body_mass_g",
+                    "egg_length_mm","fledging_mass_g","no_sex_maturity_d")
+  dietColumn   &lt;- c('Diet.Inv','Diet.Vend','Diet.Vect','Diet.Vfish','Diet.Vunk',
+                    'Diet.Scav','Diet.Fruit','Diet.Nect','Diet.Seed','Diet.PlantO')
+  phyloColumn  &lt;- paste0('Eigen.', 1:10)
+  numericColumn &lt;- c(morphoColumn, lhtColum)
+
+  birdTraitsPhy[, numericColumn] &lt;- replace(birdTraitsPhy[, numericColumn],
+                                            birdTraitsPhy[, numericColumn] &lt; 0, NA)
+  birdTraitsPhy &lt;- birdTraitsPhy[!is.na(apply(birdTraitsPhy[, dietColumn], 1, sum)), ]
+
+  birdTraitsToImpute &lt;- cbind(scale(log10(birdTraitsPhy[, numericColumn])),
+                              birdTraitsPhy[, dietColumn],
+                              birdTraitsPhy[, phyloColumn])
+  colToImputeAll &lt;- c(numericColumn, dietColumn, phyloColumn)
+
+  doParallel::registerDoParallel(cores = 14)
+  birdTraitslogImputed &lt;- as.matrix(
+    missForest(xmis = birdTraitsToImpute[, colToImputeAll], parallelize = "variables")$ximp
+  )
+  birdTraitsPhy[, colToImputeAll] &lt;- birdTraitslogImputed[, colToImputeAll]
+  write.csv(birdTraitsPhy, file = "data/processed/phenoBirdsImputedAll.csv", row.names = FALSE)
+
+  colToImpute &lt;- c(lhtColum, phyloColumn)
+  birdTraitslogImputed &lt;- as.matrix(
+    missForest(xmis = birdTraitsToImpute[, colToImpute], parallelize = "variables")$ximp
+  )
+  birdTraitsPhy[, colToImpute] &lt;- birdTraitslogImputed[, colToImpute]
+  write.csv(birdTraitsPhy, file = "data/processed/phenoBirdsImputed.csv", row.names = FALSE)
+}</code></pre>
+  </div>
+</div>
+<script>
+hljs.highlightAll();
+function doCopy() {
+  var code = document.getElementById('fn-code').innerText;
+  navigator.clipboard.writeText(code).then(function() {
+    var btn = document.querySelector('.tb-copy');
+    btn.textContent = '✓ Copied!'; btn.classList.add('tb-copied');
+    setTimeout(function(){ btn.textContent = '⧉ Copy'; btn.classList.remove('tb-copied'); }, 1800);
+  });
+}
+function doSave() {
+  var code = document.getElementById('fn-code').innerText;
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([code], {type:'text/plain'}));
+  a.download = '01_DATA_load_and_clean___Step_2.R'; a.click();
+}
+function doSuggest() {
+  var s = encodeURIComponent('Suggestion for: 01_DATA_load_and_clean — Step 2');
+  var b = encodeURIComponent('Hi Aurèle,\n\nSuggestion for 01_DATA_load_and_clean — Step 2:\n\n');
+  window.open('mailto:aurele.toussaint@cnrs.fr?subject='+s+'&body='+b);
+}
+</script>
+</body>
+</html>

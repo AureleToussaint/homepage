@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>imputeTraits(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed, ...) — R Scripts</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #f7f9fc; color: #2c3e50; }
+.fn-page-wrap { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px 20px; }
+.back-link { font-size: 0.88em; margin-bottom: 18px; }
+.back-link a { color: #7f8c8d; text-decoration: none; font-weight: 500; }
+.back-link a:hover { text-decoration: underline; }
+.fn-hero { background: #fff; border: 1px solid #e4e9f0; border-radius: 14px; padding: 20px 22px; margin-bottom: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); border-left: 5px solid #7f8c8d; }
+.fn-hero h1 { font-family: monospace; font-size: 1.2em; font-weight: 700; color: #2c3e50; margin: 0 0 6px 0; }
+.fn-hero p  { font-size: 0.9em; color: #666; margin: 0 0 10px 0; line-height: 1.6; }
+.fn-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.fn-tag { font-size: 0.72em; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+.tag-stat  { background:#e8f5e9; color:#1b6b2f; }
+.tag-util  { background:#e3f2fd; color:#1557a0; }
+.tag-viz   { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd    { background:#fff3e0; color:#b25000; }
+.tag-data  { background:#fce4ec; color:#880e4f; }
+.tag-ml    { background:#e8eaf6; color:#283593; }
+.tag-morph { background:#e0f2f1; color:#00574e; }
+.tag-geo   { background:#f3e5f5; color:#6a1b9a; }
+.fn-args { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+.fn-args-label { font-size: 0.78em; font-weight: 700; color: #999; }
+.fn-arg { font-family: monospace; font-size: 0.78em; padding: 2px 8px; background: #f1f3f5; border: 1px solid #e0e3e8; border-radius: 5px; color: #555; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.tb-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8em; font-weight: 600; padding: 6px 14px; border-radius: 7px; cursor: pointer; border: 1px solid; background: #fff; transition: opacity .15s; }
+.tb-btn:hover { opacity: 0.75; }
+.tb-copy    { color: #2471a3; border-color: #2471a3; }
+.tb-save    { color: #27ae60; border-color: #27ae60; }
+.tb-suggest { color: #e67e22; border-color: #e67e22; }
+.tb-copied  { color: #27ae60 !important; border-color: #27ae60 !important; }
+.code-wrap { background: #fff; border: 1px solid #e4e9f0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.code-wrap pre { margin: 0; padding: 20px; overflow-x: auto; font-size: 0.87em; }
+</style>
+</head>
+<body>
+<div class="fn-page-wrap">
+  <div class="back-link">← <a href="../Rscripts_imputation.html">Back to Imputation Scripts</a></div>
+
+  <div class="fn-hero">
+    <h1>imputeTraits(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed, ...)</h1>
+    <p>Full imputation pipeline: run missForest on selected traits, back-transform to original scale, validate via PCA comparison.</p>
+    <div class="fn-tags"><span class="fn-tag tag-ml">machine learning</span><span class="fn-tag tag-stat">statistics</span><span class="fn-tag tag-fd">functional diversity</span></div>
+    <div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">traitsData — trait data frame with NAs</span><span class="fn-arg">selectedTraits — columns to impute</span><span class="fn-arg">traitPCA — PCA of complete cases</span><span class="fn-arg">PCAmodel — reference PCA model</span><span class="fn-arg">meanInputed — column means for back-transformation</span></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="tb-btn tb-copy" onclick="doCopy()">⧉ Copy</button>
+    <button class="tb-btn tb-save" onclick="doSave()">↓ Save .R</button>
+    <button class="tb-btn tb-suggest" onclick="doSuggest()">✉ Suggest modification</button>
+  </div>
+
+  <div class="code-wrap">
+    <pre><code id="fn-code" class="language-r">imputeTraits&lt;-function(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed,
+                       sdInputed, nm_PCA, percImpute=1, dimensions, nboot=100){
+  require(missForest)
+  require(Metrics)
+  
+  # Data: extract the species with complete 'selectedTraits'.  For imputation all available traits are used: 'columsImputation'
+  columsImputation &lt;- 1:(which(colnames(traitsData) == "IUCN")-1) 
+  completeSp &lt;- rownames(na.omit(traitsData[,selectedTraits]))
+  missingSp &lt;- setdiff(rownames(traitsData), completeSp)
+  traitWithoutNA&lt;-traitsData[completeSp, columsImputation]
+  traitWithNA &lt;- traitsData[missingSp, columsImputation]
+  #transform the traits with NA values into a mask (1 for existing traits, NA for NA traits)
+  traitNAMask &lt;- replace(traitWithNA, traitWithNA &gt; -Inf, 1)
+  output &lt;- list()
+  for (i in dimensions){
+    output[[i]] &lt;- matrix(NA, nc = nboot, nr = nrow(traitsData), dimnames = list(rownames(traitsData), paste0("Sim. ", 1:nboot)))
+    names(output)[i] &lt;- paste0("PC", i)
+  }
+  RMSE&lt;-matrix(NA,nc=2,nr=nboot,dimnames = list(paste0("Sim.",1:nboot),c("RMSE_PC1","RMSE_PC2")))
+  for (b in 1:nboot){
+    cat(paste0("\n..................SIMULATION ",b," out of ",nboot,"................\n"))
+    
+    # Among the complete data, let's add NA values for 'percImpute' rows:
+    traitSimulNA&lt;-traitWithoutNA[sample(1:nrow(traitWithoutNA), percImpute*nrow(traitWithoutNA)), ]
+    randomMask &lt;- traitNAMask[sample(1:nrow(traitNAMask) , nrow(traitSimulNA)), ]
+    
+    # We create missing values in the traitSimulNA matrix by "pasting" them from real missing observations (this way keeping the structure of missing data):
+    traitSimulNA &lt;-  traitSimulNA * randomMask
+    
+    # We simulate this missing traits using the same imputation method than using in the paper:
+    # Using the phylogenetic eigenvalues
+    # We combine the new dataset of species without NA ('traitWithoutNA') and the other species with 'real' NA:
+    # we impute all traits 
+    traitSimulNAAll &lt;- rbind(traitSimulNA, # Our new NA simulated
+                             traitWithoutNA[setdiff(rownames(traitWithoutNA), rownames(traitSimulNA)),  ]) # the species with complete data without the species with new NA 
+    traitsAux &lt;- rbind(traitSimulNAAll, traitWithNA) # the other species 
+    # Imputation with 'missForest'
+    imputeRFModel &lt;- missForest(xmis = traitsAux)$ximp
+    traitsinPhylImput &lt;- as.matrix(imputeRFModel)
+    
+    # We scale the data using the same mean and SD that we used in the paper: 
+    traitsinPhylImputScaled&lt;-traitsinPhylImput[,selectedTraits]
+    for (i in 1:length(selectedTraits)){
+      traitsinPhylImputScaled[,i]&lt;-(traitsinPhylImput[, selectedTraits[i]] - meanInputed[i]) / sdInputed[i]  
+    }
+    colnames(traitsinPhylImputScaled)&lt;-names(meanInputed)
+    
+    # We predict the position of the imputed species in the functional space:
+    PCApositionNA &lt;- predict(PCAmodel, newdata = traitsinPhylImputScaled[rownames(traitSimulNA), ])
+    
+    # Imputed with PCA compared to original position of the species with the functional space
+    imputed&lt;-PCApositionNA[,dimensions]
+    original&lt;-traitPCA[rownames(PCApositionNA),]
+    
+    RMSE1&lt;-(mean((original[,1] - imputed[,1]) ** 2)) / (max(traitPCA[, 1]) - min(traitPCA[, 1]))
+    RMSE2&lt;-(mean((original[,2] - imputed[,2]) ** 2)) / (max(traitPCA[, 2]) - min(traitPCA[, 2]))
+    
+    RMSE[b,]&lt;-c(RMSE1,RMSE2)
+    
+    for (i in dimensions){
+      output[[i]][rownames(imputed),b]  &lt;- imputed[, i] 
+    }
+    print(apply(RMSE,2,mean,na.rm=T))
+  }
+  return(list(output,RMSE))
+}</code></pre>
+  </div>
+</div>
+<script>
+hljs.highlightAll();
+function doCopy() {
+  var code = document.getElementById('fn-code').innerText;
+  navigator.clipboard.writeText(code).then(function() {
+    var btn = document.querySelector('.tb-copy');
+    btn.textContent = '✓ Copied!'; btn.classList.add('tb-copied');
+    setTimeout(function(){ btn.textContent = '⧉ Copy'; btn.classList.remove('tb-copied'); }, 1800);
+  });
+}
+function doSave() {
+  var code = document.getElementById('fn-code').innerText;
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([code], {type:'text/plain'}));
+  a.download = 'imputeTraits_traitsData__selectedTraits__traitPCA__PCAmodel__meanInputed.R'; a.click();
+}
+function doSuggest() {
+  var s = encodeURIComponent('Suggestion for: imputeTraits(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed, ...)');
+  var b = encodeURIComponent('Hi Aurèle,\n\nSuggestion for imputeTraits(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed, ...):\n\n');
+  window.open('mailto:aurele.toussaint@cnrs.fr?subject='+s+'&body='+b);
+}
+</script>
+</body>
+</html>

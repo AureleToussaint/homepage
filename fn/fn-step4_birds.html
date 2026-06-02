@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>01_DATA_load_and_clean — Step 4 — R Scripts</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #f7f9fc; color: #2c3e50; }
+.fn-page-wrap { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px 20px; }
+.back-link { font-size: 0.88em; margin-bottom: 18px; }
+.back-link a { color: #c0392b; text-decoration: none; font-weight: 500; }
+.back-link a:hover { text-decoration: underline; }
+.fn-hero { background: #fff; border: 1px solid #e4e9f0; border-radius: 14px; padding: 20px 22px; margin-bottom: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); border-left: 5px solid #c0392b; }
+.fn-hero h1 { font-family: monospace; font-size: 1.2em; font-weight: 700; color: #2c3e50; margin: 0 0 6px 0; }
+.fn-hero p  { font-size: 0.9em; color: #666; margin: 0 0 10px 0; line-height: 1.6; }
+.fn-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.fn-tag { font-size: 0.72em; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+.tag-stat  { background:#e8f5e9; color:#1b6b2f; }
+.tag-util  { background:#e3f2fd; color:#1557a0; }
+.tag-viz   { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd    { background:#fff3e0; color:#b25000; }
+.tag-data  { background:#fce4ec; color:#880e4f; }
+.tag-ml    { background:#e8eaf6; color:#283593; }
+.tag-morph { background:#e0f2f1; color:#00574e; }
+.tag-geo   { background:#f3e5f5; color:#6a1b9a; }
+.fn-args { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+.fn-args-label { font-size: 0.78em; font-weight: 700; color: #999; }
+.fn-arg { font-family: monospace; font-size: 0.78em; padding: 2px 8px; background: #f1f3f5; border: 1px solid #e0e3e8; border-radius: 5px; color: #555; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.tb-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8em; font-weight: 600; padding: 6px 14px; border-radius: 7px; cursor: pointer; border: 1px solid; background: #fff; transition: opacity .15s; }
+.tb-btn:hover { opacity: 0.75; }
+.tb-copy    { color: #2471a3; border-color: #2471a3; }
+.tb-save    { color: #27ae60; border-color: #27ae60; }
+.tb-suggest { color: #e67e22; border-color: #e67e22; }
+.tb-copied  { color: #27ae60 !important; border-color: #27ae60 !important; }
+.code-wrap { background: #fff; border: 1px solid #e4e9f0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.code-wrap pre { margin: 0; padding: 20px; overflow-x: auto; font-size: 0.87em; }
+</style>
+</head>
+<body>
+<div class="fn-page-wrap">
+  <div class="back-link">← <a href="../Rscripts_birds.html">Back to Birds Scripts</a></div>
+
+  <div class="fn-hero">
+    <h1>01_DATA_load_and_clean — Step 4</h1>
+    <p>Run PCoAGraph() separately for morphological (M), life-history/reproduction (L), diet (D), and combined (LMD) trait spaces. Compute TPDs for each space using make.TPD.2D.high.def().</p>
+    <div class="fn-tags">
+        <span class="fn-tag tag-fd">functional diversity</span>
+        <span class="fn-tag tag-stat">PCoA</span>
+      </div>
+    <div class="fn-args">
+    <span class="fn-args-label">Outputs:</span>
+    <span class="fn-arg">PCA_Birds_LMD/M/L/D.rds</span>
+    <span class="fn-arg">TPD_Birds_LMD/M/L/D.rds</span>
+  
+<div class="fn-toolbar"><button class="fn-tb-btn fn-tb-copy" onclick="fnCopy(this)">⧉ Copy</button><button class="fn-tb-btn fn-tb-save" onclick="fnSave(this,'01_DATA_load_and_clean___Step_4')">↓ Save .R</button><button class="fn-tb-btn fn-tb-suggest" onclick="fnSuggest('01_DATA_load_and_clean — Step 4')">✉ Suggest</button></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="tb-btn tb-copy" onclick="doCopy()">⧉ Copy</button>
+    <button class="tb-btn tb-save" onclick="doSave()">↓ Save .R</button>
+    <button class="tb-btn tb-suggest" onclick="doSuggest()">✉ Suggest modification</button>
+  </div>
+
+  <div class="code-wrap">
+    <pre><code id="fn-code" class="language-r">phenoBird &lt;- read.csv("data/processed/phenoBirdsImputedREADY.csv")
+colnames(phenoBird)[1] &lt;- "scientificNameStd"
+rownames(phenoBird)    &lt;- phenoBird[, 1]
+
+phenoDiet &lt;- na.omit(as.data.frame(prep.fuzzy(phenoBird[, DietTrait],
+                                              col.blocks = ncol(phenoBird[, DietTrait]), label = "diet")))
+phenoDiet &lt;- replace(phenoDiet, phenoDiet &lt; 0, 0)
+
+# Combined LMD
+handlers(global = TRUE); handlers("txtprogressbar"); plan(multisession)
+PCA_Birds_LMD &lt;- PCoAGraph(
+  x      = list(phenoBird[, LHTTrait], phenoBird[, morphoTrait], phenoDiet),
+  datax  = cbind.data.frame(phenoBird[, LHTTrait], phenoBird[, morphoTrait], phenoDiet),
+  namesx = phenoBird$scientificNameStd, groups = c("Q","Q","F"),
+  saveFile = "data/processed/PCA_Birds_LMD.rds"
+)
+TPDs_Birds_LMD &lt;- make.TPD.2D.high.def(
+  traitsUSE = PCA_Birds_LMD$PCoA$vectors[,1:2],
+  dimensions = 2, alphaUse = 0.95, gridSize = 100,
+  saveFile = "data/processed/TPD_Birds_LMD.rds"
+); rm(TPDs_Birds_LMD)
+
+# Diet only
+PCA_Birds_D &lt;- PCoAGraph(x = list(phenoDiet), datax = cbind.data.frame(phenoDiet),
+                         namesx = phenoBird$scientificNameStd, groups = c("F"),
+                         saveFile = "data/processed/PCA_Birds_D.rds")
+TPDs_Birds_D &lt;- make.TPD.2D.high.def(traitsUSE = PCA_Birds_D$PCoA$vectors[,1:2],
+                                     dimensions = 2, alphaUse = 0.95, gridSize = 100,
+                                     saveFile = "data/processed/TPD_Birds_D.rds"); rm(TPDs_Birds_D)
+
+# Life-history (flip axis 2)
+PCA_Birds_L &lt;- PCoAGraph(x = list(phenoBird[, LHTTrait]), datax = cbind.data.frame(phenoBird[, LHTTrait]),
+                         namesx = phenoBird$scientificNameStd, groups = c("Q"),
+                         saveFile = "data/processed/PCA_Birds_L.rds")
+PCA_Birds_L &lt;- readRDS("data/processed/PCA_Birds_L.rds")
+PCA_Birds_L$PCoACor[,2]       &lt;- PCA_Birds_L$PCoACor[,2] * (-1)
+PCA_Birds_L$PCoA$vectors[,2]  &lt;- PCA_Birds_L$PCoA$vectors[,2] * (-1)
+saveRDS(PCA_Birds_L, "data/processed/PCA_Birds_L.rds")
+TPDs_Birds_L &lt;- make.TPD.2D.high.def(traitsUSE = PCA_Birds_L$PCoA$vectors[,1:2],
+                                     dimensions = 2, alphaUse = 0.95, gridSize = 100,
+                                     saveFile = "data/processed/TPD_Birds_L.rds"); rm(TPDs_Birds_L)
+
+# Morphology (flip axis 2)
+PCA_Birds_M &lt;- PCoAGraph(x = list(phenoBird[, morphoTrait]), datax = cbind.data.frame(phenoBird[, morphoTrait]),
+                         namesx = phenoBird$scientificNameStd, groups = c("Q"),
+                         saveFile = "data/processed/PCA_Birds_M.rds")
+PCA_Birds_M &lt;- readRDS("data/processed/PCA_Birds_M.rds")
+PCA_Birds_M$PCoACor[,2]       &lt;- PCA_Birds_M$PCoACor[,2] * (-1)
+PCA_Birds_M$PCoA$vectors[,2]  &lt;- PCA_Birds_M$PCoA$vectors[,2] * (-1)
+saveRDS(PCA_Birds_M, "data/processed/PCA_Birds_M.rds")
+TPDs_Birds_M &lt;- make.TPD.2D.high.def(traitsUSE = PCA_Birds_M$PCoA$vectors[,1:2],
+                                     dimensions = 2, alphaUse = 0.95, gridSize = 100,
+                                     saveFile = "data/processed/TPD_Birds_M.rds"); rm(TPDs_Birds_M)</code></pre>
+  </div>
+</div>
+<script>
+hljs.highlightAll();
+function doCopy() {
+  var code = document.getElementById('fn-code').innerText;
+  navigator.clipboard.writeText(code).then(function() {
+    var btn = document.querySelector('.tb-copy');
+    btn.textContent = '✓ Copied!'; btn.classList.add('tb-copied');
+    setTimeout(function(){ btn.textContent = '⧉ Copy'; btn.classList.remove('tb-copied'); }, 1800);
+  });
+}
+function doSave() {
+  var code = document.getElementById('fn-code').innerText;
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([code], {type:'text/plain'}));
+  a.download = '01_DATA_load_and_clean___Step_4.R'; a.click();
+}
+function doSuggest() {
+  var s = encodeURIComponent('Suggestion for: 01_DATA_load_and_clean — Step 4');
+  var b = encodeURIComponent('Hi Aurèle,\n\nSuggestion for 01_DATA_load_and_clean — Step 4:\n\n');
+  window.open('mailto:aurele.toussaint@cnrs.fr?subject='+s+'&body='+b);
+}
+</script>
+</body>
+</html>

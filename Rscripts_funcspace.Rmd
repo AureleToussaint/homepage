@@ -1,132 +1,17 @@
 ---
 title: ""
-pagetitle: "FunctionalSpace — R Scripts"
+pagetitle: "Functional Space — R Scripts"
 output:
   html_document:
     self_contained: false
-    toc: true
-    toc_depth: 4
-    toc_float:
-      collapsed: true
-      smooth_scroll: true
-    code_folding: show
-    highlight: tango
-    df_print: paged
-    css: assets/custom.css
+    toc: false
     includes:
-      after_body: assets/after_body.html
+      in_header: header.html
 ---
 
 ```{=html}
-<style>
-/* Custom function TOC — overrides rmarkdown floating TOC */
-#TOC,
-.tocify-wrapper,
-div[data-spy="affix"] {
-  display: none !important;
-  width: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-.fn-nav {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 205px;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-  padding: 14px 10px 20px 14px;
-  border-right: 1px solid #e8e8e8;
-  background: #fafafa;
-  font-size: 0.82em;
-  z-index: 100;
-}
-.fn-nav .fn-nav-title {
-  font-size: 0.7em;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: #bbb;
-  margin-bottom: 10px;
-  padding-left: 4px;
-}
-.fn-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.fn-nav li a {
-  display: block;
-  padding: 3px 6px;
-  border-radius: 4px;
-  color: #444;
-  text-decoration: none;
-  font-family: monospace;
-  font-size: 0.95em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.fn-nav li a:hover {
-  background: #eef2f7;
-  color: #2c3e50;
-}
-.fn-nav li a.active {
-  background: #e3f0fb;
-  color: #1a6faf;
-  font-weight: 600;
-}
-/* push main content right to make room */
-body {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-}
-.main-container {
-  margin-left: 210px !important;
-  max-width: calc(100vw - 230px) !important;
-  width: calc(100vw - 230px) !important;
-  padding-right: 30px !important;
-}
-/* kill rmarkdown's bootstrap TOC column entirely */
-.col-xs-12.col-sm-4.col-md-3,
-.tocify-wrapper,
-div.tocify,
-#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
-/* expand content column to full width */
-.col-xs-12.col-sm-8.col-md-9 {
-  width: 100% !important;
-  -webkit-flex: none !important;
-  flex: none !important;
-}
-.row { margin-left: 0 !important; margin-right: 0 !important; }
-</style>
-
-<div class="fn-nav" id="fn-nav">
-  <div class="fn-nav-title">Functions</div>
-  <ul>
-    <li><a href="#fn-make.pca">make.PCA</a></li>
-    <li><a href="#fn-density-threshold">density_threshold</a></li>
-    <li><a href="#fn-compute-kde">compute_kde</a></li>
-    <li><a href="#fn-compute-phylopic-positions">compute_phylopic_positions</a></li>
-    <li><a href="#fn-plot-fs-new">plot_FS_new</a></li>
-  </ul>
-</div>
-
-<script>
-/* Highlight active function on scroll */
-window.addEventListener("scroll", function() {
-  var links = document.querySelectorAll(".fn-nav li a");
-  var current = "";
-  links.forEach(function(a) {
-    var id = a.getAttribute("href").slice(1);
-    var el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top < 120) current = id;
-  });
-  links.forEach(function(a) {
-    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
-  });
-});
-</script>
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 <style>
 #pw-overlay {
@@ -156,251 +41,105 @@ window.addEventListener("scroll", function() {
 .back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
 .back-link a { color: #2c3e50; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
-
-/* ── Function cards ────────────────────────────────── */
 .page-intro {
   display:flex; align-items:center; gap:14px;
   padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
 }
 .page-intro-icon {
-  width:48px; height:48px; border-radius:10px;
+  width:52px; height:52px; border-radius:12px; background:#2c3e50;
   display:flex; align-items:center; justify-content:center;
-  font-size:1.5em; color:#fff; flex-shrink:0;
+  font-size:1.6em; color:#fff; flex-shrink:0;
 }
 .page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
 .page-intro p  { font-size:0.92em; color:#777; margin:0; }
-
-.fn-section-divider {
-  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+.session-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px; margin-bottom: 40px;
 }
-.fn-section-divider span {
-  font-size:0.75em; font-weight:700; letter-spacing:.08em;
-  text-transform:uppercase; color:#aaa; white-space:nowrap;
+.session-card {
+  background: #fff; border: 1px solid #e4e9f0; border-radius: 12px;
+  padding: 16px 18px; text-decoration: none !important; color: inherit !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow .15s, transform .12s;
+  display: flex; flex-direction: column; gap: 6px;
+  border-left: 4px solid #2c3e50;
 }
-.fn-section-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
-
-.fn-card {
-  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+.session-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10); transform: translateY(-2px);
+  text-decoration: none !important;
 }
-.fn-header {
-  display:flex; align-items:flex-start; justify-content:space-between;
-  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
-}
-.fn-name {
-  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
-  margin:0; padding:0; line-height:1.4;
-}
-.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
-.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
-.fn-tag {
-  font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600;
-}
-.tag-stat   { background:#e8f5e9; color:#1b6b2f; }
-.tag-util   { background:#e3f2fd; color:#1557a0; }
-.tag-viz    { background:#f3e5f5; color:#6a1b9a; }
-.tag-fd     { background:#fff3e0; color:#b25000; }
-.tag-data   { background:#fce4ec; color:#880e4f; }
-.tag-ml     { background:#e8eaf6; color:#283593; }
-.tag-morph  { background:#e0f2f1; color:#00574e; }
-
-.fn-args {
-  display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
-  background:#fff; border-bottom:1px solid #f0f0f0; align-items:center;
-}
-.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
-.fn-arg {
-  font-family:monospace; font-size:0.78em; padding:2px 8px;
-  background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555;
-}
-
+.session-num   { font-size: 0.88em; font-weight: 700; }
+.session-topics{ font-size: 0.82em; color: #888; line-height: 1.5; }
+.session-link  { margin-top: auto; padding-top: 8px; font-size: 0.8em; font-weight: 600; }
 </style>
 
 <div id="pw-overlay">
   <div class="pw-box">
     <div class="pw-lock">🔒</div>
-    <h2>FunctionalSpace</h2>
-    <p>Please enter the access password.</p>
+    <h2>R Scripts — Functional Space</h2>
+    <p>Enter the password to access this page.</p>
     <div class="pw-row">
-      <input type="password" id="pw-input" placeholder="Password…"
-             onkeydown="if(event.key==='Enter') checkPw()"/>
-      <button onclick="checkPw()">Enter</button>
+      <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+      <button onclick="checkPw()">OK</button>
     </div>
-    <p class="pw-err" id="pw-error"></p>
+    <p class="pw-err" id="pw-err"></p>
   </div>
 </div>
+<script>
+(function(){
+  if(sessionStorage.getItem('rscripts_unlocked')==='1'){
+    document.getElementById('pw-overlay').style.display='none';
+  }
+})();
+async function checkPw(){
+  var val=document.getElementById('pw-input').value;
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+  var hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hex==='ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5'){
+    sessionStorage.setItem('rscripts_unlocked','1');
+    document.getElementById('pw-overlay').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='Incorrect password.';
+  }
+}
+</script>
 
 <div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
 
-<script>
-const CORRECT_HASH = "ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5";
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-async function checkPw() {
-  const hash = await sha256(document.getElementById("pw-input").value);
-  if (hash === CORRECT_HASH) {
-    document.getElementById("pw-overlay").style.display = "none";
-    sessionStorage.setItem("rscripts_unlocked", "1");
-  } else {
-    const err = document.getElementById("pw-error");
-    err.textContent = "Incorrect password. Please try again.";
-    document.getElementById("pw-input").value = "";
-    document.getElementById("pw-input").focus();
-    setTimeout(()=>{ err.textContent=""; }, 3000);
-  }
-}
-if (sessionStorage.getItem("rscripts_unlocked") === "1")
-  document.getElementById("pw-overlay").style.display = "none";
-</script>
-```
-
-
-```{=html}
 <div class="page-intro">
-  <div class="page-intro-icon" style="background:#2c3e50;">🔷</div>
+  <div class="page-intro-icon">🧊</div>
   <div>
-    <h1>FunctionalSpace</h1>
-    <p>KDE functional space construction, hypervolume visualisation and phylopic overlays</p>
+    <h1>Functional Space</h1>
+    <p>Functional space construction, KDE and visualisation</p>
   </div>
 </div>
-```
 
-
-```{=html}
-<h3 class="fn-section-divider"><span>PCA & density</span><hr></h3>
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-make.pca">make.PCA(TRAITS, dimensionsAux, savePCA)</h4>
-    <div class="fn-desc">Run PCA on a functional trait matrix and save axes and loadings.</div>
-    <div class="fn-tags"><span class="fn-tag tag-stat">statistics</span><span class="fn-tag tag-fd">functional diversity</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">TRAITS — species × traits matrix</span><span class="fn-arg">dimensionsAux — axes to retain</span><span class="fn-arg">savePCA — output file path</span></div>
-```
-
-```{r fn_funcspace_make_PCA_0, eval=FALSE}
-make.PCA <- function(TRAITS, dimensionsAux, savePCA) {
-  paran_aux <- paran::paran(TRAITS)
-  pca_obj   <- list()
-  pca_obj$traits     <- TRAITS
-  pca_obj$PCA        <- princomp(TRAITS)
-  pca_obj$dimensions <- dimensionsAux
-  eigenvalues        <- summary(pca_obj$PCA)[[1]]^2
-  pca_obj$variance   <- eigenvalues[seq_len(dimensionsAux)] / sum(eigenvalues)
-  pca_obj$loadings   <- pca_obj$PCA$loadings
-  pca_obj$traitsUse  <- data.frame(pca_obj$PCA$scores[, seq_len(dimensionsAux)])
-  if (!is.na(savePCA)) saveRDS(pca_obj, savePCA)
-  pca_obj
-}
-```
-
-```{=html}
-</div>
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-density-threshold">density_threshold(z, p)</h4>
-    <div class="fn-desc">Find the density value at a given cumulative probability threshold from a KDE grid.</div>
-    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span><span class="fn-tag tag-stat">statistics</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">z — KDE density matrix</span><span class="fn-arg">p — target probability (e.g. 0.95)</span></div>
-```
-
-```{r fn_funcspace_density_threshold_1, eval=FALSE}
-density_threshold <- function(z, p) {
-  dx <- sort(as.vector(z), decreasing = TRUE)
-  cs <- cumsum(dx) / sum(dx)
-  dx[which(cs >= p)[1]]
-}
-```
-
-```{=html}
-</div>
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-compute-kde">compute_kde(scores, n_grid, lims, thresholds, ...)</h4>
-    <div class="fn-desc">Kernel density estimation on PCA scores with multiple threshold contours.</div>
-    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span><span class="fn-tag tag-viz">visualisation</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">scores — PCA score matrix</span><span class="fn-arg">n_grid — grid resolution</span><span class="fn-arg">lims — axis limits</span><span class="fn-arg">thresholds=c(0.5,0.99)</span></div>
-```
-
-```{r fn_funcspace_compute_kde_2, eval=FALSE}
-compute_kde <- function(scores, n_grid, lims, thresholds = c(0.5, 0.99),
-                        bw_mult = 1) {
-  # Bandwidth par défaut de kde2d, réduit par bw_mult
-  h <- c(MASS::bandwidth.nrd(scores[, 1]),
-         MASS::bandwidth.nrd(scores[, 2])) * bw_mult
-  kd <- MASS::kde2d(scores[, 1], scores[, 2],
-                    n = n_grid, lims = lims, h = h)
-  df <- expand.grid(PC1 = kd$x, PC2 = kd$y)
-  df$z <- as.vector(kd$z)
-  thr <- sapply(thresholds, function(p) density_threshold(kd$z, p))
-  names(thr) <- as.character(thresholds)
-  list(kd = kd, df = df, thr = thr)
-}
-```
-
-```{=html}
-</div>
-```
-
-```{=html}
-<h3 class="fn-section-divider"><span>Visualisation</span><hr></h3>
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-compute-phylopic-positions">compute_phylopic_positions(scores, species, ...)</h4>
-    <div class="fn-desc">Compute x/y positions for phylopic silhouette overlays on a functional space plot.</div>
-    <div class="fn-tags"><span class="fn-tag tag-viz">visualisation</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">scores — PCA score matrix</span><span class="fn-arg">species — species name vector</span></div>
-```
-
-```{r fn_funcspace_compute_phylopic_positions_3, eval=FALSE}
-compute_phylopic_positions <- function(scores, species,
-                                       radius_frac   = 0.25,
-```
-
-```{=html}
-</div>
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-plot-fs-new">plot_FS_new(pca_sub, ...)</h4>
-    <div class="fn-desc">Plot a functional space with KDE contours, convex hulls and optional phylopic images.</div>
-    <div class="fn-tags"><span class="fn-tag tag-viz">visualisation</span><span class="fn-tag tag-fd">functional diversity</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">pca_sub — subset PCA scores for target group</span></div>
-```
-
-```{r fn_funcspace_plot_FS_new_4, eval=FALSE}
-plot_FS_new <- function(pca_sub,
-                        pca_all,
-```
-
-```{=html}
+<div class="session-grid">
+  <a class="session-card" href="fn/fn-make.pca_funcspace.html" target="_blank">
+    <div class="session-num" style="color:#2c3e50;"><span style="font-family:monospace;">make.PCA(TRAITS, dimensionsAux, savePCA)</span></div>
+    <div class="session-topics">Run PCA on a functional trait matrix and save axes and loadings.</div>
+    <div class="session-link" style="color:#2c3e50;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-density-threshold_funcspace.html" target="_blank">
+    <div class="session-num" style="color:#2c3e50;"><span style="font-family:monospace;">density_threshold(z, p)</span></div>
+    <div class="session-topics">Find the density value at a given cumulative probability threshold from a KDE grid.</div>
+    <div class="session-link" style="color:#2c3e50;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-compute-kde_funcspace.html" target="_blank">
+    <div class="session-num" style="color:#2c3e50;"><span style="font-family:monospace;">compute_kde(scores, n_grid, lims, thresholds, ...)</span></div>
+    <div class="session-topics">Kernel density estimation on PCA scores with multiple threshold contours.</div>
+    <div class="session-link" style="color:#2c3e50;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-compute-phylopic-positions_funcspace.html" target="_blank">
+    <div class="session-num" style="color:#2c3e50;"><span style="font-family:monospace;">compute_phylopic_positions(scores, species, ...)</span></div>
+    <div class="session-topics">Compute x/y positions for phylopic silhouette overlays on a functional space plot.</div>
+    <div class="session-link" style="color:#2c3e50;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-plot-fs-new_funcspace.html" target="_blank">
+    <div class="session-num" style="color:#2c3e50;"><span style="font-family:monospace;">plot_FS_new(pca_sub, ...)</span></div>
+    <div class="session-topics">Plot a functional space with KDE contours, convex hulls and optional phylopic images.</div>
+    <div class="session-link" style="color:#2c3e50;">Open ↗</div>
+  </a>
 </div>
 ```

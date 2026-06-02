@@ -11,7 +11,7 @@
 
 
 
-<title>Functional diversity — R Scripts</title>
+<title>Functional Diversity — R Scripts</title>
 
 <script src="site_libs/header-attrs-2.31/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,15 +29,21 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
-<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
-<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel="shortcut icon" href="data/ATc.jpg" />
+
+<style>
+/* ── Wider page layout ── */
+.container { max-width: 1140px !important; width: 96% !important; }
+.main-container { max-width: 1140px !important; width: 96% !important; }
+@media (min-width: 1400px) {
+  .container, .main-container { max-width: 1280px !important; }
+}
+</style>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -48,124 +54,23 @@
   ul.task-list{list-style: none;}
     </style>
 
-
-
-<style type="text/css">
-  code {
-    white-space: pre;
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
   }
-  .sourceCode {
-    overflow: visible;
-  }
-</style>
-<style type="text/css" data-origin="pandoc">
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
 }
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  background-color: #f8f8f8; }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ef2929; } /* Alert */
-code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #204a87; } /* Attribute */
-code span.bn { color: #0000cf; } /* BaseN */
-code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #8f5902; } /* Constant */
-code span.co { color: #8f5902; font-style: italic; } /* Comment */
-code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code span.dt { color: #204a87; } /* DataType */
-code span.dv { color: #0000cf; } /* DecVal */
-code span.er { color: #a40000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #204a87; font-weight: bold; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code span.ot { color: #8f5902; } /* Other */
-code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
-code span.ss { color: #4e9a06; } /* SpecialString */
-code span.st { color: #4e9a06; } /* String */
-code span.va { color: #000000; } /* Variable */
-code span.vs { color: #4e9a06; } /* VerbatimString */
-code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
-
-.sourceCode .row {
-  width: 100%;
-}
-.sourceCode {
-  overflow-x: auto;
-}
-.code-folding-btn {
-  margin-right: -30px;
-}
-</style>
-<script>
-// apply pandoc div.sourceCode style to pre.sourceCode instead
-(function() {
-  var sheets = document.styleSheets;
-  for (var i = 0; i < sheets.length; i++) {
-    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
-    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    var j = 0;
-    while (j < rules.length) {
-      var rule = rules[j];
-      // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
-        j++;
-        continue;
-      }
-      var style = rule.style.cssText;
-      // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') {
-        j++;
-        continue;
-      }
-      // replace div.sourceCode by a pre.sourceCode rule
-      sheets[i].deleteRule(j);
-      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
-    }
-  }
-})();
 </script>
 
 
 
 
-<link rel="stylesheet" href="assets/custom.css" type="text/css" />
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
 
 
 
@@ -324,73 +229,7 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
 
-
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
 
 
 
@@ -400,16 +239,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -481,133 +310,14 @@ div.tocify {
 
 <div id="header">
 
-<div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-</ul>
-</div>
-
 
 
 
 </div>
 
 
-<style>
-/* Custom function TOC — overrides rmarkdown floating TOC */
-#TOC,
-.tocify-wrapper,
-div[data-spy="affix"] {
-  display: none !important;
-  width: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-.fn-nav {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 205px;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-  padding: 14px 10px 20px 14px;
-  border-right: 1px solid #e8e8e8;
-  background: #fafafa;
-  font-size: 0.82em;
-  z-index: 100;
-}
-.fn-nav .fn-nav-title {
-  font-size: 0.7em;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: #bbb;
-  margin-bottom: 10px;
-  padding-left: 4px;
-}
-.fn-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.fn-nav li a {
-  display: block;
-  padding: 3px 6px;
-  border-radius: 4px;
-  color: #444;
-  text-decoration: none;
-  font-family: monospace;
-  font-size: 0.95em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.fn-nav li a:hover {
-  background: #eef2f7;
-  color: #2c3e50;
-}
-.fn-nav li a.active {
-  background: #e3f0fb;
-  color: #1a6faf;
-  font-weight: 600;
-}
-/* push main content right to make room */
-body {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-}
-.main-container {
-  margin-left: 210px !important;
-  max-width: calc(100vw - 230px) !important;
-  width: calc(100vw - 230px) !important;
-  padding-right: 30px !important;
-}
-/* kill rmarkdown's bootstrap TOC column entirely */
-.col-xs-12.col-sm-4.col-md-3,
-.tocify-wrapper,
-div.tocify,
-#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
-/* expand content column to full width */
-.col-xs-12.col-sm-8.col-md-9 {
-  width: 100% !important;
-  -webkit-flex: none !important;
-  flex: none !important;
-}
-.row { margin-left: 0 !important; margin-right: 0 !important; }
-</style>
-
-<div class="fn-nav" id="fn-nav">
-  <div class="fn-nav-title">Functions</div>
-  <ul>
-    <li><a href="#fn-make.tpd.2d.high.def">make.TPD.2D.high.def</a></li>
-    <li><a href="#fn-make.tpd.2d.low.def">make.TPD.2D.low.def</a></li>
-    <li><a href="#fn-make.tpdlarge">make.TPDLarge</a></li>
-    <li><a href="#fn-tpdrichness">TPDRichness</a></li>
-    <li><a href="#fn-imagetpd">imageTPD</a></li>
-    <li><a href="#fn-overlapf">overlapF</a></li>
-    <li><a href="#fn-percentiletpd">percentileTPD</a></li>
-    <li><a href="#fn-quantiletpd">quantileTPD</a></li>
-    <li><a href="#fn-mae-tpd">MAE_TPD</a></li>
-  </ul>
-</div>
-
-<script>
-/* Highlight active function on scroll */
-window.addEventListener("scroll", function() {
-  var links = document.querySelectorAll(".fn-nav li a");
-  var current = "";
-  links.forEach(function(a) {
-    var id = a.getAttribute("href").slice(1);
-    var el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top < 120) current = id;
-  });
-  links.forEach(function(a) {
-    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
-  });
-});
-</script>
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 <style>
 #pw-overlay {
@@ -637,433 +347,140 @@ window.addEventListener("scroll", function() {
 .back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
 .back-link a { color: #e67e22; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
-
-/* ── Function cards ────────────────────────────────── */
 .page-intro {
   display:flex; align-items:center; gap:14px;
   padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
 }
 .page-intro-icon {
-  width:48px; height:48px; border-radius:10px;
+  width:52px; height:52px; border-radius:12px; background:#e67e22;
   display:flex; align-items:center; justify-content:center;
-  font-size:1.5em; color:#fff; flex-shrink:0;
+  font-size:1.6em; color:#fff; flex-shrink:0;
 }
 .page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
 .page-intro p  { font-size:0.92em; color:#777; margin:0; }
-
-.fn-section-divider {
-  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+.session-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px; margin-bottom: 40px;
 }
-.fn-section-divider span {
-  font-size:0.75em; font-weight:700; letter-spacing:.08em;
-  text-transform:uppercase; color:#aaa; white-space:nowrap;
+.session-card {
+  background: #fff; border: 1px solid #e4e9f0; border-radius: 12px;
+  padding: 16px 18px; text-decoration: none !important; color: inherit !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow .15s, transform .12s;
+  display: flex; flex-direction: column; gap: 6px;
+  border-left: 4px solid #e67e22;
 }
-.fn-section-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
-
-.fn-card {
-  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+.session-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10); transform: translateY(-2px);
+  text-decoration: none !important;
 }
-.fn-header {
-  display:flex; align-items:flex-start; justify-content:space-between;
-  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
-}
-.fn-name {
-  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
-  margin:0; padding:0; line-height:1.4;
-}
-.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
-.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
-.fn-tag {
-  font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600;
-}
-.tag-stat   { background:#e8f5e9; color:#1b6b2f; }
-.tag-util   { background:#e3f2fd; color:#1557a0; }
-.tag-viz    { background:#f3e5f5; color:#6a1b9a; }
-.tag-fd     { background:#fff3e0; color:#b25000; }
-.tag-data   { background:#fce4ec; color:#880e4f; }
-.tag-ml     { background:#e8eaf6; color:#283593; }
-.tag-morph  { background:#e0f2f1; color:#00574e; }
-
-.fn-args {
-  display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
-  background:#fff; border-bottom:1px solid #f0f0f0; align-items:center;
-}
-.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
-.fn-arg {
-  font-family:monospace; font-size:0.78em; padding:2px 8px;
-  background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555;
-}
-
+.session-num   { font-size: 0.88em; font-weight: 700; }
+.session-topics{ font-size: 0.82em; color: #888; line-height: 1.5; }
+.session-link  { margin-top: auto; padding-top: 8px; font-size: 0.8em; font-weight: 600; }
 </style>
 
 <div id="pw-overlay">
   <div class="pw-box">
     <div class="pw-lock">🔒</div>
-    <h2>Functional diversity</h2>
-    <p>Please enter the access password.</p>
+    <h2>R Scripts — Functional Diversity</h2>
+    <p>Enter the password to access this page.</p>
     <div class="pw-row">
-      <input type="password" id="pw-input" placeholder="Password…"
-             onkeydown="if(event.key==='Enter') checkPw()"/>
-      <button onclick="checkPw()">Enter</button>
+      <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+      <button onclick="checkPw()">OK</button>
     </div>
-    <p class="pw-err" id="pw-error"></p>
+    <p class="pw-err" id="pw-err"></p>
   </div>
 </div>
+<script>
+(function(){
+  if(sessionStorage.getItem('rscripts_unlocked')==='1'){
+    document.getElementById('pw-overlay').style.display='none';
+  }
+})();
+async function checkPw(){
+  var val=document.getElementById('pw-input').value;
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+  var hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hex==='ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5'){
+    sessionStorage.setItem('rscripts_unlocked','1');
+    document.getElementById('pw-overlay').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='Incorrect password.';
+  }
+}
+</script>
 
 <div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
 
-<script>
-const CORRECT_HASH = "ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5";
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-async function checkPw() {
-  const hash = await sha256(document.getElementById("pw-input").value);
-  if (hash === CORRECT_HASH) {
-    document.getElementById("pw-overlay").style.display = "none";
-    sessionStorage.setItem("rscripts_unlocked", "1");
-  } else {
-    const err = document.getElementById("pw-error");
-    err.textContent = "Incorrect password. Please try again.";
-    document.getElementById("pw-input").value = "";
-    document.getElementById("pw-input").focus();
-    setTimeout(()=>{ err.textContent=""; }, 3000);
-  }
-}
-if (sessionStorage.getItem("rscripts_unlocked") === "1")
-  document.getElementById("pw-overlay").style.display = "none";
-</script>
-<div id="tpdsmean-without-itv" class="section level4">
-<h4>TPDsMean without ITV</h4>
 <div class="page-intro">
-  <div class="page-intro-icon" style="background:#e67e22;">🌿</div>
+  <div class="page-intro-icon">🌿</div>
   <div>
-    <h1>Functional diversity</h1>
-    <p>TPD estimation, functional richness, overlap and space visualisation</p>
+    <h1>Functional Diversity</h1>
+    <p>TPD estimation, functional richness and overlap</p>
   </div>
-</div>
-<h3 class="fn-section-divider"><span>TPD estimation</span><hr></h3>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-make.tpd.2d.high.def">make.TPD.2D.high.def(targetGroupName, PCAImpute, alphaUse=0.95, ...)</h4>
-    <div class="fn-desc">High-resolution 2D TPD (Trait Probability Density) estimation for a taxonomic group.</div>
-    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">targetGroupName — group identifier</span><span class="fn-arg">PCAImpute — PCA scores</span><span class="fn-arg">alphaUse=0.95 — alpha hull threshold</span></div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>make.TPD<span class="fl">.2</span>D.high.def <span class="ot">&lt;-</span> <span class="cf">function</span>(targetGroupName, PCAImpute, <span class="at">alphaUse =</span> <span class="fl">0.95</span>,</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>                                 <span class="at">saveFile =</span> <span class="fu">paste0</span>(<span class="fu">getwd</span>(), <span class="st">&quot;/TPDs2DHighDef.rds&quot;</span>)) {</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">require</span>(TPD)</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">paste</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st"> ESTIMATING TPDs for: &quot;</span>, targetGroupName, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>))</span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  dimensions <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  traitsUSE <span class="ot">&lt;-</span> PCAImpute<span class="sc">$</span>traitsUse[, <span class="dv">1</span><span class="sc">:</span>dimensions]</span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="fu">colnames</span>(traitsUSE) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;Comp.&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  gridSize <span class="ot">&lt;-</span> <span class="dv">200</span></span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  sdTraits <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">Hpi.diag</span>(traitsUSE)))</span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  TPDsAux <span class="ot">&lt;-</span> <span class="fu">TPDsMean</span>(</span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>    <span class="at">species =</span> <span class="fu">rownames</span>(traitsUSE),</span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>    <span class="at">means =</span> traitsUSE,</span>
-<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>    <span class="at">sds =</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(sdTraits, <span class="fu">nrow</span>(traitsUSE)), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">ncol =</span> dimensions),</span>
-<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>    <span class="at">alpha =</span> alphaUse,</span>
-<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>    <span class="at">n_divisions =</span> gridSize</span>
-<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  )</span>
-<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>  <span class="fu">saveRDS</span>(TPDsAux, saveFile)</span>
-<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>  TPDsAux <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>  <span class="fu">gc</span>()</span>
-<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>}</span></code></pre></div>
-</div>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-make.tpd.2d.low.def">make.TPD.2D.low.def(targetGroupName, PCAImpute, alphaUse=0.95, ...)</h4>
-    <div class="fn-desc">Low-resolution 2D TPD estimation — faster, suited for large datasets.</div>
-    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">targetGroupName — group identifier</span><span class="fn-arg">PCAImpute — PCA scores</span><span class="fn-arg">alphaUse=0.95 — threshold</span></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>make.TPD<span class="fl">.2</span>D.low.def <span class="ot">&lt;-</span> <span class="cf">function</span>(targetGroupName, PCAImpute, <span class="at">alphaUse =</span> <span class="fl">0.95</span>,</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>                                <span class="at">saveFile =</span> <span class="fu">paste0</span>(<span class="fu">getwd</span>(), <span class="st">&quot;/TPDs2DLowDef.rds&quot;</span>)) {</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="fu">require</span>(TPD)</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">paste</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st"> ESTIMATING TPDs for: &quot;</span>, targetGroupName, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>))</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  dimensions <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  traitsUSE <span class="ot">&lt;-</span> PCAImpute<span class="sc">$</span>traitsUse[, <span class="dv">1</span><span class="sc">:</span>dimensions]</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="fu">colnames</span>(traitsUSE) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;Comp.&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  gridSize <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  sdTraits <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">Hpi.diag</span>(traitsUSE)))</span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  TPDsAux <span class="ot">&lt;-</span> <span class="fu">TPDsMean</span>(</span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>    <span class="at">species =</span> <span class="fu">rownames</span>(traitsUSE),</span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    <span class="at">means =</span> traitsUSE,</span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    <span class="at">sds =</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(sdTraits, <span class="fu">nrow</span>(traitsUSE)), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">ncol =</span> dimensions),</span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    <span class="at">alpha =</span> alphaUse,</span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>    <span class="at">n_divisions =</span> gridSize</span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  )</span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>  <span class="fu">saveRDS</span>(TPDsAux, saveFile)</span>
-<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>  TPDsAux <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>  <span class="fu">gc</span>()</span>
-<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>}</span></code></pre></div>
-</div>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-make.tpdlarge">make.TPDLarge(targetGroupName, PCAImpute, alphaUse=0.95, TPDsMean_large, ...)</h4>
-    <div class="fn-desc">TPD computation for very large assemblages using a pre-computed reference TPD.</div>
-    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">targetGroupName — group name</span><span class="fn-arg">PCAImpute — scores</span><span class="fn-arg">TPDsMean_large — reference TPD object</span></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>make.TPDLarge <span class="ot">&lt;-</span> <span class="cf">function</span>(targetGroupName, PCAImpute, <span class="at">alphaUse =</span> <span class="fl">0.95</span>, TPDsMean_large,</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                          <span class="at">saveFile =</span> <span class="fu">paste0</span>(<span class="fu">getwd</span>(), <span class="st">&quot;/TPDsLarge.rds&quot;</span>)) {</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">paste</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st"> ESTIMATING TPDs for: &quot;</span>, targetGroupName, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>))</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  dimensions <span class="ot">&lt;-</span> PCAImpute<span class="sc">$</span>dimensions</span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  traitsUSE <span class="ot">&lt;-</span> PCAImpute<span class="sc">$</span>traitsUse</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">colnames</span>(traitsUSE) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;Comp.&quot;</span>, <span class="dv">1</span><span class="sc">:</span>dimensions)</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  gridSize <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(dimensions <span class="sc">==</span> <span class="dv">4</span>, <span class="dv">30</span>, <span class="dv">100</span>)</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  sdTraits <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">Hpi.diag</span>(traitsUSE)))</span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  TPDsAux <span class="ot">&lt;-</span> <span class="fu">TPDsMean_large</span>(</span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>    <span class="at">species =</span> <span class="fu">rownames</span>(traitsUSE),</span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>    <span class="at">means =</span> traitsUSE,</span>
-<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>    <span class="at">sds =</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(sdTraits, <span class="fu">nrow</span>(traitsUSE)), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">ncol =</span> dimensions),</span>
-<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>    <span class="at">alpha =</span> alphaUse,</span>
-<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>    <span class="at">n_divisions =</span> gridSize</span>
-<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>  )</span>
-<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>  <span class="fu">saveRDS</span>(TPDsAux, saveFile)</span>
-<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>  TPDsAux <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>  <span class="fu">gc</span>()</span>
-<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>}</span></code></pre></div>
-</div>
-<h3 class="fn-section-divider"><span>TPD package functions (updated)</span><hr></h3>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-tpdrichness">TPDRichness(TPDc=NULL, TPDs=NULL)</h4>
-    <div class="fn-desc">Compute functional richness (FRIC) from community or species TPD objects.</div>
-    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">TPDc — community TPD</span><span class="fn-arg">TPDs — species TPD</span></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>TPDRichness <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">TPDc =</span> <span class="cn">NULL</span>, <span class="at">TPDs =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(TPDc) <span class="sc">&amp;</span> <span class="fu">is.null</span>(TPDs)) {</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;At least one of &#39;TPDc&#39; or &#39;TPDs&#39; must be supplied&quot;</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  }</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(TPDc) <span class="sc">&amp;</span> <span class="fu">class</span>(TPDc) <span class="sc">!=</span> <span class="st">&quot;TPDcomm&quot;</span>) {</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Class mismatch: please specify if your object is a TPDc or a TPDs (TPDcomm expected).&quot;</span>)</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  }</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(TPDs) <span class="sc">&amp;</span> <span class="fu">class</span>(TPDs) <span class="sc">!=</span> <span class="st">&quot;TPDsp&quot;</span>) {</span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Class mismatch: please specify if your object is a TPDc or a TPDs (TPDsp expected).&quot;</span>)</span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  }</span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  Calc_FRich <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>    results_FR <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">class</span>(x) <span class="sc">==</span> <span class="st">&quot;TPDcomm&quot;</span>) {</span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>      TPD <span class="ot">&lt;-</span> x<span class="sc">$</span>TPDc<span class="sc">$</span>TPDc</span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>      names_aux <span class="ot">&lt;-</span> <span class="fu">names</span>(x<span class="sc">$</span>TPDc<span class="sc">$</span>TPDc)</span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>      cell_volume <span class="ot">&lt;-</span> x<span class="sc">$</span>data<span class="sc">$</span>cell_volume</span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>    }</span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">class</span>(x) <span class="sc">==</span> <span class="st">&quot;TPDsp&quot;</span>) {</span>
-<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>      TPD <span class="ot">&lt;-</span> x<span class="sc">$</span>TPDs</span>
-<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>      names_aux <span class="ot">&lt;-</span> <span class="fu">names</span>(x<span class="sc">$</span>TPDs)</span>
-<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>      cell_volume <span class="ot">&lt;-</span> x<span class="sc">$</span>data<span class="sc">$</span>cell_volume</span>
-<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>    }</span>
-<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(TPD)) {</span>
-<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>      TPD_aux <span class="ot">&lt;-</span> TPD[[i]]</span>
-<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>      TPD_aux[TPD_aux <span class="sc">&gt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> cell_volume</span>
-<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>      results_FR[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(TPD_aux)</span>
-<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>    }</span>
-<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>    <span class="fu">names</span>(results_FR) <span class="ot">&lt;-</span> names_aux</span>
-<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>    <span class="fu">return</span>(results_FR)</span>
-<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a>  }</span>
-<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a></span>
-<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(TPDc)) {</span>
-<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>    results<span class="sc">$</span>communities <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>    results<span class="sc">$</span>communities<span class="sc">$</span>FRichness <span class="ot">&lt;-</span> <span class="fu">Calc_FRich</span>(TPDc)</span>
-<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a>  }</span>
-<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(TPDs)) {</span>
-<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a>    <span class="cf">if</span> (TPDs<span class="sc">$</span>data<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&quot;One population_One species&quot;</span> <span class="sc">|</span></span>
-<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a>        TPDs<span class="sc">$</span>data<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&quot;One population_Multiple species&quot;</span>) {</span>
-<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a>      results<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a>      results<span class="sc">$</span>species<span class="sc">$</span>FRichness <span class="ot">&lt;-</span> <span class="fu">Calc_FRich</span>(TPDs)</span>
-<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a>      results<span class="sc">$</span>populations <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>      results<span class="sc">$</span>populations<span class="sc">$</span>FRichness <span class="ot">&lt;-</span> <span class="fu">Calc_FRich</span>(TPDs)</span>
-<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a>    }</span>
-<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a>    <span class="cf">if</span> (TPDs<span class="sc">$</span>data<span class="sc">$</span>method <span class="sc">==</span> <span class="st">&quot;mean&quot;</span>) {</span>
-<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a>      <span class="fu">message</span>(<span class="st">&quot;WARNING: When TPDs are calculated using the TPDsMean function, Evenness and Divergence are meaningless!!&quot;</span>)</span>
-<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a>    }</span>
-<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a>  }</span>
-<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a>  <span class="fu">return</span>(results)</span>
-<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a>}</span></code></pre></div>
-</div>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-imagetpd">imageTPD(x, thresholdPlot=0.99)</h4>
-    <div class="fn-desc">Plot a TPD object as a filled image at a given probability threshold.</div>
-    <div class="fn-tags"><span class="fn-tag tag-viz">visualisation</span><span class="fn-tag tag-fd">functional diversity</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">x — TPD object</span><span class="fn-arg">thresholdPlot=0.99 — probability threshold for display</span></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>imageTPD <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">thresholdPlot =</span> <span class="fl">0.99</span>) {</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  TPDList <span class="ot">&lt;-</span> x<span class="sc">$</span>TPDc<span class="sc">$</span>TPDc</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  imageTPD <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="cf">for</span> (comm <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(TPDList)) {</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>    percentile <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(TPDList[[comm]]))</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>    TPDList[[comm]] <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">index =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(TPDList[[comm]]),</span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>                             <span class="at">prob =</span> TPDList[[comm]], percentile)</span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>    orderTPD <span class="ot">&lt;-</span> <span class="fu">order</span>(TPDList[[comm]][, <span class="st">&quot;prob&quot;</span>], <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>    TPDList[[comm]] <span class="ot">&lt;-</span> TPDList[[comm]][orderTPD, ]</span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>    TPDList[[comm]][, <span class="st">&quot;percentile&quot;</span>] <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(TPDList[[comm]][, <span class="st">&quot;prob&quot;</span>])</span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>    TPDList[[comm]] <span class="ot">&lt;-</span> TPDList[[comm]][<span class="fu">order</span>(TPDList[[comm]][, <span class="st">&quot;index&quot;</span>]), ]</span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>    imageTPD[[comm]] <span class="ot">&lt;-</span> TPDList[[comm]]</span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  }</span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  <span class="fu">names</span>(imageTPD) <span class="ot">&lt;-</span> <span class="fu">names</span>(TPDList)</span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>  trait1Edges <span class="ot">&lt;-</span> <span class="fu">unique</span>(x<span class="sc">$</span>data<span class="sc">$</span>evaluation_grid[, <span class="dv">1</span>])</span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>  trait2Edges <span class="ot">&lt;-</span> <span class="fu">unique</span>(x<span class="sc">$</span>data<span class="sc">$</span>evaluation_grid[, <span class="dv">2</span>])</span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>  imageMat <span class="ot">&lt;-</span> <span class="fu">array</span>(</span>
-<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>    <span class="cn">NA</span>,</span>
-<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>    <span class="fu">c</span>(<span class="fu">length</span>(trait1Edges), <span class="fu">length</span>(trait2Edges), <span class="fu">length</span>(imageTPD)),</span>
-<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>    <span class="at">dimnames =</span> <span class="fu">list</span>(trait1Edges, trait2Edges, <span class="fu">names</span>(TPDList))</span>
-<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>  )</span>
-<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>  <span class="cf">for</span> (comm <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(TPDList)) {</span>
-<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>    percentileSpace <span class="ot">&lt;-</span> x<span class="sc">$</span>data<span class="sc">$</span>evaluation_grid</span>
-<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>    percentileSpace<span class="sc">$</span>percentile <span class="ot">&lt;-</span> imageTPD[[comm]][, <span class="st">&quot;percentile&quot;</span>]</span>
-<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(trait2Edges)) {</span>
-<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>      colAux <span class="ot">&lt;-</span> <span class="fu">subset</span>(percentileSpace, percentileSpace[, <span class="dv">2</span>] <span class="sc">==</span> trait2Edges[i])</span>
-<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>      imageMat[, i, comm] <span class="ot">&lt;-</span> colAux<span class="sc">$</span>percentile</span>
-<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>    }</span>
-<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a>    imageMat[imageMat <span class="sc">&gt;</span> thresholdPlot] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>  }</span>
-<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a>  <span class="fu">return</span>(imageMat)</span>
-<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>}</span></code></pre></div>
-</div>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-overlapf">overlapF(x, y)</h4>
-    <div class="fn-desc">Functional overlap between two TPD distributions (Bhattacharyya coefficient).</div>
-    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">x — first TPD object</span><span class="fn-arg">y — second TPD object</span></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>overlapF <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">identical</span>(x<span class="sc">$</span>eval.points, y<span class="sc">$</span>eval.points)) <span class="fu">stop</span>(<span class="st">&quot;Not identical eval points!&quot;</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  TPDx <span class="ot">&lt;-</span> x<span class="sc">$</span>estimate</span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">class</span>(x<span class="sc">$</span>eval.points) <span class="sc">==</span> <span class="st">&quot;list&quot;</span>) {</span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    x<span class="sc">$</span>eval.points <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(x<span class="sc">$</span>eval.points)</span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  }</span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  cellEdge <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(x<span class="sc">$</span>eval.points)) {</span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    cellEdge[i] <span class="ot">&lt;-</span> <span class="fu">unique</span>(x<span class="sc">$</span>eval.points[, i])[<span class="dv">2</span>] <span class="sc">-</span> <span class="fu">unique</span>(x<span class="sc">$</span>eval.points[, i])[<span class="dv">1</span>]</span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  }</span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  cellSizex <span class="ot">&lt;-</span> <span class="fu">prod</span>(cellEdge)</span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  TPDx <span class="ot">&lt;-</span> TPDx <span class="sc">*</span> cellSizex</span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  TPDx <span class="ot">&lt;-</span> TPDx <span class="sc">/</span> <span class="fu">sum</span>(TPDx)</span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>  TPDy <span class="ot">&lt;-</span> y<span class="sc">$</span>estimate</span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>  TPDy <span class="ot">&lt;-</span> TPDy <span class="sc">*</span> cellSizex</span>
-<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>  TPDy <span class="ot">&lt;-</span> TPDy <span class="sc">/</span> <span class="fu">sum</span>(TPDy)</span>
-<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a></span>
-<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>  OL <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">pmin</span>(TPDx, TPDy))</span>
-<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>  <span class="fu">return</span>(OL)</span>
-<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>}</span></code></pre></div>
-</div>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-percentiletpd">percentileTPD(x)</h4>
-    <div class="fn-desc">Percentile-based summary statistics of a TPD probability distribution.</div>
-    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span><span class="fn-tag tag-stat">statistics</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">x — TPD object</span></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>percentileTPD <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  TPDList <span class="ot">&lt;-</span> x<span class="sc">$</span>TPDc<span class="sc">$</span>TPDc</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="cf">for</span> (comm <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(TPDList)) {</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>    percentile <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(TPDList[[comm]]))</span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    TPDList[[comm]] <span class="ot">&lt;-</span> <span class="fu">cbind</span>(TPDList[[comm]], percentile)</span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>    orderTPD <span class="ot">&lt;-</span> <span class="fu">order</span>(TPDList[[comm]][, <span class="st">&quot;notZeroProb&quot;</span>], <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>    TPDList[[comm]] <span class="ot">&lt;-</span> TPDList[[comm]][orderTPD, ]</span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>    TPDList[[comm]][, <span class="st">&quot;percentile&quot;</span>] <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(TPDList[[comm]][, <span class="st">&quot;notZeroProb&quot;</span>])</span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>    TPDList[[comm]] <span class="ot">&lt;-</span> TPDList[[comm]][<span class="fu">order</span>(TPDList[[comm]][, <span class="st">&quot;notZeroIndex&quot;</span>]), ]</span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>    results[[comm]] <span class="ot">&lt;-</span> TPDList[[comm]]</span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>  }</span>
-<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>  <span class="fu">names</span>(results) <span class="ot">&lt;-</span> <span class="fu">names</span>(TPDList)</span>
-<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>  <span class="fu">return</span>(results)</span>
-<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>}</span></code></pre></div>
-</div>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-quantiletpd">quantileTPD(x, thresholdPlot=0.99)</h4>
-    <div class="fn-desc">Extract contour lines at given probability quantiles from a 2D TPD.</div>
-    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span><span class="fn-tag tag-viz">visualisation</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">x — TPD object</span><span class="fn-arg">thresholdPlot=0.99 — quantile threshold</span></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>quantileTPD <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">thresholdPlot =</span> <span class="fl">0.99</span>) {</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  TPDList <span class="ot">&lt;-</span> x<span class="sc">$</span>TPDc<span class="sc">$</span>TPDc</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  quantileTPD <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="cf">for</span> (comm <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(TPDList)) {</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    percentile <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(TPDList[[comm]]))</span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    TPDList[[comm]] <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">index =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(TPDList[[comm]]),</span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>                             <span class="at">prob =</span> TPDList[[comm]], percentile)</span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>    orderTPD <span class="ot">&lt;-</span> <span class="fu">order</span>(TPDList[[comm]][, <span class="st">&quot;prob&quot;</span>], <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>    TPDList[[comm]] <span class="ot">&lt;-</span> TPDList[[comm]][orderTPD, ]</span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>    TPDList[[comm]][, <span class="st">&quot;percentile&quot;</span>] <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(TPDList[[comm]][, <span class="st">&quot;prob&quot;</span>])</span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>    TPDList[[comm]] <span class="ot">&lt;-</span> TPDList[[comm]][<span class="fu">order</span>(TPDList[[comm]][, <span class="st">&quot;index&quot;</span>]), ]</span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>    quantileTPD[[comm]] <span class="ot">&lt;-</span> TPDList[[comm]]</span>
-<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  }</span>
-<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  <span class="fu">names</span>(quantileTPD) <span class="ot">&lt;-</span> <span class="fu">names</span>(TPDList)</span>
-<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>  trait1Edges <span class="ot">&lt;-</span> <span class="fu">unique</span>(x<span class="sc">$</span>data<span class="sc">$</span>evaluation_grid[, <span class="dv">1</span>])</span>
-<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>  trait2Edges <span class="ot">&lt;-</span> <span class="fu">unique</span>(x<span class="sc">$</span>data<span class="sc">$</span>evaluation_grid[, <span class="dv">2</span>])</span>
-<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>  imageMat <span class="ot">&lt;-</span> <span class="fu">array</span>(</span>
-<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>    <span class="cn">NA</span>,</span>
-<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a>    <span class="fu">c</span>(<span class="fu">length</span>(trait1Edges), <span class="fu">length</span>(trait2Edges), <span class="fu">length</span>(quantileTPD)),</span>
-<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>    <span class="at">dimnames =</span> <span class="fu">list</span>(trait1Edges, trait2Edges, <span class="fu">names</span>(TPDList))</span>
-<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a>  )</span>
-<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a>  <span class="cf">for</span> (comm <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(TPDList)) {</span>
-<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a>    percentileSpace <span class="ot">&lt;-</span> x<span class="sc">$</span>data<span class="sc">$</span>evaluation_grid</span>
-<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a>    percentileSpace<span class="sc">$</span>percentile <span class="ot">&lt;-</span> quantileTPD[[comm]][, <span class="st">&quot;percentile&quot;</span>]</span>
-<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(trait2Edges)) {</span>
-<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a>      colAux <span class="ot">&lt;-</span> <span class="fu">subset</span>(percentileSpace, percentileSpace[, <span class="dv">2</span>] <span class="sc">==</span> trait2Edges[i])</span>
-<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a>      imageMat[, i, comm] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> colAux<span class="sc">$</span>percentile</span>
-<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a>    }</span>
-<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a>    imageMat[imageMat <span class="sc">&lt;</span> (<span class="dv">1</span> <span class="sc">-</span> thresholdPlot)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a>  }</span>
-<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a>  <span class="fu">return</span>(imageMat)</span>
-<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a>}</span></code></pre></div>
-</div>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-mae-tpd">MAE_TPD(x, y)</h4>
-    <div class="fn-desc">Mean absolute error between two TPD probability distributions.</div>
-    <div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span><span class="fn-tag tag-stat">statistics</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">x — first TPD</span><span class="fn-arg">y — second TPD</span></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>MAE_TPD <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  diffXY <span class="ot">&lt;-</span> <span class="fu">abs</span>(x <span class="sc">-</span> y)</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  MAE <span class="ot">&lt;-</span> <span class="fu">mean</span>(diffXY)</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="fu">return</span>(MAE)</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>}</span></code></pre></div>
-</div>
 </div>
 
-<script src="assets/copy-code.js"></script>
+<div class="session-grid">
+  <a class="session-card" href="fn/fn-make.tpd.2d.high.def_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">make.TPD.2D.high.def(targetGroupName, PCAImpute, alphaUse=0.95, ...)</span></div>
+    <div class="session-topics">High-resolution 2D TPD (Trait Probability Density) estimation for a taxonomic group.</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-make.tpd.2d.low.def_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">make.TPD.2D.low.def(targetGroupName, PCAImpute, alphaUse=0.95, ...)</span></div>
+    <div class="session-topics">Low-resolution 2D TPD estimation — faster, suited for large datasets.</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-make.tpdlarge_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">make.TPDLarge(targetGroupName, PCAImpute, alphaUse=0.95, TPDsMean_large, ...)</span></div>
+    <div class="session-topics">TPD computation for very large assemblages using a pre-computed reference TPD.</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-tpdrichness_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">TPDRichness(TPDc=NULL, TPDs=NULL)</span></div>
+    <div class="session-topics">Compute functional richness (FRIC) from community or species TPD objects.</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-imagetpd_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">imageTPD(x, thresholdPlot=0.99)</span></div>
+    <div class="session-topics">Plot a TPD object as a filled image at a given probability threshold.</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-overlapf_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">overlapF(x, y)</span></div>
+    <div class="session-topics">Functional overlap between two TPD distributions (Bhattacharyya coefficient).</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-percentiletpd_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">percentileTPD(x)</span></div>
+    <div class="session-topics">Percentile-based summary statistics of a TPD probability distribution.</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-quantiletpd_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">quantileTPD(x, thresholdPlot=0.99)</span></div>
+    <div class="session-topics">Extract contour lines at given probability quantiles from a 2D TPD.</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-mae-tpd_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">MAE_TPD(x, y)</span></div>
+    <div class="session-topics">Mean absolute error between two TPD probability distributions.</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-compute-fric_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">compute_FRic()</span></div>
+    <div class="session-topics">Functional Richness via convex hull (FD::dbFD)</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-null-model-fd_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">null_model_FD()</span></div>
+    <div class="session-topics">SES and p-value against species-shuffling null model</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+</div>
 
 
-</div>
-</div>
+
 
 </div>
 
@@ -1095,41 +512,7 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("show" === "show");
-});
-</script>
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3,h4",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

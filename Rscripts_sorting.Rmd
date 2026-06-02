@@ -1,131 +1,17 @@
 ---
 title: ""
-pagetitle: "Sorting data — R Scripts"
+pagetitle: "Sorting & Data wrangling — R Scripts"
 output:
   html_document:
     self_contained: false
-    toc: true
-    toc_depth: 4
-    toc_float:
-      collapsed: true
-      smooth_scroll: true
-    code_folding: show
-    highlight: tango
-    df_print: paged
-    css: assets/custom.css
+    toc: false
     includes:
-      after_body: assets/after_body.html
+      in_header: header.html
 ---
 
 ```{=html}
-<style>
-/* Custom function TOC — overrides rmarkdown floating TOC */
-#TOC,
-.tocify-wrapper,
-div[data-spy="affix"] {
-  display: none !important;
-  width: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-.fn-nav {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 205px;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-  padding: 14px 10px 20px 14px;
-  border-right: 1px solid #e8e8e8;
-  background: #fafafa;
-  font-size: 0.82em;
-  z-index: 100;
-}
-.fn-nav .fn-nav-title {
-  font-size: 0.7em;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: #bbb;
-  margin-bottom: 10px;
-  padding-left: 4px;
-}
-.fn-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.fn-nav li a {
-  display: block;
-  padding: 3px 6px;
-  border-radius: 4px;
-  color: #444;
-  text-decoration: none;
-  font-family: monospace;
-  font-size: 0.95em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.fn-nav li a:hover {
-  background: #eef2f7;
-  color: #2c3e50;
-}
-.fn-nav li a.active {
-  background: #e3f0fb;
-  color: #1a6faf;
-  font-weight: 600;
-}
-/* push main content right to make room */
-body {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-}
-.main-container {
-  margin-left: 210px !important;
-  max-width: calc(100vw - 230px) !important;
-  width: calc(100vw - 230px) !important;
-  padding-right: 30px !important;
-}
-/* kill rmarkdown's bootstrap TOC column entirely */
-.col-xs-12.col-sm-4.col-md-3,
-.tocify-wrapper,
-div.tocify,
-#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
-/* expand content column to full width */
-.col-xs-12.col-sm-8.col-md-9 {
-  width: 100% !important;
-  -webkit-flex: none !important;
-  flex: none !important;
-}
-.row { margin-left: 0 !important; margin-right: 0 !important; }
-</style>
-
-<div class="fn-nav" id="fn-nav">
-  <div class="fn-nav-title">Functions</div>
-  <ul>
-    <li><a href="#fn-standard-names">standard_names</a></li>
-    <li><a href="#fn-addtophylo">addToPhylo</a></li>
-    <li><a href="#fn-redtotraits">RedToTraits</a></li>
-    <li><a href="#fn-imputation-trait">imputation_trait</a></li>
-  </ul>
-</div>
-
-<script>
-/* Highlight active function on scroll */
-window.addEventListener("scroll", function() {
-  var links = document.querySelectorAll(".fn-nav li a");
-  var current = "";
-  links.forEach(function(a) {
-    var id = a.getAttribute("href").slice(1);
-    var el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top < 120) current = id;
-  });
-  links.forEach(function(a) {
-    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
-  });
-});
-</script>
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 <style>
 #pw-overlay {
@@ -155,316 +41,115 @@ window.addEventListener("scroll", function() {
 .back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
 .back-link a { color: #8e44ad; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
-
-/* ── Function cards ────────────────────────────────── */
 .page-intro {
   display:flex; align-items:center; gap:14px;
   padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
 }
 .page-intro-icon {
-  width:48px; height:48px; border-radius:10px;
+  width:52px; height:52px; border-radius:12px; background:#8e44ad;
   display:flex; align-items:center; justify-content:center;
-  font-size:1.5em; color:#fff; flex-shrink:0;
+  font-size:1.6em; color:#fff; flex-shrink:0;
 }
 .page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
 .page-intro p  { font-size:0.92em; color:#777; margin:0; }
-
-.fn-section-divider {
-  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+.session-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px; margin-bottom: 40px;
 }
-.fn-section-divider span {
-  font-size:0.75em; font-weight:700; letter-spacing:.08em;
-  text-transform:uppercase; color:#aaa; white-space:nowrap;
+.session-card {
+  background: #fff; border: 1px solid #e4e9f0; border-radius: 12px;
+  padding: 16px 18px; text-decoration: none !important; color: inherit !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow .15s, transform .12s;
+  display: flex; flex-direction: column; gap: 6px;
+  border-left: 4px solid #8e44ad;
 }
-.fn-section-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
-
-.fn-card {
-  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+.session-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10); transform: translateY(-2px);
+  text-decoration: none !important;
 }
-.fn-header {
-  display:flex; align-items:flex-start; justify-content:space-between;
-  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
-}
-.fn-name {
-  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
-  margin:0; padding:0; line-height:1.4;
-}
-.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
-.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
-.fn-tag {
-  font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600;
-}
-.tag-stat   { background:#e8f5e9; color:#1b6b2f; }
-.tag-util   { background:#e3f2fd; color:#1557a0; }
-.tag-viz    { background:#f3e5f5; color:#6a1b9a; }
-.tag-fd     { background:#fff3e0; color:#b25000; }
-.tag-data   { background:#fce4ec; color:#880e4f; }
-.tag-ml     { background:#e8eaf6; color:#283593; }
-.tag-morph  { background:#e0f2f1; color:#00574e; }
-
-.fn-args {
-  display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
-  background:#fff; border-bottom:1px solid #f0f0f0; align-items:center;
-}
-.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
-.fn-arg {
-  font-family:monospace; font-size:0.78em; padding:2px 8px;
-  background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555;
-}
-
+.session-num   { font-size: 0.88em; font-weight: 700; }
+.session-topics{ font-size: 0.82em; color: #888; line-height: 1.5; }
+.session-link  { margin-top: auto; padding-top: 8px; font-size: 0.8em; font-weight: 600; }
 </style>
 
 <div id="pw-overlay">
   <div class="pw-box">
     <div class="pw-lock">🔒</div>
-    <h2>Sorting data</h2>
-    <p>Please enter the access password.</p>
+    <h2>R Scripts — Sorting & Data wrangling</h2>
+    <p>Enter the password to access this page.</p>
     <div class="pw-row">
-      <input type="password" id="pw-input" placeholder="Password…"
-             onkeydown="if(event.key==='Enter') checkPw()"/>
-      <button onclick="checkPw()">Enter</button>
+      <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+      <button onclick="checkPw()">OK</button>
     </div>
-    <p class="pw-err" id="pw-error"></p>
+    <p class="pw-err" id="pw-err"></p>
   </div>
 </div>
+<script>
+(function(){
+  if(sessionStorage.getItem('rscripts_unlocked')==='1'){
+    document.getElementById('pw-overlay').style.display='none';
+  }
+})();
+async function checkPw(){
+  var val=document.getElementById('pw-input').value;
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+  var hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hex==='ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5'){
+    sessionStorage.setItem('rscripts_unlocked','1');
+    document.getElementById('pw-overlay').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='Incorrect password.';
+  }
+}
+</script>
 
 <div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
 
-<script>
-const CORRECT_HASH = "ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5";
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-async function checkPw() {
-  const hash = await sha256(document.getElementById("pw-input").value);
-  if (hash === CORRECT_HASH) {
-    document.getElementById("pw-overlay").style.display = "none";
-    sessionStorage.setItem("rscripts_unlocked", "1");
-  } else {
-    const err = document.getElementById("pw-error");
-    err.textContent = "Incorrect password. Please try again.";
-    document.getElementById("pw-input").value = "";
-    document.getElementById("pw-input").focus();
-    setTimeout(()=>{ err.textContent=""; }, 3000);
-  }
-}
-if (sessionStorage.getItem("rscripts_unlocked") === "1")
-  document.getElementById("pw-overlay").style.display = "none";
-</script>
-```
-
-
-```{=html}
 <div class="page-intro">
-  <div class="page-intro-icon" style="background:#8e44ad;">🔀</div>
+  <div class="page-intro-icon">🗃️</div>
   <div>
-    <h1>Sorting data</h1>
-    <p>Species name standardisation, phylogeny pruning, IUCN merging and trait imputation</p>
+    <h1>Sorting & Data wrangling</h1>
+    <p>Data cleaning, filtering and taxonomic sorting</p>
   </div>
 </div>
-```
 
-
-```{=html}
-<h3 class="fn-section-divider"><span>Name & taxonomy</span><hr></h3>
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-standard-names">standard_names(Traits, nrowTraits, source=163, dim=NA)</h4>
-    <div class="fn-desc">Standardise species names across datasets by removing duplicates and mismatches.</div>
-    <div class="fn-tags"><span class="fn-tag tag-util">utility</span><span class="fn-tag tag-data">data</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">Traits — trait data frame</span><span class="fn-arg">nrowTraits — expected row count</span><span class="fn-arg">source=163 — source ID</span><span class="fn-arg">dim=NA — trait dimensions</span></div>
-```
-
-```{r fn_sorting_standard_names_0, eval=FALSE}
-standard_names <- function(Traits, nrowTraits, source = 163, dim = NA) {
-  require(taxize)
-  standNamesTraits <- as.data.frame(
-    matrix(
-      NA,
-      nrow = nrowTraits,
-      ncol = 1,
-      dimnames = list(rownames(Traits), "IUCNName")
-    )
-  )
-  batchSize <- 1000
-
-  for (i in 1:(ceiling(nrowTraits / batchSize))) {
-    cat(paste0("\nBatch ", i, " out of ", (ceiling(nrowTraits / batchSize)), "\n"))
-    rowsSelect <- ((i - 1) * batchSize + 1):min((i * batchSize), nrowTraits)
-    taxoAux <- as.data.frame(
-      taxize::gnr_resolve(
-        names = rownames(standNamesTraits)[rowsSelect],
-        preferred_data_sources = source, # 163 is IUCN
-        best_match_only = TRUE,
-        canonical = TRUE
-      )
-    )
-    standNamesTraits[taxoAux$user_supplied_name, "IUCNName"] <- taxoAux$matched_name2
-  }
-
-  standNamesTraits[, "IUCNName"] <- gsub(
-    x = standNamesTraits[, "IUCNName"],
-    pattern = " ",
-    replacement = "_"
-  )
-  naIUCN <- which(is.na(standNamesTraits[, "IUCNName"]))
-  standNamesTraits[naIUCN, "IUCNName"] <- rownames(standNamesTraits)[naIUCN]
-
-  # Some species could not be resolved into IUCN naming. Remove them:
-  yesName <- which(!is.na(standNamesTraits[, "IUCNName"]))
-  if (dim == 1) {
-    return(Traits[yesName])
-  } else {
-    return(Traits[yesName, ])
-  }
-}
-```
-
-```{=html}
-</div>
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-addtophylo">addToPhylo(phylogenyTraits, GROUPTraits)</h4>
-    <div class="fn-desc">Prune a phylogeny to the set of species present in a trait data frame.</div>
-    <div class="fn-tags"><span class="fn-tag tag-util">utility</span><span class="fn-tag tag-data">data</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">phylogenyTraits — phylo object</span><span class="fn-arg">GROUPTraits — trait data frame with species names</span></div>
-```
-
-```{r fn_sorting_addToPhylo_1, eval=FALSE}
-addToPhylo <- function(phylogenyTraits, GROUPTraits) {
-  phylogenyTraits <- force.ultrametric(tree = phylogenyTraits, method = c("extend"))
-  tipsToAdd <- which(!rownames(GROUPTraits) %in% phylogenyTraits$tip.label)
-  namesToAdd <- rownames(GROUPTraits)[tipsToAdd]
-  genusToAdd <- unlist(strsplit(namesToAdd, "_"))[
-    which(1:length(strsplit(namesToAdd, "_")) %% 2 == 1)
-  ]
-  phylogenyTraitsAdd <- phylogenyTraits
-
-  for (add in 1:length(namesToAdd)) {
-    cat(paste("\rADDING SP TO GENUS IN PHYLOGENY", add, "/", length(namesToAdd), "\r"))
-    phylogenyTraitsAdd <- add.species.to.genus(
-      tree = phylogenyTraitsAdd,
-      species = namesToAdd[add],
-      genus = genusToAdd[add],
-      where = "root"
-    )
-  }
-  return(phylogenyTraitsAdd)
-}
-```
-
-```{=html}
-</div>
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-redtotraits">RedToTraits(IUCNGROUPtoTraits)</h4>
-    <div class="fn-desc">Merge IUCN Red List threat category into a trait data frame by matching species names.</div>
-    <div class="fn-tags"><span class="fn-tag tag-data">data</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">IUCNGROUPtoTraits — data frame with species and IUCN status columns</span></div>
-```
-
-```{r fn_sorting_RedToTraits_2, eval=FALSE}
-RedToTraits <- function(IUCNGROUPtoTraits) {
-  RedToTraits <- matrix(
-    rep(NA, nrow(IUCNGROUPtoTraits)),
-    ncol = 1,
-    dimnames = list(IUCNGROUPtoTraits$Species, "IUCN")
-  )
-
-  for (i in 1:nrow(IUCNGROUPtoTraits)) {
-    selRows <- which(IUCNGROUPtoTraits$Species == IUCNGROUPtoTraits$Species[i])
-    if (length(selRows) > 1) {
-      dataAux <- IUCNGROUPtoTraits[selRows, ]
-      if (any(is.na(dataAux$infra_name))) {
-        coger <- which(is.na(dataAux$infra_name))
-        if (length(coger) == 1) {
-          RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <- as.character(dataAux$categorySimp[coger])
-        } else {
-          if (length(unique(dataAux$categorySimp[coger])) == 1) {
-            RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <-
-              as.character(unique(dataAux$categorySimp[coger]))
-          } else {
-            RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <-
-              as.character(sort(unique(dataAux$categorySimp))[1])
-          }
-        }
-      } else {
-        RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <-
-          as.character(sort(unique(dataAux$categorySimp))[1])
-      }
-    } else {
-      RedToTraits[IUCNGROUPtoTraits$Species[i], "IUCN"] <-
-        as.character(IUCNGROUPtoTraits[selRows, "categorySimp"])
-    }
-  }
-  return(RedToTraits)
-}
-```
-
-```{=html}
-</div>
-```
-
-```{=html}
-<h3 class="fn-section-divider"><span>Imputation</span><hr></h3>
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-imputation-trait">imputation_trait(GROUPData, selectedTraits, shortnames)</h4>
-    <div class="fn-desc">Wrapper around missForest to impute missing trait values for a taxonomic group.</div>
-    <div class="fn-tags"><span class="fn-tag tag-ml">machine learning</span><span class="fn-tag tag-util">utility</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">GROUPData — trait data frame with NAs</span><span class="fn-arg">selectedTraits — columns to impute</span><span class="fn-arg">shortnames — abbreviated group labels</span></div>
-```
-
-```{r fn_sorting_imputation_trait_3, eval=FALSE}
-imputation_trait <- function(GROUPData, selectedTraits, shortnames = c("am", "bs", "ls", "os")) {
-  require(missForest)
-  columnsTraits <- 1:(which(colnames(GROUPData) == "Eigen.1") - 1)
-  GROUPData[, columnsTraits] <- log10(GROUPData[, columnsTraits])
-
-  # NOTE: All traits are kept for imputation
-  columsImputation <- 1:(which(colnames(GROUPData) == "IUCN") - 1)
-  GROUPTraitslogImputed <- as.matrix(missForest(xmis = GROUPData[, columsImputation])$ximp)
-
-  GROUPTraitsImputed <- GROUPTraitsMissing <- GROUPData
-  GROUPTraitsImputed[, columnsTraits] <- GROUPTraitslogImputed[, columnsTraits]
-
-  GROUPTraitsMissing <- GROUPTraitsMissing[, selectedTraits]
-  GROUPTraitsImputed <- GROUPTraitsImputed[, selectedTraits]
-  colnames(GROUPTraitsMissing) <- colnames(GROUPTraitsImputed) <- shortnames
-
-  GROUPOtherInfo <- GROUPData[, (max(columnsTraits) + 1):ncol(GROUPData)]
-  GROUPTraitsImputed <- data.frame(GROUPTraitsImputed, IUCN = GROUPData$IUCN)
-  GROUPTraitsMissing <- data.frame(GROUPTraitsMissing, IUCN = GROUPData$IUCN)
-
-  return(list(GROUPTraitsImputed, GROUPTraitsMissing))
-}
-```
-
-```{=html}
+<div class="session-grid">
+  <a class="session-card" href="fn/fn-standard-names_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">standard_names(Traits, nrowTraits, source=163, dim=NA)</span></div>
+    <div class="session-topics">Standardise species names across datasets by removing duplicates and mismatches.</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-addtophylo_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">addToPhylo(phylogenyTraits, GROUPTraits)</span></div>
+    <div class="session-topics">Prune a phylogeny to the set of species present in a trait data frame.</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-redtotraits_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">RedToTraits(IUCNGROUPtoTraits)</span></div>
+    <div class="session-topics">Merge IUCN Red List threat category into a trait data frame by matching species names.</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-imputation-trait_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">imputation_trait(GROUPData, selectedTraits, shortnames)</span></div>
+    <div class="session-topics">Wrapper around missForest to impute missing trait values for a taxonomic group.</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-filter-completeness_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">filter_completeness()</span></div>
+    <div class="session-topics">Remove species below a completeness threshold</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-merge-by-species_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">merge_by_species()</span></div>
+    <div class="session-topics">Robust species-level merge across datasets</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-pivot-long_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">pivot_long()</span></div>
+    <div class="session-topics">Convert wide trait matrix to long format</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
 </div>
 ```

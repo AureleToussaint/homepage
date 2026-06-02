@@ -4,125 +4,14 @@ pagetitle: "Imputation — R Scripts"
 output:
   html_document:
     self_contained: false
-    toc: true
-    toc_depth: 4
-    toc_float:
-      collapsed: true
-      smooth_scroll: true
-    code_folding: show
-    highlight: tango
-    df_print: paged
-    css: assets/custom.css
+    toc: false
     includes:
-      after_body: assets/after_body.html
+      in_header: header.html
 ---
 
 ```{=html}
-<style>
-/* Custom function TOC — overrides rmarkdown floating TOC */
-#TOC,
-.tocify-wrapper,
-div[data-spy="affix"] {
-  display: none !important;
-  width: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-.fn-nav {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 205px;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-  padding: 14px 10px 20px 14px;
-  border-right: 1px solid #e8e8e8;
-  background: #fafafa;
-  font-size: 0.82em;
-  z-index: 100;
-}
-.fn-nav .fn-nav-title {
-  font-size: 0.7em;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: #bbb;
-  margin-bottom: 10px;
-  padding-left: 4px;
-}
-.fn-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.fn-nav li a {
-  display: block;
-  padding: 3px 6px;
-  border-radius: 4px;
-  color: #444;
-  text-decoration: none;
-  font-family: monospace;
-  font-size: 0.95em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.fn-nav li a:hover {
-  background: #eef2f7;
-  color: #2c3e50;
-}
-.fn-nav li a.active {
-  background: #e3f0fb;
-  color: #1a6faf;
-  font-weight: 600;
-}
-/* push main content right to make room */
-body {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-}
-.main-container {
-  margin-left: 210px !important;
-  max-width: calc(100vw - 230px) !important;
-  width: calc(100vw - 230px) !important;
-  padding-right: 30px !important;
-}
-/* kill rmarkdown's bootstrap TOC column entirely */
-.col-xs-12.col-sm-4.col-md-3,
-.tocify-wrapper,
-div.tocify,
-#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
-/* expand content column to full width */
-.col-xs-12.col-sm-8.col-md-9 {
-  width: 100% !important;
-  -webkit-flex: none !important;
-  flex: none !important;
-}
-.row { margin-left: 0 !important; margin-right: 0 !important; }
-</style>
-
-<div class="fn-nav" id="fn-nav">
-  <div class="fn-nav-title">Functions</div>
-  <ul>
-    <li><a href="#fn-imputetraits">imputeTraits</a></li>
-  </ul>
-</div>
-
-<script>
-/* Highlight active function on scroll */
-window.addEventListener("scroll", function() {
-  var links = document.querySelectorAll(".fn-nav li a");
-  var current = "";
-  links.forEach(function(a) {
-    var id = a.getAttribute("href").slice(1);
-    var el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top < 120) current = id;
-  });
-  links.forEach(function(a) {
-    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
-  });
-});
-</script>
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 <style>
 #pw-overlay {
@@ -152,202 +41,95 @@ window.addEventListener("scroll", function() {
 .back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
 .back-link a { color: #7f8c8d; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
-
-/* ── Function cards ────────────────────────────────── */
 .page-intro {
   display:flex; align-items:center; gap:14px;
   padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
 }
 .page-intro-icon {
-  width:48px; height:48px; border-radius:10px;
+  width:52px; height:52px; border-radius:12px; background:#7f8c8d;
   display:flex; align-items:center; justify-content:center;
-  font-size:1.5em; color:#fff; flex-shrink:0;
+  font-size:1.6em; color:#fff; flex-shrink:0;
 }
 .page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
 .page-intro p  { font-size:0.92em; color:#777; margin:0; }
-
-.fn-section-divider {
-  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+.session-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px; margin-bottom: 40px;
 }
-.fn-section-divider span {
-  font-size:0.75em; font-weight:700; letter-spacing:.08em;
-  text-transform:uppercase; color:#aaa; white-space:nowrap;
+.session-card {
+  background: #fff; border: 1px solid #e4e9f0; border-radius: 12px;
+  padding: 16px 18px; text-decoration: none !important; color: inherit !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow .15s, transform .12s;
+  display: flex; flex-direction: column; gap: 6px;
+  border-left: 4px solid #7f8c8d;
 }
-.fn-section-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
-
-.fn-card {
-  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+.session-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10); transform: translateY(-2px);
+  text-decoration: none !important;
 }
-.fn-header {
-  display:flex; align-items:flex-start; justify-content:space-between;
-  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
-}
-.fn-name {
-  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
-  margin:0; padding:0; line-height:1.4;
-}
-.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
-.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
-.fn-tag {
-  font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600;
-}
-.tag-stat   { background:#e8f5e9; color:#1b6b2f; }
-.tag-util   { background:#e3f2fd; color:#1557a0; }
-.tag-viz    { background:#f3e5f5; color:#6a1b9a; }
-.tag-fd     { background:#fff3e0; color:#b25000; }
-.tag-data   { background:#fce4ec; color:#880e4f; }
-.tag-ml     { background:#e8eaf6; color:#283593; }
-.tag-morph  { background:#e0f2f1; color:#00574e; }
-
-.fn-args {
-  display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
-  background:#fff; border-bottom:1px solid #f0f0f0; align-items:center;
-}
-.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
-.fn-arg {
-  font-family:monospace; font-size:0.78em; padding:2px 8px;
-  background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555;
-}
-
+.session-num   { font-size: 0.88em; font-weight: 700; }
+.session-topics{ font-size: 0.82em; color: #888; line-height: 1.5; }
+.session-link  { margin-top: auto; padding-top: 8px; font-size: 0.8em; font-weight: 600; }
 </style>
 
 <div id="pw-overlay">
   <div class="pw-box">
     <div class="pw-lock">🔒</div>
-    <h2>Imputation</h2>
-    <p>Please enter the access password.</p>
+    <h2>R Scripts — Imputation</h2>
+    <p>Enter the password to access this page.</p>
     <div class="pw-row">
-      <input type="password" id="pw-input" placeholder="Password…"
-             onkeydown="if(event.key==='Enter') checkPw()"/>
-      <button onclick="checkPw()">Enter</button>
+      <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+      <button onclick="checkPw()">OK</button>
     </div>
-    <p class="pw-err" id="pw-error"></p>
+    <p class="pw-err" id="pw-err"></p>
   </div>
 </div>
+<script>
+(function(){
+  if(sessionStorage.getItem('rscripts_unlocked')==='1'){
+    document.getElementById('pw-overlay').style.display='none';
+  }
+})();
+async function checkPw(){
+  var val=document.getElementById('pw-input').value;
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+  var hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hex==='ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5'){
+    sessionStorage.setItem('rscripts_unlocked','1');
+    document.getElementById('pw-overlay').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='Incorrect password.';
+  }
+}
+</script>
 
 <div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
 
-<script>
-const CORRECT_HASH = "ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5";
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-async function checkPw() {
-  const hash = await sha256(document.getElementById("pw-input").value);
-  if (hash === CORRECT_HASH) {
-    document.getElementById("pw-overlay").style.display = "none";
-    sessionStorage.setItem("rscripts_unlocked", "1");
-  } else {
-    const err = document.getElementById("pw-error");
-    err.textContent = "Incorrect password. Please try again.";
-    document.getElementById("pw-input").value = "";
-    document.getElementById("pw-input").focus();
-    setTimeout(()=>{ err.textContent=""; }, 3000);
-  }
-}
-if (sessionStorage.getItem("rscripts_unlocked") === "1")
-  document.getElementById("pw-overlay").style.display = "none";
-</script>
-```
-
-
-```{=html}
 <div class="page-intro">
-  <div class="page-intro-icon" style="background:#7f8c8d;">🔧</div>
+  <div class="page-intro-icon">🔮</div>
   <div>
     <h1>Imputation</h1>
-    <p>Missing trait data imputation via missForest with PCA diagnostics</p>
+    <p>Missing trait data imputation pipelines</p>
   </div>
 </div>
-```
 
-
-```{=html}
-<h3 class="fn-section-divider"><span>missForest pipeline</span><hr></h3>
-```
-
-```{=html}
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-imputetraits">imputeTraits(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed, ...)</h4>
-    <div class="fn-desc">Full imputation pipeline: run missForest on selected traits, back-transform to original scale, validate via PCA comparison.</div>
-    <div class="fn-tags"><span class="fn-tag tag-ml">machine learning</span><span class="fn-tag tag-stat">statistics</span><span class="fn-tag tag-fd">functional diversity</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">traitsData — trait data frame with NAs</span><span class="fn-arg">selectedTraits — columns to impute</span><span class="fn-arg">traitPCA — PCA of complete cases</span><span class="fn-arg">PCAmodel — reference PCA model</span><span class="fn-arg">meanInputed — column means for back-transformation</span></div>
-```
-
-```{r fn_imputation_imputeTraits_0, eval=FALSE}
-imputeTraits<-function(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed,
-                       sdInputed, nm_PCA, percImpute=1, dimensions, nboot=100){
-  require(missForest)
-  require(Metrics)
-  
-  # Data: extract the species with complete 'selectedTraits'.  For imputation all available traits are used: 'columsImputation'
-  columsImputation <- 1:(which(colnames(traitsData) == "IUCN")-1) 
-  completeSp <- rownames(na.omit(traitsData[,selectedTraits]))
-  missingSp <- setdiff(rownames(traitsData), completeSp)
-  traitWithoutNA<-traitsData[completeSp, columsImputation]
-  traitWithNA <- traitsData[missingSp, columsImputation]
-  #transform the traits with NA values into a mask (1 for existing traits, NA for NA traits)
-  traitNAMask <- replace(traitWithNA, traitWithNA > -Inf, 1)
-  output <- list()
-  for (i in dimensions){
-    output[[i]] <- matrix(NA, nc = nboot, nr = nrow(traitsData), dimnames = list(rownames(traitsData), paste0("Sim. ", 1:nboot)))
-    names(output)[i] <- paste0("PC", i)
-  }
-  RMSE<-matrix(NA,nc=2,nr=nboot,dimnames = list(paste0("Sim.",1:nboot),c("RMSE_PC1","RMSE_PC2")))
-  for (b in 1:nboot){
-    cat(paste0("\n..................SIMULATION ",b," out of ",nboot,"................\n"))
-    
-    # Among the complete data, let's add NA values for 'percImpute' rows:
-    traitSimulNA<-traitWithoutNA[sample(1:nrow(traitWithoutNA), percImpute*nrow(traitWithoutNA)), ]
-    randomMask <- traitNAMask[sample(1:nrow(traitNAMask) , nrow(traitSimulNA)), ]
-    
-    # We create missing values in the traitSimulNA matrix by "pasting" them from real missing observations (this way keeping the structure of missing data):
-    traitSimulNA <-  traitSimulNA * randomMask
-    
-    # We simulate this missing traits using the same imputation method than using in the paper:
-    # Using the phylogenetic eigenvalues
-    # We combine the new dataset of species without NA ('traitWithoutNA') and the other species with 'real' NA:
-    # we impute all traits 
-    traitSimulNAAll <- rbind(traitSimulNA, # Our new NA simulated
-                             traitWithoutNA[setdiff(rownames(traitWithoutNA), rownames(traitSimulNA)),  ]) # the species with complete data without the species with new NA 
-    traitsAux <- rbind(traitSimulNAAll, traitWithNA) # the other species 
-    # Imputation with 'missForest'
-    imputeRFModel <- missForest(xmis = traitsAux)$ximp
-    traitsinPhylImput <- as.matrix(imputeRFModel)
-    
-    # We scale the data using the same mean and SD that we used in the paper: 
-    traitsinPhylImputScaled<-traitsinPhylImput[,selectedTraits]
-    for (i in 1:length(selectedTraits)){
-      traitsinPhylImputScaled[,i]<-(traitsinPhylImput[, selectedTraits[i]] - meanInputed[i]) / sdInputed[i]  
-    }
-    colnames(traitsinPhylImputScaled)<-names(meanInputed)
-    
-    # We predict the position of the imputed species in the functional space:
-    PCApositionNA <- predict(PCAmodel, newdata = traitsinPhylImputScaled[rownames(traitSimulNA), ])
-    
-    # Imputed with PCA compared to original position of the species with the functional space
-    imputed<-PCApositionNA[,dimensions]
-    original<-traitPCA[rownames(PCApositionNA),]
-    
-    RMSE1<-(mean((original[,1] - imputed[,1]) ** 2)) / (max(traitPCA[, 1]) - min(traitPCA[, 1]))
-    RMSE2<-(mean((original[,2] - imputed[,2]) ** 2)) / (max(traitPCA[, 2]) - min(traitPCA[, 2]))
-    
-    RMSE[b,]<-c(RMSE1,RMSE2)
-    
-    for (i in dimensions){
-      output[[i]][rownames(imputed),b]  <- imputed[, i] 
-    }
-    print(apply(RMSE,2,mean,na.rm=T))
-  }
-  return(list(output,RMSE))
-}
-```
-
-```{=html}
+<div class="session-grid">
+  <a class="session-card" href="fn/fn-imputetraits_imputation.html" target="_blank">
+    <div class="session-num" style="color:#7f8c8d;"><span style="font-family:monospace;">imputeTraits(traitsData, selectedTraits, traitPCA, PCAmodel, meanInputed, ...)</span></div>
+    <div class="session-topics">Full imputation pipeline: run missForest on selected traits, back-transform to original scale, valid</div>
+    <div class="session-link" style="color:#7f8c8d;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-mice-impute_imputation.html" target="_blank">
+    <div class="session-num" style="color:#7f8c8d;"><span style="font-family:monospace;">mice_impute()</span></div>
+    <div class="session-topics">MICE multiple imputation — averaged over m completions</div>
+    <div class="session-link" style="color:#7f8c8d;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-mean-impute_imputation.html" target="_blank">
+    <div class="session-num" style="color:#7f8c8d;"><span style="font-family:monospace;">mean_impute()</span></div>
+    <div class="session-topics">Fast mean/group-mean imputation fallback</div>
+    <div class="session-link" style="color:#7f8c8d;">Open ↗</div>
+  </a>
 </div>
 ```

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FishMORPH — data preparation — R Scripts</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #f7f9fc; color: #2c3e50; }
+.fn-page-wrap { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px 20px; }
+.back-link { font-size: 0.88em; margin-bottom: 18px; }
+.back-link a { color: #2980b9; text-decoration: none; font-weight: 500; }
+.back-link a:hover { text-decoration: underline; }
+.fn-hero { background: #fff; border: 1px solid #e4e9f0; border-radius: 14px; padding: 20px 22px; margin-bottom: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); border-left: 5px solid #2980b9; }
+.fn-hero h1 { font-family: monospace; font-size: 1.2em; font-weight: 700; color: #2c3e50; margin: 0 0 6px 0; }
+.fn-hero p  { font-size: 0.9em; color: #666; margin: 0 0 10px 0; line-height: 1.6; }
+.fn-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.fn-tag { font-size: 0.72em; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+.tag-stat  { background:#e8f5e9; color:#1b6b2f; }
+.tag-util  { background:#e3f2fd; color:#1557a0; }
+.tag-viz   { background:#f3e5f5; color:#6a1b9a; }
+.tag-fd    { background:#fff3e0; color:#b25000; }
+.tag-data  { background:#fce4ec; color:#880e4f; }
+.tag-ml    { background:#e8eaf6; color:#283593; }
+.tag-morph { background:#e0f2f1; color:#00574e; }
+.tag-geo   { background:#f3e5f5; color:#6a1b9a; }
+.fn-args { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+.fn-args-label { font-size: 0.78em; font-weight: 700; color: #999; }
+.fn-arg { font-family: monospace; font-size: 0.78em; padding: 2px 8px; background: #f1f3f5; border: 1px solid #e0e3e8; border-radius: 5px; color: #555; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.tb-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.8em; font-weight: 600; padding: 6px 14px; border-radius: 7px; cursor: pointer; border: 1px solid; background: #fff; transition: opacity .15s; }
+.tb-btn:hover { opacity: 0.75; }
+.tb-copy    { color: #2471a3; border-color: #2471a3; }
+.tb-save    { color: #27ae60; border-color: #27ae60; }
+.tb-suggest { color: #e67e22; border-color: #e67e22; }
+.tb-copied  { color: #27ae60 !important; border-color: #27ae60 !important; }
+.code-wrap { background: #fff; border: 1px solid #e4e9f0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.code-wrap pre { margin: 0; padding: 20px; overflow-x: auto; font-size: 0.87em; }
+</style>
+</head>
+<body>
+<div class="fn-page-wrap">
+  <div class="back-link">← <a href="../Rscripts_fishmorph.html">Back to Fishmorph Scripts</a></div>
+
+  <div class="fn-hero">
+    <h1>FishMORPH — data preparation</h1>
+    <p>Load FishMORPH trait and phylogeny objects, standardise species names and prepare the full species list.</p>
+    <div class="fn-tags"><span class="fn-tag tag-data">data</span><span class="fn-tag tag-morph">morphology</span></div>
+    <div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">FishMORPH_Traits.rds — trait RDS</span><span class="fn-arg">FishMORPH_Phylogeny.rds — phylogeny RDS</span></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="tb-btn tb-copy" onclick="doCopy()">⧉ Copy</button>
+    <button class="tb-btn tb-save" onclick="doSave()">↓ Save .R</button>
+    <button class="tb-btn tb-suggest" onclick="doSuggest()">✉ Suggest modification</button>
+  </div>
+
+  <div class="code-wrap">
+    <pre><code id="fn-code" class="language-r">################################################################################
+# data preparation
+################################################################################
+
+# --- Load the data ---
+
+trait &lt;- readRDS("FishMORPH_Traits.rds")
+phylogeny &lt;- readRDS("FishMORPH_Phylogeny.rds")
+traitNames &lt;- colnames(trait)[-c(1:6)]
+
+# --- Prepare the data ---
+
+# Species list
+list_sp &lt;- gsub("\\.", " ", as.character(trait$Genus.species))
+
+# Lenght-weight fishbase
+lgtwgt &lt;- as.data.frame(length_weight(list_sp))
+lgtwgt &lt;- lgtwgt[!is.na(lgtwgt$a) &amp; !is.na(lgtwgt$b), ]
+
+# Best coeff
+ab &lt;- lgtwgt %&gt;%
+  group_by(Species) %&gt;%
+  slice_max(order_by = CoeffDetermination, with_ties = FALSE, na_rm = TRUE) %&gt;%
+  dplyr::select(Species, a, b) %&gt;%
+  distinct()
+
+# Other traits
+speciesInfo &lt;- species(list_sp) %&gt;% data.table()
+speciesInfoSub &lt;- speciesInfo[, .(Species, Fresh, LongevityWild, Length, Weight, LTypeMaxM)]
+speciesInfoSub &lt;- unique(speciesInfoSub)
+speciesInfoSub$Species &lt;- gsub(" ", ".", speciesInfoSub$Species)
+speciesInfoSub &lt;- speciesInfoSub %&gt;%
+  mutate(
+    Length = ifelse(LTypeMaxM != "SL", NA, Length),
+    Weight2 = ifelse(Species %in% gsub(" ", ".", rownames(ab)),
+                     ab[gsub("\\.", " ", Species), "a"] * Length^ab[gsub("\\.", " ", Species), "b"],
+                     NA)
+  ) %&gt;%
+  mutate(Weight = ifelse(is.na(Weight) &amp; !is.na(Weight2), Weight2, Weight))
+
+# fusion with Fishmorph
+fishTraits &lt;- merge(trait[,6:15], speciesInfoSub[, .(Species, Length, Weight)], 
+                    by.x = "Genus.species", by.y = "Species", all.x = TRUE)
+
+fishTraits &lt;- fishTraits %&gt;%
+  mutate(across(-Genus.species, ~log10(.x + 1))) %&gt;%
+  rename(species = Genus.species) %&gt;%
+  mutate(species = gsub("\\.", "_", species))
+
+spToKeep &lt;- fishTraits %&gt;% # keep only freshwater species
+  dplyr::select(species) %&gt;%
+  mutate(species = gsub("_", " ", species)) %&gt;%
+  pull() %&gt;%
+  rfishbase::species() %&gt;%
+  as.data.table() %&gt;%
+  filter(Fresh == 1) %&gt;%
+  dplyr::select(Species) %&gt;%
+  mutate(Species = gsub(" ", "_", Species)) %&gt;%
+  pull()
+
+fishTraits &lt;- fishTraits %&gt;%
+  filter(species %in% spToKeep)
+
+#dir.create("dataPrepared/Fish", showWarnings = FALSE, recursive = TRUE)
+
+# write.table(fishTraits, "dataPrepared/Fish/fishTraitsMissing.txt")
+fishTraits &lt;- read.table( "dataPrepared/Fish/fishTraitsMissing.txt")
+
+# --- PCoA phylogenetic ---
+
+phylogeny$tip.label &lt;- gsub("\\.", "_", phylogeny$tip.label)
+phylogeny &lt;- drop.tip(phylogeny, setdiff(phylogeny$tip.label, fishTraits$species))
+phylogenyTraits &lt;- phytools::force.ultrametric(phylogeny)
+phylDiss &lt;- sqrt(cophenetic(phylogenyTraits))
+pcoaPhyl &lt;- cmdscale(phylDiss, k = 10) #long
+
+rownames(pcoaPhyl) = fishTraits$species
+colnames(pcoaPhyl) = paste0("Eigen.", 1:10)
+
+# write.table(pcoaPhyl, "dataPrepared/Fish/pcoaPhylogenyFish.txt")
+pcoaPhyl &lt;- read.table("dataPrepared/Fish/pcoaPhylogenyFish.txt", header = T, stringsAsFactors = F)
+
+# --- Taxonomic standardization (quick) ---
+
+list_sp_raw &lt;- fishTraits$species
+list_sp_raw &lt;- gsub("_", " ", list_sp_raw)
+list_sp_raw &lt;- stringr::str_squish(list_sp_raw)
+
+verified_names &lt;- taxize::gna_verifier( # long
+  names = list_sp_raw,
+  data_sources = c(11), 
+  all_matches = FALSE,   
+  capitalize = TRUE,         
+  species_group = TRUE,      
+  output_type = "table"      
+)
+
+new_names &lt;- gsub(" ", "_", verified_names$matchedCanonicalSimple)
+
+rownames(pcoaPhyl) &lt;- new_names
+fishTraits$species &lt;- new_names
+traitsAndPCOA &lt;- cbind(fishTraits, pcoaPhyl)
+
+# write.table(traitsAndPCOA, "dataPrepared/Fish/traitsWithPCOA.txt")
+traitsAndPCOA &lt;- read.table("dataPrepared/Fish/traitsWithPCOA.txt", header = T, stringsAsFactors = F)
+
+# --- IUCN data ---
+
+species_list &lt;- unique(str_trim(traitsAndPCOA$species))
+iucn_statut &lt;- read.csv("dataOriginal/assessments.csv", header = TRUE, stringsAsFactors = FALSE) # IUCN data 2024
+iucn_clean &lt;- iucn_statut %&gt;%
+  mutate(scientificName = str_trim(scientificName))
+species_list &lt;- gsub("_", " ", species_list)
+matched_species &lt;- inner_join(
+  tibble(species = species_list),
+  iucn_clean,
+  by = c("species" = "scientificName")
+)
+
+species_to_update &lt;- tibble(species = species_list) %&gt;%
+  anti_join(iucn_clean, by = c("species" = "scientificName"))
+synonyms_info &lt;- rfishbase::synonyms(
+  species_list = species_to_update$species,
+  server = "fishbase",
+  version = "latest",
+  fields = NULL
+)
+synonyms_info_filtered &lt;- synonyms_info %&gt;%
+  filter(!Status %in% c("misapplied name", "ambiguous synonym", "provisionally accepted name"))
+synonyms_mapping &lt;- synonyms_info_filtered %&gt;%
+  dplyr::select(Species, synonym) %&gt;%
+  distinct()
+
+iucn_clean &lt;- iucn_clean %&gt;%
+  mutate(scientificName = if_else(
+    scientificName %in% synonyms_mapping$Species,
+    synonyms_mapping$synonym[match(scientificName, synonyms_mapping$Species)],
+    scientificName
+  ))
+matched_species &lt;- inner_join(
+  tibble(species = species_list),
+  iucn_clean,
+  by = c("species" = "scientificName")
+)
+
+species_to_update &lt;- tibble(species = species_list) %&gt;%
+  anti_join(iucn_clean, by = c("species" = "scientificName")) %&gt;%
+  as.data.frame()
+rownames(species_to_update) &lt;- species_to_update$species
+
+# manual correction
+species_to_check &lt;- read.csv("dataOriginal/species_to_update_900_done.csv", sep = ";", header = TRUE, stringsAsFactors = FALSE)
+colnames(species_to_check) &lt;- c("scientificName", "redlistCategory")
+
+iucn_clean &lt;- iucn_clean[, c("scientificName", "redlistCategory")]
+acronyms &lt;- c(
+  "Critically Endangered" = "CR",
+  "Endangered" = "EN",
+  "Vulnerable" = "VU",
+  "Near Threatened" = "NT",
+  "Least Concern" = "LC",
+  "Data Deficient" = "DD",
+  "Extinct" = "EX",
+  "Extinct in the Wild" = "EW",
+  "Not Evaluated" = "NE"
+)
+iucn_clean &lt;- iucn_clean %&gt;%
+  mutate(redlistCategory = dplyr::recode(redlistCategory, !!!acronyms))
+iucn_clean &lt;- bind_rows(iucn_clean, species_to_check)
+iucn_clean &lt;- iucn_clean %&gt;%
+  filter(scientificName %in% species_list)
+iucn_clean &lt;- iucn_clean %&gt;%
+  group_by(scientificName) %&gt;%
+  slice(1) %&gt;%
+  ungroup()
+
+traitsAndPCOA$species &lt;- gsub("_", " ", traitsAndPCOA$species)
+traitsAndPCOA$IUCN &lt;- iucn_clean$redlistCategory[match(traitsAndPCOA$species, iucn_clean$scientificName)]
+
+# write.table(traitsAndPCOA, "dataPrepared/Fish/traitsWithPCOAIUCN.txt")
+traitsAndPCOAIUCN &lt;- read.table("dataPrepared/Fish/traitsWithPCOAIUCN.txt", header = T, stringsAsFactors = F)
+
+# --- Complete taxonomy ---
+
+taxInfo &lt;- pblapply(traitsAndPCOAIUCN$species, function(sp) {
+  tryCatch({
+    traitdataform::get_gbif_taxonomy(sp, subspecies = TRUE, higherrank = TRUE,
+                                     conf_threshold = 80, resolve_synonyms = FALSE)[1, ]
+  }, error = function(e) NULL)
+}) %&gt;% rbindlist(fill = TRUE)
+
+# --- Final table ---
+
+fishTraitsPhylogenyIUCN &lt;- data.table(traitsAndPCOAIUCN)
+
+# write.table(fishTraitsPhylogenyIUCN, "dataPrepared/Fish/AllDataFish_clean.txt")
+fishData &lt;- read.table("dataPrepared/Fish/traitsWithPCOAIUCN.txt", header = T, stringsAsFactors = F)
+
+# define columns
+columnsTraits &lt;- 2:(which(colnames(fishData) == "Eigen.1") - 1)
+columnsImputation &lt;- 2:(which(colnames(fishData) == "IUCN") - 1)
+
+# --- missForest imputation ---
+
+set.seed(123) 
+imputed_forest &lt;- missForest(xmis = fishData[, columnsImputation]) # it takes long
+print(imputed_forest$OOBerror)
+
+traits_names &lt;- colnames(fishData)[columnsTraits]
+fishData_imputed_forest &lt;- fishData
+fishData_imputed_forest[traits_names] &lt;- imputed_forest$ximp[traits_names]
+
+# write.table(fishData_imputed_forest, "dataPrepared/Fish/fishData_imputed_forest.txt", row.names = FALSE)
+fishData_imputed_forest &lt;- read.table("dataPrepared/Fish/fishData_imputed_forest.txt", header = T)
+
+# --- trait selection and renaming ---
+
+selectedTraits &lt;- c("EdHd", "EhBd", "JlHd", "MoBd", "BlBd", "HdBd",
+                    "PFiBd", "PFlBl", "CFdCPd", "Length", "Weight")
+
+newTraitNames &lt;- c("es", "ep", "ms", "mp", "elo", "wid", "pp", "ps", "cs", "svl", "bm")
+
+fishTraitsMissing &lt;- fishData[, selectedTraits]
+colnames(fishTraitsMissing) &lt;- newTraitNames
+rownames(fishTraitsMissing) &lt;- fishData$species
+
+fishTraitsImputed &lt;- fishData_imputed_forest[, selectedTraits]
+colnames(fishTraitsImputed) &lt;- newTraitNames
+rownames(fishTraitsImputed) &lt;- fishData$species
+
+# --- add IUCN to the table ---
+
+fishTraitsMissing &lt;- data.frame(fishTraitsMissing, IUCN = fishData$IUCN)
+# write.table(fishTraitsMissing, "dataPrepared/Fish/TraitFishMissing.txt")
+fishTraitsImputed &lt;- data.frame(fishTraitsImputed, IUCN = fishData$IUCN)
+# write.table(fishTraitsImputed, "dataPrepared/Fish/TraitFishImputed.txt")
+
+# --- ACP and TPD ---
+
+# it takes long !!!
+results &lt;- computePCAandTPDs(fishTraitsImputed[,!colnames(fishTraitsImputed) == "IUCN"])
+# saveRDS(results, "output/All_fish.rds")
+pca_trait = results$PCA
+# saveRDS(pca_trait, "output/PCA_fish.rds")
+tpd_trait = results$TPDs
+# saveRDS(tpd_trait, "output/TPDs_fish.rds")
+
+# --- (optionnal) other fish info ---
+
+fishOtherInfo &lt;- fishData[, (max(columnsTraits) + 1):ncol(fishData)]
+
+# --- add uses to pca_traits ---
+
+df_scraping &lt;- readRDS("output/fish_human_uses_binary_FB.rds") %&gt;% as.data.table()
+df_uni &lt;- fread("data/uni.csv")
+
+setnames(df_scraping, c("species_name", "aquarium", "fisheries", "bait", "game_fish", "aquaculture"),
+         c("Species", "Aquarium", "Fisheries", "Bait", "Game_fish", "Aquaculture"))
+setnames(df_uni, "Game fish", "Game_fish", skip_absent = TRUE)
+
+binary_cols &lt;- c("Fisheries", "Aquaculture", "Aquarium", "Game_fish", "Bait")
+
+merged_df &lt;- merge(
+  df_uni,
+  df_scraping[, c("Species", binary_cols), with = FALSE],
+  by = "Species",
+  suffixes = c("", ".scraping"),
+  all.x = TRUE
+)
+
+for (col in binary_cols) {
+  col_scraping &lt;- paste0(col, ".scraping")
+  if (col_scraping %in% colnames(merged_df)) {
+    merged_df[[col]] &lt;- pmax(
+      as.numeric(merged_df[[col]]),
+      as.numeric(merged_df[[col_scraping]]),
+      na.rm = TRUE
+    )
+    merged_df[[col_scraping]] &lt;- NULL
+  }
+}
+
+merged_df[, All_uses := as.integer(Fisheries + Aquaculture + Aquarium + Game_fish + Bait &gt; 0)]
+
+merged_df_clean &lt;- merged_df %&gt;%
+  select(Species, all_of(binary_cols), All_uses) %&gt;%
+  rename("Game fish" = Game_fish, "All uses" = All_uses)
+
+usage_cols &lt;- c("Fisheries", "Aquaculture", "Aquarium", "Game fish", "Bait", "All uses")
+
+uses_df &lt;- as.data.frame(merged_df_clean[, c("Species", usage_cols), with = FALSE])
+uses_df &lt;- uses_df[!is.na(uses_df$Species) &amp; uses_df$Species != "NA", ]
+rownames(uses_df) &lt;- uses_df$Species
+uses_df$Species &lt;- NULL
+
+uses_df["Centromochlus musaica", ] &lt;- list( # miss match in the species name for Centromochlus musaica
+  Fisheries = 0,
+  Aquaculture = 0,
+  Aquarium = 1, # only one use associated to Centromochlus musaica
+  `Game fish` = 0,
+  Bait = 0,
+  `All uses` = 1
+)
+
+pca_trait$uses &lt;- uses_df[species_ref, usage_cols, drop = FALSE]
+use &lt;- pca_trait$uses
+saveRDS(pca_trait, "output/pca_trait.rds")
+
+# --- create the matrice ---
+
+pca_trait &lt;- readRDS("output/pca_trait.rds")
+  
+species_scores &lt;- as.data.frame(pca_trait$traits_scores[,1:4])
+species_uses &lt;- as.data.frame(pca_trait$uses)
+
+species_uses$rownames &lt;- rownames(species_uses)
+species_scores$rownames &lt;- rownames(species_scores)
+species_scores_uses &lt;- merge(species_uses, species_scores, by = "rownames")
+rownames(species_scores_uses) &lt;- species_scores_uses$rownames
+species_scores_uses$rownames &lt;- NULL
+species_uses$rownames &lt;- NULL
+MatriceFish &lt;- t(as.matrix(species_uses))
+column_names &lt;- rownames(species_uses)
+MatriceFish_1 &lt;- matrix(1, nrow = 1, ncol = length(column_names))
+colnames(MatriceFish_1) &lt;- column_names
+rownames(MatriceFish_1) &lt;- "all"
+MatriceFish &lt;- rbind(MatriceFish, MatriceFish_1)
+
+write.csv(MatriceFish, "output/MatriceFish.csv", row.names = TRUE)</code></pre>
+  </div>
+</div>
+<script>
+hljs.highlightAll();
+function doCopy() {
+  var code = document.getElementById('fn-code').innerText;
+  navigator.clipboard.writeText(code).then(function() {
+    var btn = document.querySelector('.tb-copy');
+    btn.textContent = '✓ Copied!'; btn.classList.add('tb-copied');
+    setTimeout(function(){ btn.textContent = '⧉ Copy'; btn.classList.remove('tb-copied'); }, 1800);
+  });
+}
+function doSave() {
+  var code = document.getElementById('fn-code').innerText;
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([code], {type:'text/plain'}));
+  a.download = 'FishMORPH___data_preparation.R'; a.click();
+}
+function doSuggest() {
+  var s = encodeURIComponent('Suggestion for: FishMORPH — data preparation');
+  var b = encodeURIComponent('Hi Aurèle,\n\nSuggestion for FishMORPH — data preparation:\n\n');
+  window.open('mailto:aurele.toussaint@cnrs.fr?subject='+s+'&body='+b);
+}
+</script>
+</body>
+</html>

@@ -11,7 +11,7 @@
 
 
 
-<title>Sorting data — R Scripts</title>
+<title>Sorting &amp; Data wrangling — R Scripts</title>
 
 <script src="site_libs/header-attrs-2.31/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,15 +29,21 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
-<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
-<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel="shortcut icon" href="data/ATc.jpg" />
+
+<style>
+/* ── Wider page layout ── */
+.container { max-width: 1140px !important; width: 96% !important; }
+.main-container { max-width: 1140px !important; width: 96% !important; }
+@media (min-width: 1400px) {
+  .container, .main-container { max-width: 1280px !important; }
+}
+</style>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -48,124 +54,23 @@
   ul.task-list{list-style: none;}
     </style>
 
-
-
-<style type="text/css">
-  code {
-    white-space: pre;
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
   }
-  .sourceCode {
-    overflow: visible;
-  }
-</style>
-<style type="text/css" data-origin="pandoc">
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
 }
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  background-color: #f8f8f8; }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ef2929; } /* Alert */
-code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #204a87; } /* Attribute */
-code span.bn { color: #0000cf; } /* BaseN */
-code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #8f5902; } /* Constant */
-code span.co { color: #8f5902; font-style: italic; } /* Comment */
-code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code span.dt { color: #204a87; } /* DataType */
-code span.dv { color: #0000cf; } /* DecVal */
-code span.er { color: #a40000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #204a87; font-weight: bold; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code span.ot { color: #8f5902; } /* Other */
-code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
-code span.ss { color: #4e9a06; } /* SpecialString */
-code span.st { color: #4e9a06; } /* String */
-code span.va { color: #000000; } /* Variable */
-code span.vs { color: #4e9a06; } /* VerbatimString */
-code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
-
-.sourceCode .row {
-  width: 100%;
-}
-.sourceCode {
-  overflow-x: auto;
-}
-.code-folding-btn {
-  margin-right: -30px;
-}
-</style>
-<script>
-// apply pandoc div.sourceCode style to pre.sourceCode instead
-(function() {
-  var sheets = document.styleSheets;
-  for (var i = 0; i < sheets.length; i++) {
-    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
-    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    var j = 0;
-    while (j < rules.length) {
-      var rule = rules[j];
-      // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
-        j++;
-        continue;
-      }
-      var style = rule.style.cssText;
-      // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') {
-        j++;
-        continue;
-      }
-      // replace div.sourceCode by a pre.sourceCode rule
-      sheets[i].deleteRule(j);
-      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
-    }
-  }
-})();
 </script>
 
 
 
 
-<link rel="stylesheet" href="assets/custom.css" type="text/css" />
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
 
 
 
@@ -324,73 +229,7 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
 
-
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
 
 
 
@@ -400,16 +239,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -481,128 +310,14 @@ div.tocify {
 
 <div id="header">
 
-<div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-</ul>
-</div>
-
 
 
 
 </div>
 
 
-<style>
-/* Custom function TOC — overrides rmarkdown floating TOC */
-#TOC,
-.tocify-wrapper,
-div[data-spy="affix"] {
-  display: none !important;
-  width: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-.fn-nav {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 205px;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-  padding: 14px 10px 20px 14px;
-  border-right: 1px solid #e8e8e8;
-  background: #fafafa;
-  font-size: 0.82em;
-  z-index: 100;
-}
-.fn-nav .fn-nav-title {
-  font-size: 0.7em;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: #bbb;
-  margin-bottom: 10px;
-  padding-left: 4px;
-}
-.fn-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.fn-nav li a {
-  display: block;
-  padding: 3px 6px;
-  border-radius: 4px;
-  color: #444;
-  text-decoration: none;
-  font-family: monospace;
-  font-size: 0.95em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.fn-nav li a:hover {
-  background: #eef2f7;
-  color: #2c3e50;
-}
-.fn-nav li a.active {
-  background: #e3f0fb;
-  color: #1a6faf;
-  font-weight: 600;
-}
-/* push main content right to make room */
-body {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-}
-.main-container {
-  margin-left: 210px !important;
-  max-width: calc(100vw - 230px) !important;
-  width: calc(100vw - 230px) !important;
-  padding-right: 30px !important;
-}
-/* kill rmarkdown's bootstrap TOC column entirely */
-.col-xs-12.col-sm-4.col-md-3,
-.tocify-wrapper,
-div.tocify,
-#TOC { display: none !important; width: 0 !important; padding: 0 !important; margin: 0 !important; }
-/* expand content column to full width */
-.col-xs-12.col-sm-8.col-md-9 {
-  width: 100% !important;
-  -webkit-flex: none !important;
-  flex: none !important;
-}
-.row { margin-left: 0 !important; margin-right: 0 !important; }
-</style>
-
-<div class="fn-nav" id="fn-nav">
-  <div class="fn-nav-title">Functions</div>
-  <ul>
-    <li><a href="#fn-standard-names">standard_names</a></li>
-    <li><a href="#fn-addtophylo">addToPhylo</a></li>
-    <li><a href="#fn-redtotraits">RedToTraits</a></li>
-    <li><a href="#fn-imputation-trait">imputation_trait</a></li>
-  </ul>
-</div>
-
-<script>
-/* Highlight active function on scroll */
-window.addEventListener("scroll", function() {
-  var links = document.querySelectorAll(".fn-nav li a");
-  var current = "";
-  links.forEach(function(a) {
-    var id = a.getAttribute("href").slice(1);
-    var el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top < 120) current = id;
-  });
-  links.forEach(function(a) {
-    a.classList.toggle("active", a.getAttribute("href") === "#" + current);
-  });
-});
-</script>
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 <style>
 #pw-overlay {
@@ -632,277 +347,120 @@ window.addEventListener("scroll", function() {
 .back-link { margin: 20px 0 4px 0; font-size: 0.9em; }
 .back-link a { color: #8e44ad; text-decoration: none; }
 .back-link a:hover { text-decoration: underline; }
-
-/* ── Function cards ────────────────────────────────── */
 .page-intro {
   display:flex; align-items:center; gap:14px;
   padding-bottom:18px; border-bottom:1px solid #e5e5e5; margin-bottom:28px;
 }
 .page-intro-icon {
-  width:48px; height:48px; border-radius:10px;
+  width:52px; height:52px; border-radius:12px; background:#8e44ad;
   display:flex; align-items:center; justify-content:center;
-  font-size:1.5em; color:#fff; flex-shrink:0;
+  font-size:1.6em; color:#fff; flex-shrink:0;
 }
 .page-intro h1 { font-size:1.6em; font-weight:bold; color:#2c3e50; margin:0 0 4px 0; }
 .page-intro p  { font-size:0.92em; color:#777; margin:0; }
-
-.fn-section-divider {
-  display:flex; align-items:center; gap:10px; margin:28px 0 14px 0;
+.session-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px; margin-bottom: 40px;
 }
-.fn-section-divider span {
-  font-size:0.75em; font-weight:700; letter-spacing:.08em;
-  text-transform:uppercase; color:#aaa; white-space:nowrap;
+.session-card {
+  background: #fff; border: 1px solid #e4e9f0; border-radius: 12px;
+  padding: 16px 18px; text-decoration: none !important; color: inherit !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow .15s, transform .12s;
+  display: flex; flex-direction: column; gap: 6px;
+  border-left: 4px solid #8e44ad;
 }
-.fn-section-divider hr { flex:1; border:none; border-top:1px solid #e8e8e8; }
-
-.fn-card {
-  border:1px solid #dde3ea; border-radius:10px; overflow:hidden; margin-bottom:20px;
+.session-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10); transform: translateY(-2px);
+  text-decoration: none !important;
 }
-.fn-header {
-  display:flex; align-items:flex-start; justify-content:space-between;
-  padding:12px 16px; background:#f8f9fa; border-bottom:1px solid #eee; gap:12px;
-}
-.fn-name {
-  font-family:monospace; font-size:0.97em; font-weight:700; color:#2c3e50;
-  margin:0; padding:0; line-height:1.4;
-}
-.fn-desc { font-size:0.85em; color:#666; margin-top:3px; line-height:1.5; }
-.fn-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
-.fn-tag {
-  font-size:0.72em; padding:2px 8px; border-radius:20px; font-weight:600;
-}
-.tag-stat   { background:#e8f5e9; color:#1b6b2f; }
-.tag-util   { background:#e3f2fd; color:#1557a0; }
-.tag-viz    { background:#f3e5f5; color:#6a1b9a; }
-.tag-fd     { background:#fff3e0; color:#b25000; }
-.tag-data   { background:#fce4ec; color:#880e4f; }
-.tag-ml     { background:#e8eaf6; color:#283593; }
-.tag-morph  { background:#e0f2f1; color:#00574e; }
-
-.fn-args {
-  display:flex; gap:7px; flex-wrap:wrap; padding:8px 16px;
-  background:#fff; border-bottom:1px solid #f0f0f0; align-items:center;
-}
-.fn-args-label { font-size:0.78em; font-weight:700; color:#999; }
-.fn-arg {
-  font-family:monospace; font-size:0.78em; padding:2px 8px;
-  background:#f1f3f5; border:1px solid #e0e3e8; border-radius:5px; color:#555;
-}
-
+.session-num   { font-size: 0.88em; font-weight: 700; }
+.session-topics{ font-size: 0.82em; color: #888; line-height: 1.5; }
+.session-link  { margin-top: auto; padding-top: 8px; font-size: 0.8em; font-weight: 600; }
 </style>
 
 <div id="pw-overlay">
   <div class="pw-box">
     <div class="pw-lock">🔒</div>
-    <h2>Sorting data</h2>
-    <p>Please enter the access password.</p>
+    <h2>R Scripts — Sorting & Data wrangling</h2>
+    <p>Enter the password to access this page.</p>
     <div class="pw-row">
-      <input type="password" id="pw-input" placeholder="Password…"
-             onkeydown="if(event.key==='Enter') checkPw()"/>
-      <button onclick="checkPw()">Enter</button>
+      <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+      <button onclick="checkPw()">OK</button>
     </div>
-    <p class="pw-err" id="pw-error"></p>
+    <p class="pw-err" id="pw-err"></p>
   </div>
 </div>
+<script>
+(function(){
+  if(sessionStorage.getItem('rscripts_unlocked')==='1'){
+    document.getElementById('pw-overlay').style.display='none';
+  }
+})();
+async function checkPw(){
+  var val=document.getElementById('pw-input').value;
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+  var hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hex==='ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5'){
+    sessionStorage.setItem('rscripts_unlocked','1');
+    document.getElementById('pw-overlay').style.display='none';
+  } else {
+    document.getElementById('pw-err').textContent='Incorrect password.';
+  }
+}
+</script>
 
 <div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
 
-<script>
-const CORRECT_HASH = "ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5";
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-async function checkPw() {
-  const hash = await sha256(document.getElementById("pw-input").value);
-  if (hash === CORRECT_HASH) {
-    document.getElementById("pw-overlay").style.display = "none";
-    sessionStorage.setItem("rscripts_unlocked", "1");
-  } else {
-    const err = document.getElementById("pw-error");
-    err.textContent = "Incorrect password. Please try again.";
-    document.getElementById("pw-input").value = "";
-    document.getElementById("pw-input").focus();
-    setTimeout(()=>{ err.textContent=""; }, 3000);
-  }
-}
-if (sessionStorage.getItem("rscripts_unlocked") === "1")
-  document.getElementById("pw-overlay").style.display = "none";
-</script>
 <div class="page-intro">
-  <div class="page-intro-icon" style="background:#8e44ad;">🔀</div>
+  <div class="page-intro-icon">🗃️</div>
   <div>
-    <h1>Sorting data</h1>
-    <p>Species name standardisation, phylogeny pruning, IUCN merging and trait imputation</p>
+    <h1>Sorting & Data wrangling</h1>
+    <p>Data cleaning, filtering and taxonomic sorting</p>
   </div>
-</div>
-<h3 class="fn-section-divider"><span>Name & taxonomy</span><hr></h3>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-standard-names">standard_names(Traits, nrowTraits, source=163, dim=NA)</h4>
-    <div class="fn-desc">Standardise species names across datasets by removing duplicates and mismatches.</div>
-    <div class="fn-tags"><span class="fn-tag tag-util">utility</span><span class="fn-tag tag-data">data</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">Traits — trait data frame</span><span class="fn-arg">nrowTraits — expected row count</span><span class="fn-arg">source=163 — source ID</span><span class="fn-arg">dim=NA — trait dimensions</span></div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>standard_names <span class="ot">&lt;-</span> <span class="cf">function</span>(Traits, nrowTraits, <span class="at">source =</span> <span class="dv">163</span>, <span class="at">dim =</span> <span class="cn">NA</span>) {</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">require</span>(taxize)</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  standNamesTraits <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    <span class="fu">matrix</span>(</span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>      <span class="cn">NA</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>      <span class="at">nrow =</span> nrowTraits,</span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>      <span class="at">ncol =</span> <span class="dv">1</span>,</span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>      <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="fu">rownames</span>(Traits), <span class="st">&quot;IUCNName&quot;</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    )</span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>  )</span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  batchSize <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ceiling</span>(nrowTraits <span class="sc">/</span> batchSize))) {</span>
-<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">Batch &quot;</span>, i, <span class="st">&quot; out of &quot;</span>, (<span class="fu">ceiling</span>(nrowTraits <span class="sc">/</span> batchSize)), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>))</span>
-<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>    rowsSelect <span class="ot">&lt;-</span> ((i <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> batchSize <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">min</span>((i <span class="sc">*</span> batchSize), nrowTraits)</span>
-<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>    taxoAux <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(</span>
-<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>      taxize<span class="sc">::</span><span class="fu">gnr_resolve</span>(</span>
-<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>        <span class="at">names =</span> <span class="fu">rownames</span>(standNamesTraits)[rowsSelect],</span>
-<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>        <span class="at">preferred_data_sources =</span> source, <span class="co"># 163 is IUCN</span></span>
-<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>        <span class="at">best_match_only =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>        <span class="at">canonical =</span> <span class="cn">TRUE</span></span>
-<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>      )</span>
-<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>    )</span>
-<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>    standNamesTraits[taxoAux<span class="sc">$</span>user_supplied_name, <span class="st">&quot;IUCNName&quot;</span>] <span class="ot">&lt;-</span> taxoAux<span class="sc">$</span>matched_name2</span>
-<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>  }</span>
-<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>  standNamesTraits[, <span class="st">&quot;IUCNName&quot;</span>] <span class="ot">&lt;-</span> <span class="fu">gsub</span>(</span>
-<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a>    <span class="at">x =</span> standNamesTraits[, <span class="st">&quot;IUCNName&quot;</span>],</span>
-<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>    <span class="at">pattern =</span> <span class="st">&quot; &quot;</span>,</span>
-<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>    <span class="at">replacement =</span> <span class="st">&quot;_&quot;</span></span>
-<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a>  )</span>
-<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a>  naIUCN <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">is.na</span>(standNamesTraits[, <span class="st">&quot;IUCNName&quot;</span>]))</span>
-<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a>  standNamesTraits[naIUCN, <span class="st">&quot;IUCNName&quot;</span>] <span class="ot">&lt;-</span> <span class="fu">rownames</span>(standNamesTraits)[naIUCN]</span>
-<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a>  <span class="co"># Some species could not be resolved into IUCN naming. Remove them:</span></span>
-<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a>  yesName <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(standNamesTraits[, <span class="st">&quot;IUCNName&quot;</span>]))</span>
-<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a>  <span class="cf">if</span> (dim <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a>    <span class="fu">return</span>(Traits[yesName])</span>
-<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a>    <span class="fu">return</span>(Traits[yesName, ])</span>
-<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a>  }</span>
-<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a>}</span></code></pre></div>
-</div>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-addtophylo">addToPhylo(phylogenyTraits, GROUPTraits)</h4>
-    <div class="fn-desc">Prune a phylogeny to the set of species present in a trait data frame.</div>
-    <div class="fn-tags"><span class="fn-tag tag-util">utility</span><span class="fn-tag tag-data">data</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">phylogenyTraits — phylo object</span><span class="fn-arg">GROUPTraits — trait data frame with species names</span></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>addToPhylo <span class="ot">&lt;-</span> <span class="cf">function</span>(phylogenyTraits, GROUPTraits) {</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  phylogenyTraits <span class="ot">&lt;-</span> <span class="fu">force.ultrametric</span>(<span class="at">tree =</span> phylogenyTraits, <span class="at">method =</span> <span class="fu">c</span>(<span class="st">&quot;extend&quot;</span>))</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  tipsToAdd <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">rownames</span>(GROUPTraits) <span class="sc">%in%</span> phylogenyTraits<span class="sc">$</span>tip.label)</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  namesToAdd <span class="ot">&lt;-</span> <span class="fu">rownames</span>(GROUPTraits)[tipsToAdd]</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  genusToAdd <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">strsplit</span>(namesToAdd, <span class="st">&quot;_&quot;</span>))[</span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>    <span class="fu">which</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">strsplit</span>(namesToAdd, <span class="st">&quot;_&quot;</span>)) <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  ]</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  phylogenyTraitsAdd <span class="ot">&lt;-</span> phylogenyTraits</span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="cf">for</span> (add <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(namesToAdd)) {</span>
-<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="fu">paste</span>(<span class="st">&quot;</span><span class="sc">\r</span><span class="st">ADDING SP TO GENUS IN PHYLOGENY&quot;</span>, add, <span class="st">&quot;/&quot;</span>, <span class="fu">length</span>(namesToAdd), <span class="st">&quot;</span><span class="sc">\r</span><span class="st">&quot;</span>))</span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>    phylogenyTraitsAdd <span class="ot">&lt;-</span> <span class="fu">add.species.to.genus</span>(</span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>      <span class="at">tree =</span> phylogenyTraitsAdd,</span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>      <span class="at">species =</span> namesToAdd[add],</span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>      <span class="at">genus =</span> genusToAdd[add],</span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>      <span class="at">where =</span> <span class="st">&quot;root&quot;</span></span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>    )</span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>  }</span>
-<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>  <span class="fu">return</span>(phylogenyTraitsAdd)</span>
-<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>}</span></code></pre></div>
-</div>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-redtotraits">RedToTraits(IUCNGROUPtoTraits)</h4>
-    <div class="fn-desc">Merge IUCN Red List threat category into a trait data frame by matching species names.</div>
-    <div class="fn-tags"><span class="fn-tag tag-data">data</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">IUCNGROUPtoTraits — data frame with species and IUCN status columns</span></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>RedToTraits <span class="ot">&lt;-</span> <span class="cf">function</span>(IUCNGROUPtoTraits) {</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  RedToTraits <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(IUCNGROUPtoTraits)),</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">1</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>    <span class="at">dimnames =</span> <span class="fu">list</span>(IUCNGROUPtoTraits<span class="sc">$</span>Species, <span class="st">&quot;IUCN&quot;</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  )</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(IUCNGROUPtoTraits)) {</span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>    selRows <span class="ot">&lt;-</span> <span class="fu">which</span>(IUCNGROUPtoTraits<span class="sc">$</span>Species <span class="sc">==</span> IUCNGROUPtoTraits<span class="sc">$</span>Species[i])</span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(selRows) <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>      dataAux <span class="ot">&lt;-</span> IUCNGROUPtoTraits[selRows, ]</span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">is.na</span>(dataAux<span class="sc">$</span>infra_name))) {</span>
-<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>        coger <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">is.na</span>(dataAux<span class="sc">$</span>infra_name))</span>
-<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">length</span>(coger) <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>          RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span> <span class="fu">as.character</span>(dataAux<span class="sc">$</span>categorySimp[coger])</span>
-<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
-<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>          <span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">unique</span>(dataAux<span class="sc">$</span>categorySimp[coger])) <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>            RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span></span>
-<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>              <span class="fu">as.character</span>(<span class="fu">unique</span>(dataAux<span class="sc">$</span>categorySimp[coger]))</span>
-<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>          } <span class="cf">else</span> {</span>
-<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>            RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span></span>
-<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>              <span class="fu">as.character</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(dataAux<span class="sc">$</span>categorySimp))[<span class="dv">1</span>])</span>
-<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>          }</span>
-<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>        }</span>
-<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
-<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>        RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span></span>
-<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a>          <span class="fu">as.character</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(dataAux<span class="sc">$</span>categorySimp))[<span class="dv">1</span>])</span>
-<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>      }</span>
-<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a>      RedToTraits[IUCNGROUPtoTraits<span class="sc">$</span>Species[i], <span class="st">&quot;IUCN&quot;</span>] <span class="ot">&lt;-</span></span>
-<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>        <span class="fu">as.character</span>(IUCNGROUPtoTraits[selRows, <span class="st">&quot;categorySimp&quot;</span>])</span>
-<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a>    }</span>
-<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a>  }</span>
-<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a>  <span class="fu">return</span>(RedToTraits)</span>
-<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a>}</span></code></pre></div>
-</div>
-<h3 class="fn-section-divider"><span>Imputation</span><hr></h3>
-<div class="fn-card">
-<div class="fn-header">
-  <div>
-    <h4 class="fn-name" id="fn-imputation-trait">imputation_trait(GROUPData, selectedTraits, shortnames)</h4>
-    <div class="fn-desc">Wrapper around missForest to impute missing trait values for a taxonomic group.</div>
-    <div class="fn-tags"><span class="fn-tag tag-ml">machine learning</span><span class="fn-tag tag-util">utility</span></div>
-  </div>
-</div>
-<div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">GROUPData — trait data frame with NAs</span><span class="fn-arg">selectedTraits — columns to impute</span><span class="fn-arg">shortnames — abbreviated group labels</span></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>imputation_trait <span class="ot">&lt;-</span> <span class="cf">function</span>(GROUPData, selectedTraits, <span class="at">shortnames =</span> <span class="fu">c</span>(<span class="st">&quot;am&quot;</span>, <span class="st">&quot;bs&quot;</span>, <span class="st">&quot;ls&quot;</span>, <span class="st">&quot;os&quot;</span>)) {</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">require</span>(missForest)</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  columnsTraits <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(GROUPData) <span class="sc">==</span> <span class="st">&quot;Eigen.1&quot;</span>) <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  GROUPData[, columnsTraits] <span class="ot">&lt;-</span> <span class="fu">log10</span>(GROUPData[, columnsTraits])</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="co"># </span><span class="al">NOTE</span><span class="co">: All traits are kept for imputation</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  columsImputation <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(GROUPData) <span class="sc">==</span> <span class="st">&quot;IUCN&quot;</span>) <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  GROUPTraitslogImputed <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">missForest</span>(<span class="at">xmis =</span> GROUPData[, columsImputation])<span class="sc">$</span>ximp)</span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  GROUPTraitsImputed <span class="ot">&lt;-</span> GROUPTraitsMissing <span class="ot">&lt;-</span> GROUPData</span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  GROUPTraitsImputed[, columnsTraits] <span class="ot">&lt;-</span> GROUPTraitslogImputed[, columnsTraits]</span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  GROUPTraitsMissing <span class="ot">&lt;-</span> GROUPTraitsMissing[, selectedTraits]</span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  GROUPTraitsImputed <span class="ot">&lt;-</span> GROUPTraitsImputed[, selectedTraits]</span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  <span class="fu">colnames</span>(GROUPTraitsMissing) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(GROUPTraitsImputed) <span class="ot">&lt;-</span> shortnames</span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>  GROUPOtherInfo <span class="ot">&lt;-</span> GROUPData[, (<span class="fu">max</span>(columnsTraits) <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">ncol</span>(GROUPData)]</span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>  GROUPTraitsImputed <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(GROUPTraitsImputed, <span class="at">IUCN =</span> GROUPData<span class="sc">$</span>IUCN)</span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>  GROUPTraitsMissing <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(GROUPTraitsMissing, <span class="at">IUCN =</span> GROUPData<span class="sc">$</span>IUCN)</span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(GROUPTraitsImputed, GROUPTraitsMissing))</span>
-<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 
-<script src="assets/copy-code.js"></script>
+<div class="session-grid">
+  <a class="session-card" href="fn/fn-standard-names_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">standard_names(Traits, nrowTraits, source=163, dim=NA)</span></div>
+    <div class="session-topics">Standardise species names across datasets by removing duplicates and mismatches.</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-addtophylo_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">addToPhylo(phylogenyTraits, GROUPTraits)</span></div>
+    <div class="session-topics">Prune a phylogeny to the set of species present in a trait data frame.</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-redtotraits_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">RedToTraits(IUCNGROUPtoTraits)</span></div>
+    <div class="session-topics">Merge IUCN Red List threat category into a trait data frame by matching species names.</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-imputation-trait_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">imputation_trait(GROUPData, selectedTraits, shortnames)</span></div>
+    <div class="session-topics">Wrapper around missForest to impute missing trait values for a taxonomic group.</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-filter-completeness_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">filter_completeness()</span></div>
+    <div class="session-topics">Remove species below a completeness threshold</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-merge-by-species_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">merge_by_species()</span></div>
+    <div class="session-topics">Robust species-level merge across datasets</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-pivot-long_sorting.html" target="_blank">
+    <div class="session-num" style="color:#8e44ad;"><span style="font-family:monospace;">pivot_long()</span></div>
+    <div class="session-topics">Convert wide trait matrix to long format</div>
+    <div class="session-link" style="color:#8e44ad;">Open ↗</div>
+  </a>
+</div>
 
 
-</div>
-</div>
+
 
 </div>
 
@@ -934,41 +492,7 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("show" === "show");
-});
-</script>
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3,h4",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
