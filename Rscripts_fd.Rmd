@@ -171,5 +171,25 @@ async function checkPw(){
     <div class="session-topics">SES and p-value against species-shuffling null model</div>
     <div class="session-link" style="color:#e67e22;">Open ↗</div>
   </a>
+  <a class="session-card" href="fn/fn-compute-cwm_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">compute_CWM()</span></div>
+    <div class="session-topics">Community-weighted mean traits</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-rao-entropy_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">rao_entropy()</span></div>
+    <div class="session-topics">Rao's quadratic entropy</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-fd-indices_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">compute_FD_indices()</span></div>
+    <div class="session-topics">FRic, FEve, FDiv, FDis, RaoQ in one call</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-hypervolume-fd_fd.html" target="_blank">
+    <div class="session-num" style="color:#e67e22;"><span style="font-family:monospace;">compute_hypervolume()</span></div>
+    <div class="session-topics">Functional hypervolume (Blonder 2018)</div>
+    <div class="session-link" style="color:#e67e22;">Open ↗</div>
+  </a>
 </div>
 ```

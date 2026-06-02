@@ -63,7 +63,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:0
 }
 
 # Example
-# mice_impute(trait_matrix, m = 10)</code></pre>
+# mice_impute(trait_matrix, m = 10)
+# ── Example ──────────────────────────────────────────────────────
+df &lt;- airquality[, 1:4]       # has real NAs in Ozone and Solar.R
+cat("NAs before:", sum(is.na(df)), "
+")
+df_imp &lt;- mice_impute(df, m = 5)
+cat("NAs after: ", sum(is.na(df_imp)), "
+")</code></pre>
   </div>
 </div>
 <script>

@@ -84,7 +84,17 @@ df$bmi &lt;- df$weight_g / (df$length_mm / 10)^2
 
 # Filter rows (base R)
 df[df$threatened == TRUE, ]
-subset(df, length_mm &gt; 70)</code></pre>
+subset(df, length_mm &gt; 70)
+# ── Example using iris ──────────────────────────────────────────
+str(iris)
+head(iris, 3)
+dim(iris);  nrow(iris);  ncol(iris)
+colnames(iris)
+summary(iris)
+
+# Add a column
+iris$sepal_ratio &lt;- iris$Sepal.Length / iris$Sepal.Width
+head(iris[, c("Species","sepal_ratio")], 5)</code></pre>
   </div>
 </div>
 <script>

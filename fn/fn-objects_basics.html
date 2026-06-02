@@ -73,7 +73,25 @@ as.character(x)  # "42"
 
 # Remove object
 rm(x)
-ls()             # list all objects in environment</code></pre>
+ls()             # list all objects in environment
+# ── Example ──────────────────────────────────────────────────────
+x    &lt;- 3.14          # numeric
+name &lt;- "setosa"      # character
+ok   &lt;- TRUE          # logical
+n    &lt;- 5L            # integer (explicit)
+
+class(x);  typeof(x)
+class(ok); typeof(ok)
+
+# Type coercion
+as.numeric("42")
+as.character(3.14)
+as.logical(0)    # FALSE
+as.logical(1)    # TRUE
+
+# Check types
+is.numeric(iris$Sepal.Length)   # TRUE
+is.factor(iris$Species)          # TRUE</code></pre>
   </div>
 </div>
 <script>

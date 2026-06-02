@@ -96,7 +96,31 @@ for (i in 1:10) {
   if (i == 3) next   # skip iteration
   if (i == 7) break  # exit loop
   cat(i, "")
-}</code></pre>
+}
+# ── Example using iris ──────────────────────────────────────────
+# if/else on a statistic
+mean_sl &lt;- mean(iris$Sepal.Length)
+if (mean_sl &gt; 5.5) {
+  cat("Mean sepal length is large:", mean_sl, "
+")
+} else {
+  cat("Mean sepal length is small:", mean_sl, "
+")
+}
+
+# for loop over species
+for (sp in levels(iris$Species)) {
+  n   &lt;- sum(iris$Species == sp)
+  avg &lt;- mean(iris$Sepal.Length[iris$Species == sp])
+  cat(sp, ": n=", n, ", mean SL=", round(avg, 2), "
+")
+}
+
+# while: find first species with SL &gt; 7
+i &lt;- 1
+while (iris$Sepal.Length[i] &lt;= 7) i &lt;- i + 1
+cat("First row with SL &gt; 7:", i, "(", as.character(iris$Species[i]), ")
+")</code></pre>
   </div>
 </div>
 <script>

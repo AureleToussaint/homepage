@@ -65,7 +65,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:0
 
 # Example
 scaled &lt;- scale_traits(iris, method = "zscore")
-apply(scaled[, 1:4], 2, mean)  # should be ~0</code></pre>
+apply(scaled[, 1:4], 2, mean)  # should be ~0
+# ── Example ──────────────────────────────────────────────────────
+df_z    &lt;- scale_traits(iris, method = "zscore")
+df_mm   &lt;- scale_traits(iris, method = "minmax")
+
+# Check: z-score means should be ~0
+round(colMeans(df_z[, 1:4]), 10)
+
+# Min-max: range should be [0,1]
+apply(df_mm[, 1:4], 2, range)</code></pre>
   </div>
 </div>
 <script>

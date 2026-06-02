@@ -63,7 +63,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:0
     }
   }
   df
-}</code></pre>
+}
+# ── Example ──────────────────────────────────────────────────────
+df &lt;- iris
+df[sample(150, 25), "Sepal.Length"] &lt;- NA
+df[sample(150, 30), "Petal.Width"]  &lt;- NA
+cat("Before:", sum(is.na(df)), "NAs
+")
+df_imp &lt;- mean_impute(df, by_group = "Species")
+cat("After: ", sum(is.na(df_imp[, 1:4])), "NAs
+")</code></pre>
   </div>
 </div>
 <script>

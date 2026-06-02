@@ -73,7 +73,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; m
   res[1:4] &lt;- round(as.numeric(res[1:4]), 2)
   names(res) &lt;- c("Mean x", "sd x", "Mean y", "sd y", "t", "Pvalues", "P")
   return(res)
-}</code></pre>
+}
+# ── Example ──────────────────────────────────────────────────────
+setosa     &lt;- iris$Sepal.Length[iris$Species == "setosa"]
+versicolor &lt;- iris$Sepal.Length[iris$Species == "versicolor"]
+extract_t_test(setosa, versicolor)</code></pre>
   </div>
 </div>
 <script>

@@ -121,5 +121,20 @@ async function checkPw(){
     <div class="session-topics">Defined the error made by the operator</div>
     <div class="session-link" style="color:#d35400;">Open ↗</div>
   </a>
+  <a class="session-card" href="fn/fn-cv-intra_intra.html" target="_blank">
+    <div class="session-num" style="color:#d35400;"><span style="font-family:monospace;">cv_intraspecific()</span></div>
+    <div class="session-topics">Coefficient of variation within each species</div>
+    <div class="session-link" style="color:#d35400;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-itv-btv-ratio_intra.html" target="_blank">
+    <div class="session-num" style="color:#d35400;"><span style="font-family:monospace;">itv_btv_ratio()</span></div>
+    <div class="session-topics">Partition variance into ITV and BTV components</div>
+    <div class="session-link" style="color:#d35400;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-mixed-model-itv_intra.html" target="_blank">
+    <div class="session-num" style="color:#d35400;"><span style="font-family:monospace;">lmm_trait_site()</span></div>
+    <div class="session-topics">LMM: species × site variance partitioning</div>
+    <div class="session-link" style="color:#d35400;">Open ↗</div>
+  </a>
 </div>
 ```

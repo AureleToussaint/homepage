@@ -64,7 +64,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:0
 }
 
 # Example
-barplot(1:8, col = pal_ecology(8, "biome"))</code></pre>
+barplot(1:8, col = pal_ecology(8, "biome"))
+# ── Example ──────────────────────────────────────────────────────
+cols &lt;- pal_ecology(5, "biome")
+barplot(1:5, col = cols, main = "Biome palette")
+
+cols_ocean &lt;- pal_ecology(8, "ocean")
+pie(rep(1, 8), col = cols_ocean, main = "Ocean palette")</code></pre>
   </div>
 </div>
 <script>

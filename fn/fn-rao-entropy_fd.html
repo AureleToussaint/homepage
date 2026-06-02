@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>rao_entropy(comm, dist_traits) — R Scripts</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:0;padding:0;background:#f7f9fc;color:#2c3e50}
+.wrap{max-width:860px;margin:0 auto;padding:24px 20px 60px}
+.back-link{font-size:.88em;margin-bottom:18px}.back-link a{color:#e67e22;text-decoration:none;font-weight:500}
+.hero{background:#fff;border:1px solid #e4e9f0;border-radius:14px;padding:20px 22px;margin-bottom:20px;box-shadow:0 1px 6px rgba(0,0,0,.05);border-left:5px solid #e67e22}
+.hero h1{font-family:monospace;font-size:1.2em;font-weight:700;color:#2c3e50;margin:0 0 6px}
+.hero p{font-size:.9em;color:#666;margin:0 0 10px;line-height:1.6}
+.fn-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.fn-tag{font-size:.72em;padding:2px 9px;border-radius:20px;font-weight:600}
+.tag-stat{background:#e8f5e9;color:#1b6b2f}.tag-util{background:#e3f2fd;color:#1557a0}
+.tag-viz{background:#f3e5f5;color:#6a1b9a}.tag-fd{background:#fff3e0;color:#b25000}
+.tag-data{background:#fce4ec;color:#880e4f}.tag-ml{background:#e8eaf6;color:#283593}
+.tag-morph{background:#e0f2f1;color:#00574e}.tag-geo{background:#f3e5f5;color:#6a1b9a}
+.fn-args{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.fn-args-label{font-size:.78em;font-weight:700;color:#999}
+.fn-arg{font-family:monospace;font-size:.78em;padding:2px 8px;background:#f1f3f5;border:1px solid #e0e3e8;border-radius:5px;color:#555}
+.toolbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.tb-btn{display:inline-flex;align-items:center;gap:5px;font-size:.8em;font-weight:600;padding:6px 14px;border-radius:7px;cursor:pointer;border:1px solid;background:#fff;transition:opacity .15s}
+.tb-btn:hover{opacity:.75}.tb-copy{color:#2471a3;border-color:#2471a3}.tb-save{color:#27ae60;border-color:#27ae60}.tb-suggest{color:#e67e22;border-color:#e67e22}.tb-copied{color:#27ae60!important;border-color:#27ae60!important}
+.code-wrap{background:#fff;border:1px solid #e4e9f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.code-wrap pre{margin:0;padding:20px;overflow-x:auto;font-size:.87em}
+</style></head><body>
+<div class="wrap">
+  <div class="back-link">← <a href="../Rscripts_fd.html">Back</a></div>
+  <div class="hero"><h1>rao_entropy(comm, dist_traits)</h1><p>Rao's quadratic entropy Q: expected trait dissimilarity between two randomly selected individuals. Decomposes into alpha and beta components.</p><div class="fn-tags"><span class="fn-tag tag-fd">functional diversity</span><span class="fn-tag tag-stat">statistics</span></div><div class="fn-args"><span class="fn-args-label">Args:</span><span class="fn-arg">comm — community matrix</span><span class="fn-arg">dist_traits — trait distance matrix</span></div></div>
+  <div class="toolbar">
+    <button class="tb-btn tb-copy" onclick="doCopy()">⧉ Copy</button>
+    <button class="tb-btn tb-save" onclick="doSave()">↓ Save .R</button>
+    <button class="tb-btn tb-suggest" onclick="doSuggest()">✉ Suggest</button>
+  </div>
+  <div class="code-wrap"><pre><code id="fn-code" class="language-r">rao_entropy &lt;- function(comm, dist_traits) {
+  if (!requireNamespace("FD", quietly = TRUE)) install.packages("FD")
+  
+  sp &lt;- intersect(colnames(comm), labels(dist_traits))
+  comm &lt;- comm[, sp]
+  D    &lt;- as.matrix(dist_traits)[sp, sp]
+  
+  # Row-normalise
+  p &lt;- sweep(comm, 1, rowSums(comm), "/")
+  
+  # Rao Q = sum_ij p_i * p_j * d_ij
+  Q &lt;- apply(p, 1, function(pi) as.numeric(pi %*% D %*% pi))
+  data.frame(site = rownames(comm), Rao_Q = Q)
+}
+# ── Example ──────────────────────────────────────────────────────
+set.seed(42)
+n_sp   &lt;- 20
+traits &lt;- matrix(rnorm(80), n_sp, 4)
+rownames(traits) &lt;- paste0("sp", 1:n_sp)
+d_traits &lt;- dist(traits)
+
+comm &lt;- matrix(rbinom(60, 1, 0.5), 3, n_sp,
+               dimnames = list(c("A","B","C"), paste0("sp", 1:n_sp)))
+rao_entropy(comm, d_traits)</code></pre></div>
+</div>
+<script>
+hljs.highlightAll();
+function doCopy(){var c=document.getElementById('fn-code').innerText;navigator.clipboard.writeText(c).then(function(){var b=document.querySelector('.tb-copy');b.textContent='✓ Copied!';b.classList.add('tb-copied');setTimeout(function(){b.textContent='⧉ Copy';b.classList.remove('tb-copied');},1800);});}
+function doSave(){var c=document.getElementById('fn-code').innerText;var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/plain'}));a.download='rao_entropy.R';a.click();}
+function doSuggest(){window.open('mailto:aurele.toussaint@cnrs.fr?subject='+encodeURIComponent('Suggestion: rao_entropy(comm, dist_traits)'));}
+</script></body></html>

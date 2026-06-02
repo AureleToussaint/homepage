@@ -136,5 +136,20 @@ async function checkPw(){
     <div class="session-topics">ggplot2, patchwork, ggpubr, viridis, ggrepel</div>
     <div class="session-link" style="color:#2980b9;">Open ↗</div>
   </a>
+  <a class="session-card" href="fn/fn-load-tidyverse_library.html" target="_blank">
+    <div class="session-num" style="color:#2980b9;"><span style="font-family:monospace;">Tidyverse</span></div>
+    <div class="session-topics">dplyr, tidyr, ggplot2, readr, purrr, stringr</div>
+    <div class="session-link" style="color:#2980b9;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-load-modelling_library.html" target="_blank">
+    <div class="session-num" style="color:#2980b9;"><span style="font-family:monospace;">Modelling packages</span></div>
+    <div class="session-topics">lme4, lmerTest, brms, MuMIn, performance</div>
+    <div class="session-link" style="color:#2980b9;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-load-biodiversity_library.html" target="_blank">
+    <div class="session-num" style="color:#2980b9;"><span style="font-family:monospace;">Biodiversity packages</span></div>
+    <div class="session-topics">rgbif, spocc, taxize, FD, vegan, hypervolume</div>
+    <div class="session-link" style="color:#2980b9;">Open ↗</div>
+  </a>
 </div>
 ```

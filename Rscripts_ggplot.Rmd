@@ -1,0 +1,66 @@
+---
+title: ""
+pagetitle: "ggplot2 & Visualisation — R Scripts"
+output:
+  html_document:
+    self_contained: false
+    toc: false
+    includes:
+      in_header: header.html
+---
+
+```{=html}
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+<style>
+#pw-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.97);z-index:9999;display:flex;align-items:center;justify-content:center}
+.pw-box{background:#fff;border:1px solid #dde3ea;border-radius:12px;padding:40px 48px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);max-width:400px;width:90%}
+.pw-box h2{margin:0 0 6px;font-size:1.5em;color:#2c3e50}.pw-box p{color:#666;font-size:.95em;margin:0 0 22px}
+.pw-lock{font-size:3em;margin-bottom:8px}.pw-row{display:flex;gap:8px}
+.pw-row input{flex:1;padding:10px 14px;border:1px solid #ccc;border-radius:8px;font-size:1em;outline:none}
+.pw-row input:focus{border-color:#9b59b6}.pw-row button{padding:10px 18px;background:#9b59b6;color:#fff;border:none;border-radius:8px;font-size:1em;cursor:pointer}
+.pw-row button:hover{opacity:.85}.pw-err{color:#c0392b;font-size:.9em;margin:8px 0 0;min-height:20px}
+.back-link{margin:20px 0 4px;font-size:.9em}.back-link a{color:#9b59b6;text-decoration:none}
+.page-intro{display:flex;align-items:center;gap:14px;padding-bottom:18px;border-bottom:1px solid #e5e5e5;margin-bottom:28px}
+.page-intro-icon{width:52px;height:52px;border-radius:12px;background:#9b59b6;display:flex;align-items:center;justify-content:center;font-size:1.6em;color:#fff;flex-shrink:0}
+.page-intro h1{font-size:1.6em;font-weight:bold;color:#2c3e50;margin:0 0 4px}.page-intro p{font-size:.92em;color:#777;margin:0}
+.session-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:40px}
+.session-card{background:#fff;border:1px solid #e4e9f0;border-radius:12px;padding:16px 18px;text-decoration:none!important;color:inherit!important;box-shadow:0 1px 4px rgba(0,0,0,.04);transition:box-shadow .15s,transform .12s;display:flex;flex-direction:column;gap:6px;border-left:4px solid #9b59b6}
+.session-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.10);transform:translateY(-2px);text-decoration:none!important}
+.session-num{font-size:.88em;font-weight:700}.session-topics{font-size:.82em;color:#888;line-height:1.5}.session-link{margin-top:auto;padding-top:8px;font-size:.8em;font-weight:600}
+</style>
+<div id="pw-overlay"><div class="pw-box"><div class="pw-lock">🔒</div><h2>R Scripts — ggplot2 & Visualisation</h2><p>Enter the password to access this page.</p><div class="pw-row"><input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()"><button onclick="checkPw()">OK</button></div><p class="pw-err" id="pw-err"></p></div></div>
+<script>
+(function(){if(sessionStorage.getItem('rscripts_unlocked')==='1')document.getElementById('pw-overlay').style.display='none';})();
+async function checkPw(){var val=document.getElementById('pw-input').value;var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));var hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');if(hex==='ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5'){sessionStorage.setItem('rscripts_unlocked','1');document.getElementById('pw-overlay').style.display='none';}else document.getElementById('pw-err').textContent='Incorrect password.';}
+</script>
+<div class="back-link">← <a href="Rscripts.html">Back to R Scripts</a></div>
+<div class="page-intro"><div class="page-intro-icon">🎨</div><div><h1>ggplot2 & Visualisation</h1><p>Publication-ready plots: functional space, heatmaps, maps, themes for ecology.</p></div></div>
+<div class="session-grid">
+  <a class="session-card" href="fn/fn-ggplot-theme-ecology_ggplot.html" target="_blank">
+    <div class="session-num" style="color:#9b59b6;"><span style="font-family:monospace;">theme_ecology()</span></div>
+    <div class="session-topics">Clean ggplot2 theme for publication figures</div>
+    <div class="session-link" style="color:#9b59b6;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-ggplot-trait-space_ggplot.html" target="_blank">
+    <div class="session-num" style="color:#9b59b6;"><span style="font-family:monospace;">plot_trait_space()</span></div>
+    <div class="session-topics">Functional space plot with ellipses and labels</div>
+    <div class="session-link" style="color:#9b59b6;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-ggplot-heatmap-traits_ggplot.html" target="_blank">
+    <div class="session-num" style="color:#9b59b6;"><span style="font-family:monospace;">plot_trait_heatmap()</span></div>
+    <div class="session-topics">Species × trait heatmap</div>
+    <div class="session-link" style="color:#9b59b6;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-ggplot-barplot-fd_ggplot.html" target="_blank">
+    <div class="session-num" style="color:#9b59b6;"><span style="font-family:monospace;">plot_fd_barplot()</span></div>
+    <div class="session-topics">FD metric barplot with error bars</div>
+    <div class="session-link" style="color:#9b59b6;">Open ↗</div>
+  </a>
+  <a class="session-card" href="fn/fn-ggplot-map-fd_ggplot.html" target="_blank">
+    <div class="session-num" style="color:#9b59b6;"><span style="font-family:monospace;">plot_fd_map()</span></div>
+    <div class="session-topics">World map of functional diversity values</div>
+    <div class="session-link" style="color:#9b59b6;">Open ↗</div>
+  </a>
+</div>
+```

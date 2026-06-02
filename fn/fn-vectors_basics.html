@@ -88,7 +88,20 @@ rev(v)
 # Logical tests
 v &gt; 3             # returns logical vector
 which(v &gt; 3)      # indices where TRUE
-any(v &gt; 8); all(v &gt; 0)</code></pre>
+any(v &gt; 8); all(v &gt; 0)
+# ── Example using iris ──────────────────────────────────────────
+sl &lt;- iris$Sepal.Length    # extract a column as vector
+
+length(sl)
+sum(sl); mean(sl); sd(sl); range(sl)
+
+# Filter
+sl[sl &gt; 6]
+sl[iris$Species == "setosa"]
+
+# Sequence of indices
+sl[1:10]
+sl[seq(1, 150, by = 10)]</code></pre>
   </div>
 </div>
 <script>

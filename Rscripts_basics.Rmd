@@ -166,5 +166,10 @@ async function checkPw(){
     <div class="session-topics">Base R graphics are quick for exploration. plot(x, y) for scatter, hist() for distribution, boxplot(</div>
     <div class="session-link" style="color:#1abc9c;">Open ↗</div>
   </a>
+  <a class="session-card" href="fn/fn-dplyr-basics_basics.html" target="_blank">
+    <div class="session-num" style="color:#1abc9c;"><span style="font-family:monospace;">dplyr & tidyr</span></div>
+    <div class="session-topics">filter, mutate, group_by, pivot — core tidyverse</div>
+    <div class="session-link" style="color:#1abc9c;">Open ↗</div>
+  </a>
 </div>
 ```

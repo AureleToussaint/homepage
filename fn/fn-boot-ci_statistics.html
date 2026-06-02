@@ -58,7 +58,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:0
 }
 
 # Example
-boot_ci(rnorm(100), mean, R = 1000)</code></pre>
+boot_ci(rnorm(100), mean, R = 1000)
+# ── Example ──────────────────────────────────────────────────────
+x &lt;- iris$Sepal.Length[iris$Species == "setosa"]
+boot_ci(x, mean, R = 999)
+boot_ci(x, median, R = 999)
+# Custom statistic: coefficient of variation
+boot_ci(x, function(v) sd(v)/mean(v)*100, R = 500)</code></pre>
   </div>
 </div>
 <script>

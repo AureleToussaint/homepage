@@ -65,7 +65,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; m
   results &lt;- round(c(obs, SES, mean(rand), quantile(rand, prob = probs), pValsSES, nreps), rnd)
   names(results) &lt;- c("Observed", "SES", "MeanRd", "CI025Rd", "CI975Rd", "Pval", "Nreps")
   return(results)
-}</code></pre>
+}
+# ── Example ──────────────────────────────────────────────────────
+obs  &lt;- mean(iris$Sepal.Length)
+null &lt;- replicate(999, mean(sample(iris$Sepal.Length, replace = TRUE)))
+sesandpvalues_bis(obs, null, nreps = 999)</code></pre>
   </div>
 </div>
 <script>

@@ -269,6 +269,36 @@ output:
     </div>
   </div>
 
+  <!-- ── Visualisation ── -->
+  <div class="section-group">
+    <div class="section-group-title"><span>Visualisation</span><hr></div>
+    <div class="courses-grid">
+      <a class="course-card" href="Rscripts_ggplot.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#9b59b6;"><i class="fa fa-bar-chart"></i></div>
+          <div class="card-meta"><h3>ggplot2</h3><span>Publication figures</span></div>
+        </div>
+        <p class="card-desc">Themes, functional space, heatmaps and maps for ecology.</p>
+        <div class="card-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Spatial ecology ── -->
+  <div class="section-group">
+    <div class="section-group-title"><span>Spatial ecology</span><hr></div>
+    <div class="courses-grid">
+      <a class="course-card" href="Rscripts_spatial.html">
+        <div class="card-top">
+          <div class="card-icon-circle" style="background:#16a085;"><i class="fa fa-globe"></i></div>
+          <div class="card-meta"><h3>Spatial</h3><span>sf · terra · DGGS</span></div>
+        </div>
+        <p class="card-desc">Raster extraction, hexagonal grids, range maps and richness maps.</p>
+        <div class="card-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
   <!-- ── Community analyses ── -->
   <div class="section-group">
     <div class="section-group-title"><span>Community analyses</span><hr></div>
