@@ -272,7 +272,7 @@ output:
       <div class="card-links">
         <div class="section-label">Documents</div>
         <!-- Replace href="#" with the actual path, e.g. data/courses/fbe_syllabus.pdf -->
-        <a class="card-btn btn-syllabus" href="#" target="_blank">
+        <a class="card-btn btn-syllabus" href="data/courses/FBE_syllabus.pdf" target="_blank">
           <i class="fa fa-download"></i> &nbsp;Syllabus (PDF)
         </a>
       </div>
@@ -286,16 +286,9 @@ output:
       <h3>Slides</h3>
       <p>Lecture presentations for each session of the course.</p>
       <div class="card-links">
-        <div class="section-label">Sessions</div>
-        <!-- Add / remove <a> tags as needed -->
-        <a class="card-btn btn-slides" href="#" target="_blank">
-          <i class="fa fa-file-powerpoint-o"></i> &nbsp;Session 1 — Introduction
-        </a>
-        <a class="card-btn btn-slides" href="#" target="_blank">
-          <i class="fa fa-file-powerpoint-o"></i> &nbsp;Session 2 — Functional diversity
-        </a>
-        <a class="card-btn btn-slides" href="#" target="_blank">
-          <i class="fa fa-file-powerpoint-o"></i> &nbsp;Session 3 — Community analyses
+        <div class="section-label">Full course</div>
+        <a class="card-btn btn-slides" href="data/courses/fullcourse.pptx" target="_blank">
+          <i class="fa fa-file-powerpoint-o"></i> &nbsp;Full day — Slides (pptx)
         </a>
       </div>
     </div>
@@ -305,19 +298,18 @@ output:
       <div class="card-icon icon-rscript">
         <i class="fa fa-code"></i>
       </div>
-      <h3>R Scripts</h3>
+      <h3>Exercises</h3>
       <p>Annotated R scripts and exercises for each practical session.</p>
       <div class="card-links">
-        <div class="section-label">Scripts</div>
-        <!-- Add / remove <a> tags as needed -->
-        <a class="card-btn btn-rscript" href="#" target="_blank">
-          <i class="fa fa-file-code-o"></i> &nbsp;Script — Session 1
+        <div class="section-label">Exercise PDFs</div>
+        <a class="card-btn btn-rscript" href="data/courses/FBE_exercise_A.pdf" target="_blank">
+          <i class="fa fa-flask"></i> &nbsp;Group A — Functional space
         </a>
-        <a class="card-btn btn-rscript" href="#" target="_blank">
-          <i class="fa fa-file-code-o"></i> &nbsp;Script — Session 2
+        <a class="card-btn btn-rscript" href="data/courses/FBE_exercise_B.pdf" target="_blank">
+          <i class="fa fa-flask"></i> &nbsp;Group B — FD indices + CWM
         </a>
-        <a class="card-btn btn-rscript" href="#" target="_blank">
-          <i class="fa fa-file-code-o"></i> &nbsp;Script — Session 3
+        <a class="card-btn btn-rscript" href="data/courses/FBE_exercise_C.pdf" target="_blank">
+          <i class="fa fa-flask"></i> &nbsp;Group C — Null models + SES
         </a>
       </div>
     </div>
@@ -327,19 +319,18 @@ output:
       <div class="card-icon icon-data">
         <i class="fa fa-database"></i>
       </div>
-      <h3>Exercises</h3>
-      <p>Datasets used during the practical sessions and exercises.</p>
+      <h3>Data</h3>
+      <p>Datasets and R scripts for each group (one zip per group).</p>
       <div class="card-links">
-        <div class="section-label">Datasets</div>
-        <!-- Add / remove <a> tags as needed -->
-        <a class="card-btn btn-data" href="#" target="_blank">
-          <i class="fa fa-archive"></i> &nbsp;Dataset — Session 1 (.zip)
+        <div class="section-label">Data + R scripts (1 zip / group)</div>
+        <a class="card-btn btn-data" href="data/courses/FBE_group_A_data.zip" target="_blank">
+          <i class="fa fa-archive"></i> &nbsp;Group A — Neotropical + Nearctic
         </a>
-        <a class="card-btn btn-data" href="#" target="_blank">
-          <i class="fa fa-archive"></i> &nbsp;Dataset — Session 2 (.zip)
+        <a class="card-btn btn-data" href="data/courses/FBE_group_B_data.zip" target="_blank">
+          <i class="fa fa-archive"></i> &nbsp;Group B — Palearctic + Ethiopian
         </a>
-        <a class="card-btn btn-data" href="#" target="_blank">
-          <i class="fa fa-archive"></i> &nbsp;Dataset — Session 3 (.zip)
+        <a class="card-btn btn-data" href="data/courses/FBE_group_C_data.zip" target="_blank">
+          <i class="fa fa-archive"></i> &nbsp;Group C — Oriental + Australian
         </a>
       </div>
     </div>

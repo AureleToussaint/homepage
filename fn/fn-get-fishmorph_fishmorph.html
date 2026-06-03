@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>get_fishmorph_traits() — R Scripts</title>
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:0;padding:0;background:#f7f9fc;color:#2c3e50}
+.wrap{max-width:960px;margin:0 auto;padding:24px 20px 60px}
+.back-link{font-size:.88em;margin-bottom:18px}.back-link a{color:#c0392b;text-decoration:none;font-weight:500}
+.hero{background:#fff;border:1px solid #e4e9f0;border-radius:14px;padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.05);border-left:5px solid #c0392b}
+.hero h1{font-family:monospace;font-size:1.05em;font-weight:700;color:#2c3e50;margin:0 0 6px}
+.hero p{font-size:.9em;color:#666;margin:0 0 10px;line-height:1.6}
+.fn-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.fn-tag{font-size:.72em;padding:2px 9px;border-radius:20px;font-weight:600}
+.tag-data{background:#fce4ec;color:#880e4f}.tag-morph{background:#e0f2f1;color:#00574e}
+.tag-viz{background:#f3e5f5;color:#6a1b9a}.tag-util{background:#e3f2fd;color:#1557a0}
+.args-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:.85em}
+.args-table th{background:#c0392b;color:#fff;padding:7px 10px;text-align:left;font-weight:600}
+.args-table td{padding:6px 10px;border-bottom:1px solid #f0f0f0;vertical-align:top}
+.args-table tr:nth-child(even) td{background:#fef9f9}
+.args-table td:first-child{font-family:monospace;font-weight:600;color:#2c3e50;white-space:nowrap}
+.args-table td:nth-child(2){color:#888;font-style:italic;white-space:nowrap}
+.out-box{background:#f0fff4;border:1px solid #a8dba8;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:.88em}
+.out-box strong{color:#1b6b2f}
+.toolbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.tb-btn{display:inline-flex;align-items:center;gap:5px;font-size:.8em;font-weight:600;padding:6px 14px;border-radius:7px;cursor:pointer;border:1px solid;background:#fff;transition:opacity .15s}
+.tb-btn:hover{opacity:.75}.tb-copy{color:#2471a3;border-color:#2471a3}.tb-save{color:#27ae60;border-color:#27ae60}.tb-suggest{color:#e67e22;border-color:#e67e22}.tb-copied{color:#27ae60!important;border-color:#27ae60!important}
+.code-wrap{background:#fff;border:1px solid #e4e9f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.code-wrap pre{margin:0;padding:18px;overflow-x:auto;font-size:.8em}
+.sec{font-size:.72em;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#aaa;margin:16px 0 8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="back-link">← <a href="../Rscripts_fishmorph.html">Back to FishMORPH</a></div>
+
+  <div class="hero">
+    <h1>get_fishmorph_traits(species_list, fishmorph_path, ...)</h1>
+    <p>Match a species list against FishMORPH. Returns traits resolved at species / genus / family level,
+    a density-contour functional space plot (using <code>plot_FS_new</code>), FRic/SES statistics, and an optional .xlsx export.</p>
+    <div class="fn-tags">
+      <span class="fn-tag tag-morph">FishMORPH</span>
+      <span class="fn-tag tag-data">trait matching</span>
+      <span class="fn-tag tag-viz">functional space · KDE</span>
+      <span class="fn-tag tag-util">PCA · FRic · SES</span>
+    </div>
+  </div>
+
+  <div class="sec">Arguments — get_fishmorph_traits()</div>
+  <table class="args-table">
+    <tr><th>Argument</th><th>Default</th><th>Description</th></tr>
+    <tr><td>species_list</td><td>—</td><td>Character vector of species names (binomials)</td></tr>
+    <tr><td>fishmorph_path</td><td>—</td><td>Path to <code>TraitFishImputed.txt</code></td></tr>
+    <tr><td>fishmorph_info</td><td>NULL</td><td>Pre-computed GBIF taxonomy for FishMORPH (from a previous call's <code>$fishmorph_info</code>). Skips the slow GBIF step (~5-10 min).</td></tr>
+    <tr><td>impute_genus</td><td>TRUE</td><td>Draw traits from congeneric FishMORPH species if unmatched</td></tr>
+    <tr><td>impute_family</td><td>TRUE</td><td>Draw traits from same-family species if genus fails</td></tr>
+    <tr><td>n_pca_axes</td><td>4</td><td>PCA axes to retain</td></tr>
+    <tr><td>conf_threshold</td><td>80</td><td>GBIF synonym confidence (0–100)</td></tr>
+    <tr><td>n_perm</td><td>99</td><td>Null-model permutations for SES-FRic</td></tr>
+    <tr><td>group_mode</td><td>"groups"</td><td>"groups" (subset on global), "single" (subset only), "global_only"</td></tr>
+    <tr><td>plot_args</td><td>list()</td><td>Named list passed to <code>plot_FS_new()</code> — see below</td></tr>
+    <tr><td>save_excel</td><td>NULL</td><td>Path to export .xlsx (NULL = skip)</td></tr>
+    <tr><td>save_plot</td><td>NULL</td><td>Path to save plot PNG/PDF (NULL = skip)</td></tr>
+    <tr><td>plot_width / plot_height</td><td>15 / 6</td><td>Plot dimensions in inches</td></tr>
+    <tr><td>seed</td><td>42</td><td>Random seed for imputation draws</td></tr>
+    <tr><td>verbose</td><td>TRUE</td><td>Print progress messages</td></tr>
+  </table>
+
+  <div class="sec">plot_FS_new() — key arguments (pass via plot_args)</div>
+  <table class="args-table">
+    <tr><th>Argument</th><th>Default</th><th>Description</th></tr>
+    <tr><td>show_points</td><td>NULL (auto)</td><td>Show individual species dots. NULL = auto: shown if n ≤ 500, hidden otherwise. Set TRUE/FALSE to override.</td></tr>
+    <tr><td>pt_size</td><td>0.5</td><td>Point size when points are shown</td></tr>
+    <tr><td>pt_colour</td><td>"grey10"</td><td>Point colour when points are shown</td></tr>
+    <tr><td>bw_mult</td><td>0.45</td><td>KDE bandwidth multiplier (&lt;1 = finer structure)</td></tr>
+    <tr><td>n_density_bands</td><td>20</td><td>Number of filled density bands</td></tr>
+    <tr><td>contour_lwd</td><td>1.1</td><td>Line width of the 0.99 reference contour</td></tr>
+    <tr><td>contour_col</td><td>"grey30"</td><td>Colour of the reference contour</td></tr>
+    <tr><td>arrow_mult</td><td>1.4</td><td>Arrow length scaling factor</td></tr>
+    <tr><td>threshold</td><td>0.99</td><td>Density quantile for reference contour</td></tr>
+    <tr><td>band_line_lwd</td><td>0.07</td><td>Line width between density bands</td></tr>
+    <tr><td>phylopic_species</td><td>NULL</td><td>Named vector of species for silhouette overlay</td></tr>
+    <tr><td>show_procrustes</td><td>FALSE</td><td>Show Procrustes r in subtitle</td></tr>
+    <tr><td>title</td><td>auto</td><td>Custom plot title</td></tr>
+  </table>
+
+  <div class="sec">Returns (named list)</div>
+  <div class="out-box">
+    <strong>$plot</strong> — ggplot density-contour functional space<br>
+    <strong>$table</strong> — species × traits with <code>match_level</code> column<br>
+    <strong>$stats</strong> — FRic, SES, p-value, CI, n_species<br>
+    <strong>$pca_all</strong> / <strong>$pca_sub</strong> — PCA objects (sign-aligned)<br>
+    <strong>$not_found</strong> — species matched at no taxonomic level
+  </div>
+
+  <div class="toolbar">
+    <button class="tb-btn tb-copy" onclick="doCopy()">⧉ Copy</button>
+    <button class="tb-btn tb-save" onclick="doSave()">↓ Save .R</button>
+    <button class="tb-btn tb-suggest" onclick="doSuggest()">✉ Suggest</button>
+  </div>
+
+  <div class="code-wrap"><pre><code id="fn-code" class="language-r"># =============================================================================
+# plot_FS_new — density-contour functional space plot
+# Requires: ggplot2, vegan (optional Procrustes), rphylopic (optional silhouettes)
+# Helper functions compute_kde(), density_threshold(), compute_phylopic_positions()
+# must be defined (see Rscripts_funcspace page).
+# =============================================================================
+plot_FS_new <- function(pca_sub,
+                        pca_all,
+                        com_sp,
+                        group_mode             = c("single", "groups", "global_only"),
+                        fric_stats             = NULL,
+                        title                  = NULL,
+                        show_procrustes        = FALSE,
+                        phylopic_species       = NULL,
+                        phylopic_height_frac   = 0.08,
+                        phylopic_radius_frac   = 0.25,
+                        phylopic_min_angle_sep = 18,
+                        phylopic_color         = "grey15",
+                        show_points            = NULL,   # NULL = auto (hide if n>500)
+                        pt_size                = 0.5,
+                        pt_colour              = "grey10",
+                        arrow_mult             = 1.4,
+                        contour_lwd            = 1.1,
+                        contour_col            = "grey30",
+                        n_grid                 = 200,
+                        threshold              = 0.99,
+                        pad                    = 2,
+                        bw_mult                = 0.45,
+                        n_density_bands        = 20,
+                        band_line_lwd          = 0.07) {
+
+  group_mode <- match.arg(group_mode)
+
+  # ── Scores selection ──────────────────────────────────────────────────────
+  if (group_mode == "global_only") {
+    fill_scores    <- pca_all$PCA$scores[, 1:2]
+    contour_scores <- pca_all$PCA$scores[, 1:2]
+    pca_for_arrows <- pca_all
+    allScores      <- pca_all$PCA$scores[, 1:2]
+  } else if (group_mode == "groups") {
+    fill_scores    <- pca_all$PCA$scores[com_sp, 1:2]
+    contour_scores <- pca_all$PCA$scores[, 1:2]
+    pca_for_arrows <- pca_all
+    allScores      <- pca_all$PCA$scores[, 1:2]
+  } else {   # "single"
+    fill_scores    <- pca_sub$PCA$scores[, 1:2]
+    contour_scores <- pca_sub$PCA$scores[, 1:2]
+    pca_for_arrows <- pca_sub
+    allScores      <- pca_all$PCA$scores[, 1:2]
+  }
+  colnames(fill_scores)    <- c("PC1", "PC2")
+  colnames(contour_scores) <- c("PC1", "PC2")
+
+  # ── Procrustes (optional) ────────────────────────────────────────────────
+  subtitle <- NULL
+  if (show_procrustes && group_mode != "global_only") {
+    pca_all_set   <- pca_all$PCA$scores[com_sp, 1:2]
+    pca_sub_trait <- pca_sub$PCA$scores[com_sp, 1:2]
+    pro_t    <- vegan::protest(pca_all_set, pca_sub_trait, permutations = 9999)
+    subtitle <- sprintf("Procrustes r = %.2f", pro_t$t0)
+  }
+
+  # ── Loadings (arrows) ───────────────────────────────────────────────────
+  loadings_df <- as.data.frame(pca_for_arrows$PCA$loadings[, 1:2])
+  colnames(loadings_df) <- c("PC1", "PC2")
+  loadings_df$trait <- rownames(loadings_df)
+  arrow_scale <- min(max(abs(fill_scores[, "PC1"])), max(abs(fill_scores[, "PC2"]))) /
+    max(abs(as.matrix(loadings_df[, 1:2]))) * arrow_mult
+  loadings_df$PC1 <- loadings_df$PC1 * arrow_scale
+  loadings_df$PC2 <- loadings_df$PC2 * arrow_scale
+
+  # ── Axis labels ──────────────────────────────────────────────────────────
+  var_exp <- pca_for_arrows$PCA$sdev^2 / sum(pca_for_arrows$PCA$sdev^2) * 100
+  xlab <- sprintf("PC1 (%.2f%%)", var_exp[1])
+  ylab <- sprintf("PC2 (%.2f%%)", var_exp[2])
+
+  # ── Common window for both KDEs ──────────────────────────────────────────
+  all_pts <- rbind(fill_scores, allScores, contour_scores)
+  rng_x   <- range(all_pts[, "PC1"]) + c(-pad, pad)
+  rng_y   <- range(all_pts[, "PC2"]) + c(-pad, pad)
+  lims    <- c(rng_x, rng_y)
+
+  # KDE for density fill (subset or global depending on group_mode)
+  kde_fill     <- compute_kde(fill_scores, n_grid, lims,
+                              thresholds = c(0.5, threshold), bw_mult = bw_mult)
+  fill_df      <- kde_fill$df
+  thr_fill_99  <- kde_fill$thr[as.character(threshold)]
+  fill_df$z_clip <- ifelse(fill_df$z >= thr_fill_99, fill_df$z, NA)
+
+  # KDE for reference contour (full pool)
+  kde_cont     <- compute_kde(contour_scores, n_grid, lims,
+                              thresholds = c(threshold), bw_mult = 1)
+  cont_df      <- kde_cont$df
+  thr_cont_99  <- kde_cont$thr[as.character(threshold)]
+
+  # ── Density band breaks ──────────────────────────────────────────────────
+  quant_probs  <- seq(0.1, 1, length.out = n_density_bands)
+  quant_breaks <- sapply(quant_probs,
+                         function(p) density_threshold(kde_fill$kd$z, p))
+  quant_breaks <- sort(unique(c(0, quant_breaks,
+                                max(fill_df$z, na.rm = TRUE))))
+
+  pts_df         <- as.data.frame(fill_scores)
+  pts_df$species <- rownames(fill_scores)
+  max_ext        <- max(abs(c(rng_x, rng_y)))
+  lim_sym        <- c(-max_ext, max_ext)
+
+  # ── Build plot ───────────────────────────────────────────────────────────
+  p <- ggplot2::ggplot() +
+    ggplot2::lims(x = rng_x, y = rng_y) +
+
+    # Filled density bands
+    ggplot2::geom_contour_filled(
+      data = fill_df,
+      ggplot2::aes(x = PC1, y = PC2, z = z_clip),
+      breaks = quant_breaks
+    ) +
+    ggplot2::scale_fill_manual(
+      values   = colorRampPalette(
+        c("#FFFFCC","#FFEDA0","#FED976","#FEB24C",
+          "#FD8D3C","#FC4E2A","#E31A1C","#B10026")
+      )(length(quant_breaks) - 1),
+      na.value = "transparent", guide = "none"
+    ) +
+
+    # Thin lines between density bands (outer boundary)
+    ggplot2::geom_contour(
+      data = fill_df,
+      ggplot2::aes(x = PC1, y = PC2, z = z),
+      breaks    = c(thr_fill_99),
+      colour    = "grey20", linewidth = band_line_lwd
+    ) +
+
+    # Reference contour 0.99 (full pool) — thick
+    ggplot2::geom_contour(
+      data = cont_df,
+      ggplot2::aes(x = PC1, y = PC2, z = z),
+      breaks    = thr_cont_99,
+      colour    = contour_col, linewidth = contour_lwd
+    ) +
+
+    # Species points (auto-hide when n > 500, override with show_points)
+    { do_pts <- if (is.null(show_points)) nrow(pts_df) <= 500 else show_points
+      if (do_pts) ggplot2::geom_point(data=pts_df, ggplot2::aes(x=PC1,y=PC2),
+                                       colour=pt_colour, size=pt_size)
+      else ggplot2::geom_blank() } +
+
+    # Trait arrows
+    ggplot2::geom_segment(
+      data = loadings_df,
+      ggplot2::aes(x = 0, y = 0, xend = PC1, yend = PC2),
+      arrow     = ggplot2::arrow(length = ggplot2::unit(0.2, "cm")),
+      colour    = "black", linewidth = 0.4
+    ) +
+    ggplot2::geom_text(
+      data = loadings_df,
+      ggplot2::aes(x = PC1 * 1.08, y = PC2 * 1.08, label = trait),
+      size = 3, fontface = "bold"
+    ) +
+
+    ggplot2::labs(
+      x        = xlab, y = ylab,
+      title    = if (!is.null(title)) title else
+        sprintf("Functional spectrum (%d species)", nrow(fill_scores)),
+      subtitle = subtitle
+    ) +
+    ggplot2::coord_fixed(xlim = lim_sym, ylim = lim_sym, expand = FALSE) +
+    ggplot2::theme_classic(base_size = 11) +
+    ggplot2::theme(
+      plot.title   = ggplot2::element_text(face = "bold", size = 13),
+      plot.subtitle= ggplot2::element_text(face = "bold", size = 10),
+      panel.border = ggplot2::element_rect(fill = NA, colour = "black"),
+      axis.line    = ggplot2::element_blank()
+    )
+
+  # Phylopic silhouettes (optional)
+  if (!is.null(phylopic_species)) {
+    height_abs  <- 2 * max(abs(fill_scores[, "PC2"])) * phylopic_height_frac
+    phylopic_df <- compute_phylopic_positions(
+      scores        = pca_sub$PCA$scores[, 1:2],
+      species       = phylopic_species,
+      radius_frac   = phylopic_radius_frac,
+      min_angle_sep = phylopic_min_angle_sep
+    )
+    if (!is.null(phylopic_df) && nrow(phylopic_df) > 0) {
+      p <- p +
+        ggplot2::geom_segment(
+          data = phylopic_df,
+          ggplot2::aes(x = x0, y = y0, xend = x_sil, yend = y_sil),
+          colour = "grey60", linewidth = 0.3) +
+        ggplot2::geom_point(
+          data = phylopic_df,
+          ggplot2::aes(x = x0, y = y0),
+          shape = 21, fill = "white", colour = "grey20", size = 1.2, stroke = 0.4) +
+        rphylopic::geom_phylopic(
+          data    = phylopic_df,
+          mapping = ggplot2::aes(x = x_sil, y = y_sil, name = species),
+          height  = height_abs, fill = phylopic_color, alpha = 1)
+    }
+  }
+
+  # FRic annotation (groups mode)
+  if (group_mode == "groups" && !is.null(fric_stats)) {
+    annot_lab <- sprintf(
+      "N = %.0f\nFRic = %.2f%%\nSES = %.2f\nP = %.3f",
+      fric_stats["SpeciesRichness"],
+      fric_stats["Observed"] * 100,
+      fric_stats["SES"],
+      fric_stats["Pval"]
+    )
+    p <- p + ggplot2::annotate(
+      "text",
+      x = rng_x[1], y = rng_y[2],
+      label = annot_lab, hjust = 0, vjust = 1,
+      size = 3.2, fontface = "bold", lineheight = 0.95)
+  }
+  return(p)
+}
+
+
+# =============================================================================
+# get_fishmorph_traits — main wrapper
+# =============================================================================
+get_fishmorph_traits <- function(
+    species_list,
+    fishmorph_path,
+    fishmorph_info   = NULL,   # pre-computed GBIF lookup (saves ~5-10 min)
+    impute_genus     = TRUE,
+    impute_family    = TRUE,
+    n_pca_axes       = 4,
+    conf_threshold   = 80,
+    n_perm           = 99,
+    group_mode       = "groups",
+    plot_args        = list(),          # passed to plot_FS_new()
+    save_excel       = NULL,
+    save_plot        = NULL,
+    plot_width       = 15,
+    plot_height      = 6,
+    seed             = 42,
+    verbose          = TRUE
+) {
+  req <- c("dplyr","data.table","pbapply","traitdataform",
+           "tibble","ggplot2","TPD","ks")
+  invisible(lapply(req, function(p)
+    if (!requireNamespace(p, quietly=TRUE)) install.packages(p)))
+  lapply(req, library, character.only=TRUE)
+  if (!is.null(save_excel))
+    if (!requireNamespace("openxlsx",quietly=TRUE)) install.packages("openxlsx")
+
+  set.seed(seed)
+
+  # ── 1. Load FishMORPH ───────────────────────────────────────────────────
+  if (verbose) message("Loading FishMORPH...")
+  fishTraitsImputed <- read.table(fishmorph_path)
+  traitCols <- setdiff(colnames(fishTraitsImputed), "IUCN")
+  fishMorph <- trimws(rownames(fishTraitsImputed))
+
+  species_list <- sort(unique(trimws(species_list)))
+  species_list <- species_list[!is.na(species_list) & nchar(species_list)>0 &
+                                grepl(" ", species_list)]
+  if (verbose) message(length(species_list), " input species")
+
+  # ── 2. FishMORPH taxonomy lookup ────────────────────────────────────────
+  # If pre-computed, skip GBIF (saves ~5-10 min on first run)
+  if (is.null(fishmorph_info)) {
+    if (verbose) message("Resolving FishMORPH taxonomy via GBIF (this takes a while...)")
+    if (verbose) message("Tip: save and reuse with fishmorph_info = result$fishmorph_info")
+    fishmorph_info <- pbapply::pblapply(fishMorph, function(sp) {
+      tryCatch(
+        traitdataform::get_gbif_taxonomy(sp, subspecies=TRUE, higherrank=TRUE,
+          conf_threshold=conf_threshold, resolve_synonyms=TRUE)[1,],
+        error=function(e) NULL)
+    }) |> data.table::rbindlist(fill=TRUE)
+  } else {
+    if (verbose) message("Using pre-computed FishMORPH taxonomy (fishmorph_info provided)")
+    fishmorph_info <- data.table::as.data.table(fishmorph_info)
+  }
+
+  fishMORPH_lookup <- data.table::data.table(
+    scientificName = fishMorph,
+    genus  = sub(" .*$","",fishMorph),
+    family = fishmorph_info$family,
+    row_id = seq_along(fishMorph)
+  )
+
+  # ── 3. Exact match ───────────────────────────────────────────────────────
+  commonSP  <- intersect(species_list, fishMorph)
+  spToCheck <- species_list[!species_list %in% commonSP]
+
+  traits_species <- tibble::rownames_to_column(
+    fishTraitsImputed[commonSP, traitCols, drop=FALSE], var="scientificName")
+  traits_species$verbatimScientificName <- traits_species$scientificName
+  traits_species$match_level <- "species"
+
+  # ── 4. GBIF resolution ──────────────────────────────────────────────────
+  taxInfo <- data.table::data.table()
+  if (length(spToCheck)>0) {
+    if (verbose) message("GBIF resolution for ",length(spToCheck)," unmatched species...")
+    taxInfo <- pbapply::pblapply(spToCheck, function(sp) {
+      tryCatch(
+        traitdataform::get_gbif_taxonomy(sp, subspecies=TRUE, higherrank=TRUE,
+          conf_threshold=conf_threshold, resolve_synonyms=TRUE)[1,],
+        error=function(e) NULL)
+    }) |> data.table::rbindlist(fill=TRUE) |> data.table::as.data.table()
+    taxInfo[is.na(scientificName)|scientificName=="",
+            scientificName:=verbatimScientificName]
+  }
+
+  commonSP2 <- character(0); spToCheck2 <- data.table::data.table()
+  traits_species2 <- data.frame()
+  if (nrow(taxInfo)>0) {
+    commonSP2  <- intersect(taxInfo$scientificName, fishMorph)
+    spToCheck2 <- taxInfo[!scientificName %in% commonSP2,]
+    if (length(commonSP2)>0) {
+      tmp <- tibble::rownames_to_column(
+        fishTraitsImputed[commonSP2,traitCols,drop=FALSE], var="scientificName")
+      tmp$verbatimScientificName <- taxInfo$verbatimScientificName[
+        match(tmp$scientificName, taxInfo$scientificName)]
+      tmp$match_level <- "species"
+      traits_species2 <- tmp
+    }
+  }
+  all_species_traits <- dplyr::bind_rows(traits_species, traits_species2)
+
+  # ── Helper: draw from donors ─────────────────────────────────────────────
+  draw_traits <- function(mat) {
+    if (nrow(mat)==1L) return(unlist(mat[1,,drop=TRUE]))
+    apply(mat,2,function(x){m<-mean(x,na.rm=TRUE);s<-sd(x,na.rm=TRUE)
+      if(is.na(s)||s==0) m else rnorm(1,mean=m,sd=s)})
+  }
+
+  # ── 5. Genus imputation ──────────────────────────────────────────────────
+  traits_genus <- data.frame(); traits_family <- data.frame()
+  traits_notfound <- data.frame()
+
+  if (impute_genus && nrow(spToCheck2)>0) {
+    if (verbose) message("Genus-level imputation...")
+    spGenus <- sub(" .*$","",spToCheck2$scientificName)
+    genusList <- lapply(seq_len(nrow(spToCheck2)),function(i){
+      idx <- fishMORPH_lookup[genus==spGenus[i],row_id]
+      if(!length(idx)) return(NULL)
+      vals <- draw_traits(fishTraitsImputed[idx,traitCols,drop=FALSE])
+      data.frame(verbatimScientificName=spToCheck2$verbatimScientificName[i],
+                 scientificName=spToCheck2$scientificName[i],
+                 genus=spGenus[i],n_genus_donors=length(idx),
+                 as.list(vals),match_level="genus",
+                 check.names=FALSE,stringsAsFactors=FALSE)
+    })
+    traits_genus <- data.table::rbindlist(genusList,fill=TRUE) |> as.data.frame()
+  }
+
+  # ── 6. Family imputation ─────────────────────────────────────────────────
+  if (impute_family && nrow(spToCheck2)>0) {
+    matched_g <- if(nrow(traits_genus)>0) traits_genus$scientificName else character(0)
+    spFam <- spToCheck2[!scientificName %in% matched_g & !is.na(family) & family!="",]
+    if (nrow(spFam)>0) {
+      if (verbose) message("Family-level imputation...")
+      familyList <- lapply(seq_len(nrow(spFam)),function(i){
+        idx <- fishMORPH_lookup[family==spFam$family[i],row_id]
+        if(!length(idx)) return(NULL)
+        vals <- draw_traits(fishTraitsImputed[idx,traitCols,drop=FALSE])
+        data.frame(verbatimScientificName=spFam$verbatimScientificName[i],
+                   scientificName=spFam$scientificName[i],
+                   family=spFam$family[i],n_family_donors=length(idx),
+                   as.list(vals),match_level="family",
+                   check.names=FALSE,stringsAsFactors=FALSE)
+      })
+      traits_family <- data.table::rbindlist(familyList,fill=TRUE) |> as.data.frame()
+    }
+  }
+
+  # ── 7. Not found ──────────────────────────────────────────────────────────
+  matched_all <- unique(c(all_species_traits$scientificName,
+                           traits_genus$scientificName,
+                           traits_family$scientificName))
+  if (nrow(spToCheck2)>0) {
+    traits_notfound <- spToCheck2[!spToCheck2$scientificName %in% matched_all,
+                                   c("verbatimScientificName","scientificName","family"),
+                                   drop=FALSE] |> as.data.frame()
+    traits_notfound$match_level <- "not_found"
+  }
+  if (verbose) message(sprintf("Match: species=%d genus=%d family=%d not_found=%d",
+    nrow(all_species_traits),nrow(traits_genus),nrow(traits_family),nrow(traits_notfound)))
+
+  # ── 8. Trait pool + PCA ──────────────────────────────────────────────────
+  make_pca <- function(mat, n_axes) {
+    mat <- scale(mat[stats::complete.cases(mat), , drop = FALSE])
+    n_sp   <- nrow(mat)
+    n_tr   <- ncol(mat)
+    # princomp needs n > p; prcomp (SVD) works with any n >= 2
+    # Cap axes to min(n_sp-1, n_tr, n_axes) to avoid degenerate decompositions
+    n_axes_use <- min(n_axes, n_sp - 1L, n_tr)
+    if (n_axes_use < n_axes) {
+      warning(sprintf(
+        "Only %d species after cleaning — reducing PCA axes from %d to %d. ",
+        n_sp, n_axes, n_axes_use),
+        "Consider adding more species or reducing n_pca_axes.", call. = FALSE)
+    }
+    if (n_sp < 3L) stop(
+      "Too few species (n=", n_sp, ") to run PCA. Add more species.",
+      call. = FALSE)
+    pca_obj <- prcomp(mat, center = FALSE, scale. = FALSE)  # already scaled above
+    out <- list()
+    out$PCA             <- pca_obj
+    # Wrap to match the princomp interface used elsewhere
+    out$PCA$scores      <- pca_obj$x
+    out$PCA$loadings    <- pca_obj$rotation
+    out$PCA$sdev        <- pca_obj$sdev
+    out$dimensions      <- n_axes_use
+    eig                 <- pca_obj$sdev^2
+    out$variance        <- eig[seq_len(n_axes_use)] / sum(eig)
+    out$traitsUse       <- as.data.frame(pca_obj$x[, seq_len(n_axes_use), drop = FALSE])
+    out
+  }
+
+  fishMORPH_df <- tibble::rownames_to_column(
+    fishTraitsImputed[,traitCols,drop=FALSE], var="scientificName")
+  fishMORPH_df$match_level <- "fishMORPH"
+  cols_pca <- c("scientificName",traitCols,"match_level")
+
+  add_sp  <- all_species_traits[,intersect(cols_pca,colnames(all_species_traits))]
+  add_gen <- if(nrow(traits_genus)>0) traits_genus[,intersect(cols_pca,colnames(traits_genus))] else data.frame()
+  add_fam <- if(nrow(traits_family)>0) traits_family[,intersect(cols_pca,colnames(traits_family))] else data.frame()
+
+  add_sp  <- add_sp[!add_sp$scientificName %in% fishMORPH_df$scientificName,]
+  add_gen <- add_gen[!add_gen$scientificName %in% fishMORPH_df$scientificName,]
+  add_fam <- add_fam[!add_fam$scientificName %in% c(fishMORPH_df$scientificName,
+                                                      add_gen$scientificName),]
+
+  trait_pool <- dplyr::bind_rows(fishMORPH_df,add_sp,add_gen,add_fam)
+  trait_pool$row_label <- make.unique(trait_pool$scientificName,sep="__")
+  rownames(trait_pool) <- trait_pool$row_label
+
+  if (verbose) message("PCA on full pool (n=",nrow(trait_pool),")...")
+  pca_all <- make_pca(as.matrix(trait_pool[,traitCols]),n_pca_axes)
+  pca_all$PCA$loadings[,1] <- pca_all$PCA$loadings[,1]*(-1)
+  pca_all$PCA$scores[,1]   <- pca_all$PCA$scores[,1]*(-1)
+
+  sub_names  <- unique(c(commonSP,commonSP2,traits_genus$scientificName,
+                          traits_family$scientificName))
+  sub_labels <- intersect(trait_pool$row_label[trait_pool$scientificName %in% sub_names],
+                           rownames(pca_all$PCA$scores))
+  if (verbose) message("PCA on subset (n=",length(sub_labels),")...")
+  pca_sub <- make_pca(as.matrix(trait_pool[sub_labels,traitCols,drop=FALSE]),n_pca_axes)
+  for (k in seq_len(n_pca_axes)) {
+    if (stats::cor(pca_all$PCA$loadings[,k], pca_sub$PCA$loadings[,k])<0) {
+      pca_sub$PCA$loadings[,k] <- pca_sub$PCA$loadings[,k]*(-1)
+      pca_sub$PCA$scores[,k]   <- pca_sub$PCA$scores[,k]*(-1)
+    }
+  }
+  com_sp <- rownames(pca_sub$PCA$scores)
+
+  # ── 9. FRic + SES ────────────────────────────────────────────────────────
+  if (verbose) message("FRic + SES (",n_perm," permutations)...")
+  scores2 <- pca_all$PCA$scores[,1:2]
+  sdT     <- sqrt(diag(ks::Hpi.diag(scores2)))
+  TPDsAux <- TPD::TPDsMean(species=rownames(scores2), means=scores2,
+    sds=matrix(rep(sdT,nrow(scores2)),byrow=TRUE,ncol=2),
+    alpha=0.95, n_divisions=100)
+  comm_mat <- matrix(0,nrow=2,ncol=nrow(scores2),
+    dimnames=list(c("global","subset"),rownames(scores2)))
+  comm_mat["global",] <- 1; comm_mat["subset",com_sp] <- 1
+  FRic_base <- TPD::REND(TPD::TPDc(TPDs=TPDsAux,sampUnit=comm_mat))
+  obs <- numeric(n_perm+1)
+  obs[1] <- FRic_base$communities$FRichness["subset"] /
+             FRic_base$communities$FRichness["global"]
+  for (b in seq_len(n_perm)) {
+    rc <- comm_mat; rc["subset",] <- sample(rc["subset",])
+    FRicR <- TPD::REND(TPD::TPDc(TPDs=TPDsAux,sampUnit=rc))
+    obs[b+1] <- FRicR$communities$FRichness["subset"] /
+                FRic_base$communities$FRichness["global"]
+  }
+  rand  <- obs[-1]
+  stats_out <- c(
+    SpeciesRichness = length(com_sp),
+    Observed        = round(obs[1],4),
+    FRic_pct        = round(obs[1]*100,2),
+    SES             = round((obs[1]-mean(rand))/sd(rand),2),
+    MeanRd          = round(mean(rand),4),
+    CI025           = round(quantile(rand,.025),4),
+    CI975           = round(quantile(rand,.975),4),
+    Pval            = round(rank(c(obs[1],rand))[1]/(n_perm+1),3)
+  )
+  if (verbose) { message("FRic stats:"); print(stats_out) }
+
+  # ── 10. Plot via plot_FS_new ─────────────────────────────────────────────
+  if (verbose) message("Building functional space plot...")
+  default_plot_args <- list(
+    pca_sub        = pca_sub,
+    pca_all        = pca_all,
+    com_sp         = com_sp,
+    group_mode     = group_mode,
+    fric_stats     = stats_out,
+    title          = sprintf("FishMORPH functional space — %d species (%.1f%% FRic; SES=%.2f)",
+                             length(com_sp), stats_out["FRic_pct"], stats_out["SES"])
+  )
+  final_plot_args <- modifyList(default_plot_args, plot_args)
+  p <- do.call(plot_FS_new, final_plot_args)
+
+  if (!is.null(save_plot)) {
+    ggplot2::ggsave(save_plot, p, width=plot_width, height=plot_height, dpi=300)
+    if (verbose) message("Plot saved: ", save_plot)
+  }
+
+  # ── 11. Combined table + Excel ───────────────────────────────────────────
+  combined_table <- dplyr::bind_rows(all_species_traits,traits_genus,
+                                     traits_family,traits_notfound)
+  if (!is.null(save_excel)) {
+    openxlsx::write.xlsx(
+      list(All_matched=combined_table, Species=all_species_traits,
+           Genus_imputed=traits_genus, Family_imputed=traits_family,
+           Not_found=traits_notfound),
+      file=save_excel, rowNames=FALSE, overwrite=TRUE)
+    if (verbose) message("Excel saved: ", save_excel)
+  }
+
+  list(plot=p, table=combined_table, stats=as.data.frame(t(stats_out)),
+       pca_all=pca_all, pca_sub=pca_sub,
+       not_found=traits_notfound$verbatimScientificName,
+       fishmorph_info=fishmorph_info)   # cache and reuse next time
+}
+
+# ── Example ──────────────────────────────────────────────────────────────────
+# my_sp <- c("Hoplias malabaricus","Arapaima gigas","Serrasalmus rhombeus",
+#            "Brachyplatystoma flavicans","Colossoma macropomum",
+#            "Pterygoplichthys pardalis","Crenicichla saxatilis")
+#
+# result <- get_fishmorph_traits(
+#   species_list   = my_sp,
+#   fishmorph_path = "data/TraitFishImputed.txt",
+#   impute_genus   = TRUE,
+#   impute_family  = TRUE,
+#   n_perm         = 99,
+#   group_mode     = "groups",    # subset highlighted on global background
+#   plot_args      = list(        # passed straight to plot_FS_new()
+#     bw_mult         = 0.45,
+#     n_density_bands = 20,
+#     contour_lwd     = 1.1,
+#     arrow_mult      = 1.4
+#   ),
+#   save_excel = "output/traits.xlsx",
+#   save_plot  = "output/funspace.png"
+# )
+#
+# result$plot                     # display in RStudio
+# result$table                    # all species with match_level
+# result$stats                    # FRic, SES, p-value
+# table(result$table$match_level) # summary of matching quality
+# result$not_found                # unmatched species
+</code></pre></div>
+</div>
+<script>
+hljs.highlightAll();
+function doCopy(){var c=document.getElementById('fn-code').innerText;navigator.clipboard.writeText(c).then(function(){var b=document.querySelector('.tb-copy');b.textContent='✓ Copied!';b.classList.add('tb-copied');setTimeout(function(){b.textContent='⧉ Copy';b.classList.remove('tb-copied');},1800);})}
+function doSave(){var c=document.getElementById('fn-code').innerText;var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/plain'}));a.download='get_fishmorph_traits.R';a.click();}
+function doSuggest(){window.open('mailto:aurele.toussaint@cnrs.fr?subject='+encodeURIComponent('Suggestion: get_fishmorph_traits'));}
+</script>
+</body>
+</html>
