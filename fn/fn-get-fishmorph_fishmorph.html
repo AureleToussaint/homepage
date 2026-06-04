@@ -169,7 +169,7 @@ plot_FS_new <- function(pca_sub,
   loadings_df <- as.data.frame(pca_for_arrows$PCA$loadings[, 1:2])
   colnames(loadings_df) <- c("PC1", "PC2")
   loadings_df$trait <- rownames(loadings_df)
-  arrow_scale <- min(max(abs(fill_scores[, "PC1"])), max(abs(fill_scores[, "PC2"]))) /
+  arrow_scale <- min(max(abs(allScores[, "PC1"])), max(abs(allScores[, "PC2"]))) /
     max(abs(as.matrix(loadings_df[, 1:2]))) * arrow_mult
   loadings_df$PC1 <- loadings_df$PC1 * arrow_scale
   loadings_df$PC2 <- loadings_df$PC2 * arrow_scale
