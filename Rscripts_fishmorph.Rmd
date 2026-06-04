@@ -131,5 +131,10 @@ async function checkPw(){
     <div class="session-topics">Match a species list against FishMORPH — resolves at species, genus or family level. Returns plot, trait table and FRic/SES stats.</div>
     <div class="session-link" style="color:#c0392b;">Open ↗</div>
   </a>
+  <a class="session-card" href="fn/fn-query-fishmorph_fishmorph.html" target="_blank">
+    <div class="session-num" style="color:#c0392b;"><span style="font-family:monospace;">query_fishmorph()</span></div>
+    <div class="session-topics">Retrieve all FishMORPH rows for a taxon (species, genus, family or order). Auto-detects level and falls back gracefully when not found.</div>
+    <div class="session-link" style="color:#c0392b;">Open ↗</div>
+  </a>
 </div>
 ```
