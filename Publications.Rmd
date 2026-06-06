@@ -111,6 +111,13 @@ output:
 .btn-blog     { background: #7f8c8d; color: #fff !important; }
 .btn-radio    { background: #c0392b; color: #fff !important; }
 
+.pub-citations {
+  font-size: 0.78em; color: #777; margin-top: 8px;
+  display: flex; align-items: center; gap: 4px;
+}
+.pub-citations strong { color: #2c3e50; }
+.pub-citations.loading { color: #bbb; font-style: italic; }
+
 #pub-count { font-size: 0.85em; color: #888; margin-top: 4px; }
 </style>
 
@@ -634,5 +641,101 @@ output:
   window.filterPubs = applyFilters;
   applyFilters();
 })();
+
+// Dynamically fetch citation counts from Semantic Scholar API (with localStorage cache)
+async function fetchCitations() {
+  var CACHE_KEY = 'pub_citations_v2';
+  var CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+
+  var cached = {};
+  try {
+    var raw = localStorage.getItem(CACHE_KEY);
+    if (raw) {
+      var stored = JSON.parse(raw);
+      if (Date.now() - stored.ts < CACHE_TTL) cached = stored.counts;
+    }
+  } catch(e) {}
+
+  var cards = document.querySelectorAll('.pub-card');
+  var toFetch = [];
+
+  for (var i = 0; i < cards.length; i++) {
+    var card = cards[i];
+    var titleEl = card.querySelector('.pub-title');
+    var badgeEl = card.querySelector('.pub-journal-badge');
+    if (!titleEl) continue;
+    if (badgeEl && badgeEl.classList.contains('jbadge-preprint')) continue;
+    if (badgeEl && badgeEl.textContent.trim() === 'Award') continue;
+
+    var title = titleEl.textContent.trim().replace(/\.$/, '');
+
+    // Build a precise query: 6 title words + first author last name + year
+    var yearBlock = card.closest('.pub-year-block');
+    var year = yearBlock ? yearBlock.dataset.year : '';
+    var authorsEl = card.querySelector('.pub-authors');
+    var firstAuthor = '';
+    if (authorsEl) {
+      var authText = authorsEl.textContent.split('—')[0].trim();
+      firstAuthor = authText.split(/[\s,.(]+/)[0];
+    }
+    var titleWords = title.split(' ').slice(0, 6).join(' ');
+    var query = [titleWords, firstAuthor, year].filter(Boolean).join(' ');
+
+    if (cached[title] !== undefined) {
+      var n = cached[title];
+      if (n !== null) {
+        var d = document.createElement('div');
+        d.className = 'pub-citations';
+        d.innerHTML = '📚 Cited by <strong>' + n + '</strong> article' + (n !== 1 ? 's' : '');
+        card.appendChild(d);
+      }
+    } else {
+      var ph = document.createElement('div');
+      ph.className = 'pub-citations loading';
+      ph.textContent = 'Loading citations…';
+      card.appendChild(ph);
+      toFetch.push({title: title, query: query, ph: ph});
+    }
+  }
+
+  var cacheChanged = false;
+  for (var j = 0; j < toFetch.length; j++) {
+    var item = toFetch[j];
+    var success = false;
+    for (var attempt = 0; attempt < 3; attempt++) {
+      try {
+        var url = 'https://api.semanticscholar.org/graph/v1/paper/search?query=' +
+          encodeURIComponent(item.query) + '&fields=title,citationCount&limit=1';
+        var res = await fetch(url);
+        if (res.status === 429) {
+          await new Promise(function(r){ setTimeout(r, 3000 * (attempt + 1)); });
+          continue;
+        }
+        if (!res.ok) break;
+        var data = await res.json();
+        if (data.data && data.data.length > 0 && typeof data.data[0].citationCount === 'number') {
+          var count = data.data[0].citationCount;
+          cached[item.title] = count;
+          cacheChanged = true;
+          item.ph.innerHTML = '📚 Cited by <strong>' + count + '</strong> article' + (count !== 1 ? 's' : '');
+          item.ph.classList.remove('loading');
+          success = true;
+        }
+        break;
+      } catch(e) { break; }
+    }
+    if (!success) {
+      cached[item.title] = null;
+      cacheChanged = true;
+      item.ph.remove();
+    }
+    await new Promise(function(r){ setTimeout(r, 500); });
+  }
+
+  if (cacheChanged) {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ts: Date.now(), counts: cached})); } catch(e) {}
+  }
+}
+fetchCitations();
 </script>
 ```
