@@ -151,7 +151,7 @@ output:
 <div class="pub-year-block" data-year="2025">
 <div class="pub-year-heading">2025<hr></div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-nature">Nature</span>
     <div>
@@ -167,7 +167,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-geb">GEB</span>
     <div>
@@ -185,7 +185,7 @@ output:
 <div class="pub-year-block" data-year="2024">
 <div class="pub-year-heading">2024<hr></div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-ecollett">Ecol. Lett.</span>
     <div>
@@ -198,7 +198,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-geb">GEB</span>
     <div>
@@ -211,7 +211,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-other">Award</span>
     <div>
@@ -224,7 +224,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-other">Mar. Env. Res.</span>
     <div>
@@ -242,7 +242,7 @@ output:
 <div class="pub-year-block" data-year="2023">
 <div class="pub-year-heading">2023<hr></div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-preprint">Preprint</span>
     <div>
@@ -255,7 +255,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-geb">GEB</span>
     <div>
@@ -268,7 +268,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-nature">Nature</span>
     <div>
@@ -281,7 +281,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-preprint">Preprint</span>
     <div>
@@ -294,7 +294,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-tree">TREE</span>
     <div>
@@ -312,7 +312,7 @@ output:
 <div class="pub-year-block" data-year="2022">
 <div class="pub-year-heading">2022<hr></div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-natcomms">Nat. Comms.</span>
     <div>
@@ -325,7 +325,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-other">Div. Distrib.</span>
     <div>
@@ -338,7 +338,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-geb">GEB</span>
     <div>
@@ -356,7 +356,7 @@ output:
 <div class="pub-year-block" data-year="2021">
 <div class="pub-year-heading">2021<hr></div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-sciadv">Sci. Advances</span>
     <div>
@@ -371,7 +371,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-preprint">Preprint</span>
     <div>
@@ -384,7 +384,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-natcomms">Nat. Comms.</span>
     <div>
@@ -397,7 +397,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-nature">Nature</span>
     <div>
@@ -410,7 +410,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-geb">GEB</span>
     <div>
@@ -428,7 +428,7 @@ output:
 <div class="pub-year-block" data-year="2020">
 <div class="pub-year-heading">2020<hr></div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-other">J. Veg. Sci.</span>
     <div>
@@ -441,7 +441,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-other">Sci. Tot. Env.</span>
     <div>
@@ -454,7 +454,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-preprint">Preprint</span>
     <div>
@@ -472,7 +472,7 @@ output:
 <div class="pub-year-block" data-year="2018">
 <div class="pub-year-heading">2018<hr></div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-other">J. Veg. Sci.</span>
     <div>
@@ -485,7 +485,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-other">Ecography</span>
     <div>
@@ -498,7 +498,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-ecollett">Ecol. Lett.</span>
     <div>
@@ -520,7 +520,7 @@ output:
 <div class="pub-year-block" data-year="2016">
 <div class="pub-year-heading">2016<hr></div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-other">Biol. Invasions</span>
     <div>
@@ -533,7 +533,7 @@ output:
   </div>
 </div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-other">Sci. Reports</span>
     <div>
@@ -554,7 +554,7 @@ output:
 <div class="pub-year-block" data-year="2015">
 <div class="pub-year-heading">2015<hr></div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-other">J. Appl. Ichthyol.</span>
     <div>
@@ -572,7 +572,7 @@ output:
 <div class="pub-year-block" data-year="2014">
 <div class="pub-year-heading">2014<hr></div>
 
-<div class="pub-card">
+<div class="pub-card" data-cite="">
   <div class="pub-card-top">
     <span class="pub-journal-badge jbadge-geb">GEB</span>
     <div>
@@ -642,100 +642,17 @@ output:
   applyFilters();
 })();
 
-// Dynamically fetch citation counts from Semantic Scholar API (with localStorage cache)
-async function fetchCitations() {
-  var CACHE_KEY = 'pub_citations_v2';
-  var CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
-
-  var cached = {};
-  try {
-    var raw = localStorage.getItem(CACHE_KEY);
-    if (raw) {
-      var stored = JSON.parse(raw);
-      if (Date.now() - stored.ts < CACHE_TTL) cached = stored.counts;
-    }
-  } catch(e) {}
-
-  var cards = document.querySelectorAll('.pub-card');
-  var toFetch = [];
-
-  for (var i = 0; i < cards.length; i++) {
-    var card = cards[i];
-    var titleEl = card.querySelector('.pub-title');
-    var badgeEl = card.querySelector('.pub-journal-badge');
-    if (!titleEl) continue;
-    if (badgeEl && badgeEl.classList.contains('jbadge-preprint')) continue;
-    if (badgeEl && badgeEl.textContent.trim() === 'Award') continue;
-
-    var title = titleEl.textContent.trim().replace(/\.$/, '');
-
-    // Build a precise query: 6 title words + first author last name + year
-    var yearBlock = card.closest('.pub-year-block');
-    var year = yearBlock ? yearBlock.dataset.year : '';
-    var authorsEl = card.querySelector('.pub-authors');
-    var firstAuthor = '';
-    if (authorsEl) {
-      var authText = authorsEl.textContent.split('—')[0].trim();
-      firstAuthor = authText.split(/[\s,.(]+/)[0];
-    }
-    var titleWords = title.split(' ').slice(0, 6).join(' ');
-    var query = [titleWords, firstAuthor, year].filter(Boolean).join(' ');
-
-    if (cached[title] !== undefined) {
-      var n = cached[title];
-      if (n !== null) {
-        var d = document.createElement('div');
-        d.className = 'pub-citations';
-        d.innerHTML = '📚 Cited by <strong>' + n + '</strong> article' + (n !== 1 ? 's' : '');
-        card.appendChild(d);
-      }
-    } else {
-      var ph = document.createElement('div');
-      ph.className = 'pub-citations loading';
-      ph.textContent = 'Loading citations…';
-      card.appendChild(ph);
-      toFetch.push({title: title, query: query, ph: ph});
-    }
-  }
-
-  var cacheChanged = false;
-  for (var j = 0; j < toFetch.length; j++) {
-    var item = toFetch[j];
-    var success = false;
-    for (var attempt = 0; attempt < 3; attempt++) {
-      try {
-        var url = 'https://api.semanticscholar.org/graph/v1/paper/search?query=' +
-          encodeURIComponent(item.query) + '&fields=title,citationCount&limit=1';
-        var res = await fetch(url);
-        if (res.status === 429) {
-          await new Promise(function(r){ setTimeout(r, 3000 * (attempt + 1)); });
-          continue;
-        }
-        if (!res.ok) break;
-        var data = await res.json();
-        if (data.data && data.data.length > 0 && typeof data.data[0].citationCount === 'number') {
-          var count = data.data[0].citationCount;
-          cached[item.title] = count;
-          cacheChanged = true;
-          item.ph.innerHTML = '📚 Cited by <strong>' + count + '</strong> article' + (count !== 1 ? 's' : '');
-          item.ph.classList.remove('loading');
-          success = true;
-        }
-        break;
-      } catch(e) { break; }
-    }
-    if (!success) {
-      cached[item.title] = null;
-      cacheChanged = true;
-      item.ph.remove();
-    }
-    await new Promise(function(r){ setTimeout(r, 500); });
-  }
-
-  if (cacheChanged) {
-    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ts: Date.now(), counts: cached})); } catch(e) {}
-  }
-}
-fetchCitations();
+// Render static citation counts from data-cite attributes on each .pub-card
+// To update: set data-cite="N" on the relevant card below, then re-knit.
+document.querySelectorAll('.pub-card[data-cite]').forEach(function(card) {
+  var cite = card.getAttribute('data-cite');
+  if (!cite || cite === '') return;
+  var n = parseInt(cite, 10);
+  if (isNaN(n)) return;
+  var d = document.createElement('div');
+  d.className = 'pub-citations';
+  d.innerHTML = '📚 Cited by <strong>' + n + '</strong> article' + (n !== 1 ? 's' : '');
+  card.appendChild(d);
+});
 </script>
 ```
