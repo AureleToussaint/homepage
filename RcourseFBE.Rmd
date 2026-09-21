@@ -286,9 +286,25 @@ output:
       <h3>Slides</h3>
       <p>Lecture presentations for each session of the course.</p>
       <div class="card-links">
-        <div class="section-label">Full course</div>
-        <a class="card-btn btn-slides" href="data/courses/fullcourse.pptx" target="_blank">
-          <i class="fa fa-file-powerpoint-o"></i> &nbsp;Full day — Slides (pptx)
+        <div class="section-label">Session 1 — 22 Sept 2026 (pptx)</div>
+        <a class="card-btn btn-slides" href="data/courses/FBE_2026/slides/FBE_2026_00_Introduction.pptx" target="_blank">
+          <i class="fa fa-file-powerpoint-o"></i> &nbsp;Introduction — Why traits?
+        </a>
+        <a class="card-btn btn-slides" href="data/courses/FBE_2026/slides/FBE_2026_01_Block1_Traits_and_Functional_Space.pptx" target="_blank">
+          <i class="fa fa-file-powerpoint-o"></i> &nbsp;Block 1 — Traits &amp; functional space
+        </a>
+        <a class="card-btn btn-slides" href="data/courses/FBE_2026/slides/FBE_2026_02_Block2_Indices_Null_Models_and_Extinctions.pptx" target="_blank">
+          <i class="fa fa-file-powerpoint-o"></i> &nbsp;Block 2 — Indices, null models &amp; extinctions
+        </a>
+        <a class="card-btn btn-slides" href="data/courses/FBE_2026/slides/FBE_2026_03_Block3_Intraspecific_Trait_Variability.pptx" target="_blank">
+          <i class="fa fa-file-powerpoint-o"></i> &nbsp;Block 3 — Intraspecific trait variability
+        </a>
+        <a class="card-btn btn-slides" href="data/courses/FBE_2026/slides/FBE_2026_04_Wrapup.pptx" target="_blank">
+          <i class="fa fa-file-powerpoint-o"></i> &nbsp;Wrap-up — Take-home &amp; Thursday practical
+        </a>
+        <div class="section-label" style="margin-top:8px;">Optional — for the practical</div>
+        <a class="card-btn btn-slides" href="data/courses/FBE_2026/slides/FBE_2026_optional_FD_indices_detailed.pptx" target="_blank" style="background:#b98ccf;">
+          <i class="fa fa-file-powerpoint-o"></i> &nbsp;FD indices in detail (CWM, FRic, FEve, FDiv, FDis, Rao)
         </a>
       </div>
     </div>

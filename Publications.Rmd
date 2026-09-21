@@ -147,6 +147,25 @@ output:
 
 <div id="pub-container">
 
+<!-- 2026 -->
+<div class="pub-year-block" data-year="2026">
+<div class="pub-year-heading">2026<hr></div>
+
+<div class="pub-card" data-cite="">
+  <div class="pub-card-top">
+    <span class="pub-journal-badge jbadge-other">Ecography</span>
+    <div>
+      <div class="pub-title">Disentangling functional spaces: a multidimensional framework for ecology and conservation.</div>
+      <div class="pub-authors"><strong>Toussaint A.</strong>, Tedesco P.A., Grenouillet G., Kasari-Toussaint L., Brosse S. — <em>Ecography</em>, 2026, e08578.</div>
+    </div>
+  </div>
+  <div class="pub-links">
+    <a class="pub-btn btn-pdf" href="data/2026_Toussaint_Ecography.pdf" target="_blank">PDF</a>
+    <a class="pub-btn btn-doi" href="https://doi.org/10.1002/ecog.08578" target="_blank">DOI</a>
+  </div>
+</div>
+</div>
+
 <!-- 2025 -->
 <div class="pub-year-block" data-year="2025">
 <div class="pub-year-heading">2025<hr></div>
