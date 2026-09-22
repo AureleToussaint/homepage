@@ -441,13 +441,6 @@ $(document).ready(function () {
 .upload-field input:focus,
 .upload-field select:focus,
 .upload-field textarea:focus { border-color: #2980b9; }
-.drop-zone {
-  border: 2px dashed #ccc; border-radius: 10px; padding: 28px 20px;
-  text-align: center; background: #fafafa; transition: border-color .2s, background .2s; cursor: pointer;
-}
-.drop-zone.drag-over { border-color: #2980b9; background: #eaf4fb; }
-.drop-zone p { margin: 8px 0 0 0; color: #777; font-size: 0.92em; }
-.file-label { color: #2980b9; cursor: pointer; text-decoration: underline; font-weight: 500; }
 .upload-btn {
   margin-top: 18px; padding: 10px 28px; background: #2980b9; color: #fff;
   border: none; border-radius: 8px; font-size: 1em; cursor: pointer; transition: background .2s;
@@ -665,15 +658,19 @@ $(document).ready(function () {
   <div class="upload-section">
     <h2 class="upload-title"><i class="fa fa-upload"></i> &nbsp;Submit your results</h2>
     <p class="upload-subtitle">
-      Upload your R script or output file for grading. Accepted formats: <code>.R</code>, <code>.Rmd</code>, <code>.html</code>, <code>.pdf</code>, <code>.zip</code> (max 10 MB).
+      Upload your R script or output file (<code>.R</code>, <code>.Rmd</code>, <code>.html</code>, <code>.pdf</code> or <code>.zip</code>)
+      to a cloud drive (Google Drive, OneDrive, Dropbox, Nextcloud…), set the sharing option to
+      <em>"Anyone with the link can view"</em>, then paste the link below.
     </p>
 
-    <!-- ⚙️ SETUP: replace YOUR_FORM_ID with your Formspree form ID (different from Belém course).
-         Create a free form at https://formspree.io → "New Form" → copy the ID from the endpoint URL. -->
+    <!-- ⚙️ SETUP: Formspree form ID (free plan). NB: the free plan does NOT accept file uploads
+         (multipart/form-data) and is limited to 50 submissions/month per account, hence the
+         link-based submission. This ID is currently shared with the Belém course (Rcourse.Rmd);
+         create a separate form at https://formspree.io if you want FBE submissions kept apart. -->
     <form id="upload-form"
           action="https://formspree.io/f/xvzyyzlo"
-          method="POST"
-          enctype="multipart/form-data">
+          method="POST">
+      <input type="hidden" name="_subject" value="[FBE 2026] Student submission"/>
 
       <div class="upload-fields">
         <div class="upload-field">
@@ -695,12 +692,11 @@ $(document).ready(function () {
         </div>
       </div>
 
-      <div class="drop-zone" id="drop-zone">
-        <i class="fa fa-cloud-upload" style="font-size:2em; color:#aaa;"></i>
-        <p>Drag &amp; drop your file here, or <label for="file-input" class="file-label">browse</label></p>
-        <input type="file" id="file-input" name="file" accept=".R,.Rmd,.html,.pdf,.zip"
-               style="display:none;" onchange="showFileName(this)"/>
-        <p id="file-name" style="font-size:0.85em; color:#555; margin:0;"></p>
+      <div class="upload-field" style="margin-top:12px;">
+        <label for="file-link">Link to your file (shared with "Anyone with the link")</label>
+        <input type="url" id="file-link" name="file_link"
+               placeholder="https://drive.google.com/… or https://1drv.ms/…"
+               pattern="https?://.+" required/>
       </div>
 
       <div class="upload-field" style="margin-top:12px;">
@@ -751,26 +747,7 @@ if (sessionStorage.getItem("fbe_unlocked") === "1") {
   document.getElementById("course-content").style.display = "block";
 }
 
-// ── Upload helpers ──────────────────────────────────
-function showFileName(input) {
-  const label = document.getElementById("file-name");
-  label.textContent = input.files.length ? "📎 " + input.files[0].name : "";
-}
-
-const dropZone = document.getElementById("drop-zone");
-if (dropZone) {
-  dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classList.add("drag-over"); });
-  dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
-  dropZone.addEventListener("drop", e => {
-    e.preventDefault();
-    dropZone.classList.remove("drag-over");
-    const fi = document.getElementById("file-input");
-    fi.files = e.dataTransfer.files;
-    showFileName(fi);
-  });
-  dropZone.addEventListener("click", () => document.getElementById("file-input").click());
-}
-
+// ── Form submission ─────────────────────────────────
 const uploadForm = document.getElementById("upload-form");
 if (uploadForm) {
   uploadForm.addEventListener("submit", async e => {
@@ -787,15 +764,14 @@ if (uploadForm) {
       });
       if (res.ok) {
         status.style.color = "#27ae60";
-        status.textContent = "✔ File submitted successfully. Thank you!";
+        status.textContent = "✔ Link submitted successfully. Thank you!";
         uploadForm.reset();
-        document.getElementById("file-name").textContent = "";
       } else {
         throw new Error("Server error");
       }
     } catch {
       status.style.color = "#c0392b";
-      status.textContent = "✘ Submission failed. Please try again or contact the instructor.";
+      status.textContent = "✘ Submission failed. Please try again, or e-mail the link to the instructor.";
     }
     btn.disabled = false;
     btn.innerHTML = '<i class="fa fa-paper-plane"></i> &nbsp;Send';
