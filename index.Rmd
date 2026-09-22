@@ -277,7 +277,14 @@ editor_options:
     <script>
     (function() {
       var ORCID = "0000-0002-5738-4637";
-      var API   = "https://api.openalex.org/authors/https://orcid.org/" + ORCID;
+      // NB: OpenAlex holds several author records for this ORCID (a stray "A Toussaint"
+      // profile, A5036882023, now wins the /authors/orcid:… lookup and reports ~0 citations).
+      // So we (1) list all records matching the ORCID and keep the most-cited one,
+      // (2) fall back to the canonical OpenAlex ID if the search fails.
+      var OPENALEX_ID = "A5018143663";
+      var MAILTO = "?mailto=aurele.toussaint@cnrs.fr";
+      var API_SEARCH = "https://api.openalex.org/authors?filter=orcid:" + ORCID + "&select=id,cited_by_count,summary_stats" + MAILTO.replace("?", "&");
+      var API_ID     = "https://api.openalex.org/authors/" + OPENALEX_ID + MAILTO;
 
       function setVal(id, v) {
         var el = document.querySelector("#" + id + " .stat-val");
@@ -359,16 +366,30 @@ editor_options:
       }
 
       // Fetch live stats (citations total, h-index, i10) from OpenAlex
-      fetch(API + "?mailto=aurele.toussaint@cnrs.fr")
-        .then(function(r){ return r.json(); })
+      function getJSON(url) {
+        return fetch(url).then(function(r){
+          if (!r.ok) throw new Error("HTTP " + r.status);   // 429 etc. must not be shown as 0
+          return r.json();
+        });
+      }
+      function showStats(d) {
+        if (!d || typeof d.cited_by_count !== "number") throw new Error("no data");
+        setVal("stat-cit", d.cited_by_count);
+        setVal("stat-h",   (d.summary_stats && d.summary_stats.h_index)   || 0);
+        setVal("stat-i10", (d.summary_stats && d.summary_stats.i10_index) || 0);
+        var src = document.getElementById("scholar-src");
+        if (src) src.textContent = "· via OpenAlex";
+      }
+      getJSON(API_SEARCH)
         .then(function(d) {
-          setVal("stat-cit", d.cited_by_count || 0);
-          setVal("stat-h",   (d.summary_stats && d.summary_stats.h_index)   || 0);
-          setVal("stat-i10", (d.summary_stats && d.summary_stats.i10_index) || 0);
-          var src = document.getElementById("scholar-src");
-          if (src) src.textContent = "· via OpenAlex";
+          var best = (d.results || []).reduce(function(a, b){
+            return (!a || b.cited_by_count > a.cited_by_count) ? b : a;
+          }, null);
+          showStats(best);
         })
-        .catch(function(){ /* silently fail */ });
+        .catch(function() {
+          getJSON(API_ID).then(showStats).catch(function(){ /* keep the dashes */ });
+        });
 
       // Fetch per-year chart from local JSON (updated manually from Google Scholar)
       fetch("data/citations_by_year.json")
