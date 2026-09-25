@@ -131,6 +131,141 @@ editor_options:
 
 
 <!-- ══════════════════════════════════════════════════ -->
+<!--  LATEST PUBLICATION                               -->
+<!--  To update: edit only the fields marked ✏️ below  -->
+<!--  (image, journal, date, title, authors, summary,  -->
+<!--  key numbers, links). The CSS can stay as is.     -->
+<!-- ══════════════════════════════════════════════════ -->
+
+<style>
+.latest-pub {
+  position: relative;
+  display: grid;
+  grid-template-columns: 38% 1fr;
+  background: #fff;
+  border: 1px solid #e4e9f0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin: 8px 0 28px 0;
+  transition: box-shadow .2s, transform .15s;
+}
+.latest-pub:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.10); transform: translateY(-2px); }
+.latest-pub::before {                       /* thin accent bar on top */
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, #0d3b2e 0%, #1a6b45 45%, #0e7490 100%);
+  z-index: 2;
+}
+.latest-pub-fig {
+  position: relative; background: #fff; min-height: 240px;
+  border-right: 1px solid #eef0f3;
+}
+.latest-pub-fig img {                        /* 'contain' shows the whole figure; use 'cover' to fill with a photo */
+  position: absolute; inset: 0; width: 100%; height: 100%; padding: 36px 14px 14px 14px;
+  object-fit: contain; object-position: center;
+  border: none; border-radius: 0; margin: 0;
+}
+.latest-pub-fig-badge {
+  position: absolute; left: 14px; top: 14px; z-index: 1;
+  background: rgba(13,59,46,0.88); color: #fff;
+  font-size: 0.66em; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 20px; backdrop-filter: blur(4px);
+}
+.latest-pub-body { padding: 24px 28px 22px 28px; display: flex; flex-direction: column; }
+.latest-pub-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
+.latest-pub-label {
+  font-size: 0.68em; font-weight: 800; letter-spacing: .14em;
+  text-transform: uppercase; color: #1a6b45; margin-right: 4px;
+}
+.latest-pub-pill {
+  font-size: 0.72em; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+  white-space: nowrap; border: 1px solid;
+}
+.lp-journal { background: #e8f4fb; color: #1a6a9a; border-color: #b3d9f0; }
+.lp-oa      { background: #fff4e5; color: #b85c00; border-color: #f5d0a0; }
+.lp-date    { background: #f0f4f8; color: #607080; border-color: #dde3ea; font-weight: 600; }
+.latest-pub-title {
+  font-size: 1.3em; font-weight: 700; color: #2c3e50; line-height: 1.3; margin: 0 0 6px 0;
+}
+.latest-pub-authors { font-size: 0.82em; color: #888; margin: 0 0 12px 0; }
+.latest-pub-authors strong { color: #2c3e50; }
+.latest-pub-summary { font-size: 0.9em; color: #555; line-height: 1.65; margin: 0 0 14px 0; }
+.latest-pub-nums { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 16px 0; }
+.latest-pub-num {
+  flex: 1; min-width: 110px;
+  background: #f7f9fc; border: 1px solid #e4e9f0; border-radius: 10px;
+  padding: 8px 12px; text-align: center;
+}
+.latest-pub-num b { display: block; font-size: 1.25em; font-weight: 800; color: #2c3e50; line-height: 1.1; }
+.latest-pub-num span { font-size: 0.7em; color: #888; line-height: 1.3; display: block; margin-top: 2px; }
+.latest-pub-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+.lp-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 8px; font-size: 0.82em; font-weight: 600;
+  text-decoration: none !important; border: 1px solid; transition: opacity .15s, background .15s;
+}
+.lp-btn:hover { opacity: 0.8; }
+.lp-primary { background: #1a6b45; border-color: #1a6b45; color: #fff !important; }
+.lp-ghost   { background: #fff;    border-color: #dde3ea; color: #2c3e50 !important; }
+.lp-ghost:hover { background: #f7f9fc; opacity: 1; }
+@media (max-width: 720px) {
+  .latest-pub { grid-template-columns: 1fr; }
+  .latest-pub-fig { min-height: 200px; border-right: none; border-bottom: 1px solid #eef0f3; }
+  .latest-pub-body { padding: 20px; }
+}
+</style>
+
+<div class="latest-pub">
+
+  <!-- ✏️ Figure (any image: a paper figure, graphical abstract or photo) -->
+  <div class="latest-pub-fig">
+    <img src="my-blog/site/posts/2026-09-25-disentangling-functional-spaces/Fig5.jpg"
+         alt="Functionally distinct bird species in the locomotion, reproduction, diet and combined trait spaces"/>
+    <span class="latest-pub-fig-badge">New paper</span>
+  </div>
+
+  <div class="latest-pub-body">
+
+    <div class="latest-pub-meta">
+      <span class="latest-pub-label">📰 Latest publication</span>
+      <span class="latest-pub-pill lp-journal">Ecography</span>        <!-- ✏️ journal -->
+      <span class="latest-pub-pill lp-oa">🔓 Open access</span>         <!-- ✏️ delete if not OA -->
+      <span class="latest-pub-pill lp-date">September 2026</span>      <!-- ✏️ date -->
+    </div>
+
+    <!-- ✏️ Title -->
+    <p class="latest-pub-title">Disentangling functional spaces: a multidimensional framework for ecology and conservation</p>
+
+    <!-- ✏️ Authors -->
+    <p class="latest-pub-authors"><strong>Toussaint A.</strong>, Tedesco P.A., Grenouillet G., Kasari-Toussaint L., Brosse S.</p>
+
+    <!-- ✏️ One- or two-sentence take-home message -->
+    <p class="latest-pub-summary">
+      Pooling morphology, life history and diet into a single functional space mostly captures body size
+      and pace of life. Building one space per ecological function reveals hundreds of bird species that are
+      functionally unique for locomotion, reproduction or diet, and that are disproportionately threatened.
+    </p>
+
+    <!-- ✏️ Key numbers (optional: delete the whole block if not needed) -->
+    <div class="latest-pub-nums">
+      <div class="latest-pub-num"><b>10,000+</b><span>bird species</span></div>
+      <div class="latest-pub-num"><b>800+</b><span>unique species missed by the combined space</span></div>
+      <div class="latest-pub-num"><b>~2&times;</b><span>more threatened species among unique ones</span></div>
+    </div>
+
+    <!-- ✏️ Links -->
+    <div class="latest-pub-links">
+      <a class="lp-btn lp-primary" href="https://doi.org/10.1002/ecog.08578" target="_blank" rel="noopener">📄 Read the paper</a>
+      <a class="lp-btn lp-ghost" href="my-blog/site/posts/2026-09-25-disentangling-functional-spaces/" target="_blank">🐦 Blog post</a>
+      <a class="lp-btn lp-ghost" href="data/2026_Toussaint_Ecography.pdf" target="_blank">⬇️ PDF</a>
+      <a class="lp-btn lp-ghost" href="https://github.com/FunTraits/DisentFunSpaces" target="_blank" rel="noopener">💻 Code &amp; data</a>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════ -->
 <!--  AFFILIATION + METRICS                            -->
 <!-- ══════════════════════════════════════════════════ -->
 
