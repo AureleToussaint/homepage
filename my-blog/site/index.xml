@@ -7,7 +7,16 @@
     <description>My Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 25 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>One functional space is not enough: disentangling bird ecological roles</title>
+      <link>https://beta.rstudioconnect.com/content/3776/posts/2026-09-25-disentangling-functional-spaces</link>
+      <description>Trait-based ecology usually merges morphology, life history and diet into a single functional space. In a new open-access paper in Ecography, we show with more than 10,000 bird species that this convenience comes at a cost: the combined space is dominated by body size and reproductive pace, and it overlooks hundreds of species that are functionally unique for locomotion, reproduction or diet.</description>
+      <category>articles</category>
+      <guid>https://beta.rstudioconnect.com/content/3776/posts/2026-09-25-disentangling-functional-spaces</guid>
+      <pubDate>Fri, 25 Sep 2026 00:00:00 +0000</pubDate>
+      <media:content url="https://beta.rstudioconnect.com/content/3776/posts/2026-09-25-disentangling-functional-spaces/Fig1.jpg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>Field notes from Belém — teaching R in the Amazon gateway</title>
       <link>https://beta.rstudioconnect.com/content/3776/posts/2026-06-01-belem-brazil</link>
