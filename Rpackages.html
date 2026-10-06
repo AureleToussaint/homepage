@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>R Packages — Aurèle Toussaint</title>
+
+<script src="site_libs/header-attrs-2.31/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel="shortcut icon" href="data/ATc.jpg" />
+
+<style>
+/* ── Wider page layout ── */
+.container { max-width: 1140px !important; width: 96% !important; }
+.main-container { max-width: 1140px !important; width: 96% !important; }
+@media (min-width: 1400px) {
+  .container, .main-container { max-width: 1280px !important; }
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    
+  </a>
+</li>
+<li>
+  <a href="Projects.html">Projects</a>
+</li>
+<li>
+  <a href="Courses.html">Teaching</a>
+</li>
+<li>
+  <a href="RData.html">Data</a>
+</li>
+<li>
+  <a href="Rscripts.html">R scripts</a>
+</li>
+<li>
+  <a href="Rpackages.html">R packages</a>
+</li>
+<li>
+  <a href="my-blog/site">My blog</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="contact.html">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/AureleToussaint">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://twitter.com/ToussaintAurele">
+    <span class="fa fa-twitter fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/atoussaint/">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<style>
+/* ── Password overlay (same pattern as R scripts pages) ── */
+#pw-overlay {
+  position: fixed; inset: 0; background: rgba(255,255,255,0.97);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+}
+.pw-box {
+  background: #fff; border: 1px solid #dde3ea; border-radius: 12px;
+  padding: 40px 48px; text-align: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-width: 400px; width: 90%;
+}
+.pw-box h2 { margin: 0 0 6px 0; font-size: 1.5em; color: #2c3e50; }
+.pw-box p  { color: #666; font-size: 0.95em; margin: 0 0 22px 0; }
+.pw-lock   { font-size: 3em; margin-bottom: 8px; }
+.pw-row    { display: flex; gap: 8px; }
+.pw-row input {
+  flex:1; padding: 10px 14px; border: 1px solid #ccc;
+  border-radius: 8px; font-size: 1em; outline: none; transition: border-color .2s;
+}
+.pw-row input:focus { border-color: #27ae60; }
+.pw-row button {
+  padding: 10px 18px; background: #27ae60; color: #fff;
+  border: none; border-radius: 8px; font-size: 1em; cursor: pointer;
+}
+.pw-row button:hover { background: #1e8449; }
+.pw-err { color: #c0392b; font-size: 0.9em; margin: 8px 0 0 0; min-height: 20px; }
+
+/* ── Page header ── */
+.pkg-header { text-align: center; margin: 40px 0 24px 0; }
+.pkg-header h1 { font-size: 2em; font-weight: bold; color: #2c3e50; margin-bottom: 8px; }
+.pkg-header p  { color: #777; font-size: 1.05em; max-width: 720px; margin: 0 auto; }
+
+/* ── Search / filter bar ── */
+.pkg-toolbar {
+  display: flex; gap: 10px; align-items: center; justify-content: center;
+  flex-wrap: wrap; margin: 0 0 36px 0;
+}
+.pkg-toolbar input {
+  width: min(420px, 100%); padding: 10px 14px; border: 1px solid #ccc;
+  border-radius: 8px; font-size: 0.95em; outline: none; transition: border-color .2s;
+}
+.pkg-toolbar input:focus { border-color: #27ae60; }
+.pkg-count { font-size: 0.85em; color: #999; }
+
+/* ── Section titles ── */
+.section-group { margin-bottom: 36px; }
+.section-group-title {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.72em; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase; color: #aaa; margin-bottom: 14px;
+}
+.section-group-title hr { flex: 1; border: none; border-top: 1px solid #e8e8e8; margin: 0; }
+.section-group.hidden { display: none; }
+
+/* ── Package cards ── */
+.pkg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+}
+.pkg-card {
+  background: #fff; border: 1px solid #dde3ea; border-radius: 12px;
+  padding: 18px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  display: flex; flex-direction: column; gap: 8px;
+  transition: box-shadow .2s, transform .15s;
+}
+.pkg-card:hover { box-shadow: 0 6px 22px rgba(0,0,0,0.10); transform: translateY(-2px); }
+.pkg-card.hidden { display: none; }
+.pkg-top { display: flex; align-items: center; gap: 12px; }
+.pkg-icon {
+  width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 1.1em;
+}
+.pkg-name { font-family: "SFMono-Regular", Menlo, Consolas, monospace; font-size: 1.05em; font-weight: 700; color: #2c3e50; margin: 0; }
+.pkg-links { font-size: 0.78em; margin-top: 2px; }
+.pkg-links a { color: #2980b9; text-decoration: none; margin-right: 8px; }
+.pkg-links a:hover { text-decoration: underline; }
+.pkg-desc { font-size: 0.88em; color: #555; line-height: 1.55; margin: 0; }
+.pkg-fns { display: flex; flex-wrap: wrap; gap: 5px; margin: 2px 0 0 0; }
+.pkg-fns code {
+  font-size: 0.76em; background: #f3f6f9; color: #2c3e50; border: 1px solid #e4e9f0;
+  border-radius: 5px; padding: 2px 6px;
+}
+.pkg-ref { font-size: 0.76em; color: #999; line-height: 1.45; margin: auto 0 0 0; padding-top: 6px; border-top: 1px dashed #eee; }
+.pkg-ref em { color: #888; }
+
+/* ── Install block ── */
+.install-section { border-top: 1px solid #e5e5e5; margin: 20px 0 60px 0; padding-top: 32px; }
+.install-section h2 { font-size: 1.3em; font-weight: 600; color: #2c3e50; margin: 0 0 6px 0; }
+.install-section p  { color: #777; font-size: 0.93em; margin: 0 0 14px 0; }
+.install-section pre {
+  background: #f7f9fb; border: 1px solid #e4e9f0; border-radius: 10px;
+  padding: 16px 18px; font-size: 0.82em; line-height: 1.5; overflow-x: auto;
+}
+.no-result { text-align: center; color: #999; padding: 30px 0 50px 0; display: none; }
+</style>
+
+<!-- PASSWORD OVERLAY -->
+<div id="pw-overlay">
+  <div class="pw-box">
+    <div class="pw-lock">🔒</div>
+    <h2>R Packages</h2>
+    <p>This page is restricted.<br>Please enter the access password.</p>
+    <div class="pw-row">
+      <input type="password" id="pw-input" placeholder="Password…"
+             onkeydown="if(event.key==='Enter') checkPw()"/>
+      <button onclick="checkPw()">Enter</button>
+    </div>
+    <p class="pw-err" id="pw-error"></p>
+  </div>
+</div>
+
+<!-- PAGE CONTENT -->
+<div id="pkg-content" style="display:none;">
+
+  <div class="pkg-header">
+    <h1>R Packages</h1>
+    <p>An annotated catalogue of the R packages used in my research and teaching, organised by theme:
+       what each package does, the functions I rely on, and the reference to cite.</p>
+  </div>
+
+  <div class="pkg-toolbar">
+    <input type="search" id="pkg-search" placeholder="Filter packages (name, function, keyword)…" oninput="filterPkgs()"/>
+    <span class="pkg-count" id="pkg-count"></span>
+  </div>
+
+  <!-- ══════════ Functional diversity & trait spaces ══════════ -->
+  <div class="section-group" data-group="fd">
+    <div class="section-group-title"><span>Functional diversity &amp; trait spaces</span><hr></div>
+    <div class="pkg-grid">
+
+      <div class="pkg-card" data-tags="functional diversity multidimensional space indices alpha beta hill">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#e67e22;"><i class="fa fa-cube"></i></div>
+          <div>
+            <p class="pkg-name">mFD</p>
+            <div class="pkg-links">
+              <a href="https://cran.r-project.org/package=mFD" target="_blank">CRAN</a>
+              <a href="https://cmlmagneville.github.io/mFD/" target="_blank">Website</a>
+            </div>
+          </div>
+        </div>
+        <p class="pkg-desc">Complete workflow for multidimensional functional diversity: Gower distances on mixed traits, quality assessment of functional spaces, and alpha/beta indices (FRic, FDiv, FEve, FDis, FOri, FSpe) plus Hill-number based indices.</p>
+        <div class="pkg-fns"><code>funct.dist()</code><code>quality.fspaces()</code><code>alpha.fd.multidim()</code><code>beta.fd.multidim()</code><code>alpha.fd.hill()</code></div>
+        <p class="pkg-ref">Magneville C. <em>et al.</em> (2022) mFD: an R package to compute and illustrate the multiple facets of functional diversity. <em>Ecography</em> 2022: e05904.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="functional diversity dbFD gower FRic FDiv FEve FDis CWM">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#d35400;"><i class="fa fa-leaf"></i></div>
+          <div>
+            <p class="pkg-name">FD</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=FD" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">The historical reference for distance-based functional diversity indices from multiple traits (FRic, FEve, FDiv, FDis, RaoQ) and community-weighted means. Still the fastest route for the Gower distance on mixed trait tables.</p>
+        <div class="pkg-fns"><code>dbFD()</code><code>gowdis()</code><code>functcomp()</code></div>
+        <p class="pkg-ref">Laliberté E. &amp; Legendre P. (2010) A distance-based framework for measuring functional diversity from multiple traits. <em>Ecology</em> 91: 299–305.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="trait probability density kernel intraspecific scales REND dissimilarity redundancy">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#c0392b;"><i class="fa fa-area-chart"></i></div>
+          <div>
+            <p class="pkg-name">TPD</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=TPD" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Trait Probability Density framework: functional diversity as probability distributions in trait space, which integrates intraspecific variability and scales from individuals to species and communities (richness, evenness, divergence, dissimilarity, redundancy).</p>
+        <div class="pkg-fns"><code>TPDs()</code><code>TPDc()</code><code>REND()</code><code>dissim()</code><code>redundancy()</code></div>
+        <p class="pkg-ref">Carmona C.P., de Bello F., Mason N.W.H. &amp; Lepš J. (2016) Traits without borders: integrating functional diversity across scales. <em>Trends in Ecology &amp; Evolution</em> 31: 382–394. — Carmona C.P. <em>et al.</em> (2019) <em>Ecology</em> 100: e02876.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="functional space kernel density PCA null model GAM plot trait space">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#16a085;"><i class="fa fa-arrows-alt"></i></div>
+          <div>
+            <p class="pkg-name">funspace</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=funspace" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Builds, analyses and plots functional trait spaces from a PCA or raw traits using kernel density estimation; includes null models for occupation of the space and GAM-based mapping of a response variable onto the space.</p>
+        <div class="pkg-fns"><code>funspace()</code><code>plot.funspace()</code><code>funspaceNull()</code><code>funspaceGAM()</code></div>
+        <p class="pkg-ref">Carmona C.P., Pavanetto N. &amp; Puglielli G. (2024) funspace: an R package to build, analyse and plot functional trait spaces. <em>Diversity and Distributions</em> 30: e13820.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="hypervolume n-dimensional niche kernel overlap volume">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#2c3e50;"><i class="fa fa-cubes"></i></div>
+          <div>
+            <p class="pkg-name">hypervolume</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=hypervolume" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">n-dimensional hypervolumes (Gaussian KDE, box, SVM) to describe niche or trait volumes, with set operations (union, intersection, unique fractions) and overlap statistics between groups.</p>
+        <div class="pkg-fns"><code>hypervolume_gaussian()</code><code>hypervolume_set()</code><code>hypervolume_overlap_statistics()</code><code>get_volume()</code></div>
+        <p class="pkg-ref">Blonder B. <em>et al.</em> (2014) The n-dimensional hypervolume. <em>Global Ecology and Biogeography</em> 23: 595–609. — Blonder B. <em>et al.</em> (2018) <em>Methods in Ecology and Evolution</em> 9: 305–319.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="functional rarity distinctiveness uniqueness scarcity restrictedness">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#8e44ad;"><i class="fa fa-diamond"></i></div>
+          <div>
+            <p class="pkg-name">funrar</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=funrar" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Functional rarity indices at the species and community level: distinctiveness and uniqueness (trait-based), scarcity and restrictedness (abundance/occupancy-based).</p>
+        <div class="pkg-fns"><code>distinctiveness()</code><code>uniqueness()</code><code>scarcity()</code><code>restrictedness()</code></div>
+        <p class="pkg-ref">Grenié M., Denelle P., Tucker C.M., Munoz F. &amp; Violle C. (2017) funrar: An R package to characterize functional rarity. <em>Diversity and Distributions</em> 23: 1365–1371.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="convex hull volume tessellation delaunay geometry">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#7f8c8d;"><i class="fa fa-object-ungroup"></i></div>
+          <div>
+            <p class="pkg-name">geometry</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=geometry" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Interface to Qhull: convex hulls and their volume in n dimensions, Delaunay triangulation and point-in-hull tests — the building blocks of convex-hull based functional richness.</p>
+        <div class="pkg-fns"><code>convhulln()</code><code>inhulln()</code><code>delaunayn()</code></div>
+        <p class="pkg-ref">Habel K., Grasman R., Gramacy R.B., Mozharovskyi P. &amp; Sterratt D.C. geometry: Mesh generation and surface tessellation. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="trait data standard harmonisation ecological trait-data standard ETS">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#27ae60;"><i class="fa fa-table"></i></div>
+          <div>
+            <p class="pkg-name">traitdataform</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=traitdataform" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Harmonises heterogeneous trait datasets into the Ecological Trait-data Standard (ETS): long-format trait tables, taxon-name matching against GBIF, unit and trait-name standardisation.</p>
+        <div class="pkg-fns"><code>as.traitdata()</code><code>standardize_taxa()</code><code>standardize_traits()</code></div>
+        <p class="pkg-ref">Schneider F.D. <em>et al.</em> (2019) Towards an ecological trait-data standard. <em>Methods in Ecology and Evolution</em> 10: 2006–2019.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════ Community ecology, ordination & phylogenetics ══════════ -->
+  <div class="section-group" data-group="community">
+    <div class="section-group-title"><span>Community ecology, ordination &amp; phylogenetics</span><hr></div>
+    <div class="pkg-grid">
+
+      <div class="pkg-card" data-tags="community ecology ordination NMDS RDA CCA PERMANOVA diversity dissimilarity">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#2471a3;"><i class="fa fa-sitemap"></i></div>
+          <div>
+            <p class="pkg-name">vegan</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=vegan" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">The standard toolbox for community ecology: dissimilarity matrices, unconstrained and constrained ordination (NMDS, PCoA, RDA, CCA), permutation tests (PERMANOVA, Mantel), diversity indices and rarefaction.</p>
+        <div class="pkg-fns"><code>vegdist()</code><code>metaMDS()</code><code>rda()</code><code>cca()</code><code>adonis2()</code><code>diversity()</code><code>specaccum()</code></div>
+        <p class="pkg-ref">Oksanen J. <em>et al.</em> vegan: Community Ecology Package. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="duality diagram PCA PCoA coinertia multivariate mantel">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#1abc9c;"><i class="fa fa-th"></i></div>
+          <div>
+            <p class="pkg-name">ade4</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=ade4" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Multivariate analyses built on the duality diagram: PCA, PCoA, correspondence and mixed-data analyses, co-inertia and RLQ-type coupling of trait, environment and species tables.</p>
+        <div class="pkg-fns"><code>dudi.pca()</code><code>dudi.pco()</code><code>dudi.mix()</code><code>coinertia()</code><code>mantel.rtest()</code></div>
+        <p class="pkg-ref">Dray S. &amp; Dufour A.-B. (2007) The ade4 package: implementing the duality diagram for ecologists. <em>Journal of Statistical Software</em> 22(4): 1–20.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="phylogeny tree newick cophenetic PCoA phylogenetics">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#27ae60;"><i class="fa fa-code-fork"></i></div>
+          <div>
+            <p class="pkg-name">ape</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=ape" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Reading, manipulating and plotting phylogenetic trees; patristic distances, tree pruning and principal coordinates analysis — the base layer for phylogenetic diversity and comparative analyses.</p>
+        <div class="pkg-fns"><code>read.tree()</code><code>drop.tip()</code><code>cophenetic.phylo()</code><code>pcoa()</code><code>plot.phylo()</code></div>
+        <p class="pkg-ref">Paradis E. &amp; Schliep K. (2019) ape 5.0: an environment for modern phylogenetics and evolutionary analyses in R. <em>Bioinformatics</em> 35: 526–528.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="phylogenetic diversity PD MPD MNTD null model community phylogenetics">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#16a085;"><i class="fa fa-tree"></i></div>
+          <div>
+            <p class="pkg-name">picante</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=picante" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Community phylogenetics: Faith's PD, mean pairwise and nearest-taxon distances with standardised effect sizes under null models, and phylogenetic signal of traits.</p>
+        <div class="pkg-fns"><code>pd()</code><code>mpd()</code><code>mntd()</code><code>ses.mpd()</code><code>phylosignal()</code></div>
+        <p class="pkg-ref">Kembel S.W. <em>et al.</em> (2010) Picante: R tools for integrating phylogenies and ecology. <em>Bioinformatics</em> 26: 1463–1464.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="geometric morphometrics landmarks procrustes shape">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#c0392b;"><i class="fa fa-crosshairs"></i></div>
+          <div>
+            <p class="pkg-name">geomorph</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=geomorph" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Geometric morphometrics of landmark data: generalised Procrustes superimposition, shape-space PCA, and Procrustes ANOVA / linear models on shape.</p>
+        <div class="pkg-fns"><code>gpagen()</code><code>gm.prcomp()</code><code>procD.lm()</code></div>
+        <p class="pkg-ref">Adams D.C. &amp; Otárola-Castillo E. (2013) geomorph: an R package for the collection and analysis of geometric morphometric shape data. <em>Methods in Ecology and Evolution</em> 4: 393–399.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="parallel analysis Horn number of axes PCA retain components">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#7f8c8d;"><i class="fa fa-filter"></i></div>
+          <div>
+            <p class="pkg-name">paran</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=paran" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Horn's parallel analysis to decide how many principal components (or factors) to retain, by comparing observed eigenvalues to those of random data.</p>
+        <div class="pkg-fns"><code>paran()</code></div>
+        <p class="pkg-ref">Dinno A. paran: Horn's test of principal components/factors. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="inter-rater reliability ICC kappa agreement measurement error">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#95a5a6;"><i class="fa fa-check-square-o"></i></div>
+          <div>
+            <p class="pkg-name">irr</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=irr" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Inter-rater reliability and agreement: intraclass correlation coefficients and kappa statistics, used to quantify measurement repeatability of morphological traits between observers.</p>
+        <div class="pkg-fns"><code>icc()</code><code>kappa2()</code><code>kappam.fleiss()</code></div>
+        <p class="pkg-ref">Gamer M., Lemon J. &amp; Fellows Singh I. irr: Various coefficients of interrater reliability and agreement. R package (CRAN).</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════ Missing data & imputation ══════════ -->
+  <div class="section-group" data-group="imputation">
+    <div class="section-group-title"><span>Missing data &amp; imputation</span><hr></div>
+    <div class="pkg-grid">
+
+      <div class="pkg-card" data-tags="imputation random forest missing traits mixed-type">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#7f8c8d;"><i class="fa fa-magic"></i></div>
+          <div>
+            <p class="pkg-name">missForest</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=missForest" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Non-parametric imputation of mixed-type data with random forests; returns out-of-bag error estimates (NRMSE, PFC) to assess imputation quality. Works well on trait tables with phylogenetic eigenvectors as predictors.</p>
+        <div class="pkg-fns"><code>missForest()</code></div>
+        <p class="pkg-ref">Stekhoven D.J. &amp; Bühlmann P. (2012) MissForest — non-parametric missing value imputation for mixed-type data. <em>Bioinformatics</em> 28: 112–118.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="multiple imputation chained equations pooling uncertainty">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#95a5a6;"><i class="fa fa-random"></i></div>
+          <div>
+            <p class="pkg-name">mice</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=mice" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Multiple imputation by chained equations: generates several completed datasets, so that downstream models can be fitted on each and pooled to propagate imputation uncertainty.</p>
+        <div class="pkg-fns"><code>mice()</code><code>complete()</code><code>with()</code><code>pool()</code></div>
+        <p class="pkg-ref">van Buuren S. &amp; Groothuis-Oudshoorn K. (2011) mice: Multivariate Imputation by Chained Equations in R. <em>Journal of Statistical Software</em> 45(3): 1–67.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════ Statistical modelling ══════════ -->
+  <div class="section-group" data-group="stats">
+    <div class="section-group-title"><span>Statistical modelling</span><hr></div>
+    <div class="pkg-grid">
+
+      <div class="pkg-card" data-tags="mixed models random effects GLMM lmer glmer">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#2980b9;"><i class="fa fa-line-chart"></i></div>
+          <div>
+            <p class="pkg-name">lme4</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=lme4" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Linear and generalised linear mixed-effects models with crossed or nested random effects; the default for hierarchical designs (sites within basins, species within genera).</p>
+        <div class="pkg-fns"><code>lmer()</code><code>glmer()</code><code>ranef()</code></div>
+        <p class="pkg-ref">Bates D., Mächler M., Bolker B. &amp; Walker S. (2015) Fitting linear mixed-effects models using lme4. <em>Journal of Statistical Software</em> 67(1): 1–48.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="mixed models correlation structure heteroscedasticity gls lme">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#3498db;"><i class="fa fa-line-chart"></i></div>
+          <div>
+            <p class="pkg-name">nlme</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=nlme" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Linear and non-linear mixed models with explicit variance and correlation structures (spatial, temporal, phylogenetic), e.g. generalised least squares with a correlation matrix.</p>
+        <div class="pkg-fns"><code>lme()</code><code>gls()</code><code>corSpatial()</code><code>varIdent()</code></div>
+        <p class="pkg-ref">Pinheiro J., Bates D. &amp; R Core Team. nlme: Linear and nonlinear mixed effects models. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="GLMM zero-inflated beta negative binomial TMB">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#1f618d;"><i class="fa fa-line-chart"></i></div>
+          <div>
+            <p class="pkg-name">glmmTMB</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=glmmTMB" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Fast GLMMs with a wide range of families (beta, negative binomial, Tweedie, ordinal) and zero-inflation or dispersion sub-models — useful for proportions and overdispersed counts.</p>
+        <div class="pkg-fns"><code>glmmTMB()</code></div>
+        <p class="pkg-ref">Brooks M.E. <em>et al.</em> (2017) glmmTMB balances speed and flexibility among packages for zero-inflated generalized linear mixed modeling. <em>The R Journal</em> 9(2): 378–400.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="GAM additive models smooth splines non-linear">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#117a65;"><i class="fa fa-bezier-curve"></i></div>
+          <div>
+            <p class="pkg-name">mgcv</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=mgcv" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Generalised additive (mixed) models with automatic smoothness selection; tensor-product and spatial smooths for non-linear responses along environmental or temporal gradients.</p>
+        <div class="pkg-fns"><code>gam()</code><code>bam()</code><code>s()</code><code>te()</code></div>
+        <p class="pkg-ref">Wood S.N. (2017) <em>Generalized Additive Models: An Introduction with R</em>, 2nd ed. Chapman &amp; Hall/CRC.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="residual diagnostics simulation dispersion zero inflation">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#6c7a89;"><i class="fa fa-stethoscope"></i></div>
+          <div>
+            <p class="pkg-name">DHARMa</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=DHARMa" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Simulation-based scaled residuals for (G)LM(M)s, giving interpretable QQ and residual plots and tests for overdispersion, zero-inflation and spatial/temporal autocorrelation.</p>
+        <div class="pkg-fns"><code>simulateResiduals()</code><code>testDispersion()</code><code>testZeroInflation()</code></div>
+        <p class="pkg-ref">Hartig F. DHARMa: residual diagnostics for hierarchical (multi-level/mixed) regression models. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="model selection AIC dredge averaging R2 GLMM">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#5d6d7e;"><i class="fa fa-balance-scale"></i></div>
+          <div>
+            <p class="pkg-name">MuMIn</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=MuMIn" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Multi-model inference: all-subsets model selection, information-criterion ranking, model averaging and marginal/conditional R² for mixed models.</p>
+        <div class="pkg-fns"><code>dredge()</code><code>model.avg()</code><code>r.squaredGLMM()</code></div>
+        <p class="pkg-ref">Bartoń K. MuMIn: Multi-model inference. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="model performance R2 checks diagnostics comparison easystats">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#48c9b0;"><i class="fa fa-tachometer"></i></div>
+          <div>
+            <p class="pkg-name">performance</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=performance" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Unified assessment of model quality (R², ICC, RMSE), assumption checks (collinearity, heteroscedasticity, outliers) and side-by-side comparison of competing models.</p>
+        <div class="pkg-fns"><code>r2()</code><code>check_model()</code><code>check_collinearity()</code><code>compare_performance()</code></div>
+        <p class="pkg-ref">Lüdecke D. <em>et al.</em> (2021) performance: An R package for assessment, comparison and testing of statistical models. <em>Journal of Open Source Software</em> 6(60): 3139.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════ Spatial ecology ══════════ -->
+  <div class="section-group" data-group="spatial">
+    <div class="section-group-title"><span>Spatial ecology</span><hr></div>
+    <div class="pkg-grid">
+
+      <div class="pkg-card" data-tags="vector GIS simple features shapefile projection intersect">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#16a085;"><i class="fa fa-globe"></i></div>
+          <div>
+            <p class="pkg-name">sf</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=sf" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Simple-features standard for vector data: reading shapefiles/GeoPackages, reprojection, geometric predicates and operations (intersection, buffers, joins) in a tidy data-frame workflow.</p>
+        <div class="pkg-fns"><code>st_read()</code><code>st_transform()</code><code>st_intersects()</code><code>st_join()</code><code>st_area()</code></div>
+        <p class="pkg-ref">Pebesma E. (2018) Simple features for R: standardized support for spatial vector data. <em>The R Journal</em> 10(1): 439–446.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="raster GIS extract crop climate layers">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#138d75;"><i class="fa fa-map"></i></div>
+          <div>
+            <p class="pkg-name">terra</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=terra" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Raster (and vector) data handling, successor of <code>raster</code>: fast reading of large grids, cropping/masking, zonal statistics and extraction of environmental values at points or polygons.</p>
+        <div class="pkg-fns"><code>rast()</code><code>extract()</code><code>crop()</code><code>mask()</code><code>zonal()</code></div>
+        <p class="pkg-ref">Hijmans R.J. terra: Spatial data analysis. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="discrete global grid hexagons equal area DGGS">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#1e8449;"><span style="font-size:1.2em;">⬡</span></div>
+          <div>
+            <p class="pkg-name">dggridR</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=dggridR" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Discrete global grid systems: equal-area hexagonal grids at chosen resolutions, assignment of coordinates to cells, and cell polygons for mapping — avoids the area bias of lat/long grids in global analyses.</p>
+        <div class="pkg-fns"><code>dgconstruct()</code><code>dgGEO_to_SEQNUM()</code><code>dgcellstogrid()</code></div>
+        <p class="pkg-ref">Barnes R. dggridR: Discrete global grids. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="base map countries coastline world map">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#239b56;"><i class="fa fa-map-o"></i></div>
+          <div>
+            <p class="pkg-name">rnaturalearth</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=rnaturalearth" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Natural Earth base layers (countries, coastlines, rivers, lakes) as <code>sf</code> objects, for background maps in publication figures.</p>
+        <div class="pkg-fns"><code>ne_countries()</code><code>ne_coastline()</code><code>ne_download()</code></div>
+        <p class="pkg-ref">Massicotte P. &amp; South A. rnaturalearth: World map data from Natural Earth. R package (CRAN).</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════ Data access & taxonomy ══════════ -->
+  <div class="section-group" data-group="data">
+    <div class="section-group-title"><span>Data access &amp; taxonomy</span><hr></div>
+    <div class="pkg-grid">
+
+      <div class="pkg-card" data-tags="IUCN red list threat status API conservation">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#c0392b;"><i class="fa fa-exclamation-triangle"></i></div>
+          <div>
+            <p class="pkg-name">rredlist</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=rredlist" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Client for the IUCN Red List API: retrieves threat categories, assessments, threats and habitats per species (requires a personal API token; functions follow the API v4 since version 1.0).</p>
+        <div class="pkg-fns"><code>rl_species()</code><code>rl_assessment()</code><code>rl_threats()</code></div>
+        <p class="pkg-ref">Chamberlain S. &amp; Gearty W. rredlist: IUCN Red List client. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="taxonomy names resolution synonyms classification GBIF">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#884ea0;"><i class="fa fa-tag"></i></div>
+          <div>
+            <p class="pkg-name">taxize</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=taxize" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Taxonomic name resolution across databases (GBIF, ITIS, NCBI, WoRMS…): classification, synonyms and identifiers, used to harmonise species lists before merging trait, occurrence and phylogenetic data.</p>
+        <div class="pkg-fns"><code>classification()</code><code>synonyms()</code><code>get_gbifid()</code></div>
+        <p class="pkg-ref">Chamberlain S.A. &amp; Szöcs E. (2013) taxize: taxonomic search and retrieval in R. <em>F1000Research</em> 2: 191.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="FishBase fish traits ecology names validation">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#2980b9;"><span style="font-size:1.1em;">🐟</span></div>
+          <div>
+            <p class="pkg-name">rfishbase</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=rfishbase" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Programmatic access to FishBase (and SeaLifeBase) tables: species, ecology, morphology, diet and distribution, plus validation of scientific names against the current FishBase taxonomy.</p>
+        <div class="pkg-fns"><code>species()</code><code>ecology()</code><code>validate_names()</code><code>fb_tbl()</code></div>
+        <p class="pkg-ref">Boettiger C., Lang D.T. &amp; Wainwright P.C. (2012) rfishbase: exploring, manipulating and visualizing FishBase data from R. <em>Journal of Fish Biology</em> 81: 2030–2039.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════ Data wrangling & reproducibility ══════════ -->
+  <div class="section-group" data-group="wrangling">
+    <div class="section-group-title"><span>Data wrangling &amp; reproducibility</span><hr></div>
+    <div class="pkg-grid">
+
+      <div class="pkg-card" data-tags="dplyr tidyr readr purrr tibble pipe wrangling">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#1a5276;"><i class="fa fa-cogs"></i></div>
+          <div>
+            <p class="pkg-name">tidyverse</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=tidyverse" target="_blank">CRAN</a><a href="https://www.tidyverse.org" target="_blank">Website</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Meta-package loading <code>dplyr</code>, <code>tidyr</code>, <code>readr</code>, <code>purrr</code>, <code>tibble</code>, <code>stringr</code> and <code>ggplot2</code>: a consistent grammar for importing, reshaping, grouping and summarising data.</p>
+        <div class="pkg-fns"><code>mutate()</code><code>group_by()</code><code>summarise()</code><code>pivot_longer()</code><code>map()</code></div>
+        <p class="pkg-ref">Wickham H. <em>et al.</em> (2019) Welcome to the tidyverse. <em>Journal of Open Source Software</em> 4(43): 1686.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="fast large data fread aggregation keys">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#2e4053;"><i class="fa fa-bolt"></i></div>
+          <div>
+            <p class="pkg-name">data.table</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=data.table" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">High-performance alternative to data frames for large tables (millions of occurrence records): very fast reading, keyed joins and by-group aggregation with a compact syntax.</p>
+        <div class="pkg-fns"><code>fread()</code><code>fwrite()</code><code>setkey()</code><code>DT[i, j, by]</code></div>
+        <p class="pkg-ref">Barrett T., Dowle M., Srinivasan A. <em>et al.</em> data.table: Extension of data.frame. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="melt dcast wide long reshape">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#5d6d7e;"><i class="fa fa-exchange"></i></div>
+          <div>
+            <p class="pkg-name">reshape2</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=reshape2" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Wide ↔ long reshaping of matrices and data frames (<code>melt</code> / <code>dcast</code>); superseded by <code>tidyr</code> for data frames but still convenient for distance and site × species matrices.</p>
+        <div class="pkg-fns"><code>melt()</code><code>dcast()</code><code>acast()</code></div>
+        <p class="pkg-ref">Wickham H. (2007) Reshaping data with the reshape package. <em>Journal of Statistical Software</em> 21(12): 1–20.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="excel xlsx import export spreadsheets">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#1e8449;"><i class="fa fa-file-excel-o"></i></div>
+          <div>
+            <p class="pkg-name">openxlsx · readxl</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=openxlsx" target="_blank">openxlsx</a><a href="https://cran.r-project.org/package=readxl" target="_blank">readxl</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Reading and writing Excel workbooks without Java: <code>readxl</code> for fast import of sheets, <code>openxlsx</code> for multi-sheet exports with formatting (supplementary tables, data shared with collaborators).</p>
+        <div class="pkg-fns"><code>read_excel()</code><code>read.xlsx()</code><code>write.xlsx()</code></div>
+        <p class="pkg-ref">Schauberger P. &amp; Walker A. openxlsx — Wickham H. &amp; Bryan J. readxl. R packages (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="progress bar apply loops">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#85929e;"><i class="fa fa-hourglass-half"></i></div>
+          <div>
+            <p class="pkg-name">pbapply</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=pbapply" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Drop-in replacements for the <code>apply</code> family with a progress bar, including parallel execution via <code>cl =</code> — handy for null models and bootstraps run thousands of times.</p>
+        <div class="pkg-fns"><code>pblapply()</code><code>pbsapply()</code><code>pbreplicate()</code></div>
+        <p class="pkg-ref">Sólymos P. &amp; Zawadzki Z. pbapply: Adding progress bar to '*apply' functions. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="reproducibility project library lockfile versions">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#34495e;"><i class="fa fa-lock"></i></div>
+          <div>
+            <p class="pkg-name">renv</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=renv" target="_blank">CRAN</a><a href="https://rstudio.github.io/renv/" target="_blank">Website</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Project-level package libraries and a <code>renv.lock</code> file recording exact package versions, so an analysis can be restored identically on another machine or years later (used in all my GitHub repositories).</p>
+        <div class="pkg-fns"><code>renv::init()</code><code>renv::snapshot()</code><code>renv::restore()</code></div>
+        <p class="pkg-ref">Ushey K. &amp; Wickham H. renv: Project environments. R package (CRAN).</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════ Visualisation ══════════ -->
+  <div class="section-group" data-group="viz">
+    <div class="section-group-title"><span>Visualisation</span><hr></div>
+    <div class="pkg-grid">
+
+      <div class="pkg-card" data-tags="grammar of graphics plots figures themes">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#9b59b6;"><i class="fa fa-bar-chart"></i></div>
+          <div>
+            <p class="pkg-name">ggplot2</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=ggplot2" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Grammar-of-graphics plotting system: layered geoms, scales, facets and themes; the backbone of every figure in my papers and courses.</p>
+        <div class="pkg-fns"><code>ggplot()</code><code>geom_*()</code><code>facet_wrap()</code><code>theme()</code></div>
+        <p class="pkg-ref">Wickham H. (2016) <em>ggplot2: Elegant Graphics for Data Analysis</em>, 2nd ed. Springer.</p>
+      </div>
+
+      <div class="pkg-card" data-tags="compose panels multi-panel figure layout">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#8e44ad;"><i class="fa fa-th-large"></i></div>
+          <div>
+            <p class="pkg-name">patchwork</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=patchwork" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Composes several ggplots into multi-panel figures with arithmetic operators (<code>p1 + p2 / p3</code>), shared legends and automatic panel tags.</p>
+        <div class="pkg-fns"><code>plot_layout()</code><code>plot_annotation()</code><code>wrap_plots()</code></div>
+        <p class="pkg-ref">Pedersen T.L. patchwork: The composer of plots. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="labels overlap text annotation">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#af7ac5;"><i class="fa fa-font"></i></div>
+          <div>
+            <p class="pkg-name">ggrepel</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=ggrepel" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Text and label geoms that repel each other and the data points, so species names in a trait space or PCA biplot remain readable.</p>
+        <div class="pkg-fns"><code>geom_text_repel()</code><code>geom_label_repel()</code></div>
+        <p class="pkg-ref">Slowikowski K. ggrepel: Automatically position non-overlapping text labels with 'ggplot2'. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="hull ellipse mark groups zoom facets">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#7d3c98;"><i class="fa fa-object-group"></i></div>
+          <div>
+            <p class="pkg-name">ggforce</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=ggforce" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Extra geoms for ggplot2: convex hulls and ellipses around groups with labels, zoomed facets, sina plots — used to outline taxonomic groups in functional spaces.</p>
+        <div class="pkg-fns"><code>geom_mark_hull()</code><code>geom_mark_ellipse()</code><code>facet_zoom()</code><code>geom_sina()</code></div>
+        <p class="pkg-ref">Pedersen T.L. ggforce: Accelerating 'ggplot2'. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="correlation matrix heatmap">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#6c3483;"><i class="fa fa-th"></i></div>
+          <div>
+            <p class="pkg-name">corrplot</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=corrplot" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">Graphical display of correlation matrices with hierarchical reordering and significance marks — a first look at trait redundancy before building a functional space.</p>
+        <div class="pkg-fns"><code>corrplot()</code><code>cor.mtest()</code></div>
+        <p class="pkg-ref">Wei T. &amp; Simko V. corrplot: Visualization of a correlation matrix. R package (CRAN).</p>
+      </div>
+
+      <div class="pkg-card" data-tags="pairs plot scatterplot matrix">
+        <div class="pkg-top">
+          <div class="pkg-icon" style="background:#a569bd;"><i class="fa fa-th"></i></div>
+          <div>
+            <p class="pkg-name">GGally</p>
+            <div class="pkg-links"><a href="https://cran.r-project.org/package=GGally" target="_blank">CRAN</a></div>
+          </div>
+        </div>
+        <p class="pkg-desc">ggplot2 extensions for pairwise plots (scatterplot matrices with densities and correlations by group), coefficient plots and network plots.</p>
+        <div class="pkg-fns"><code>ggpairs()</code><code>ggcorr()</code></div>
+        <p class="pkg-ref">Schloerke B. <em>et al.</em> GGally: Extension to 'ggplot2'. R package (CRAN).</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="no-result" id="no-result">No package matches this search.</div>
+
+  <!-- ══════════ Install everything ══════════ -->
+  <div class="install-section">
+    <h2><i class="fa fa-download"></i> &nbsp;Install and load all packages</h2>
+    <p>Installs only the packages that are missing, then loads them all. Package versions used in each project are pinned in its <code>renv.lock</code>.</p>
+<pre><code>pkgs &lt;- c(
+  # functional diversity &amp; trait spaces
+  "mFD", "FD", "TPD", "funspace", "hypervolume", "funrar", "geometry", "traitdataform",
+  # community ecology, ordination &amp; phylogenetics
+  "vegan", "ade4", "ape", "picante", "geomorph", "paran", "irr",
+  # missing data
+  "missForest", "mice",
+  # statistical modelling
+  "lme4", "nlme", "glmmTMB", "mgcv", "DHARMa", "MuMIn", "performance",
+  # spatial
+  "sf", "terra", "dggridR", "rnaturalearth",
+  # data access &amp; taxonomy
+  "rredlist", "taxize", "rfishbase",
+  # wrangling &amp; reproducibility
+  "tidyverse", "data.table", "reshape2", "openxlsx", "readxl", "pbapply", "renv",
+  # visualisation
+  "ggplot2", "patchwork", "ggrepel", "ggforce", "corrplot", "GGally"
+)
+
+missing &lt;- pkgs[!pkgs %in% rownames(installed.packages())]
+if (length(missing)) install.packages(missing, dependencies = TRUE)
+
+invisible(lapply(pkgs, library, character.only = TRUE))</code></pre>
+  </div>
+
+</div>
+
+<script>
+const CORRECT_HASH = "ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5";
+
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+}
+
+function unlock() {
+  document.getElementById("pw-overlay").style.display = "none";
+  document.getElementById("pkg-content").style.display = "block";
+  sessionStorage.setItem("rpackages_unlocked", "1");
+  updateCount();
+}
+
+async function checkPw() {
+  const hash = await sha256(document.getElementById("pw-input").value);
+  if (hash === CORRECT_HASH) {
+    unlock();
+  } else {
+    const err = document.getElementById("pw-error");
+    err.textContent = "Incorrect password. Please try again.";
+    document.getElementById("pw-input").value = "";
+    document.getElementById("pw-input").focus();
+    setTimeout(() => { err.textContent = ""; }, 3000);
+  }
+}
+
+if (sessionStorage.getItem("rpackages_unlocked") === "1" ||
+    sessionStorage.getItem("rscripts_unlocked") === "1") {
+  unlock();
+}
+
+// ── Filter ──────────────────────────────────────────
+function updateCount(visible) {
+  const total = document.querySelectorAll(".pkg-card").length;
+  const n = (visible === undefined) ? total : visible;
+  document.getElementById("pkg-count").textContent = n + " / " + total + " packages";
+}
+
+function filterPkgs() {
+  const q = document.getElementById("pkg-search").value.trim().toLowerCase();
+  let visible = 0;
+  document.querySelectorAll(".section-group").forEach(group => {
+    let groupVisible = 0;
+    group.querySelectorAll(".pkg-card").forEach(card => {
+      const text = (card.textContent + " " + (card.dataset.tags || "")).toLowerCase();
+      const show = !q || text.includes(q);
+      card.classList.toggle("hidden", !show);
+      if (show) { groupVisible++; visible++; }
+    });
+    group.classList.toggle("hidden", groupVisible === 0);
+  });
+  document.getElementById("no-result").style.display = visible ? "none" : "block";
+  updateCount(visible);
+}
+updateCount();
+</script>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

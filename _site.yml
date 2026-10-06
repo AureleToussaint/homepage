@@ -15,6 +15,8 @@ navbar:
       href: RData.html
     - text: "R scripts"
       href: Rscripts.html
+    - text: "R packages"
+      href: Rpackages.html
     - text: "My blog"
       href: my-blog/site
 
