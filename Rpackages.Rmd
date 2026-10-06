@@ -79,6 +79,28 @@ output:
   background: #f7f9fb; border: 1px solid #e4e9f0; border-radius: 10px;
   padding: 14px 16px; font-size: 0.82em; line-height: 1.5; overflow-x: auto;
 }
+
+.student-section { margin: 34px 0 10px 0; }
+.student-intro { font-size: 0.95em; color: #555; line-height: 1.6; }
+.student-step { display: flex; gap: 18px; margin: 18px 0 0 0; }
+.student-num {
+  width: 36px; height: 36px; border-radius: 50%; background: #27ae60; color: #fff; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-weight: 700;
+}
+.student-body { flex: 1; min-width: 0; }
+.student-body h3 { font-size: 1.08em; font-weight: 600; color: #2c3e50; margin: 6px 0 8px 0; }
+.student-body p, .student-body li { font-size: 0.92em; color: #555; line-height: 1.6; }
+.student-body ul { padding-left: 20px; margin: 6px 0 10px 0; }
+.student-body pre {
+  background: #f7f9fb; border: 1px solid #e4e9f0; border-radius: 10px;
+  padding: 14px 16px; font-size: 0.8em; line-height: 1.5; overflow-x: auto; margin: 8px 0 12px 0;
+}
+.callout {
+  border-left: 4px solid #27ae60; background: #f3faf6; border-radius: 0 10px 10px 0;
+  padding: 12px 16px; margin: 12px 0; font-size: 0.9em; color: #444; line-height: 1.55;
+}
+.callout.warn { border-color: #e67e22; background: #fdf5ec; }
+
 .more-link { margin: 30px 0 60px 0; font-size: 0.92em; color: #777; }
 .more-link a { color: #2980b9; }
 </style>
@@ -182,6 +204,110 @@ output:
 install.packages("geomorph")
 remotes::install_github("FunTraits/Rfishmorph")
 remotes::install_github("FunTraits/intraitR")     # pulls Rfishmorph automatically</code></pre>
+  </div>
+
+
+  <div class="section-title" id="students">For students: from photographs to results</div>
+  <div class="student-section">
+    <p class="student-intro">If you join a digitization campaign with me, you receive a folder of <strong>prepared
+    photographs</strong> (one specimen per file, exported from the campaign project with FishInTrait; the file name is the
+    specimen code and must not be changed). Install the packages as above, then follow the two steps below. Photographs
+    never leave your computer: only their file name and pixel size are recorded.</p>
+
+    <div class="student-step">
+      <div class="student-num">1</div>
+      <div class="student-body">
+        <h3>Measure the specimens and send the measurements back</h3>
+        <p>Create a working folder with the photographs in <code>prepared/</code> and launch the digitizer. From a few
+        calibration clicks, the ml-morph predictor proposes the 19 FISHMORPH landmarks; review every point, place the
+        scale bar (landmarks 20–21, length in mm asked by the app), score the quality and save. Everything is written
+        to <strong>one workbook</strong> and to an <strong>append-only journal</strong> that survives a crash.</p>
+<pre><code>library(intraitR)
+
+digitize_landmarks(
+  photo_dir   = "prepared",                          # the photographs I gave you
+  xlsx_path   = "measurements/&lt;Name&gt;_landmarks.xlsx", # one workbook, 3 sheets
+  journal_dir = "journal",                           # source of truth, never edit
+  operator    = "&lt;your initials&gt;",
+  mode        = "new"                                # "correct" to review, "repeat" for repeatability
+)
+
+# Optional but recommended: digitize ~20 specimens 3 times blind for the
+# measurement-error analysis (mode = "repeat" fills the "bias" sheet).</code></pre>
+        <p>When you are done, send me a zip of the <strong>workbook and the <code>journal/</code> folder</strong>
+        (the workbook alone is an export; the journal is what I merge into the campaign project
+        <code>00_CampagneIntrait</code> with <code>consolidate_landmarks()</code>). Please do not edit the workbook by hand,
+        do not rename photographs, and keep the same <code>operator</code> code from start to end.</p>
+      </div>
+    </div>
+
+    <div class="student-step">
+      <div class="student-num">2</div>
+      <div class="student-body">
+        <h3>Analyse and visualise your data</h3>
+        <p>Read the workbook back, check the landmarks on the photographs, correct the geometry, derive the FISHMORPH
+        traits, then explore trait space, shape space, intraspecific variability and your own repeatability.</p>
+<pre><code>library(intraitR)
+
+# ── read the measurements sheet (wide layout written by the digitizer) ────────
+fish &lt;- read_landmarks_xlsx("measurements/&lt;Name&gt;_landmarks.xlsx",
+                            sheet = "measurements", n_landmarks = 23,
+                            x_pattern = "{i}_X", y_pattern = "{i}_Y",
+                            id_cols = "specimen")
+species &lt;- sub("_.*$", "", fish$metadata$specimen)   # adapt to your code convention,
+                                                      # or join a determinations table
+                                                      # (species_file = , species_by = )
+
+# ── quality control ──────────────────────────────────────────────────────────
+plot_fishmorph_points(fish, specimen = 1,
+                      background_image = "prepared/&lt;code&gt;.jpg")   # points on the photo
+fish &lt;- impute_landmarks(fish)              # missing point (e.g. LM5) estimated
+fish &lt;- standardize_orientation(fish)       # head left, belly down
+fish &lt;- correct_geometry(fish)              # FISHMORPH digitizing conventions
+detect_outliers(fish)
+
+# ── FISHMORPH traits: 11 segments → 9 ratios ────────────────────────────────
+seg &lt;- fishmorph_segments(fish)             # cm, via the scale bar
+rat &lt;- fishmorph_ratios(seg)
+summary_traits(rat, groups = species)
+
+# ── functional trait space of your sample ────────────────────────────────────
+fts &lt;- trait_space(rat, groups = species, na_action = "omit", remove_outliers = TRUE)
+plot(fts)                                   # spider / ellipse per species
+plot(fts, style = "hull")
+trait_disparity(rat, groups = species)      # do species differ in trait dispersion?
+
+# ── your specimens in the global FISHMORPH morphospace (9 556 species) ───────
+proj &lt;- project_fishmorph(rat, groups = species)
+plot(proj, style = "hull")                  # density of the database + your species
+plot(proj, style = "spider", itv_reference = TRUE)
+
+# ── intraspecific variability ────────────────────────────────────────────────
+itv &lt;- itv_index(rat, groups = species)     # inter- vs intraspecific variance
+itv; plot(itv)
+plot(itv_accumulation(rat, groups = species))   # how many individuals are enough?
+
+# ── shape space (geometric morphometrics) ────────────────────────────────────
+gpa &lt;- gpa_fish(fishmorph_shape_landmarks(fish))
+ss  &lt;- shape_space(gpa, groups = species)
+plot(ss)
+intraspecific_variability(gpa, groups = species, traits = rat)
+
+# ── your repeatability (if you used mode = "repeat") ─────────────────────────
+rep &lt;- read_landmarks_xlsx("measurements/&lt;Name&gt;_landmarks.xlsx",
+                           sheet = "bias", n_landmarks = 23,
+                           x_pattern = "{i}_X", y_pattern = "{i}_Y",
+                           id_cols = c("individual", "operator", "replicate"))
+measurement_error(rep, individual = rep$metadata$individual)
+plot(digitization_error(rep, individual = rep$metadata$individual))   # bias per landmark</code></pre>
+        <div class="callout">
+          A complete worked example on real field data, with the same steps, ships with the package:
+          <code>demo("pipeline_T26_saudrune", package = "intraitR")</code>, and the vignette
+          <code>vignette("intraitR-intro")</code> explains each function. Keep your analysis in a script
+          (or an R Markdown file) so that it can be re-run when I return the consolidated campaign data.
+        </div>
+      </div>
+    </div>
   </div>
 
   <p class="more-link">See also: <a href="Rpackages_catalogue.html">the R packages I rely on</a> — an annotated
