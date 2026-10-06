@@ -11,7 +11,7 @@
 
 
 
-<title>R Packages — Aurèle Toussaint</title>
+<title>FishInTrait — R Packages — Aurèle Toussaint</title>
 
 <script src="site_libs/header-attrs-2.31/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -349,54 +349,117 @@ $(document).ready(function () {
 .pw-row button:hover { background: #1e8449; }
 .pw-err { color: #c0392b; font-size: 0.9em; margin: 8px 0 0 0; min-height: 20px; }
 
-/* ── Landing ── */
-.pkg-header { text-align: center; margin: 40px 0 28px 0; }
-.pkg-header h1 { font-size: 2em; font-weight: bold; color: #2c3e50; margin-bottom: 8px; }
-.pkg-header p  { color: #777; font-size: 1.05em; max-width: 760px; margin: 0 auto; line-height: 1.55; }
+/* ── Package page (pkgdown-like layout) ── */
+.back-link { font-size: 0.9em; margin: 20px 0 4px 0; }
+.back-link a { color: #27ae60; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
 
-.my-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; margin: 0 0 40px 0; }
-.my-card {
-  background: #fff; border: 1px solid #dde3ea; border-radius: 14px;
-  padding: 26px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  transition: box-shadow .2s, transform .15s; display: flex; flex-direction: column; gap: 12px;
-  text-decoration: none !important; color: inherit !important;
+.pkg-hero {
+  display: flex; align-items: center; gap: 26px; flex-wrap: wrap;
+  margin: 18px 0 10px 0; padding-bottom: 22px; border-bottom: 1px solid #e5e5e5;
 }
-.my-card:hover { box-shadow: 0 8px 26px rgba(0,0,0,0.12); transform: translateY(-3px); text-decoration: none !important; }
-.my-top { display: flex; align-items: center; gap: 16px; }
-.hex-sm {
-  width: 64px; height: 72px; flex-shrink: 0;
+.hex {
+  width: 118px; height: 134px; flex-shrink: 0; position: relative;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.5em;
-  box-shadow: inset 0 0 0 4px rgba(255,255,255,0.18);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  font-weight: 700; font-size: 1.05em; text-align: center; line-height: 1.2;
+  box-shadow: inset 0 0 0 6px rgba(255,255,255,0.18);
 }
-.my-name { font-family: "SFMono-Regular", Menlo, Consolas, monospace; font-size: 1.25em; font-weight: 700; color: #2c3e50; margin: 0; }
-.my-version { font-size: 0.8em; color: #999; }
-.my-tagline { font-size: 0.95em; color: #555; margin: 0; line-height: 1.5; }
-.my-feats { margin: 0; padding-left: 18px; font-size: 0.86em; color: #666; line-height: 1.55; }
-.my-foot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 8px; font-size: 0.85em; }
-.my-foot .gh { color: #2980b9; }
-.my-foot .arrow { color: #27ae60; font-weight: 600; }
+.hex small { display: block; font-size: 0.62em; font-weight: 500; opacity: .9; margin-top: 4px; }
+.pkg-title { flex: 1; min-width: 260px; }
+.pkg-title h1 {
+  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 2.1em; font-weight: 700; color: #2c3e50; margin: 0 0 4px 0;
+}
+.pkg-title .tagline { font-size: 1.1em; color: #555; margin: 0 0 12px 0; }
+.badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.badge-pill {
+  display: inline-flex; font-size: 0.74em; font-weight: 600; border-radius: 4px; overflow: hidden;
+  font-family: "SFMono-Regular", Menlo, Consolas, monospace; text-decoration: none !important;
+}
+.badge-pill span:first-child { background: #555; color: #fff; padding: 3px 7px; }
+.badge-pill span:last-child  { background: #27ae60; color: #fff; padding: 3px 7px; }
+.badge-pill.grey span:last-child { background: #7f8c8d; }
+.badge-pill.blue span:last-child { background: #2980b9; }
+.badge-pill.orange span:last-child { background: #e67e22; }
 
-.flow { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; margin: 12px 0 18px 0; }
-.flow-box { flex: 1 1 180px; background: #fff; border: 1px solid #dde3ea; border-radius: 10px; padding: 12px 14px; font-size: 0.86em; color: #444; text-align: center; }
-.flow-box b { display: block; color: #2c3e50; font-size: 1.05em; margin-bottom: 4px; font-family: "SFMono-Regular", Menlo, Consolas, monospace; }
+.pkg-layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 40px; margin: 10px 0 60px 0; }
+@media (max-width: 860px) { .pkg-layout { grid-template-columns: 1fr; } }
+
+.pkg-main h2 {
+  font-size: 1.35em; font-weight: 600; color: #2c3e50;
+  margin: 34px 0 12px 0; padding-bottom: 6px; border-bottom: 1px solid #eee;
+}
+.pkg-main h2:first-child { margin-top: 10px; }
+.pkg-main h3 { font-size: 1.05em; font-weight: 600; color: #2c3e50; margin: 22px 0 8px 0; }
+.pkg-main p, .pkg-main li { font-size: 0.95em; color: #444; line-height: 1.6; }
+.pkg-main ul, .pkg-main ol { padding-left: 22px; }
+.pkg-main pre {
+  background: #f7f9fb; border: 1px solid #e4e9f0; border-radius: 10px;
+  padding: 14px 16px; font-size: 0.82em; line-height: 1.5; overflow-x: auto; margin: 10px 0 16px 0;
+}
+.pkg-main code { font-size: 0.9em; }
+.pkg-main pre code { font-size: 1em; }
+
+.steps { counter-reset: step; list-style: none; padding: 0; margin: 0 0 10px 0; }
+.steps li {
+  counter-increment: step; position: relative; padding: 0 0 14px 44px; margin: 0;
+}
+.steps li::before {
+  content: counter(step); position: absolute; left: 0; top: 0;
+  width: 30px; height: 30px; border-radius: 50%; background: #27ae60; color: #fff;
+  display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85em;
+}
+.steps li strong { color: #2c3e50; }
+
+.fn-table { width: 100%; border-collapse: collapse; font-size: 0.88em; margin: 6px 0 14px 0; }
+.fn-table th { text-align: left; color: #888; font-weight: 600; font-size: 0.8em; letter-spacing: .06em; text-transform: uppercase; padding: 6px 8px; border-bottom: 1px solid #e5e5e5; }
+.fn-table td { padding: 7px 8px; border-bottom: 1px solid #f0f0f0; vertical-align: top; color: #444; }
+.fn-table td:first-child { white-space: nowrap; }
+.fn-table code { background: #f3f6f9; border: 1px solid #e4e9f0; border-radius: 5px; padding: 1px 5px; font-size: 0.9em; color: #2c3e50; }
+
+.scheme-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin: 6px 0 14px 0; }
+.scheme-table td { padding: 8px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+.scheme-table td:first-child { font-weight: 700; color: #2c3e50; white-space: nowrap; }
+
+.callout {
+  border-left: 4px solid #27ae60; background: #f3faf6; border-radius: 0 10px 10px 0;
+  padding: 12px 16px; margin: 14px 0; font-size: 0.92em; color: #444;
+}
+.callout.warn { border-color: #e67e22; background: #fdf5ec; }
+.flow {
+  display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; margin: 12px 0 18px 0;
+}
+.flow-box {
+  flex: 1 1 150px; background: #fff; border: 1px solid #dde3ea; border-radius: 10px; padding: 12px 14px;
+  font-size: 0.85em; color: #444; text-align: center;
+}
+.flow-box b { display: block; color: #2c3e50; font-size: 1.05em; margin-bottom: 4px; }
 .flow-arrow { align-self: center; color: #bbb; font-size: 1.4em; }
 
-.section-title { font-size: 1.3em; font-weight: 600; color: #2c3e50; margin: 30px 0 10px 0; padding-bottom: 6px; border-bottom: 1px solid #eee; }
-.section-text { font-size: 0.95em; color: #555; line-height: 1.6; }
-.install-section pre {
-  background: #f7f9fb; border: 1px solid #e4e9f0; border-radius: 10px;
-  padding: 14px 16px; font-size: 0.82em; line-height: 1.5; overflow-x: auto;
+.pkg-aside { font-size: 0.88em; }
+.aside-block { margin-bottom: 26px; }
+.aside-block h4 {
+  font-size: 0.78em; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  color: #aaa; margin: 0 0 8px 0;
 }
-.more-link { margin: 30px 0 60px 0; font-size: 0.92em; color: #777; }
-.more-link a { color: #2980b9; }
+.aside-block ul { list-style: none; padding: 0; margin: 0; }
+.aside-block li { padding: 4px 0; color: #555; }
+.aside-block a { color: #2980b9; text-decoration: none; }
+.aside-block a:hover { text-decoration: underline; }
+.aside-block .meta { color: #888; }
+.cite-box {
+  background: #f7f9fb; border: 1px solid #e4e9f0; border-radius: 10px; padding: 12px 14px;
+  font-size: 0.9em; color: #444; line-height: 1.5;
+}
 </style>
 
 <!-- PASSWORD OVERLAY -->
 <div id="pw-overlay">
   <div class="pw-box">
     <div class="pw-lock">🔒</div>
-    <h2>R Packages</h2>
+    <h2>FishInTrait</h2>
     <p>This page is restricted.<br>Please enter the access password.</p>
     <div class="pw-row">
       <input type="password" id="pw-input" placeholder="Password…"
@@ -410,91 +473,111 @@ $(document).ready(function () {
 <!-- PAGE CONTENT -->
 <div id="pkg-content" style="display:none;">
 
-  <div class="pkg-header">
-    <h1>R Packages</h1>
-    <p>Three R packages developed within the FunTraits toolkit for trait-based ecology of freshwater fish:
-       from field photographs to landmarks, morphological traits, intraspecific variability and the global
-       FISHMORPH morphospace. Click a package for its presentation page.</p>
+  <div class="back-link">← <a href="Rpackages.html">Back to R Packages</a></div>
+
+  <div class="pkg-hero">
+    <div class="hex" style="background:#27ae60;"><div>FishInTrait<small>field campaigns</small></div></div>
+    <div class="pkg-title">
+      <h1>FishInTrait</h1>
+      <p class="tagline">Field-campaign management for fish trait digitization — photographs, specimens, provenance.</p>
+      <div class="badges"><span class="badge-pill orange"><span>version</span><span>in development</span></span><span class="badge-pill grey"><span>R</span><span>≥ 4.1.0</span></span><span class="badge-pill grey"><span>license</span><span>GPL-3</span></span></div>
+    </div>
   </div>
 
-  <div class="my-grid">
+  <div class="pkg-layout">
+    <div class="pkg-main">
 
-    <a class="my-card" href="Rpackages_fishintrait.html">
-      <div class="my-top">
-        <div class="hex-sm" style="background:#27ae60;"><i class="fa fa-camera"></i></div>
-        <div>
-          <p class="my-name">FishInTrait</p>
-          <span class="my-version">in development</span>
-        </div>
+      <h2>Overview</h2>
+      <p><code>FishInTrait</code> is the field-campaign side of the toolkit: it organises a digitization
+      <strong>campaign</strong> — the photographs of a survey, their import into a project folder, the specimens and
+      their determinations — and hands the resulting measurements to <a href="Rpackages_intraitr.html">intraitR</a>
+      (analysis) and <a href="Rpackages_rfishmorph.html">Rfishmorph</a> (FISHMORPH database). It keeps a
+      <strong>campaign journal</strong> (record, specimen, field, value) from which the provenance of every photograph
+      can be recovered, and provides a Shiny explorer of the campaign, including an <em>Absent from FISHMORPH</em> view
+      for species that still need to be added to the database.</p>
+
+      <div class="callout warn">
+        <strong>Documentation in preparation.</strong> This page will be completed from the package's
+        <code>DESCRIPTION</code>, README and reference index once the repository is published.
       </div>
-      <p class="my-tagline">Field-campaign management for trait digitization: photographs, specimens, determinations and provenance journal.</p>
-      <ul class="my-feats">
-        <li>Project layout shared with intraitR (photos · measurements · journal)</li>
-        <li>Campaign journal recording the origin of every specimen</li>
-        <li>Shiny explorer, incl. species absent from FISHMORPH</li>
-      </ul>
-      <div class="my-foot"><span class="gh"><i class="fa fa-github"></i> FunTraits</span><span class="arrow">Presentation →</span></div>
-    </a>
 
-    <a class="my-card" href="Rpackages_intraitr.html">
-      <div class="my-top">
-        <div class="hex-sm" style="background:#2980b9;"><i class="fa fa-crosshairs"></i></div>
-        <div>
-          <p class="my-name">intraitR</p>
-          <span class="my-version">v1.35.0 · GitHub</span>
-        </div>
+      <h2>Project layout</h2>
+      <p>A FishInTrait project is a folder with a fixed layout, auto-detected by the companion packages:</p>
+<pre><code>&lt;project&gt;/
+├── photos/            # specimen photographs (stay local)
+├── measurements/      # landmark workbooks (.xlsx) read by intraitR
+└── journal/           # append-only import journals (provenance)</code></pre>
+      <p><code>intraitR::read_landmarks_xlsx()</code> reads the provenance keys of this layout automatically, so that
+      a workbook keeps the link to the original photograph of each specimen even after files are renamed.</p>
+
+      <h2>How the three packages fit together</h2>
+      <div class="flow">
+        <div class="flow-box"><b>FishInTrait</b>campaign, photographs, provenance</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box"><b>intraitR</b>landmarks → traits → ITV &amp; error</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box"><b>Rfishmorph</b>FISHMORPH scheme, space &amp; database</div>
       </div>
-      <p class="my-tagline">Morphological trait analysis toolkit for freshwater fish — landmarks, Procrustes, ratios, shape and trait spaces, intraspecific variability and measurement error.</p>
-      <ul class="my-feats">
-        <li>Predictor-assisted landmark digitizer (Shiny + ml-morph)</li>
-        <li>Landmark QC, GPA, allometry, trait and shape spaces</li>
-        <li>ITV indices, repeatability, operator bias, FD inflation by ITV</li>
-      </ul>
-      <div class="my-foot"><span class="gh"><i class="fa fa-github"></i> FunTraits/intraitR</span><span class="arrow">Presentation →</span></div>
-    </a>
 
-    <a class="my-card" href="Rpackages_rfishmorph.html">
-      <div class="my-top">
-        <div class="hex-sm" style="background:#c0392b;"><i class="fa fa-database"></i></div>
-        <div>
-          <p class="my-name">Rfishmorph</p>
-          <span class="my-version">v0.13.1 · GitHub</span>
-        </div>
-      </div>
-      <p class="my-tagline">Digitizing, storing, analysing and exploring the FISHMORPH database (Brosse et al. 2021): 21 landmarks, 11 segments, 9 ratios.</p>
-      <ul class="my-feats">
-        <li>Landmark reconstruction with round-trip guarantee</li>
-        <li>Global functional trait space of 9 556 species, projection of new specimens</li>
-        <li>Append-only journal → DuckDB → Parquet; 3 Shiny apps</li>
-      </ul>
-      <div class="my-foot"><span class="gh"><i class="fa fa-github"></i> FunTraits/Rfishmorph</span><span class="arrow">Presentation →</span></div>
-    </a>
+      <h2>Main functions</h2>
+      <table class="fn-table">
+        <tr><th>Family</th><th>Functions</th></tr>
+        <tr><td>Exploration</td><td><code>launch_fishintrait_explorer()</code> — Shiny explorer of a campaign (specimens, determinations, species absent from FISHMORPH)</td></tr>
+        <tr><td>Journal</td><td>campaign import journal (<code>record_id</code>, <code>timestamp</code>, <code>operator</code>, <code>app_version</code>, <code>action</code>, <code>specimen</code>, <code>field</code>, <code>value</code>)</td></tr>
+      </table>
 
-  </div>
-
-  <div class="section-title">How they fit together</div>
-  <div class="flow">
-    <div class="flow-box"><b>FishInTrait</b>campaign · photographs · provenance</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box"><b>intraitR</b>landmarks → traits → ITV &amp; measurement error</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box"><b>Rfishmorph</b>FISHMORPH scheme · global morphospace · database</div>
-  </div>
-  <p class="section-text">The three packages share the same object classes (<code>intrait_landmarks</code> is accepted
-  throughout) and the same FISHMORPH conventions, so a survey digitized with FishInTrait can be analysed with intraitR
-  and projected into — or added to — the FISHMORPH database with Rfishmorph. <code>intraitR</code> imports
-  <code>Rfishmorph</code>; both build on <code>geomorph</code> for geometric morphometrics.</p>
-
-  <div class="section-title">Installation</div>
-  <div class="install-section">
+      <h2>Installation</h2>
 <pre><code># install.packages("remotes")
-install.packages("geomorph")
-remotes::install_github("FunTraits/Rfishmorph")
-remotes::install_github("FunTraits/intraitR")     # pulls Rfishmorph automatically</code></pre>
-  </div>
+remotes::install_github("FunTraits/FishInTrait")   # once the repository is public
 
-  <p class="more-link">See also: <a href="Rpackages_catalogue.html">the R packages I rely on</a> — an annotated
-  catalogue of community packages for functional ecology, modelling, spatial analysis and visualisation.</p>
+library(FishInTrait)</code></pre>
+
+      <h2>Citation</h2>
+      <div class="cite-box">
+        Toussaint A. (2026). <em>FishInTrait</em>. R package. <a href="https://github.com/FunTraits" target="_blank">https://github.com/FunTraits</a>
+      </div>
+
+    </div>
+
+    <aside class="pkg-aside">
+      <div class="aside-block">
+        <h4>Links</h4>
+        <ul>
+          <li><i class="fa fa-github"></i> <a href="https://github.com/FunTraits" target="_blank">Source code (GitHub)</a></li>
+          <li><i class="fa fa-bug"></i> <a href="https://github.com/FunTraits/issues" target="_blank">Report a bug</a></li>
+          <li><i class="fa fa-book"></i> <a href="https://github.com/FunTraits#readme" target="_blank">README</a></li>
+          <li><i class="fa fa-cube"></i> <a href="Rpackages_intraitr.html">Companion: intraitR</a></li>
+        </ul>
+      </div>
+      <div class="aside-block">
+        <h4>Version</h4>
+        <ul>
+          <li><span class="meta">Current:</span> <b>in development</b></li>
+          <li><span class="meta">Requires:</span> R ≥ 4.1.0</li>
+          <li><span class="meta">Depends on:</span> shiny (to be confirmed)</li>
+        </ul>
+      </div>
+      <div class="aside-block">
+        <h4>License</h4>
+        <ul><li>GPL-3 — © 2026 Aurèle Toussaint (CNRS)</li></ul>
+      </div>
+      <div class="aside-block">
+        <h4>Developer</h4>
+        <ul><li>Aurèle Toussaint <span class="meta">— author, maintainer</span><br>
+          <span class="meta">CRBE, CNRS / Université de Toulouse</span></li></ul>
+      </div>
+      <div class="aside-block">
+        <h4>Dev status</h4>
+        <div class="badges">
+          <span class="badge-pill"><span>R-CMD-check</span><span>GitHub Actions</span></span>
+          <span class="badge-pill"><span>tests</span><span>testthat 3</span></span>
+          <span class="badge-pill"><span>coverage</span><span>codecov</span></span>
+          <span class="badge-pill orange"><span>lifecycle</span><span>experimental</span></span>
+        </div>
+      </div>
+    </aside>
+
+  </div>
 
 </div>
 

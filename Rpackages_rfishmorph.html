@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Rfishmorph — R Packages — Aurèle Toussaint</title>
+
+<script src="site_libs/header-attrs-2.31/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel="shortcut icon" href="data/ATc.jpg" />
+
+<style>
+/* ── Wider page layout ── */
+.container { max-width: 1140px !important; width: 96% !important; }
+.main-container { max-width: 1140px !important; width: 96% !important; }
+@media (min-width: 1400px) {
+  .container, .main-container { max-width: 1280px !important; }
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    
+  </a>
+</li>
+<li>
+  <a href="Projects.html">Projects</a>
+</li>
+<li>
+  <a href="Courses.html">Teaching</a>
+</li>
+<li>
+  <a href="RData.html">Data</a>
+</li>
+<li>
+  <a href="Rscripts.html">R scripts</a>
+</li>
+<li>
+  <a href="Rpackages.html">R packages</a>
+</li>
+<li>
+  <a href="my-blog/site">My blog</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="contact.html">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/AureleToussaint">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://twitter.com/ToussaintAurele">
+    <span class="fa fa-twitter fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/atoussaint/">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<link rel="shortcut icon" href="data/imageTitle.png" type="image/png">
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+<style>
+/* ── Password overlay (same pattern as R scripts pages) ── */
+#pw-overlay {
+  position: fixed; inset: 0; background: rgba(255,255,255,0.97);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+}
+.pw-box {
+  background: #fff; border: 1px solid #dde3ea; border-radius: 12px;
+  padding: 40px 48px; text-align: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-width: 400px; width: 90%;
+}
+.pw-box h2 { margin: 0 0 6px 0; font-size: 1.5em; color: #2c3e50; }
+.pw-box p  { color: #666; font-size: 0.95em; margin: 0 0 22px 0; }
+.pw-lock   { font-size: 3em; margin-bottom: 8px; }
+.pw-row    { display: flex; gap: 8px; }
+.pw-row input {
+  flex:1; padding: 10px 14px; border: 1px solid #ccc;
+  border-radius: 8px; font-size: 1em; outline: none; transition: border-color .2s;
+}
+.pw-row input:focus { border-color: #27ae60; }
+.pw-row button {
+  padding: 10px 18px; background: #27ae60; color: #fff;
+  border: none; border-radius: 8px; font-size: 1em; cursor: pointer;
+}
+.pw-row button:hover { background: #1e8449; }
+.pw-err { color: #c0392b; font-size: 0.9em; margin: 8px 0 0 0; min-height: 20px; }
+
+/* ── Package page (pkgdown-like layout) ── */
+.back-link { font-size: 0.9em; margin: 20px 0 4px 0; }
+.back-link a { color: #27ae60; text-decoration: none; }
+.back-link a:hover { text-decoration: underline; }
+
+.pkg-hero {
+  display: flex; align-items: center; gap: 26px; flex-wrap: wrap;
+  margin: 18px 0 10px 0; padding-bottom: 22px; border-bottom: 1px solid #e5e5e5;
+}
+.hex {
+  width: 118px; height: 134px; flex-shrink: 0; position: relative;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  font-weight: 700; font-size: 1.05em; text-align: center; line-height: 1.2;
+  box-shadow: inset 0 0 0 6px rgba(255,255,255,0.18);
+}
+.hex small { display: block; font-size: 0.62em; font-weight: 500; opacity: .9; margin-top: 4px; }
+.pkg-title { flex: 1; min-width: 260px; }
+.pkg-title h1 {
+  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 2.1em; font-weight: 700; color: #2c3e50; margin: 0 0 4px 0;
+}
+.pkg-title .tagline { font-size: 1.1em; color: #555; margin: 0 0 12px 0; }
+.badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.badge-pill {
+  display: inline-flex; font-size: 0.74em; font-weight: 600; border-radius: 4px; overflow: hidden;
+  font-family: "SFMono-Regular", Menlo, Consolas, monospace; text-decoration: none !important;
+}
+.badge-pill span:first-child { background: #555; color: #fff; padding: 3px 7px; }
+.badge-pill span:last-child  { background: #27ae60; color: #fff; padding: 3px 7px; }
+.badge-pill.grey span:last-child { background: #7f8c8d; }
+.badge-pill.blue span:last-child { background: #2980b9; }
+.badge-pill.orange span:last-child { background: #e67e22; }
+
+.pkg-layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 40px; margin: 10px 0 60px 0; }
+@media (max-width: 860px) { .pkg-layout { grid-template-columns: 1fr; } }
+
+.pkg-main h2 {
+  font-size: 1.35em; font-weight: 600; color: #2c3e50;
+  margin: 34px 0 12px 0; padding-bottom: 6px; border-bottom: 1px solid #eee;
+}
+.pkg-main h2:first-child { margin-top: 10px; }
+.pkg-main h3 { font-size: 1.05em; font-weight: 600; color: #2c3e50; margin: 22px 0 8px 0; }
+.pkg-main p, .pkg-main li { font-size: 0.95em; color: #444; line-height: 1.6; }
+.pkg-main ul, .pkg-main ol { padding-left: 22px; }
+.pkg-main pre {
+  background: #f7f9fb; border: 1px solid #e4e9f0; border-radius: 10px;
+  padding: 14px 16px; font-size: 0.82em; line-height: 1.5; overflow-x: auto; margin: 10px 0 16px 0;
+}
+.pkg-main code { font-size: 0.9em; }
+.pkg-main pre code { font-size: 1em; }
+
+.steps { counter-reset: step; list-style: none; padding: 0; margin: 0 0 10px 0; }
+.steps li {
+  counter-increment: step; position: relative; padding: 0 0 14px 44px; margin: 0;
+}
+.steps li::before {
+  content: counter(step); position: absolute; left: 0; top: 0;
+  width: 30px; height: 30px; border-radius: 50%; background: #27ae60; color: #fff;
+  display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85em;
+}
+.steps li strong { color: #2c3e50; }
+
+.fn-table { width: 100%; border-collapse: collapse; font-size: 0.88em; margin: 6px 0 14px 0; }
+.fn-table th { text-align: left; color: #888; font-weight: 600; font-size: 0.8em; letter-spacing: .06em; text-transform: uppercase; padding: 6px 8px; border-bottom: 1px solid #e5e5e5; }
+.fn-table td { padding: 7px 8px; border-bottom: 1px solid #f0f0f0; vertical-align: top; color: #444; }
+.fn-table td:first-child { white-space: nowrap; }
+.fn-table code { background: #f3f6f9; border: 1px solid #e4e9f0; border-radius: 5px; padding: 1px 5px; font-size: 0.9em; color: #2c3e50; }
+
+.scheme-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin: 6px 0 14px 0; }
+.scheme-table td { padding: 8px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+.scheme-table td:first-child { font-weight: 700; color: #2c3e50; white-space: nowrap; }
+
+.callout {
+  border-left: 4px solid #27ae60; background: #f3faf6; border-radius: 0 10px 10px 0;
+  padding: 12px 16px; margin: 14px 0; font-size: 0.92em; color: #444;
+}
+.callout.warn { border-color: #e67e22; background: #fdf5ec; }
+.flow {
+  display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; margin: 12px 0 18px 0;
+}
+.flow-box {
+  flex: 1 1 150px; background: #fff; border: 1px solid #dde3ea; border-radius: 10px; padding: 12px 14px;
+  font-size: 0.85em; color: #444; text-align: center;
+}
+.flow-box b { display: block; color: #2c3e50; font-size: 1.05em; margin-bottom: 4px; }
+.flow-arrow { align-self: center; color: #bbb; font-size: 1.4em; }
+
+.pkg-aside { font-size: 0.88em; }
+.aside-block { margin-bottom: 26px; }
+.aside-block h4 {
+  font-size: 0.78em; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  color: #aaa; margin: 0 0 8px 0;
+}
+.aside-block ul { list-style: none; padding: 0; margin: 0; }
+.aside-block li { padding: 4px 0; color: #555; }
+.aside-block a { color: #2980b9; text-decoration: none; }
+.aside-block a:hover { text-decoration: underline; }
+.aside-block .meta { color: #888; }
+.cite-box {
+  background: #f7f9fb; border: 1px solid #e4e9f0; border-radius: 10px; padding: 12px 14px;
+  font-size: 0.9em; color: #444; line-height: 1.5;
+}
+</style>
+
+<!-- PASSWORD OVERLAY -->
+<div id="pw-overlay">
+  <div class="pw-box">
+    <div class="pw-lock">🔒</div>
+    <h2>Rfishmorph</h2>
+    <p>This page is restricted.<br>Please enter the access password.</p>
+    <div class="pw-row">
+      <input type="password" id="pw-input" placeholder="Password…"
+             onkeydown="if(event.key==='Enter') checkPw()"/>
+      <button onclick="checkPw()">Enter</button>
+    </div>
+    <p class="pw-err" id="pw-error"></p>
+  </div>
+</div>
+
+<!-- PAGE CONTENT -->
+<div id="pkg-content" style="display:none;">
+
+  <div class="back-link">← <a href="Rpackages.html">Back to R Packages</a></div>
+
+  <div class="pkg-hero">
+    <div class="hex" style="background:#c0392b;"><div>Rfishmorph<small>FISHMORPH db</small></div></div>
+    <div class="pkg-title">
+      <h1>Rfishmorph</h1>
+      <p class="tagline">Digitizing, storing, analysing and exploring the FISHMORPH database of freshwater fish morphology.</p>
+      <div class="badges"><span class="badge-pill blue"><span>version</span><span>0.13.1</span></span><span class="badge-pill grey"><span>R</span><span>≥ 4.1.0</span></span><span class="badge-pill grey"><span>license</span><span>GPL-3</span></span><span class="badge-pill grey"><span>depends</span><span>base R only</span></span></div>
+    </div>
+  </div>
+
+  <div class="pkg-layout">
+    <div class="pkg-main">
+
+      <h2>Overview</h2>
+      <p><code>Rfishmorph</code> collects the FISHMORPH routines originally developed inside
+      <a href="Rpackages_intraitr.html">intraitR</a> into a stand-alone package dedicated to the
+      <a href="https://doi.org/10.1111/geb.13395" target="_blank">FISHMORPH</a> morphological database of freshwater fishes
+      (Brosse <em>et al.</em> 2021). It reconstructs the 21 FISHMORPH landmarks, computes the 11 body segments and the
+      9 dimensionless morphological ratios, standardizes landmark geometry and enforces the FISHMORPH digitizing
+      conventions, projects specimens into the FISHMORPH functional trait space, and provides visualization and
+      quality-control tools to compare segment- and landmark-derived measurements. A guided workflow adds new species,
+      using <code>rfishbase</code> to validate taxonomy and build a global list of freshwater fishes.</p>
+      <p>Three Shiny applications cover the ends of the workflow: a <strong>guided digitizer</strong> that turns
+      specimen photographs into landmarks, an <strong>explorer of the global morphological space</strong> of freshwater
+      fishes, and a <strong>drainage-basin explorer</strong> that reads that space through a world map of basins, their
+      species composition and their functional-diversity indices.</p>
+
+      <h2>The FISHMORPH scheme</h2>
+      <table class="scheme-table">
+        <tr><td>21 landmarks</td><td>anatomical points digitized on a lateral photograph (+ scale bar)</td><td><code>fishmorph_schema()$landmark_labels</code></td></tr>
+        <tr><td>11 segments</td><td><code>Bl, Bd, Hd, Eh, Mo, PFi, PFl, Ed, Jl, CPd, CFd</code></td><td><code>fishmorph_segment_names()</code></td></tr>
+        <tr><td>9 ratios</td><td><code>BEl, VEp, REs, OGp, RMl, BLs, PFv, PFs, CPt</code></td><td><code>fishmorph_ratio_names()</code></td></tr>
+      </table>
+      <p>Ratios are dimensionless (each is a quotient of two segments of the same specimen), hence scale-invariant and
+      comparable across studies.</p>
+
+      <h2>Installation</h2>
+      <p>The core functions depend only on base R. Optional features use <code>ggplot2</code> (plots),
+      <code>rfishbase</code> (taxonomy / freshwater list), <code>readxl</code>/<code>writexl</code> (Excel I/O),
+      <code>shiny</code>/<code>jpeg</code>/<code>png</code> (digitizer), <code>DBI</code>/<code>duckdb</code>/<code>arrow</code>
+      (database and archives) and <code>sf</code>/<code>leaflet</code> (basin explorer).</p>
+<pre><code># install.packages("remotes")
+remotes::install_github("FunTraits/Rfishmorph")
+
+library(Rfishmorph)</code></pre>
+
+      <h2>Typical workflows</h2>
+      <h3>1. Measure a specimen</h3>
+<pre><code>lm  &lt;- read_landmarks_csv(
+  system.file("extdata", "example_landmarks.csv", package = "Rfishmorph"))
+seg &lt;- fishmorph_segments(lm, scale_cm = 1)   # 11 segments (cm)
+rat &lt;- fishmorph_ratios(seg)                  # 9 ratios
+plot_landmarks(lm, specimen = 1)              # points + segments</code></pre>
+
+      <h3>2. Functional trait space</h3>
+<pre><code>ref &lt;- load_fishmorph_reference()             # bundled 400-species sample
+ts  &lt;- fishmorph_trait_space(ref, groups = ref$Order)   # frozen PCA
+plot_trait_space(ts, style = "none", arrows = TRUE)
+
+proj &lt;- project_fishmorph(specimens, reference = ref)   # focal individuals
+plot(proj, style = "hull")                    # density heatmap + species hulls
+plot(proj, style = "spider", itv_reference = TRUE)</code></pre>
+
+      <h3>3. Quality control: segments vs landmarks</h3>
+<pre><code>cmp &lt;- compare_segments_landmarks(landmarks = lm, published = published_segments,
+                                  id_col = "Genus.species")
+summary(cmp)
+plot_segment_landmark_agreement(cmp, type = "scatter")
+
+check_infinite_ratios(rat)          # zero-denominator / outlier ratios
+check_geometry_conventions(lm)      # departure from the 5 digitizing rules</code></pre>
+
+      <h3>4. Add a new species</h3>
+<pre><code>validate_species_names(c("Salmo trutta", "Esox_lucius"))   # needs rfishbase
+rec  &lt;- new_fishmorph_species("Genus novus", segments = list(Bl = 10, Bd = 3.2, ...),
+                              family = "Cyprinidae", order = "Cypriniformes")
+ref2 &lt;- add_fishmorph_species(ref, rec)
+fw   &lt;- freshwater_fish_list()                              # global freshwater list</code></pre>
+
+      <h3>5. Digitize, store safely, explore</h3>
+      <p>Photographs stay on your machine: only their file name and pixel dimensions are ever recorded.</p>
+<pre><code>launch_fishmorph_digitizer(xlsx_path = "FISHMORPH_PUBLI_9556sp.xlsx",
+                           photo_dir = "Photos", operator = "AT", mode = "new")
+
+jdir &lt;- "landmark_journal"
+fm_journal_status(jdir)                       # what is in the journal?
+base &lt;- fishmorph_consolidate(jdir)           # wide table, one row per key
+qc   &lt;- fishmorph_journal_qc(jdir)            # never-verified points, gaps
+
+res  &lt;- fishmorph_build_db(jdir, db_path = "fishmorph.duckdb",
+                           export_dir = "exports")        # Parquet + CSV
+con  &lt;- fishmorph_db_connect("fishmorph.duckdb")
+DBI::dbGetQuery(con, "FROM v_ratios WHERE species = ?", params = list("Coilia.nasus"))
+
+launch_fishmorph_space()                      # global morphospace, 9 556 species
+launch_fishmorph_basins()                     # drainage-basin explorer</code></pre>
+
+      <h2>Data architecture</h2>
+      <div class="flow">
+        <div class="flow-box"><b>Photographs</b>local only</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box"><b>Append-only journal</b>source of truth, one TSV per session</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box"><b>DuckDB database</b>integrity constraints, views, SQL</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box"><b>Parquet / CSV</b>citable archive</div>
+      </div>
+      <p>Digitizing never overwrites what is already written. The journal is the only durable layer; the database and
+      the workbook are derived artefacts that <code>fishmorph_build_db()</code> rebuilds from scratch in seconds. Each
+      point carries a <code>status</code> (<code>placed</code>, <code>seeded</code>, <code>derived</code>, <code>na</code>)
+      that a wide coordinate table cannot express — filter on it before any validation analysis.</p>
+
+      <div class="callout">
+        <strong>Round-trip guarantee.</strong> <code>reconstruct_fishmorph_landmarks()</code> is the inverse of
+        <code>fishmorph_segments()</code>: the free placement parameters change only <em>where</em> landmarks sit, never
+        the segment <em>lengths</em>. <code>check_reconstruction_roundtrip()</code> verifies that
+        segments → landmarks → segments returns the input to machine precision.
+      </div>
+
+      <h2>Function reference</h2>
+      <table class="fn-table">
+        <tr><th>Family</th><th>Main functions</th></tr>
+        <tr><td>Scheme &amp; traits</td>
+            <td><code>fishmorph_schema()</code> <code>fishmorph_segments()</code> <code>fishmorph_ratios()</code>
+                <code>fishmorph_traits()</code> <code>fishmorph_landmarks()</code> <code>reconstruct_fishmorph_landmarks()</code></td></tr>
+        <tr><td>Geometry &amp; quality control</td>
+            <td><code>standardize_geometry()</code> <code>check_geometry_conventions()</code>
+                <code>correct_geometry_conventions()</code> <code>check_landmark_order()</code>
+                <code>check_infinite_ratios()</code> <code>impute_landmarks()</code> <code>impute_traits()</code>
+                <code>compare_segments_landmarks()</code> <code>agreement_metrics()</code></td></tr>
+        <tr><td>Trait space &amp; plots</td>
+            <td><code>fishmorph_trait_space()</code> <code>project_fishmorph()</code> <code>plot_trait_space()</code>
+                <code>plot_functional_space()</code> <code>plot_trait_distributions()</code>
+                <code>plot_segment_landmark_agreement()</code> <code>fishmorph_basin_indices()</code></td></tr>
+        <tr><td>Reference data &amp; phylogeny</td>
+            <td><code>load_fishmorph_reference()</code> <code>fishmorph_space_data()</code>
+                <code>load_fishmorph_phylogeny()</code> <code>load_fishmorph_phylo_axes()</code> <code>phylo_pcoa()</code></td></tr>
+        <tr><td>Taxonomy &amp; new species</td>
+            <td><code>validate_species_names()</code> <code>update_fishmorph_taxonomy()</code>
+                <code>freshwater_fish_list()</code> <code>fishmorph_fishbase_size()</code>
+                <code>new_fishmorph_species()</code> <code>add_fishmorph_species()</code></td></tr>
+        <tr><td>Journal &amp; database</td>
+            <td><code>fm_journal_open()</code> <code>fm_journal_append()</code> <code>fm_journal_status()</code>
+                <code>fishmorph_consolidate()</code> <code>fishmorph_journal_qc()</code>
+                <code>build_fishmorph_landmark_table()</code> <code>fishmorph_build_db()</code>
+                <code>fishmorph_db_connect()</code></td></tr>
+        <tr><td>Shiny applications</td>
+            <td><code>launch_fishmorph_digitizer()</code> <code>launch_fishmorph_reconstructor()</code>
+                <code>launch_fishmorph_space()</code> <code>launch_fishmorph_basins()</code>
+                <code>prepare_fishmorph_basins()</code></td></tr>
+      </table>
+
+      <h2>Articles</h2>
+      <ul>
+        <li><strong>Rfishmorph</strong> (vignette): the FISHMORPH scheme · from landmarks to traits · reconstruction and
+          the round-trip guarantee · the functional trait space · quality control · adding a new species.</li>
+      </ul>
+
+      <h2>Citation</h2>
+      <div class="cite-box">
+        Toussaint A. (2026). <em>Rfishmorph: Digitizing, Storing, Analysing and Exploring the FISHMORPH Database</em>.
+        R package version 0.13.1. <a href="https://github.com/FunTraits/Rfishmorph" target="_blank">https://github.com/FunTraits/Rfishmorph</a><br>
+        Please also cite the database: Brosse S., Charpin N., Su G., Toussaint A., Herrera-R G.A., Tedesco P.A. &amp;
+        Villéger S. (2021) FISHMORPH: A global database on morphological traits of freshwater fishes.
+        <em>Global Ecology and Biogeography</em> 30: 2330–2336. <a href="https://doi.org/10.1111/geb.13395" target="_blank">doi:10.1111/geb.13395</a>
+      </div>
+
+    </div>
+
+    <aside class="pkg-aside">
+      <div class="aside-block">
+        <h4>Links</h4>
+        <ul>
+          <li><i class="fa fa-github"></i> <a href="https://github.com/FunTraits/Rfishmorph" target="_blank">Source code (GitHub)</a></li>
+          <li><i class="fa fa-bug"></i> <a href="https://github.com/FunTraits/Rfishmorph/issues" target="_blank">Report a bug</a></li>
+          <li><i class="fa fa-book"></i> <a href="https://github.com/FunTraits/Rfishmorph#readme" target="_blank">README</a></li>
+          <li><i class="fa fa-database"></i> <a href="https://doi.org/10.1111/geb.13395" target="_blank">FISHMORPH database (Brosse et al. 2021)</a></li><li><i class="fa fa-cube"></i> <a href="Rpackages_intraitr.html">Companion: intraitR</a></li>
+        </ul>
+      </div>
+      <div class="aside-block">
+        <h4>Version</h4>
+        <ul>
+          <li><span class="meta">Current:</span> <b>0.13.1</b></li>
+          <li><span class="meta">Requires:</span> R ≥ 4.1.0</li>
+          <li><span class="meta">Depends on:</span> base R (optional: ggplot2, rfishbase, shiny, duckdb, sf…)</li>
+        </ul>
+      </div>
+      <div class="aside-block">
+        <h4>License</h4>
+        <ul><li>GPL-3 — © 2026 Aurèle Toussaint (CNRS)</li></ul>
+      </div>
+      <div class="aside-block">
+        <h4>Developer</h4>
+        <ul><li>Aurèle Toussaint <span class="meta">— author, maintainer</span><br>
+          <span class="meta">CRBE, CNRS / Université de Toulouse</span></li></ul>
+      </div>
+      <div class="aside-block">
+        <h4>Dev status</h4>
+        <div class="badges">
+          <span class="badge-pill"><span>R-CMD-check</span><span>GitHub Actions</span></span>
+          <span class="badge-pill"><span>tests</span><span>testthat 3</span></span>
+          <span class="badge-pill"><span>coverage</span><span>codecov</span></span>
+          <span class="badge-pill orange"><span>lifecycle</span><span>experimental</span></span>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+</div>
+
+<script>
+const CORRECT_HASH = "ac95cc34e3ff9d4e59fd3066f6feaee0d2f4f7f97d3865148bc5767834883ff5";
+
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+}
+
+function unlock() {
+  document.getElementById("pw-overlay").style.display = "none";
+  document.getElementById("pkg-content").style.display = "block";
+  sessionStorage.setItem("rpackages_unlocked", "1");
+}
+
+async function checkPw() {
+  const hash = await sha256(document.getElementById("pw-input").value);
+  if (hash === CORRECT_HASH) {
+    unlock();
+  } else {
+    const err = document.getElementById("pw-error");
+    err.textContent = "Incorrect password. Please try again.";
+    document.getElementById("pw-input").value = "";
+    document.getElementById("pw-input").focus();
+    setTimeout(() => { err.textContent = ""; }, 3000);
+  }
+}
+
+if (sessionStorage.getItem("rpackages_unlocked") === "1" ||
+    sessionStorage.getItem("rscripts_unlocked") === "1") {
+  unlock();
+}
+
+</script>
+
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
