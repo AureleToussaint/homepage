@@ -1,0 +1,10 @@
+name: intraitR-pipeline
+title:
+username: globaltrait
+account: globaltrait
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 18118368
+bundleId: 12660958
+url: https://globaltrait.shinyapps.io/intraitR-pipeline/
+version: 1

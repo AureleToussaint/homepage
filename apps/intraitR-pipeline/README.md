@@ -6,7 +6,7 @@ pipeline without writing R code:
 | Tab | What it does | intraitR / Rfishmorph functions behind it |
 |---|---|---|
 | 1 · Start | example data, or upload a digitizer workbook (+ optional determinations CSV) | `load_t26_saudrune_landmarks()`, `read_landmarks_xlsx()` |
-| 2 · Measure | **serves the package's own digitizer** on the uploaded photographs, then loads what it saved | the Shiny app behind `digitize_landmarks()`, then `consolidate_landmarks()` + `read_landmarks_xlsx()` |
+| 2 · Measure | photographs added as files, as a **whole folder** or as a **ZIP**, then **serves the package's own digitizer** on them and loads what it saved | the Shiny app behind `digitize_landmarks()`, then `consolidate_landmarks()` + `read_landmarks_xlsx()` |
 | 3 · Check | per-specimen plot, impute / orientation / geometry corrections, Procrustes outlier screening | `plot_fishmorph_points()`, `impute_landmarks()`, `standardize_orientation()`, `correct_geometry()`, `gpa_fish()`, `detect_outliers()` |
 | 4 · Traits | 11 segments (cm) and 9 ratios, Villéger et al. (2010) special cases, summary by species | `fishmorph_segments()`, `fishmorph_ratios()`, `summary_traits()` |
 | 5 · Trait space | PCA of the ratios, spider/hull/density display, disparity test | `trait_space()`, `trait_disparity()` |
@@ -15,6 +15,26 @@ pipeline without writing R code:
 | 8 · Shape | GPA + shape-space PCA, shape disparity | `fishmorph_shape_landmarks()`, `gpa_fish()`, `shape_space()`, `intraspecific_variability()` |
 | 9 · Repeatability | %ME / repeatability per segment, placement error per landmark (bias sheet) | `measurement_error()`, `digitization_error()` |
 | 10 · Export | zip of every table (.csv), figure (.png/.pdf) and the R script equivalent to the session | — |
+
+### Getting the photographs in
+
+Three routes, all appending to the same job (so a big set can go up in several
+goes, and stragglers can be added later):
+
+- **Files** — several files at once.
+- **Folder** — a whole directory, sub-folders included (`webkitdirectory`:
+  Chrome, Edge, Safari; Firefox does not implement it).
+- **ZIP** — any zipped folder, flattened on extraction (`junkpaths`, which also
+  makes `../` entries harmless).
+
+Non-images are ignored. A name already in the set is **not** renamed: the file
+name without its extension is the specimen code, so a silent rename would
+invent a specimen — an identical file is skipped, a different one is reported
+and left out for you to rename. *Start a new set* empties the session after a
+confirmation.
+
+`options(shiny.maxRequestSize = 300 * 1024^2)` raises Shiny's 5 MB default,
+which a handful of real photographs would otherwise exceed at once.
 
 ## The *Measure* tab is the package's digitizer, not a copy of it
 

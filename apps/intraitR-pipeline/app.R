@@ -29,12 +29,21 @@ suppressPackageStartupMessages({
                       # intraitR versions (scale_action, na_action, ...) are the ones used here.
 })
 
-APP_VERSION <- "0.2.0"
+APP_VERSION <- "0.3.0"
+
+# Shiny's default upload cap is 5 MB -- a handful of specimen photographs at
+# once. Photographs are streamed to disk, not held in memory, so the cost of a
+# large allowance is disk; uploads can also be made in several goes, since
+# add_photos() appends to the job instead of replacing it.
+options(shiny.maxRequestSize = 300 * 1024^2)
 RATIO_COLS  <- c("BEl", "VEp", "REs", "OGp", "RMl", "BLs", "PFv", "PFs", "CPt")
 SEG_COLS    <- c("Bl", "Bd", "Hd", "Eh", "Mo", "PFi", "PFl", "Ed", "Jl", "CPd", "CFd")
 N_LM_READ   <- 23L   # what an analysis reads back from a digitizer workbook
 
 has_pkg <- function(p) requireNamespace(p, quietly = TRUE)
+
+n_things <- function(n, singular, plural = paste0(singular, "s"))
+  sprintf("%d %s", n, if (n == 1) singular else plural)
 
 # ----------------------------------------------------------------------------- the digitizer
 # The measuring step is the package's own application, not a copy of it:
@@ -84,6 +93,26 @@ job_token_of <- function(search) {
 }
 
 PHOTO_EXT <- c("jpg", "jpeg", "JPG", "JPEG", "png", "PNG", "tif", "tiff", "bmp", "gif")
+PHOTO_RE  <- "\\.(jpe?g|png|gif|bmp|tiff?)$"          # what the digitizer itself accepts
+
+# Is this name a photograph, and not an artefact of the way folders travel?
+# A macOS zip carries __MACOSX/._name.jpg beside name.jpg: same extension, no
+# pixels. Flattened by junkpaths, it would enter the queue as a second specimen.
+is_photo <- function(names) {
+  nm <- basename(names)
+  grepl(PHOTO_RE, nm, ignore.case = TRUE) & !startsWith(nm, "._") & !startsWith(nm, ".")
+}
+
+# A file input that asks the browser for a whole DIRECTORY. The attribute is
+# non-standard but understood by Chrome, Edge and Safari; Firefox needs the
+# .zip route instead, which is why both are offered.
+folder_input <- function(id, label, ...) {
+  htmltools::tagQuery(shiny::fileInput(id, label, multiple = TRUE, ...))$
+    find("input")$
+    filter(function(x, i) identical(x$attribs$type, "file"))$
+    addAttrs(webkitdirectory = NA, directory = NA, mozdirectory = NA)$
+    allTags()
+}
 
 # The photograph a specimen code came from (plates add an _i<k> suffix).
 photo_for_code <- function(dir, code) {
@@ -211,10 +240,12 @@ pipeline_ui <- page_navbar(
         help_text("This step opens the digitizer of the intraitR package itself — the same application as ",
                   tags$code("digitize_landmarks()"), ", with its queues, its landmark buttons, its zoom and its checks. ",
                   "It writes one workbook and an append-only journal, exactly as it does on a laptop."),
-        fileInput("photos", "Photographs (.jpg / .png)", multiple = TRUE,
-                  accept = c(".jpg", ".jpeg", ".png", ".tif", ".tiff", ".bmp", ".gif"),
-                  buttonLabel = "Browse...", placeholder = "no file selected"),
-        help_text("One file per photograph; the file name without its extension is the specimen code. A photograph may hold several fish (a plate): say so in the digitizer."),
+        radioButtons("photo_src", "Add photographs", inline = TRUE,
+                     choices = c("Files" = "files", "Folder" = "folder", "ZIP" = "zip")),
+        uiOutput("photo_input_ui"),
+        uiOutput("photo_count_ui"),
+        help_text("The file name without its extension is the specimen code. A photograph may hold several fish (a plate): say so in the digitizer. ",
+                  "Anything that is not an image is ignored, and a name already in the set is kept out rather than renamed — a renamed file would be a different specimen."),
         textInput("operator", "Your operator code (initials)", value = ""),
         numericInput("ruler_mm", "Scale bar 20-21: real length (mm)", value = 10, min = 0.1, step = 1),
         numericInput("ind_per_photo", "Fish per photograph", value = 1, min = 1, step = 1),
@@ -232,7 +263,8 @@ pipeline_ui <- page_navbar(
       ),
       step_card("How it works", icon = "circle-info",
         tags$ol(
-          tags$li("Upload your photographs on the left, give your initials and the real length of the scale bar."),
+          tags$li("Add your photographs on the left — one by one, a ", tags$b("whole folder"), ", or a ", tags$b("ZIP archive"),
+                  " — then give your initials and the real length of the scale bar."),
           tags$li(tags$b("Open the digitizer"), " — it opens in a second browser tab. Place the landmarks there and press ",
                   tags$b("Save & next"), " for each specimen (the queue, the buttons 1–25, the zoom and the checks are the package's own)."),
           tags$li("Come back to this tab and click ", tags$b("Load the measurements into the pipeline"), " — then carry on with tabs 3 to 9."),
@@ -492,7 +524,7 @@ server <- function(input, output, session) {
     rep_lm = NULL, rep_table = NULL, rep_de = NULL, rep_source = NULL,
     code = c("library(intraitR)", ""),
     # digitizing job (the package's own digitizer, opened in a second tab)
-    job = NULL, job_base = NULL, digit_refresh = NULL
+    job = NULL, job_base = NULL, digit_refresh = NULL, photos_version = 0L
   )
 
   add_code <- function(...) rv$code <- c(rv$code, ...)
@@ -585,27 +617,122 @@ server <- function(input, output, session) {
   # ----------------------------------------------------------------- 2. Measure
   # The job: a folder of photographs, a workbook and a journal, handed to the
   # package's digitizer through the `intraitR.digitizer` option (see job_env()).
-  observeEvent(input$photos, {
-    ph <- input$photos
+  # One job = one folder of photographs, one workbook, one journal.
+  new_job <- function() {
     token <- paste0("job_", as.integer(Sys.time()), "_", paste(sample(c(letters, 0:9), 6, TRUE), collapse = ""))
     base <- file.path(tempdir(), token)
-    dir.create(file.path(base, "photos"), recursive = TRUE, showWarnings = FALSE)
-    dir.create(file.path(base, "measurements"), recursive = TRUE, showWarnings = FALSE)
-    dir.create(file.path(base, "journal"), recursive = TRUE, showWarnings = FALSE)
-    paths <- file.path(base, "photos", ph$name)
-    file.copy(ph$datapath, paths, overwrite = TRUE)
-    rv$job <- token; rv$job_base <- base
-    rv$photo_dir <- file.path(base, "photos")
-    showNotification(sprintf("%d photograph(s) ready. Open the digitizer when your settings are set.", nrow(ph)),
-                     type = "message")
+    for (d in c("photos", "measurements", "journal"))
+      dir.create(file.path(base, d), recursive = TRUE, showWarnings = FALSE)
+    rv$job <- token; rv$job_base <- base; rv$photo_dir <- file.path(base, "photos")
+    rv$photos_version <- 0L
+    invisible(base)
+  }
+
+  # Photographs are APPENDED: a folder, then a few stragglers, then another
+  # batch all end up in the same queue -- which is also how a 300 MB upload cap
+  # stays workable. A name already taken is NOT renamed: the file name without
+  # its extension is the specimen code, so renaming would quietly invent a
+  # specimen. Same name and same size is taken for the same photograph and
+  # skipped silently; same name, different size is reported and left out.
+  add_photos <- function(paths, names) {
+    if (is.null(rv$job_base)) new_job()
+    dest <- file.path(rv$job_base, "photos")
+    keep <- is_photo(names)
+    added <- character(0); clash <- character(0); again <- 0L
+    for (i in which(keep)) {
+      nm <- basename(names[i]); target <- file.path(dest, nm)
+      if (file.exists(target)) {
+        if (isTRUE(file.size(target) == file.size(paths[i]))) { again <- again + 1L; next }
+        clash <- c(clash, nm); next
+      }
+      if (isTRUE(file.copy(paths[i], target))) added <- c(added, nm)
+    }
+    rv$photos_version <- (rv$photos_version %||% 0L) + 1L
+    msg <- paste0(n_things(length(added), "photograph"), " added.")
+    if (sum(!keep)) msg <- paste(msg, paste0(n_things(sum(!keep), "non-image file"), " ignored."))
+    if (again)     msg <- paste(msg, sprintf("%d already in the set.", again))
+    # when nothing came in because every name clashed, the error below says it
+    if (length(added) || !length(clash))
+      showNotification(msg, type = if (length(added)) "message" else "warning", duration = 8)
+    if (length(clash))
+      showNotification(paste0("Not added — the set already has a different photograph under that name: ",
+                              paste(utils::head(clash, 8), collapse = ", "),
+                              if (length(clash) > 8) ", ..." else "",
+                              ". Rename the file (its name is the specimen code) and add it again."),
+                       type = "error", duration = NULL)
+    invisible(length(added))
+  }
+
+  job_photos <- reactive({
+    rv$photos_version
+    req(rv$job_base)
+    sort(list.files(file.path(rv$job_base, "photos"), full.names = TRUE,
+                    pattern = PHOTO_RE, ignore.case = TRUE))
+  })
+
+  output$photo_input_ui <- renderUI({
+    switch(input$photo_src %||% "files",
+      files = tagList(
+        fileInput("photos", NULL, multiple = TRUE,
+                  accept = c(".jpg", ".jpeg", ".png", ".tif", ".tiff", ".bmp", ".gif"),
+                  buttonLabel = "Browse...", placeholder = "no file selected"),
+        help_text("Select several files at once (Ctrl / Cmd + click).")),
+      folder = tagList(
+        folder_input("photos_dir", NULL, buttonLabel = "Choose a folder...", placeholder = "no folder selected"),
+        help_text("Uploads every image in the folder and its sub-folders. Works in Chrome, Edge and Safari; in Firefox, use the ZIP option.")),
+      zip = tagList(
+        fileInput("photos_zip", NULL, accept = c(".zip", "application/zip"),
+                  buttonLabel = "Browse...", placeholder = "photos.zip"),
+        help_text("Any zipped folder of photographs; sub-folders are flattened.")))
+  })
+
+  output$photo_count_ui <- renderUI({
+    if (is.null(rv$job_base)) return(help_text("No photograph yet."))
+    n <- length(job_photos())
+    tagList(
+      tags$p(class = "mb-1", tags$b(paste(n_things(n, "photograph"), "in this session")),
+             if (n) tags$span(class = "text-muted small", " — add more at any time")),
+      actionLink("photos_reset", "Start a new set", class = "small text-danger"))
+  })
+
+  observeEvent(input$photos,     { ph <- input$photos;     add_photos(ph$datapath, ph$name) })
+  observeEvent(input$photos_dir, { ph <- input$photos_dir; add_photos(ph$datapath, ph$name) })
+
+  observeEvent(input$photos_zip, {
+    z <- input$photos_zip
+    ex <- file.path(tempdir(), paste0("unzip_", as.integer(Sys.time())))
+    dir.create(ex, showWarnings = FALSE)
+    # junkpaths: the archive's own folder tree is discarded, which also makes a
+    # path like ../../x impossible to follow.
+    ok <- tryCatch({ utils::unzip(z$datapath, exdir = ex, junkpaths = TRUE); TRUE },
+                   error = function(e) { notify_error(e, "unzip"); FALSE },
+                   warning = function(w) { showNotification(paste("unzip:", conditionMessage(w)), type = "warning"); TRUE })
+    if (!isTRUE(ok)) return()
+    f <- list.files(ex, full.names = TRUE)
+    if (!length(f)) { showNotification("The archive holds no file.", type = "warning"); return() }
+    add_photos(f, basename(f))
+    unlink(ex, recursive = TRUE)
+  })
+
+  observeEvent(input$photos_reset, {
+    showModal(modalDialog(
+      title = "Start a new set of photographs?",
+      tags$p("The photographs of this session and everything measured on them are dropped: a new, empty session is started."),
+      tags$p(class = "text-danger mb-0", "Download the workbook + journal first if you want to keep what you have measured."),
+      footer = tagList(modalButton("Cancel"),
+                       actionButton("photos_reset_ok", "Start a new set", class = "btn-danger")),
+      easyClose = TRUE))
+  })
+  observeEvent(input$photos_reset_ok, {
+    removeModal(); new_job()
+    showNotification("New session started: add your photographs.", type = "message")
   })
 
   # Re-registered whenever a setting changes: the environment is only built when
   # the digitizer page is first opened, so a tab already open keeps its own.
   digit_cfg <- reactive({
     req(rv$job_base)
-    photos <- sort(list.files(file.path(rv$job_base, "photos"), full.names = TRUE,
-                              pattern = "\\.(jpe?g|png|gif|bmp|tiff?)$", ignore.case = TRUE))
+    photos <- job_photos()
     op <- if (nzchar(trimws(input$operator %||% ""))) trimws(input$operator) else "operator"
     list(photo_dir = file.path(rv$job_base, "photos"), photos = photos,
          xlsx_path = file.path(rv$job_base, "measurements", paste0(op, "_landmarks.xlsx")),
@@ -621,11 +748,13 @@ server <- function(input, output, session) {
   })
 
   output$digit_open_ui <- renderUI({
-    if (is.null(rv$job_base)) return(help_text("Upload photographs first."))
-    job_new(rv$job, digit_cfg())      # (re)register with the current settings
-    tags$a(href = paste0("?page=digitizer&job=", rv$job), target = "_blank",
-           class = "btn btn-primary w-100",
-           icon("up-right-from-square"), " Open the digitizer")
+    if (is.null(rv$job_base) || !length(job_photos())) return(help_text("Add photographs first."))
+    job_new(rv$job, digit_cfg())      # (re)register with the current settings and photographs
+    tagList(
+      tags$a(href = paste0("?page=digitizer&job=", rv$job), target = "_blank",
+             class = "btn btn-primary w-100",
+             icon("up-right-from-square"), " Open the digitizer"),
+      help_text("Photographs added after the digitizer was opened appear when you open it again (the tab already open keeps the queue it started with)."))
   })
 
   # What the journal holds right now (the workbook is only an export of it).
@@ -646,9 +775,11 @@ server <- function(input, output, session) {
 
   output$digit_status <- renderPrint({
     if (is.null(rv$job_base)) { cat("No photographs uploaded yet.\n"); return() }
-    n_ph <- length(list.files(file.path(rv$job_base, "photos")))
+    ph <- job_photos()
     j <- digit_journal()
-    cat(sprintf("Photographs: %d\n", n_ph))
+    cat(sprintf("Photographs: %d\n", length(ph)))
+    if (length(ph)) cat(sprintf("             %s%s\n", paste(utils::head(basename(ph), 4), collapse = ", "),
+                                if (length(ph) > 4) sprintf(", ... (+%d)", length(ph) - 4) else ""))
     cat(sprintf("Operator:    %s\n", digit_cfg()$operator))
     if (is.null(j)) { cat("Saved so far: nothing yet (the digitizer writes as you press 'Save & next').\n"); return() }
     sheet <- j$target_sheet; sheet[is.na(sheet) | !nzchar(sheet)] <- "measurements"
