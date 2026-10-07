@@ -410,6 +410,29 @@ $(document).ready(function () {
 }
 .callout.warn { border-color: #e67e22; background: #fdf5ec; }
 
+.app-card {
+  display: flex; gap: 22px; align-items: center; flex-wrap: wrap;
+  background: linear-gradient(135deg, #f3faf6 0%, #ffffff 60%); border: 1px solid #cfe9db; border-radius: 14px;
+  padding: 24px 26px; margin: 10px 0 30px 0;
+}
+.app-icon {
+  width: 70px; height: 70px; border-radius: 16px; background: #27ae60; color: #fff; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 1.9em;
+}
+.app-body { flex: 1; min-width: 260px; }
+.app-body h3 { margin: 0 0 6px 0; font-size: 1.2em; font-weight: 700; color: #2c3e50; }
+.app-body p { margin: 0 0 8px 0; font-size: 0.93em; color: #555; line-height: 1.55; }
+.app-steps { font-size: 0.82em; color: #666; }
+.app-steps span { display: inline-block; background: #fff; border: 1px solid #dde3ea; border-radius: 6px; padding: 2px 8px; margin: 2px 4px 2px 0; }
+.app-actions { display: flex; flex-direction: column; gap: 8px; min-width: 200px; }
+.app-btn {
+  display: block; text-align: center; padding: 10px 16px; border-radius: 8px; font-weight: 600; text-decoration: none !important;
+}
+.app-btn.primary { background: #27ae60; color: #fff !important; }
+.app-btn.primary:hover { background: #1e8449; }
+.app-btn.secondary { border: 1px solid #27ae60; color: #27ae60 !important; background: #fff; }
+.app-note { font-size: 0.78em; color: #999; text-align: center; }
+
 .more-link { margin: 30px 0 60px 0; font-size: 0.92em; color: #777; }
 .more-link a { color: #2980b9; }
 </style>
@@ -531,6 +554,8 @@ remotes::install_github("FunTraits/intraitR")     # pulls Rfishmorph automatical
         calibration clicks, the ml-morph predictor proposes the 19 FISHMORPH landmarks; review every point, place the
         scale bar (landmarks 20–21, length in mm asked by the app), score the quality and save. Everything is written
         to <strong>one workbook</strong> and to an <strong>append-only journal</strong> that survives a crash.</p>
+        <p>Not comfortable with R? The <a href="#app">pipeline app</a> opens this same digitizer in your browser and
+        hands you the same workbook and journal to send back — no installation at all.</p>
 <pre><code>library(intraitR)
 
 digitize_landmarks(
@@ -563,9 +588,12 @@ fish &lt;- read_landmarks_xlsx("measurements/&lt;Name&gt;_landmarks.xlsx",
                             sheet = "measurements", n_landmarks = 23,
                             x_pattern = "{i}_X", y_pattern = "{i}_Y",
                             id_cols = "specimen")
-species &lt;- sub("_.*$", "", fish$metadata$specimen)   # adapt to your code convention,
-                                                      # or join a determinations table
-                                                      # (species_file = , species_by = )
+# species come from the determinations table I give you (uid, species, ...),
+# never from the file name: the specimen code SITE_YYYYMMDD_NNNN is an identity,
+# the species a revisable hypothesis
+det     &lt;- read.csv("determinations.csv")
+uid     &lt;- sub("_i[0-9]+$", "", fish$metadata$specimen)   # drop the _iK of plates
+species &lt;- det$species[match(uid, det$uid)]
 
 # ── quality control ──────────────────────────────────────────────────────────
 plot_fishmorph_points(fish, specimen = 1,
@@ -616,6 +644,31 @@ plot(digitization_error(rep, individual = rep$metadata$individual))   # bias per
           (or an R Markdown file) so that it can be re-run when I return the consolidated campaign data.
         </div>
       </div>
+    </div>
+  </div>
+
+
+  <div class="section-title" id="app">No R? Use the pipeline app</div>
+  <div class="app-card">
+    <div class="app-icon"><i class="fa fa-mouse-pointer"></i></div>
+    <div class="app-body">
+      <h3>intraitR pipeline — point-and-click</h3>
+      <p>The whole workflow in a web application, for people who do not write R: measure the landmarks on your
+      photographs, check and correct them, compute the FISHMORPH traits, and get the figures (trait space, FISHMORPH
+      morphospace, intraspecific variability, shape space, repeatability) with every table and the R script that
+      reproduces them. Every computation is an <code>intraitR</code> function, and the measuring step
+      <strong>is the package's own digitizer</strong> — the application behind <code>digitize_landmarks()</code>,
+      served as it is, so it writes the same workbook and the same append-only journal.</p>
+      <div class="app-steps">
+        <span>1 Start</span><span>2 Measure</span><span>3 Check</span><span>4 Traits</span><span>5 Trait space</span>
+        <span>6 FISHMORPH</span><span>7 ITV</span><span>8 Shape</span><span>9 Repeatability</span><span>10 Export</span>
+      </div>
+    </div>
+    <div class="app-actions">
+      <!-- SETUP: replace the href below by the shinyapps.io URL once deployed (see apps/intraitR-pipeline/README.md) -->
+      <a class="app-btn primary" href="https://github.com/AureleToussaint/homepage/tree/master/apps/intraitR-pipeline" target="_blank"><i class="fa fa-rocket"></i> &nbsp;Open the app</a>
+      <a class="app-btn secondary" href="https://github.com/AureleToussaint/homepage/tree/master/apps/intraitR-pipeline" target="_blank"><i class="fa fa-code"></i> &nbsp;Source code</a>
+      <div class="app-note">Landmark prediction (ml-morph) needs a local Python environment, so online every point is placed by hand; everything else is identical.</div>
     </div>
   </div>
 
