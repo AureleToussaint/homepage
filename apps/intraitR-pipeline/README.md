@@ -51,7 +51,13 @@ remotes::install_github("FunTraits/intraitR")
 shiny::runApp("intraitR-pipeline")
 ```
 
-## Deploy on shinyapps.io (free tier is enough to start)
+## Live at https://globaltrait.shinyapps.io/intraitR-pipeline/
+
+That is the URL the *Open the app* button of the site's R packages page points to
+(`Rpackages.Rmd`, card "Pipeline app", and the students' block above it).
+Redeploying with the same `appName` replaces it in place; the link does not change.
+
+## Deploying (shinyapps.io, free tier is enough to start)
 
 1. Create an account on https://www.shinyapps.io and, in RStudio, paste the
    token from *Account → Tokens* (`rsconnect::setAccountInfo(...)`).
@@ -59,8 +65,9 @@ shiny::runApp("intraitR-pipeline")
    for Rfishmorph and intraitR): rsconnect records the GitHub origin and
    reinstalls them on the server.
 3. `source("deploy.R")` — or `rsconnect::deployApp("intraitR-pipeline", appName = "intraitR-pipeline")`.
-4. The app is then at `https://<account>.shinyapps.io/intraitR-pipeline/`;
-   put that URL in `Rpackages.Rmd` (card "Pipeline app").
+4. The app is then at `https://<account>.shinyapps.io/intraitR-pipeline/` —
+   here `globaltrait`. A different account or `appName` means a different URL, so
+   update the two links in `Rpackages.Rmd` (and the rendered `Rpackages.html`).
 
 Notes: the first launch loads the FISHMORPH reference (~9 000 species) when the
 FISHMORPH tab is used; the free tier (1 GB RAM, 25 active hours / month) copes

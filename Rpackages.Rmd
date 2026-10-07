@@ -245,7 +245,7 @@ remotes::install_github("FunTraits/intraitR")     # pulls Rfishmorph automatical
         calibration clicks, the ml-morph predictor proposes the 19 FISHMORPH landmarks; review every point, place the
         scale bar (landmarks 20–21, length in mm asked by the app), score the quality and save. Everything is written
         to <strong>one workbook</strong> and to an <strong>append-only journal</strong> that survives a crash.</p>
-        <p>Not comfortable with R? The <a href="#app">pipeline app</a> opens this same digitizer in your browser and
+        <p>Not comfortable with R? The <a href="https://globaltrait.shinyapps.io/intraitR-pipeline/" target="_blank" rel="noopener">pipeline app</a> opens this same digitizer in your browser and
         hands you the same workbook and journal to send back — no installation at all.</p>
 <pre><code>library(intraitR)
 
@@ -356,8 +356,8 @@ plot(digitization_error(rep, individual = rep$metadata$individual))   # bias per
       </div>
     </div>
     <div class="app-actions">
-      <!-- SETUP: replace the href below by the shinyapps.io URL once deployed (see apps/intraitR-pipeline/README.md) -->
-      <a class="app-btn primary" href="https://github.com/AureleToussaint/homepage/tree/master/apps/intraitR-pipeline" target="_blank"><i class="fa fa-rocket"></i> &nbsp;Open the app</a>
+      <!-- Live application (shinyapps.io). Source: apps/intraitR-pipeline/ -->
+      <a class="app-btn primary" href="https://globaltrait.shinyapps.io/intraitR-pipeline/" target="_blank" rel="noopener"><i class="fa fa-rocket"></i> &nbsp;Open the app</a>
       <a class="app-btn secondary" href="https://github.com/AureleToussaint/homepage/tree/master/apps/intraitR-pipeline" target="_blank"><i class="fa fa-code"></i> &nbsp;Source code</a>
       <div class="app-note">Landmark prediction (ml-morph) needs a local Python environment, so online every point is placed by hand; everything else is identical.</div>
     </div>
