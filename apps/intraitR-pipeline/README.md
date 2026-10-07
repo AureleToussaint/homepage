@@ -36,6 +36,49 @@ confirmation.
 `options(shiny.maxRequestSize = 300 * 1024^2)` raises Shiny's 5 MB default,
 which a handful of real photographs would otherwise exceed at once.
 
+### Why the photographs are measured small
+
+The digitizer downsamples every photograph to its *Display* setting (1200 px by
+default) the moment it opens it, and drops the original — resolution above that
+is uploaded, decoded and held in memory without ever being measured on. Measured
+on a 4000 × 3000 frame:
+
+| | 12 Mpx original | 2400 px copy |
+|---|---|---|
+| opening one specimen | 1.02 s | 0.25 s |
+| the decoded array in R | 288 MB | 72 MB |
+| one redraw | 0.41 s | 0.15 s |
+
+So photographs are reduced to **2400 px on the long side** (selector in the
+sidebar: 2400 / 1600 / original), twice:
+
+- **in the browser**, before the upload, for the *Files* and *Folder* routes —
+  `createImageBitmap(..., imageOrientation: "from-image")` (so the EXIF rotation
+  is applied, which a bare canvas drops) then a canvas and `toBlob`, with the
+  resized `File` objects put back on the input through a `DataTransfer`. This is
+  what cuts the upload: a 5 MB frame leaves as ~200 kB. A browser that refuses
+  any of it simply uploads the original.
+- **on the server**, for anything that still arrives larger — a ZIP (the archive
+  is opened server-side, so the browser cannot shrink it), an old browser, a
+  failed canvas. `magick` does it with EXIF rotation and proper resampling; with
+  magick absent, a base-R subsample takes over, which is exactly what the
+  digitizer itself does to display a photograph.
+
+**This changes no measured trait.** The nine FISHMORPH ratios are quotients of
+segments of the same image, and the scale bar is digitized on that same image,
+so a uniform resize cancels out. What it costs is placement precision, and
+2400 px leaves ~0.04 mm/px on a 10 cm fish, two orders of magnitude finer than
+the ~0.3 % of standard length that the package's own T-26 repeat trial measures
+as digitization bias. A ZIP of already-small photographs uploads fastest of all.
+
+### What the pipeline tab does while you measure
+
+Both tabs share one R process on shinyapps, so anything the pipeline tab does
+while the digitizer is open is time the digitizer does not get. The journal is
+therefore re-read only when its files have actually changed (a signature built
+from the directory listing), only every 10 s, and only while the *Measure* tab
+is the one on screen.
+
 ## The *Measure* tab is the package's digitizer, not a copy of it
 
 `digitize_landmarks()` hands its session configuration to its Shiny application

@@ -29,7 +29,7 @@ suppressPackageStartupMessages({
                       # intraitR versions (scale_action, na_action, ...) are the ones used here.
 })
 
-APP_VERSION <- "0.3.0"
+APP_VERSION <- "0.4.0"
 
 # Shiny's default upload cap is 5 MB -- a handful of specimen photographs at
 # once. Photographs are streamed to disk, not held in memory, so the cost of a
@@ -103,6 +103,69 @@ is_photo <- function(names) {
   grepl(PHOTO_RE, nm, ignore.case = TRUE) & !startsWith(nm, "._") & !startsWith(nm, ".")
 }
 
+# ---- Photographs are measured small, on purpose -----------------------------
+# The digitizer downsamples every photograph to its "Display" setting (1200 px
+# by default) the moment it opens it, and drops the original: resolution above
+# that is uploaded, decoded and held in memory without ever being measured on.
+# A 12 Mpx frame costs ~290 MB as an R array and a second per specimen just to
+# open; the same frame at 2400 px costs a quarter of that and is still far
+# finer than any hand can place a point (digitization bias on the package's own
+# T-26 trial is ~0.3% of the standard length, i.e. several pixels at 2400 px).
+# Ratios are quotients of segments of the same image and the scale bar travels
+# with it, so a uniform resize changes no measured trait.
+PHOTO_MAX_PX <- 2400L
+
+# What the stored file will be called: a resized copy of anything that is not a
+# PNG is written as JPEG, so the extension may change -- never the stem, which
+# is the specimen code.
+photo_plan <- function(src, name, max_px) {
+  stem <- tools::file_path_sans_ext(basename(name))
+  ext  <- tolower(tools::file_ext(name))
+  if (!is.finite(max_px) || max_px <= 0) return(list(name = basename(name), resize = FALSE))
+  dims <- photo_dims(src)
+  if (is.null(dims) || max(dims) <= max_px) return(list(name = basename(name), resize = FALSE))
+  list(name = paste0(stem, ".", if (identical(ext, "png")) "png" else "jpg"), resize = TRUE)
+}
+
+photo_dims <- function(src) {
+  if (has_pkg("magick")) {
+    i <- tryCatch(magick::image_info(magick::image_read(src)), error = function(e) NULL)
+    if (!is.null(i) && nrow(i)) return(c(i$width[1], i$height[1]))
+    return(NULL)
+  }
+  d <- tryCatch({
+    a <- if (grepl("\\.png$", src, ignore.case = TRUE)) png::readPNG(src) else jpeg::readJPEG(src)
+    c(dim(a)[2], dim(a)[1])
+  }, error = function(e) NULL)
+  d
+}
+
+# Write a measuring copy of `src` at `dest`. magick does it in C, applies the
+# EXIF rotation and resamples properly; without it, every k-th pixel is kept,
+# which is what the digitizer itself does to display a photograph.
+resize_photo <- function(src, dest, max_px) {
+  if (has_pkg("magick")) {
+    ok <- tryCatch({
+      im <- magick::image_read(src)
+      im <- magick::image_orient(im)
+      im <- magick::image_resize(im, paste0(max_px, "x", max_px, ">"))
+      magick::image_write(im, dest,
+                          format = if (grepl("\\.png$", dest, ignore.case = TRUE)) "png" else "jpeg",
+                          quality = 92)
+      TRUE
+    }, error = function(e) FALSE)
+    if (isTRUE(ok)) return(TRUE)
+  }
+  tryCatch({
+    a <- if (grepl("\\.png$", src, ignore.case = TRUE)) png::readPNG(src) else jpeg::readJPEG(src)
+    d <- dim(a); st <- ceiling(max(d[1], d[2]) / max_px)
+    if (st > 1) a <- a[seq(1L, d[1], st), seq(1L, d[2], st), , drop = FALSE]
+    if (grepl("\\.png$", dest, ignore.case = TRUE)) png::writePNG(a, dest) else jpeg::writeJPEG(a, dest, quality = 0.92)
+    rm(a); gc(FALSE)
+    TRUE
+  }, error = function(e) FALSE)
+}
+
 # A file input that asks the browser for a whole DIRECTORY. The attribute is
 # non-standard but understood by Chrome, Edge and Safari; Firefox needs the
 # .zip route instead, which is why both are offered.
@@ -171,6 +234,75 @@ species_of <- function(lm) {
   s
 }
 
+# ----------------------------------------------------------------------------- client-side shrink
+# Upload time is bytes over the wire, and nothing the server does can give those
+# back. The photographs are therefore resized IN THE BROWSER before Shiny sends
+# them, to the same size the server would have reduced them to -- a 12 Mpx frame
+# leaves as a few hundred kB instead of several MB. The server still resizes
+# whatever arrives larger (a ZIP, an old browser, a failed canvas), so this is
+# an accelerator and never the thing correctness depends on.
+# createImageBitmap(imageOrientation: "from-image") applies the EXIF rotation,
+# which a canvas would otherwise drop.
+PRESHRINK_JS <- '
+(function () {
+  var Q = 0.9, IMG = /\\.(jpe?g|png|tiff?|bmp|gif)$/i;
+  function maxPx() {
+    var el = document.getElementById("photo_max");
+    var v = el ? parseInt(el.value, 10) : 2400;
+    return isFinite(v) ? v : 2400;
+  }
+  function status(input, text) {
+    var box = input.closest(".form-group") || input.parentNode;
+    var el = box.querySelector(".rs-status");
+    if (!el) { el = document.createElement("div"); el.className = "rs-status small text-muted"; box.appendChild(el); }
+    el.textContent = text || "";
+  }
+  async function shrink(file, m) {
+    if (!/^image\\//.test(file.type) && !IMG.test(file.name)) return file;
+    var bmp;
+    try { bmp = await createImageBitmap(file, { imageOrientation: "from-image" }); }
+    catch (e) { try { bmp = await createImageBitmap(file); } catch (e2) { return file; } }
+    var big = Math.max(bmp.width, bmp.height);
+    if (big <= m) { if (bmp.close) bmp.close(); return file; }
+    var s = m / big, c = document.createElement("canvas");
+    c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
+    c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+    if (bmp.close) bmp.close();
+    var blob = await new Promise(function (r) { c.toBlob(r, "image/jpeg", Q); });
+    if (!blob) return file;
+    return new File([blob], file.name.replace(IMG, ".jpg"),
+                    { type: "image/jpeg", lastModified: file.lastModified });
+  }
+  function release(input) {
+    input.dataset.rsDone = "1";
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+  async function handle(input) {
+    var m = maxPx(), f = input.files;
+    if (!(m > 0) || !f || !f.length) { release(input); return; }
+    var out = [];
+    for (var i = 0; i < f.length; i++) {
+      status(input, "Preparing " + (i + 1) + " / " + f.length + "...");
+      try { out.push(await shrink(f[i], m)); } catch (e) { out.push(f[i]); }
+    }
+    try {
+      var dt = new DataTransfer();
+      out.forEach(function (x) { dt.items.add(x); });
+      input.files = dt.files;
+    } catch (e) { /* browser will not let us: the originals go up, the server resizes */ }
+    status(input, "");
+    release(input);
+  }
+  document.addEventListener("change", function (ev) {
+    var t = ev.target;
+    if (!t || t.type !== "file" || (t.id !== "photos" && t.id !== "photos_dir")) return;
+    if (t.dataset.rsDone === "1") { t.dataset.rsDone = ""; return; }
+    ev.stopPropagation(); ev.preventDefault();
+    handle(t);
+  }, true);
+})();
+'
+
 # ----------------------------------------------------------------------------- UI
 theme <- bs_theme(version = 5, bootswatch = "cosmo", primary = "#27ae60",
                   "navbar-bg" = "#2c3e50")
@@ -187,7 +319,8 @@ pipeline_ui <- page_navbar(
     pre.rcode { background:#f7f9fb; border:1px solid #e4e9f0; border-radius:8px; padding:10px; font-size:.82em; }
     .nav-link { font-weight:500; }
     .card { margin-bottom: 14px; }
-  "))),
+    .rs-status { margin-top:-6px; margin-bottom:8px; }
+  ")), tags$script(HTML(PRESHRINK_JS))),
 
   # ---------------------------------------------------------------- 1. Start
   nav_panel("1 · Start", icon = icon("play"),
@@ -243,7 +376,14 @@ pipeline_ui <- page_navbar(
         radioButtons("photo_src", "Add photographs", inline = TRUE,
                      choices = c("Files" = "files", "Folder" = "folder", "ZIP" = "zip")),
         uiOutput("photo_input_ui"),
+        selectInput("photo_max", "Size kept for measuring",
+                    choices = c("2400 px — recommended" = 2400,
+                                "1600 px — fastest" = 1600,
+                                "Original size — slow" = 0),
+                    selected = PHOTO_MAX_PX),
         uiOutput("photo_count_ui"),
+        help_text("Larger photographs are copied down to that size on arrival, which is what makes measuring quick: the digitizer shows at most 1200–2400 px anyway, ",
+                  "and the nine ratios are quotients of segments of the same image, so a uniform resize changes no measured trait. Your own files are untouched."),
         help_text("The file name without its extension is the specimen code. A photograph may hold several fish (a plate): say so in the digitizer. ",
                   "Anything that is not an image is ignored, and a name already in the set is kept out rather than renamed — a renamed file would be a different specimen."),
         textInput("operator", "Your operator code (initials)", value = ""),
@@ -524,7 +664,8 @@ server <- function(input, output, session) {
     rep_lm = NULL, rep_table = NULL, rep_de = NULL, rep_source = NULL,
     code = c("library(intraitR)", ""),
     # digitizing job (the package's own digitizer, opened in a second tab)
-    job = NULL, job_base = NULL, digit_refresh = NULL, photos_version = 0L
+    job = NULL, job_base = NULL, digit_refresh = NULL, photos_version = 0L,
+    photo_origin = list()
   )
 
   add_code <- function(...) rv$code <- c(rv$code, ...)
@@ -624,7 +765,7 @@ server <- function(input, output, session) {
     for (d in c("photos", "measurements", "journal"))
       dir.create(file.path(base, d), recursive = TRUE, showWarnings = FALSE)
     rv$job <- token; rv$job_base <- base; rv$photo_dir <- file.path(base, "photos")
-    rv$photos_version <- 0L
+    rv$photos_version <- 0L; rv$photo_origin <- list()
     invisible(base)
   }
 
@@ -638,19 +779,34 @@ server <- function(input, output, session) {
     if (is.null(rv$job_base)) new_job()
     dest <- file.path(rv$job_base, "photos")
     keep <- is_photo(names)
-    added <- character(0); clash <- character(0); again <- 0L
-    for (i in which(keep)) {
-      nm <- basename(names[i]); target <- file.path(dest, nm)
+    idx <- which(keep)
+    max_px <- suppressWarnings(as.integer(input$photo_max %||% PHOTO_MAX_PX))
+    added <- character(0); clash <- character(0); again <- 0L; shrunk <- 0L
+    withProgress(message = "Adding photographs", value = 0, {
+    for (k in seq_along(idx)) {
+      i <- idx[k]
+      incProgress(1 / length(idx), detail = basename(names[i]))
+      plan <- photo_plan(paths[i], names[i], max_px)
+      nm <- plan$name; target <- file.path(dest, nm)
       if (file.exists(target)) {
-        if (isTRUE(file.size(target) == file.size(paths[i]))) { again <- again + 1L; next }
+        # the stored file is a resized copy, so sizes cannot be compared: the
+        # source size recorded when it was added is what says "same photograph".
+        if (isTRUE(rv$photo_origin[[nm]] == file.size(paths[i]))) { again <- again + 1L; next }
         clash <- c(clash, nm); next
       }
-      if (isTRUE(file.copy(paths[i], target))) added <- c(added, nm)
+      ok <- if (plan$resize) resize_photo(paths[i], target, max_px) else file.copy(paths[i], target)
+      if (!isTRUE(ok) && plan$resize) ok <- file.copy(paths[i], file.path(dest, basename(names[i])))
+      if (isTRUE(ok)) {
+        added <- c(added, nm); shrunk <- shrunk + as.integer(plan$resize)
+        rv$photo_origin[[nm]] <- file.size(paths[i])
+      }
     }
+    })
     rv$photos_version <- (rv$photos_version %||% 0L) + 1L
     msg <- paste0(n_things(length(added), "photograph"), " added.")
     if (sum(!keep)) msg <- paste(msg, paste0(n_things(sum(!keep), "non-image file"), " ignored."))
     if (again)     msg <- paste(msg, sprintf("%d already in the set.", again))
+    if (shrunk)    msg <- paste(msg, sprintf("%d copied down to %d px for measuring.", shrunk, max_px))
     # when nothing came in because every name clashed, the error below says it
     if (length(added) || !length(clash))
       showNotification(msg, type = if (length(added)) "message" else "warning", duration = 8)
@@ -758,18 +914,36 @@ server <- function(input, output, session) {
   })
 
   # What the journal holds right now (the workbook is only an export of it).
+  # Rebuilding it costs ~0.2 s at sixty specimens and runs in the SAME R process
+  # as the digitizer, so it is done only when the journal has actually changed:
+  # the signature below is read from the directory listing, not from the files.
+  jcache <- new.env(parent = emptyenv()); jcache$sig <- NA_character_; jcache$tab <- NULL
+  journal_sig <- function(jd) {
+    f <- list.files(jd, pattern = "^landmarks_.*\\.tsv$", full.names = TRUE)
+    if (!length(f)) return("")
+    i <- file.info(f)
+    paste(basename(f), i$size, as.numeric(i$mtime), collapse = "|")
+  }
   digit_journal <- reactive({
     rv$digit_refresh
     req(rv$job_base)
-    jd <- file.path(rv$job_base, "journal")
-    if (!length(list.files(jd, pattern = "^landmarks_.*\\.tsv$"))) return(NULL)
-    tryCatch(consolidate_landmarks(jd, points = 1:N_LM_READ), error = function(e) NULL)
+    sig <- journal_sig(file.path(rv$job_base, "journal"))
+    if (!nzchar(sig)) return(NULL)
+    if (!identical(sig, jcache$sig)) {
+      jcache$tab <- tryCatch(consolidate_landmarks(file.path(rv$job_base, "journal"), points = 1:N_LM_READ),
+                             error = function(e) NULL)
+      jcache$sig <- sig
+    }
+    jcache$tab
   })
 
-  # Poll the journal while the digitizer is open in the other tab.
+  # Follow the journal only while this tab is the one being looked at: the
+  # digitizer runs in the same process, and a poll that lands mid-click is a
+  # click that waits.
   observe({
     req(rv$job_base)
-    invalidateLater(4000, session)
+    req(identical(input$nav, "2 · Measure"))
+    invalidateLater(10000, session)
     rv$digit_refresh <- Sys.time()
   })
 
