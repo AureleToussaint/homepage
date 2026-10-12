@@ -232,13 +232,28 @@ remotes::install_github("FunTraits/intraitR")     # pulls Rfishmorph automatical
 
   <div class="section-title" id="students">For students: from photographs to results</div>
   <div class="student-section">
-    <p class="student-intro">If you join a digitization campaign with me, you receive a folder of <strong>prepared
+    <p class="student-intro">If you join a digitization campaign with me, you work on a folder of <strong>prepared
     photographs</strong> (one specimen per file, exported from the campaign project with FishInTrait; the file name is the
-    specimen code and must not be changed). Install the packages as above, then follow the two steps below. Photographs
+    specimen code and must not be changed). Install the packages as above, then follow the three steps below. Photographs
     never leave your computer: only their file name and pixel size are recorded.</p>
 
     <div class="student-step">
       <div class="student-num">1</div>
+      <div class="student-body">
+        <h3>Download the photographs</h3>
+        <p>The prepared photographs are shared in
+        <a href="https://1drv.ms/f/c/590ce64e3c606c44/IgDtn3BG38K5S4yEfoLxdn4DASr9qbs_z3WVD2yhEKiJKHc?e=BVSwFb" target="_blank" rel="noopener">this OneDrive folder</a>. Open the link, select
+        <strong>only the folder you are working on</strong> and click <em>Download</em> (no account needed; OneDrive
+        delivers it as a <code>.zip</code>). Unzip it and put the photographs in the <code>prepared/</code> folder of
+        your working directory (step 2).</p>
+        <p><strong>Do not rename the photographs</strong>, not even to fix a typo or remove a space: the file name is
+        the specimen code, and it is what links your measurements to the specimen, its species determination and the
+        campaign project. If a name looks wrong, tell me rather than changing it.</p>
+      </div>
+    </div>
+
+    <div class="student-step">
+      <div class="student-num">2</div>
       <div class="student-body">
         <h3>Measure the specimens and send the measurements back</h3>
         <p>Create a working folder with the photographs in <code>prepared/</code> and launch the digitizer. From a few
@@ -267,7 +282,7 @@ digitize_landmarks(
     </div>
 
     <div class="student-step">
-      <div class="student-num">2</div>
+      <div class="student-num">3</div>
       <div class="student-body">
         <h3>Analyse and visualise your data</h3>
         <p>Read the workbook back, check the landmarks on the photographs, correct the geometry, derive the FISHMORPH
