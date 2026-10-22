@@ -257,6 +257,7 @@ editor_options:
     <div class="latest-pub-links">
       <a class="lp-btn lp-primary" href="https://doi.org/10.1038/s41467-026-78568-9" target="_blank" rel="noopener">📄 Read the paper</a>
       <a class="lp-btn lp-ghost" href="my-blog/site/posts/2026-10-19-human-use-unique-fishes/" target="_blank">🐟 Blog post</a>
+      <a class="lp-btn lp-ghost" href="https://communities.springernature.com/posts/guppies-pikes-and-sturgeons-why-the-fishes-we-use-are-rarely-ordinary?channel_id=behind-the-paper" target="_blank" rel="noopener">✍️ Behind the paper</a>
       <a class="lp-btn lp-ghost" href="data/2026_Bouchet_NatComm.pdf" target="_blank">⬇️ PDF</a>
       <a class="lp-btn lp-ghost" href="https://github.com/pierrolaloune/FishUsage" target="_blank" rel="noopener">💻 Code &amp; data</a>
     </div>
