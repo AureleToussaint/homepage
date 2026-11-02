@@ -626,7 +626,7 @@ output:
     </div>
   </div>
   <div class="pub-links">
-    <a class="pub-btn btn-pdf" href="data/2016_Toussaint_BiologicalInvasions.pdf" target="_blank">PDF</a>
+    <a class="pub-btn btn-pdf" href="data/2015_Allard_et_al.pdf" target="_blank">PDF</a>
     <a class="pub-btn btn-doi" href="https://doi.org/10.1111/jai.12712" target="_blank">DOI</a>
   </div>
 </div>
