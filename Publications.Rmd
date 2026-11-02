@@ -165,6 +165,8 @@ output:
     <a class="pub-btn btn-doi" href="https://doi.org/10.1038/s41467-026-78568-9" target="_blank">DOI</a>
     <a class="pub-btn btn-blog" href="my-blog/site/posts/2026-10-19-human-use-unique-fishes/" target="_blank">Blog</a>
     <a class="pub-btn btn-behind" href="https://communities.springernature.com/posts/guppies-pikes-and-sturgeons-why-the-fishes-we-use-are-rarely-ordinary?channel_id=behind-the-paper" target="_blank" rel="noopener">Behind the paper</a>
+    <a class="pub-btn btn-press" href="https://www.occitanie-ouest.cnrs.fr/fr/cnrsinfo/la-selection-humaine-menace-les-poissons-deau-douce-les-plus-originaux" target="_blank" rel="noopener">Press CNRS</a>
+    <a class="pub-btn btn-press" href="https://crbe.cnrs.fr/la-selection-humaine-menace-les-poissons-deau-douce-les-plus-originaux/" target="_blank" rel="noopener">CRBE</a>
   </div>
 </div>
 
